@@ -2,17 +2,17 @@ package optimodlyon.agile.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Map {
+public class CityMap {
 	private float height;
 	private float width;
 	//private ArrayList<Segment> listSegment;
 	private ArrayList<Delivery> listDelivery;
 	public HashMap<Long, ArrayList<Segment>> graph;
 	
-	public Map() {
+	public CityMap() {
 
 	}
-	public Map(HashMap<Long, ArrayList<Segment>> graph) {
+	public CityMap(HashMap<Long, ArrayList<Segment>> graph) {
 		this.graph = graph;
 	}
 	

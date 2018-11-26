@@ -1,5 +1,5 @@
 package optimodlyon.agile.xml;
-
+import optimodlyon.agile.models.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -10,13 +10,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import optimodlyon.agile.models.Map;
+import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.Segment;
 
 public class DeserializerXML {
 
-  public static Map deserialize() {
+  public static CityMap deserialize() {
 	
     try {
         System.out.println(System.getProperty("user.dir"));
@@ -129,7 +129,7 @@ public class DeserializerXML {
         
         
 
-        Map map = new Map(graph);
+        CityMap map = new CityMap(graph);
         
         return map;
             
