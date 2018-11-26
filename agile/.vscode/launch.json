@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-AgileApplication<agile>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "optimodlyon.agile.AgileApplication",
+            "projectName": "agile",
+            "args": ""
+        }
+    ]
+}
