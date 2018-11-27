@@ -69,27 +69,27 @@ public class DijkstraTest {
 		fail("weshalors"); // TODO
 	}
 
-	/**
-	 * Test method for {@link optimodlyon.agile.algorithmic.Dijkstra#findClosestNode(java.util.ArrayList)}.
-	 */
-	@Test
-	public final void testFindClosestNode() {
-		Dijkstra dijkstra = new Dijkstra();
-		ArrayList<Segment> segments = new ArrayList<Segment>();
-	    Intersection i0 = new Intersection((long)0,(float)0.0,(float)0.0);
-	    Intersection i1 = new Intersection((long)1,(float)0.0,(float)1.0);
-	    Intersection i2 = new Intersection((long)2,(float)1.0,(float)0.0);
-	    Intersection i3 = new Intersection((long)3,(float)1.0,(float)1.0);
-	    Segment s0 = new Segment(i0,i1,1);
-	    Segment s1 = new Segment(i0,i2,2);
-	    Segment s2 = new Segment(i0,i3,-1);
-	    segments.add(s0);
-	    segments.add(s1);
-	    segments.add(s2);
-	    long id = dijkstra.findClosestNode(segments);
-	    long result = 0;
-	    assertTrue("negative dist in segment", id==result);
-	}
+//	/**
+//	 * Test method for {@link optimodlyon.agile.algorithmic.Dijkstra#findClosestNode(java.util.ArrayList)}.
+//	 */
+//	@Test
+//	public final void testFindClosestNode() {
+//		Dijkstra dijkstra = new Dijkstra();
+//		ArrayList<Segment> segments = new ArrayList<Segment>();
+//	    Intersection i0 = new Intersection((long)0,(float)0.0,(float)0.0);
+//	    Intersection i1 = new Intersection((long)1,(float)0.0,(float)1.0);
+//	    Intersection i2 = new Intersection((long)2,(float)1.0,(float)0.0);
+//	    Intersection i3 = new Intersection((long)3,(float)1.0,(float)1.0);
+//	    Segment s0 = new Segment(i0,i1,1);
+//	    Segment s1 = new Segment(i0,i2,2);
+//	    Segment s2 = new Segment(i0,i3,-1);
+//	    segments.add(s0);
+//	    segments.add(s1);
+//	    segments.add(s2);
+//	    long id = dijkstra.findClosestNode(segments);
+//	    long result = 0;
+//	    assertTrue("negative dist in segment", id==result);
+//	}
 
 	/**
 	 * Test method for {@link optimodlyon.agile.algorithmic.Dijkstra#UpdateDistance(java.lang.Long, java.lang.Long, java.util.HashMap, java.util.Map)}.
