@@ -11,16 +11,12 @@ public class MapManagment{
     public static void main(String [] args)
     {
         System.out.println("hello");
-<<<<<<< HEAD
-        CityMap map = DeserializerXML.deserializeMap();
-=======
         CityMap map = DeserializerXML.deserializeMap("petit");
->>>>>>> branch 'master' of https://github.com/cdel2/Agile.git
-        long id = 25321687;
+        //long id = 25321687;
         float latitude=(float) 45.75154;
         float longitude=(float) 4.87438;
-        Intersection start=new Intersection(id, latitude, longitude);
-        ArrayList<Intersection> endInt = Intersection.FindSuccessorSegments(start,map);
+        //Intersection start=new Intersection(id, latitude, longitude);
+        //ArrayList<Intersection> endInt = Intersection.FindSuccessorSegments(start,map);
     }
 }
 

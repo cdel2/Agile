@@ -9,6 +9,7 @@ public class CityMap {
 	private int nbDeliveries;
 	//private ArrayList<Segment> listSegment;
 	private ArrayList<Delivery> listDelivery;
+	private Warehouse warehouse;
 	public HashMap<Long, ArrayList<Segment>> graph;
 	
 	public CityMap() {
@@ -89,6 +90,13 @@ public class CityMap {
 		this.nbDeliveries = nbDeliveries;
 	}
 	
+	public Warehouse getWarehouse() {
+		return warehouse;
+	}
+	
+	public void setWarehouse(Warehouse wh) {
+		this.warehouse = wh;
+	}
 }
 
 
