@@ -56,6 +56,7 @@ public class Dijkstra2 {
         grey.add((long)0);
         Long e = dij.findClosestNodeInGraph(grey);
         System.out.println(e);
+        //test
     }
 	
 	/*works*/
