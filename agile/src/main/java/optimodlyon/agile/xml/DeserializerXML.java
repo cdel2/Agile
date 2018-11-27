@@ -90,7 +90,7 @@ public class DeserializerXML {
   	public static CityMap deserializeDelivery(String file, CityMap map) {
   		try {
 
-  	        File fXmlFile = new File("src/main/java/optimodlyon/agile/xml/"+ file);
+  	        File fXmlFile = new File("src/main/java/optimodlyon/agile/xml/"+file+".xml");
 
   	        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
   	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -112,7 +112,7 @@ public class DeserializerXML {
   	        
   	        final Element nodeE = (Element) entrepot.item(0);
   	        String dateXML = nodeE.getAttribute("heureDepart");
-  	        SimpleDateFormat dateFormat = new SimpleDateFormat("H:m:s");
+  	        SimpleDateFormat dateFormat = new SimpleDateFormat("h:m:s");
   	        timeStart = dateFormat.parse(dateXML);
   	        id = Long.parseLong(nodeE.getAttribute("adresse"));
   	        
