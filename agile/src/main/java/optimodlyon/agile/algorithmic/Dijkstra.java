@@ -39,7 +39,10 @@ public class Dijkstra {
         //Map idIntersection, length from source
     	Map<Long, Float> white = new HashMap<Long, Float>();
     	//Map idIntersection, <idPredecessor,lengthFromSource> 
+    	Map<Long, Map<Long, Float>> grey = new HashMap<Long, Map<Long, Float>>();
+    	//Map idIntersection, <idPredecessor,lengthFromSource> 
     	Map<Long, Map<Long, Float>> black = new HashMap<Long, Map<Long, Float>>();
+    	
         //Initialize all distances to infinite except source (=0)
         for (Long key : completeMap.keySet()) {
             if(key != source){
@@ -68,5 +71,44 @@ public class Dijkstra {
     		}
     	}
     	return closestNode;
+    }
+    /**
+     * 
+     * @param currentNode
+     * @param goalNode
+     * @param completeMap
+     * @param dijkstraGraph
+     * @return newDistance if it is shorter to reach the goalNode passing by the currentNode, -1 otherwise
+     */
+    public Float UpdateDistance(Long currentNode, Long goalNode, HashMap<Long, ArrayList<Segment>> completeMap, Map<Long, Map<Long, Float>> dijkstraGraph) {
+    	Float newDist = (float)-1;
+    	Long idNode;
+    	Float distFromCurrentToGoal = Float.MAX_VALUE;
+    	Float currentDistToGoal;
+    	Float currentDistToCurrent;
+    	
+    	Iterator<Segment> it = completeMap.get(currentNode).iterator();
+    	while(it.hasNext()) {
+    		idNode = it.next().getEnd().getId() ;
+    		if(idNode == goalNode) {
+    			distFromCurrentToGoal = it.next().getDuration();
+    			break;
+    		}
+    	}
+    	if(dijkstraGraph.get(currentNode) != null) {
+    		currentDistToCurrent = dijkstraGraph.get(currentNode).entrySet().iterator().next().getValue();
+    	} else {
+    		currentDistToCurrent = Float.MAX_VALUE;
+    	}
+    	if(dijkstraGraph.get(goalNode) != null) {
+    		currentDistToGoal = dijkstraGraph.get(goalNode).entrySet().iterator().next().getValue();
+    	} else {
+    		currentDistToGoal = Float.MAX_VALUE;
+    	}
+    	
+    	if(currentDistToCurrent + distFromCurrentToGoal < currentDistToGoal) {
+    		newDist = currentDistToCurrent + distFromCurrentToGoal;
+    	}
+    	return newDist;
     }
 }
