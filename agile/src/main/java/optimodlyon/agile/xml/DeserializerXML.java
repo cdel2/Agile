@@ -102,9 +102,6 @@ public class DeserializerXML {
   	        
   	        ArrayList<Delivery> listDelivery = new ArrayList<Delivery>();
   	        Long id;
-  	        float latitude;
-  	        float longitude;
-  	        Date timeArrival;
   	        Date timeStart;
   	        float duration; 
   	        Delivery delivery;
@@ -117,12 +114,14 @@ public class DeserializerXML {
   	        id = Long.parseLong(nodeE.getAttribute("adresse"));
   	        
   	        warehouse = new Warehouse(id, timeStart);
+  	        warehouse.findLatitudeLongitude(map.graph);
   	        
   	        for (int i = 0; i<dList.getLength(); i++) {
   	            final Element nodeD = (Element) dList.item(i);
   	            id = Long.parseLong(nodeD.getAttribute("adresse"));
   	            duration = Float.valueOf(nodeD.getAttribute("duree"));
   	            delivery = new Delivery(id, duration);
+  	            delivery.findLatitudeLongitude(map.graph);
   	            listDelivery.add(delivery);
   	        }
   	        

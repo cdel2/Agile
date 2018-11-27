@@ -1,6 +1,8 @@
 package optimodlyon.agile.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Delivery extends Intersection{
 	private Date timeArrival;
@@ -48,6 +50,14 @@ public class Delivery extends Intersection{
 	 */
 	public void setTimeArrival(Date timeArrival) {
 		this.timeArrival = timeArrival;
+	}
+	
+	public void findLatitudeLongitude(HashMap<Long, ArrayList<Segment>> graph) {
+		Segment segment = (graph.get(this.id)).get(0);
+		Intersection correspondingInter = segment.getStart();
+		this.latitude = correspondingInter.latitude;
+		this.longitude = correspondingInter.longitude;
+		
 	}
 
 }
