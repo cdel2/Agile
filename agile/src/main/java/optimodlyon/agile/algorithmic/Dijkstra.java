@@ -29,19 +29,26 @@ public class Dijkstra {
         completeMap.put((long)3, a3);
     }
 
-    public Map<Long,Pair> doDijkstra (HashMap<Long, ArrayList<Segment>> completeMap, ArrayList<Long> listDeliveryPoints){
+    public Map<Long,Pair> doDijkstra (HashMap<Long, List<Segment>> completeMap, ArrayList<Long> listDeliveryPoints){
     	Map<Long,Pair> dijkstraGraph = new HashMap<Long,Pair>();
 
         return dijkstraGraph;
     }
 
-    public Map<Long, Pair> findShortestPathsFromSource (HashMap<Long, ArrayList<Segment>> completeMap, ArrayList<Long> listDeliveryPoints, Long source){
+    public Map<Long, Pair> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source){
+    	ArrayList<Long> grey = new ArrayList<Long>();
+    	grey.add(source);
     	//Map idIntersection, <idPredecessor,lengthFromSource> 
     	Map<Long, Pair> dijkstraGraph = new HashMap<Long, Pair>();
     	//Map idIntersection, <idPredecessor,lengthFromSource> 
     	Map<Long, Pair> black = new HashMap<Long, Pair>();
     	
-        //Initialize all distances to infinite except source (=0)
+        /*for each Node sj in S do
+    	*  d[sj] <- MAXVALUE ; 
+    	*  pred(sj) <- -1;
+    	*  sj is white;
+    	*  d[s0] <- 0;
+    	*/
         for (Long key : completeMap.keySet()) {
             if(key != source){
             	Pair p = new Pair((long)-1, Float.MAX_VALUE);
@@ -51,8 +58,42 @@ public class Dijkstra {
                 dijkstraGraph.put(key, p);
             }
         }
+        /*
+         * s0 is grey;
+         */
+        grey.add(source);
         
-        
+        /*
+         * While there exists a grey Node
+         */
+        while(!grey.isEmpty()) {
+        	/*
+        	 * Let si be the grey Node such that d[si] is minimal
+        	 */
+        	Long currentNode = findClosestNodeInGraph(dijkstraGraph, grey);
+        	/*
+        	 * For each Node sj that belongs to the successors of si
+        	 */
+        	List<Long> successors = getIdSuccessors(completeMap,currentNode);
+        	for(Long successor : successors) {
+        		/*
+        		 * if sj is white or grey then update distance if necessary
+        		 */
+        		if(!grey.contains(successor)) {
+        			grey.add(successor);
+        		}
+        		Float newDist = UpdateDistance(currentNode, successor, completeMap, dijkstraGraph);
+        		if(newDist != -1) {
+        			dijkstraGraph.get(successor).setIdPredecessor(currentNode);
+        			dijkstraGraph.get(successor).setDistFromSource(newDist);
+        		}
+        	}
+        	/*
+        	 * sj is black
+        	 */
+        	black.put(currentNode, dijkstraGraph.get(currentNode));
+        	dijkstraGraph.remove(currentNode);
+        }
         return black;
     }
     /**
@@ -72,6 +113,29 @@ public class Dijkstra {
     	}
     	return closestNode;
     }
+    
+    public Long findClosestNodeInGraph (Map<Long,Pair> dijkstraGraph, List<Long> grey){
+    	Long closestNode = (long) -1;
+    	float minDistance = Float.MAX_VALUE;
+    	float distFromSource;
+    	for (Long key : grey) {
+    		distFromSource = dijkstraGraph.get(key).getDistFromSource();
+    		if(distFromSource < minDistance) {
+    			closestNode = key;
+    			minDistance = distFromSource;
+    		}
+    	}
+    	return closestNode;
+    }
+    
+    public List<Long> getIdSuccessors(Map<Long, List<Segment>> completeMap, Long source){
+    	ArrayList<Long> successors = new ArrayList<Long>();
+    	Iterator<Segment> it = completeMap.get(source).iterator();
+    	while(it.hasNext()) {
+    		successors.add(it.next().getEnd().getId()) ;
+    	}
+    	return successors;
+    }
     /**
      * 
      * @param currentNode
@@ -80,7 +144,7 @@ public class Dijkstra {
      * @param dijkstraGraph
      * @return newDistance if it is shorter to reach the goalNode passing by the currentNode, -1 otherwise
      */
-    public Float UpdateDistance(Long currentNode, Long goalNode, HashMap<Long, ArrayList<Segment>> completeMap, Map<Long, Pair> dijkstraGraph) {
+    public Float UpdateDistance(Long currentNode, Long goalNode, Map<Long, List<Segment>> completeMap, Map<Long, Pair> dijkstraGraph) {
     	Float newDist = (float)-1;
     	Long idNode;
     	Float distFromCurrentToGoal = Float.MAX_VALUE;
