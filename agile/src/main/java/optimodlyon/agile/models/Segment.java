@@ -1,5 +1,7 @@
 package optimodlyon.agile.models;
 
+import java.util.ArrayList;
+
 public class Segment {
 	private Intersection start;
 	private Intersection end;

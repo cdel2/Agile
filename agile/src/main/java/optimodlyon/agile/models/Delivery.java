@@ -11,6 +11,16 @@ public class Delivery extends Intersection{
 		timeArrival = ta;
 		duration = dur;
 	}
+	
+	public Delivery(Long id, float dur) {
+		super(id);
+		duration = dur;
+	}
+	
+	public Delivery(Long id, Date ta) {
+		super(id);
+		timeArrival = ta;
+	}
 
 	/**
 	 * @return the timeArrival

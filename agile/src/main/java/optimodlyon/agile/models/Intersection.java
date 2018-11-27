@@ -14,6 +14,10 @@ public class Intersection {
 		this.longitude = longitude;
 	}
 	
+	public Intersection(Long id) {
+		this.id = id;
+	}
+	
 	ArrayList<Intersection> findSuccessors(){
 		ArrayList<Intersection> listSuccessors = new ArrayList();
 		return listSuccessors;
@@ -61,8 +65,25 @@ public class Intersection {
 		this.id = id;
 	}
 	
+
+	
+	public static ArrayList<Intersection> FindSuccessorSegments(Intersection start, CityMap map)
+	{
+		ArrayList<Segment> seg = map.graph.get(start.getId());
+		//System.out.println(map.graph.get(start.getId()));
+		ArrayList <Intersection> endIntersection = new ArrayList<Intersection>();
+		for(Segment s : seg) {
+			Intersection e=s.getEnd();
+			endIntersection.add(e);
+        }
+		for(Intersection i : endIntersection) {
+        	System.out.println(i);
+        }
+		return endIntersection;
+	}
+	
 	public String toString() {
-		return "Intersection id : " + id ;
+		return "Intersection id : " + id + " lat : "+latitude +  " long : "+longitude;
 	}
 }
 
