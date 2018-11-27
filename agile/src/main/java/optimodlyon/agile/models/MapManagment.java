@@ -12,7 +12,11 @@ public class MapManagment{
     {
         System.out.println("hello");
         CityMap map = DeserializerXML.deserializeMap("petit");
+<<<<<<< HEAD
         //long id = 25321687;
+=======
+        long id = 25321687;
+>>>>>>> branch 'master' of https://github.com/cdel2/Agile.git
         float latitude=(float) 45.75154;
         float longitude=(float) 4.87438;
         //Intersection start=new Intersection(id, latitude, longitude);
