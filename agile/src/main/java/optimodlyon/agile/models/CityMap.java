@@ -6,9 +6,10 @@ public class CityMap {
 	private float height;
 	private float width;
 	private int nbDeliverers;
-	private int nbDeliveries;
+	//private int nbDeliveries;
 	//private ArrayList<Segment> listSegment;
 	private ArrayList<Delivery> listDelivery;
+	private Warehouse warehouse;
 	public HashMap<Long, ArrayList<Segment>> graph;
 	
 	public CityMap() {
@@ -16,6 +17,7 @@ public class CityMap {
 	}
 	public CityMap(HashMap<Long, ArrayList<Segment>> graph) {
 		this.graph = graph;
+		warehouse = null;
 	}
 	
 	
@@ -70,10 +72,10 @@ public class CityMap {
 	/**
 	 * @return the nbDeliveries
 	 */
-	public int getNbDeliveries() {
+	/*public int getNbDeliveries() {
 		nbDeliveries=listDelivery.size();
 		return nbDeliveries;
-	}
+	}*/
 
 	/**
 	 * @param nbDeliverers the nbDeliverers to set
@@ -85,10 +87,17 @@ public class CityMap {
 	/**
 	 * @param nbDeliveries the nbDeliveries to set
 	 */
-	public void setNbDeliveries(int nbDeliveries) {
+	/*public void setNbDeliveries(int nbDeliveries) {
 		this.nbDeliveries = nbDeliveries;
+	}*/
+	
+	public Warehouse getWarehouse() {
+		return warehouse;
 	}
 	
+	public void setWarehouse(Warehouse wh) {
+		this.warehouse = wh;
+	}
 }
 
 

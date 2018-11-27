@@ -29,5 +29,10 @@ public class Pair {
 	public void setDistFromSource(Float distFromSource) {
 		this.distFromSource = distFromSource;
 	}
+
+	@Override
+	public String toString() {
+		return "Pair [idPredecessor=" + idPredecessor + ", distFromSource=" + distFromSource + "]";
+	}
 }
 

@@ -8,6 +8,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
+import java. text.SimpleDateFormat;
 import java.util.HashMap;
 
 import optimodlyon.agile.models.CityMap;
@@ -84,6 +86,56 @@ public class DeserializerXML {
             return null;
         }
     }
+  
+  	public static CityMap deserializeDelivery(String file, CityMap map) {
+  		try {
+
+  	        File fXmlFile = new File("src/main/java/optimodlyon/agile/xml/"+file+".xml");
+
+  	        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+  	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+  	        Document doc = dBuilder.parse(fXmlFile);
+  	        doc.getDocumentElement().normalize();
+  	                
+  	        NodeList dList = doc.getElementsByTagName("livraison"); 
+  	        NodeList entrepot = doc.getElementsByTagName("entrepot"); 
+  	        
+  	        ArrayList<Delivery> listDelivery = new ArrayList<Delivery>();
+  	        Long id;
+  	        Date timeStart;
+  	        float duration; 
+  	        Delivery delivery;
+  	        Warehouse warehouse;
+  	        
+  	        final Element nodeE = (Element) entrepot.item(0);
+  	        String dateXML = nodeE.getAttribute("heureDepart");
+  	        SimpleDateFormat dateFormat = new SimpleDateFormat("h:m:s");
+  	        timeStart = dateFormat.parse(dateXML);
+  	        id = Long.parseLong(nodeE.getAttribute("adresse"));
+  	        
+  	        warehouse = new Warehouse(id, timeStart);
+  	        warehouse.findLatitudeLongitude(map.graph);
+  	        
+  	        for (int i = 0; i<dList.getLength(); i++) {
+  	            final Element nodeD = (Element) dList.item(i);
+  	            id = Long.parseLong(nodeD.getAttribute("adresse"));
+  	            duration = Float.valueOf(nodeD.getAttribute("duree"));
+  	            delivery = new Delivery(id, duration);
+  	            delivery.findLatitudeLongitude(map.graph);
+  	            listDelivery.add(delivery);
+  	        }
+  	        
+  	        map.setListDelivery(listDelivery);
+  	        map.setWarehouse(warehouse);
+  	        
+  	        return map;
+  	        
+  	        } catch (Exception e) {
+  	            e.printStackTrace();
+  	            System.out.println("caca");
+  	            return null;
+  	        }
+  	}
   
 }
 

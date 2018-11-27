@@ -12,11 +12,12 @@ public class MapManagment{
     {
         System.out.println("hello");
         CityMap map = DeserializerXML.deserializeMap("petit");
+
         long id = 25321687;
         float latitude=(float) 45.75154;
         float longitude=(float) 4.87438;
-        Intersection start=new Intersection(id, latitude, longitude);
-        ArrayList<Intersection> endInt = Intersection.FindSuccessorSegments(start,map);
+        //Intersection start=new Intersection(id, latitude, longitude);
+        //ArrayList<Intersection> endInt = Intersection.FindSuccessorSegments(start,map);
     }
 }
 

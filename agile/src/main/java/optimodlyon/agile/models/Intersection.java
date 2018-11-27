@@ -4,14 +4,18 @@ import java.util.ArrayList;
 
 
 public class Intersection {
-	private Long id;
-	private float latitude;
-	private float longitude;
+	protected Long id;
+	protected float latitude;
+	protected float longitude;
 
 	public Intersection(Long id, float latitude, float longitude) {
 		this.id = id;
 		this.latitude = latitude;
 		this.longitude = longitude;
+	}
+	
+	public Intersection(Long id) {
+		this.id = id;
 	}
 	
 	ArrayList<Intersection> findSuccessors(){

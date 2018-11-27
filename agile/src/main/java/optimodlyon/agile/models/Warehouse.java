@@ -4,26 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Delivery extends Intersection{
+public class Warehouse extends Intersection {
 	private Date timeArrival;
-	private float duration; 
-
-	public Delivery(Date ta, float dur, Long id, float latitude, float longitude) {
-		super(id, latitude, longitude);
-		timeArrival = ta;
-		duration = dur;
+	private Date timeStart;
+	
+	public Warehouse(Long id, Date ts)
+	{
+		super(id);
+		timeStart = ts;
 	}
 	
-	public Delivery(Long id, float dur) {
-		super(id);
-		duration = dur;
-	}
-	
-	public Delivery(Long id, Date ta) {
-		super(id);
-		timeArrival = ta;
-	}
-
 	/**
 	 * @return the timeArrival
 	 */
@@ -32,17 +22,17 @@ public class Delivery extends Intersection{
 	}
 
 	/**
-	 * @return the durationDelivery
+	 * @return the timeStart
 	 */
-	public float getDuration() {
-		return duration;
+	public Date getTimeStart() {
+		return timeStart;
 	}
 
 	/**
-	 * @param durationDelivery the durationDelivery to set
+	 * @param timeStart the timeStart to set
 	 */
-	public void setDuration(float duration) {
-		this.duration = duration;
+	public void setTimeStart(Date timeStart) {
+		this.timeStart = timeStart;
 	}
 
 	/**
@@ -59,5 +49,4 @@ public class Delivery extends Intersection{
 		this.longitude = correspondingInter.longitude;
 		
 	}
-
 }
