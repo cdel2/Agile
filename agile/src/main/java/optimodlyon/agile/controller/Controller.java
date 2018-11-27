@@ -14,8 +14,9 @@ public class Controller {
 		
 	}
 
-	public void GetDeliveries() {
-		
+	public void GetDeliveries(String file) {
+		CityMap newMap = DeserializerXML.deserializeDelivery(file,map);
+		map = newMap;
 	}
 
 }
