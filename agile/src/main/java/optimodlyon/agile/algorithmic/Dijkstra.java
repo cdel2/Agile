@@ -3,8 +3,13 @@ import optimodlyon.agile.models.*;
 import java.util.*;
 
 public class Dijkstra {
+	protected Map<Long,Pair> dijkstraGraph;
+	public Dijkstra() {
+    	//Map idIntersection, <idPredecessor,lengthFromSource> 
+    	dijkstraGraph = new HashMap<Long, Pair>();
+	}
     public static void main(String[] args) {
-        Map<Long, ArrayList<Segment>> completeMap = new HashMap<Long, ArrayList<Segment>>();
+    	Map<Long, List<Segment>>completeMap = new HashMap<Long, List<Segment>>();
         Intersection i0 = new Intersection((long)0,(float)5.0,(float)3.0);
         Intersection i1 = new Intersection((long)1,(float)3.0,(float)3.0);
         Intersection i2 = new Intersection((long)2,(float)4.0,(float)3.0);
@@ -14,10 +19,10 @@ public class Dijkstra {
         Segment s2 = new Segment(i0,i3,8);
         Segment s3 = new Segment(i0,i2,4);
         Segment s4 = new Segment(i2,i3,1);
-        ArrayList<Segment> a0 = new ArrayList<Segment>();
-        ArrayList<Segment> a1 = new ArrayList<Segment>();
-        ArrayList<Segment> a2 = new ArrayList<Segment>();
-        ArrayList<Segment> a3 = new ArrayList<Segment>();
+        List<Segment> a0 = new ArrayList<Segment>();
+        List<Segment> a1 = new ArrayList<Segment>();
+        List<Segment> a2 = new ArrayList<Segment>();
+        List<Segment> a3 = new ArrayList<Segment>();
         a0.add(s0);
         a0.add(s2);
         a0.add(s3);
@@ -27,19 +32,23 @@ public class Dijkstra {
         completeMap.put((long)1, a1);
         completeMap.put((long)2, a2);
         completeMap.put((long)3, a3);
+        List<Long> listDeliveryPoints = new ArrayList<Long>();
+        listDeliveryPoints.add((long)0);
+        listDeliveryPoints.add((long)3);
+        Dijkstra dij = new Dijkstra();
+        System.out.println(dij.toString());
+        Map<Long, Pair> res = dij.findShortestPathsFromSource(completeMap,listDeliveryPoints,(long)0);
+        System.out.println(res.toString());
     }
 
-    public Map<Long,Pair> doDijkstra (HashMap<Long, List<Segment>> completeMap, ArrayList<Long> listDeliveryPoints){
-    	Map<Long,Pair> dijkstraGraph = new HashMap<Long,Pair>();
+   /* public Map<Long,Pair> doDijkstra (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints){
 
         return dijkstraGraph;
-    }
+    }*/
 
     public Map<Long, Pair> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source){
     	ArrayList<Long> grey = new ArrayList<Long>();
     	grey.add(source);
-    	//Map idIntersection, <idPredecessor,lengthFromSource> 
-    	Map<Long, Pair> dijkstraGraph = new HashMap<Long, Pair>();
     	//Map idIntersection, <idPredecessor,lengthFromSource> 
     	Map<Long, Pair> black = new HashMap<Long, Pair>();
     	
@@ -70,7 +79,7 @@ public class Dijkstra {
         	/*
         	 * Let si be the grey Node such that d[si] is minimal
         	 */
-        	Long currentNode = findClosestNodeInGraph(dijkstraGraph, grey);
+        	Long currentNode = findClosestNodeInGraph( grey);
         	/*
         	 * For each Node sj that belongs to the successors of si
         	 */
@@ -82,12 +91,13 @@ public class Dijkstra {
         		if(!grey.contains(successor)) {
         			grey.add(successor);
         		}
-        		Float newDist = UpdateDistance(currentNode, successor, completeMap, dijkstraGraph);
+        		Float newDist = UpdateDistance(currentNode, successor, completeMap);
         		if(newDist != -1) {
         			dijkstraGraph.get(successor).setIdPredecessor(currentNode);
         			dijkstraGraph.get(successor).setDistFromSource(newDist);
         		}
         	}
+        	
         	/*
         	 * sj is black
         	 */
@@ -114,11 +124,11 @@ public class Dijkstra {
     	return closestNode;
     }
     
-    public Long findClosestNodeInGraph (Map<Long,Pair> dijkstraGraph, List<Long> grey){
+    public Long findClosestNodeInGraph (List<Long> grey){
     	Long closestNode = (long) -1;
     	float minDistance = Float.MAX_VALUE;
     	float distFromSource;
-    	for (Long key : grey) {
+		for (Long key : grey) {
     		distFromSource = dijkstraGraph.get(key).getDistFromSource();
     		if(distFromSource < minDistance) {
     			closestNode = key;
@@ -128,12 +138,15 @@ public class Dijkstra {
     	return closestNode;
     }
     
-    public List<Long> getIdSuccessors(Map<Long, List<Segment>> completeMap, Long source){
+    public static List<Long> getIdSuccessors(Map<Long, List<Segment>> completeMap, Long source){
     	ArrayList<Long> successors = new ArrayList<Long>();
-    	Iterator<Segment> it = completeMap.get(source).iterator();
+    	for(Segment s : completeMap.get(source)) {
+    		successors.add(s.getEnd().getId()) ;
+    	}
+    	/*Iterator<Segment> it = completeMap.get(source).iterator();
     	while(it.hasNext()) {
     		successors.add(it.next().getEnd().getId()) ;
-    	}
+    	}*/
     	return successors;
     }
     /**
@@ -144,13 +157,20 @@ public class Dijkstra {
      * @param dijkstraGraph
      * @return newDistance if it is shorter to reach the goalNode passing by the currentNode, -1 otherwise
      */
-    public Float UpdateDistance(Long currentNode, Long goalNode, Map<Long, List<Segment>> completeMap, Map<Long, Pair> dijkstraGraph) {
+    public Float UpdateDistance(Long currentNode, Long goalNode, Map<Long, List<Segment>> completeMap) {
     	Float newDist = (float)-1;
     	Long idNode;
     	Float distFromCurrentToGoal = Float.MAX_VALUE;
     	Float currentDistToGoal;
     	Float currentDistToCurrent;
-    	
+    	for(Segment s : completeMap.get(currentNode)) {
+    		idNode = s.getEnd().getId();
+    		if(idNode == goalNode) {
+    			distFromCurrentToGoal = s.getDuration();
+    			break;
+    		}
+    	}
+    	/*
     	Iterator<Segment> it = completeMap.get(currentNode).iterator();
     	while(it.hasNext()) {
     		idNode = it.next().getEnd().getId() ;
@@ -158,7 +178,7 @@ public class Dijkstra {
     			distFromCurrentToGoal = it.next().getDuration();
     			break;
     		}
-    	}
+    	}*/
     	if(dijkstraGraph.get(currentNode) != null) {
     		currentDistToCurrent = dijkstraGraph.get(currentNode).getDistFromSource();
     	} else {
