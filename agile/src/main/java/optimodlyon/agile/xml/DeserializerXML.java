@@ -8,6 +8,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import optimodlyon.agile.models.CityMap;
@@ -84,6 +85,77 @@ public class DeserializerXML {
             return null;
         }
     }
+  
+  	/*public static CityMap deserializeDelivery() {
+  		try {
+
+  	        File fXmlFile = new File("src/main/java/optimodlyon/agile/xml/petitPlan.xml");
+
+  	        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+  	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+  	        Document doc = dBuilder.parse(fXmlFile);
+  	        doc.getDocumentElement().normalize();
+  	                
+  	        NodeList dList = doc.getElementsByTagName("livraison"); 
+  	        NodeList entrepot = doc.getElementsByTagName("entrepot"); 
+  	        
+  	        ArrayList<Delivery> listDelivery = new ArrayList<Delivery>();
+  	        Long id;
+  	        float latitude;
+  	        float longitude;
+  	        Date timeArrival;
+  	        float duration; 
+  	        Delivery delivery;
+  	        
+  	        for (int i = 0; i<nList.getLength(); i++) {
+  	            final Element node = (Element) dList.item(i);
+  	            id = Long.parseLong(node.getAttribute("adresse"));
+  	            duration = Float.valueOf(node.getAttribute("duree"));
+  	            //delive = new Intersection(id, latitude, longitude);
+  	            //intersections.put(id, inter);
+  	        }
+  	        
+  	        nList = doc.getElementsByTagName("troncon");            
+  	        Segment seg;
+  	        Intersection originInter; 
+  	        Intersection destInter;
+  	        Long idOrigin;
+  	        Long idDestination;
+  	        float duration;
+  	        HashMap<Long, ArrayList<Segment>> graph = new HashMap<Long, ArrayList<Segment>>();
+  	        
+  	        for (int i = 0; i<nList.getLength(); i++) {
+  	        	final Element node = (Element) nList.item(i);
+  	        	idOrigin = Long.valueOf(node.getAttribute("origine"));
+  	            idDestination = Long.valueOf(node.getAttribute("destination"));
+  	            duration = Float.parseFloat(node.getAttribute("longueur"));
+  	            
+  	            originInter = intersections.get(idOrigin);
+  	            destInter = intersections.get(idDestination);
+  	            
+  	            if(originInter != null && destInter != null) {
+  	            	seg = new Segment(originInter,destInter,duration);
+  	            	if (graph.get(originInter.getId()) != null) {
+  	            		graph.get(originInter.getId()).add(seg);
+  	            	}
+  	            	else {
+  	            		ArrayList <Segment> segments = new ArrayList<Segment>();
+  	            		segments.add(seg);
+  	            		graph.put(originInter.getId(), segments);
+  	            	}
+  	            }        	
+  	        }
+  	        
+  	        CityMap map = new CityMap(graph);
+  	        
+  	        return map;
+  	        
+  	        } catch (Exception e) {
+  	            e.printStackTrace();
+  	            System.out.println("caca");
+  	            return null;
+  	        }
+  	}*/
   
 }
 

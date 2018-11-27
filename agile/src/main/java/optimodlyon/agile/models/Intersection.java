@@ -14,6 +14,10 @@ public class Intersection {
 		this.longitude = longitude;
 	}
 	
+	public Intersection(Long id) {
+		this.id = id;
+	}
+	
 	ArrayList<Intersection> findSuccessors(){
 		ArrayList<Intersection> listSuccessors = new ArrayList();
 		return listSuccessors;

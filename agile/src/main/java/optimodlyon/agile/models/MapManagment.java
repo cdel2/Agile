@@ -11,7 +11,7 @@ public class MapManagment{
     public static void main(String [] args)
     {
         System.out.println("hello");
-        CityMap map = DeserializerXML.deserialize();
+        CityMap map = DeserializerXML.deserializeMap();
         long id = 25321687;
         float latitude=(float) 45.75154;
         float longitude=(float) 4.87438;
