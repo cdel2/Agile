@@ -10,15 +10,16 @@ import java.util.HashMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @CrossOrigin(origins = "http://localhost:8000")
 @RestController
 public class EndPoints {
 	Controller controller = new Controller();
 	
-    @GetMapping("/map")
-    public CityMap  getMap() {
-        controller.InitializeGraph();
+    @GetMapping("/map/{type}")
+    public CityMap  getMap(@PathVariable String type) {
+        controller.InitializeGraph(type);
         return controller.map;
     }
     

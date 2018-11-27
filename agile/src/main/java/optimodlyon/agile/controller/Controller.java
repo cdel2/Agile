@@ -9,8 +9,8 @@ import optimodlyon.agile.xml.DeserializerXML;
 public class Controller {
 	public CityMap map;
 	
-	public void InitializeGraph() {
-		map = DeserializerXML.deserializeMap();
+	public void InitializeGraph(String type) {
+		map = DeserializerXML.deserializeMap(type);
 		
 	}
 

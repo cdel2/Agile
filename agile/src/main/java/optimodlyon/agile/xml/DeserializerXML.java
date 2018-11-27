@@ -17,11 +17,11 @@ import optimodlyon.agile.models.Segment;
 
 public class DeserializerXML {
 
-  public static CityMap deserializeMap() {
+  public static CityMap deserializeMap(String type) {
 	
     try {
 
-        File fXmlFile = new File("src/main/java/optimodlyon/agile/xml/petitPlan.xml");
+        File fXmlFile = new File("src/main/java/optimodlyon/agile/files/" + type + "Plan.xml");
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
