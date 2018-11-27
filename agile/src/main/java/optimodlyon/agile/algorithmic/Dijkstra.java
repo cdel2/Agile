@@ -29,26 +29,26 @@ public class Dijkstra {
         completeMap.put((long)3, a3);
     }
 
-    public Map<Long,Map<Long,Float>> doDijkstra (HashMap<Long, ArrayList<Segment>> completeMap, ArrayList<Long> listDeliveryPoints){
-    	Map<Long,Map<Long,Float>> dijkstraGraph = new HashMap<Long,Map<Long,Float>>();
+    public Map<Long,Pair> doDijkstra (HashMap<Long, ArrayList<Segment>> completeMap, ArrayList<Long> listDeliveryPoints){
+    	Map<Long,Pair> dijkstraGraph = new HashMap<Long,Pair>();
 
         return dijkstraGraph;
     }
 
-    public Map<Long, Map<Long, Float>> findShortestPathsFromSource (HashMap<Long, ArrayList<Segment>> completeMap, ArrayList<Long> listDeliveryPoints, Long source){
-        //Map idIntersection, length from source
-    	Map<Long, Float> white = new HashMap<Long, Float>();
+    public Map<Long, Pair> findShortestPathsFromSource (HashMap<Long, ArrayList<Segment>> completeMap, ArrayList<Long> listDeliveryPoints, Long source){
     	//Map idIntersection, <idPredecessor,lengthFromSource> 
-    	Map<Long, Map<Long, Float>> grey = new HashMap<Long, Map<Long, Float>>();
+    	Map<Long, Pair> dijkstraGraph = new HashMap<Long, Pair>();
     	//Map idIntersection, <idPredecessor,lengthFromSource> 
-    	Map<Long, Map<Long, Float>> black = new HashMap<Long, Map<Long, Float>>();
+    	Map<Long, Pair> black = new HashMap<Long, Pair>();
     	
         //Initialize all distances to infinite except source (=0)
         for (Long key : completeMap.keySet()) {
             if(key != source){
-                white.put(key, Float.MAX_VALUE);
+            	Pair p = new Pair((long)-1, Float.MAX_VALUE);
+                dijkstraGraph.put(key,p);
             } else {
-                white.put(key, (float)0);
+            	Pair p = new Pair(key, (float)0);
+                dijkstraGraph.put(key, p);
             }
         }
         
@@ -80,7 +80,7 @@ public class Dijkstra {
      * @param dijkstraGraph
      * @return newDistance if it is shorter to reach the goalNode passing by the currentNode, -1 otherwise
      */
-    public Float UpdateDistance(Long currentNode, Long goalNode, HashMap<Long, ArrayList<Segment>> completeMap, Map<Long, Map<Long, Float>> dijkstraGraph) {
+    public Float UpdateDistance(Long currentNode, Long goalNode, HashMap<Long, ArrayList<Segment>> completeMap, Map<Long, Pair> dijkstraGraph) {
     	Float newDist = (float)-1;
     	Long idNode;
     	Float distFromCurrentToGoal = Float.MAX_VALUE;
@@ -96,12 +96,12 @@ public class Dijkstra {
     		}
     	}
     	if(dijkstraGraph.get(currentNode) != null) {
-    		currentDistToCurrent = dijkstraGraph.get(currentNode).entrySet().iterator().next().getValue();
+    		currentDistToCurrent = dijkstraGraph.get(currentNode).getDistFromSource();
     	} else {
     		currentDistToCurrent = Float.MAX_VALUE;
     	}
     	if(dijkstraGraph.get(goalNode) != null) {
-    		currentDistToGoal = dijkstraGraph.get(goalNode).entrySet().iterator().next().getValue();
+    		currentDistToGoal = dijkstraGraph.get(goalNode).getDistFromSource();
     	} else {
     		currentDistToGoal = Float.MAX_VALUE;
     	}
