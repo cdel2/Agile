@@ -5,6 +5,8 @@ import java.util.HashMap;
 public class CityMap {
 	private float height;
 	private float width;
+	private int nbDeliverers;
+	private int nbDeliveries;
 	//private ArrayList<Segment> listSegment;
 	private ArrayList<Delivery> listDelivery;
 	public HashMap<Long, ArrayList<Segment>> graph;
@@ -57,6 +59,34 @@ public class CityMap {
 	 */
 	public void setHeight(float height) {
 		this.height = height;
+	}
+	
+	/**
+	 * @return the nbDeliverers
+	 */
+	public int getNbDeliverers() {
+		return nbDeliverers;
+	}
+	/**
+	 * @return the nbDeliveries
+	 */
+	public int getNbDeliveries() {
+		nbDeliveries=listDelivery.size();
+		return nbDeliveries;
+	}
+
+	/**
+	 * @param nbDeliverers the nbDeliverers to set
+	 */
+	public void setNbDeliverers(int nbDeliverers) {
+		this.nbDeliverers = nbDeliverers;
+	}
+	
+	/**
+	 * @param nbDeliveries the nbDeliveries to set
+	 */
+	public void setNbDeliveries(int nbDeliveries) {
+		this.nbDeliveries = nbDeliveries;
 	}
 	
 }
