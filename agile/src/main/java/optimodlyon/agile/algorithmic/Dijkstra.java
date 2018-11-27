@@ -29,23 +29,44 @@ public class Dijkstra {
         completeMap.put((long)3, a3);
     }
 
-    public Map<Integer,Map<Integer,Integer>> doDijkstra (HashMap<Integer, ArrayList<Segment>> completeMap, ArrayList<Integer> listDeliveryPoints){
-    	Map<Integer,Map<Integer,Integer>> dijkstraGraph = new HashMap<Integer,Map<Integer,Integer>>();
+    public Map<Long,Map<Long,Float>> doDijkstra (HashMap<Long, ArrayList<Segment>> completeMap, ArrayList<Long> listDeliveryPoints){
+    	Map<Long,Map<Long,Float>> dijkstraGraph = new HashMap<Long,Map<Long,Float>>();
 
         return dijkstraGraph;
     }
 
-    public Map<Integer,Integer> findShortestPathsFromSource (HashMap<Integer, ArrayList<Segment>> completeMap, ArrayList<Integer> listDeliveryPoints, Integer source){
-        Map<Integer, Integer> shortestPaths = new HashMap<Integer, Integer>();
+    public Map<Long, Map<Long, Float>> findShortestPathsFromSource (HashMap<Long, ArrayList<Segment>> completeMap, ArrayList<Long> listDeliveryPoints, Long source){
+        //Map idIntersection, length from source
+    	Map<Long, Float> white = new HashMap<Long, Float>();
+    	//Map idIntersection, <idPredecessor,lengthFromSource> 
+    	Map<Long, Map<Long, Float>> black = new HashMap<Long, Map<Long, Float>>();
         //Initialize all distances to infinite except source (=0)
-        for (Integer key : completeMap.keySet()) {
+        for (Long key : completeMap.keySet()) {
             if(key != source){
-                shortestPaths.put(key, Integer.MAX_VALUE);
+                white.put(key, Float.MAX_VALUE);
             } else {
-                shortestPaths.put(key, 0);
+                white.put(key, (float)0);
             }
         }
         
-        return shortestPaths;
+        
+        return black;
+    }
+    /**
+     * 
+     * @param adjacentSegments
+     * @return
+     */
+    public Long findClosestNode (ArrayList<Segment> adjacentSegments) {
+    	Long closestNode = (long) -1;
+    	float minDistance = Float.MAX_VALUE;
+    	
+    	Iterator<Segment> it = adjacentSegments.iterator();
+    	while(it.hasNext()) {
+    		if(it.next().getDuration() < minDistance) {
+    			closestNode= it.next().getEnd().getId();
+    		}
+    	}
+    	return closestNode;
     }
 }
