@@ -94,6 +94,15 @@ public static void main(String[] args) {
 	public Map<Long, Map<Long, Float>> doDijkstra (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints){
 		Map<Long, Map<Long, Float>> tspGraph = new HashMap<Long, Map<Long,Float>>();
 		
+		/*
+		 * Initialize the fullGraph
+		 */
+		for (Long key : completeMap.keySet()) {
+	          	Map<Long, Long> m = new HashMap<Long, Long>();
+	              fullDijkstra.put(key, m);
+	          
+		}
+		
 		for(Long idDeliveryNode : listDeliveryPoints) {
 			Map<Long,Float> tspSubGraph = new HashMap<Long, Float>();
 			dijkstraGraph.clear();
@@ -101,6 +110,7 @@ public static void main(String[] args) {
 			tspSubGraph = findShortestPathsFromSource(completeMap, listDeliveryPoints, idDeliveryNode);
 			tspGraph.put(idDeliveryNode,tspSubGraph);
 		}
+		System.out.println(fullDijkstra.toString());
 		return tspGraph;
 	}
 	
@@ -189,6 +199,8 @@ public static void main(String[] args) {
 	        	if(listDeliveryPoints.contains(currentNode)) {
 	        		tspSubGraph.put(currentNode,dijkstraGraph.get(currentNode).getDistFromSource());
 	        	}
+	        	fullDijkstra.get(currentNode).put(source, dijkstraGraph.get(currentNode).getIdPredecessor());
+	        	System.out.println(fullDijkstra.toString());
 	        	dijkstraGraph.remove(currentNode);
 	        	visitedNodes.remove(currentNode);
 	        	
