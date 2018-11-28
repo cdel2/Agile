@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.Segment;
 /**
  * @author William Occelli
@@ -15,37 +16,110 @@ public class Dijkstra {
 	 * with its predecessor and its distance from the source
 	 */
 	protected Map<Long,Pair> dijkstraGraph;
+
 	/**
-	 * List of the Nodes already visited at least once but not yet evaluated (settled)
-	 * Corresponds to the "grey" color in the algorithm
+	 * Complete Dijkstra Graph
+	 * Every idnode(A) is mapped with the id of the studied source deliveryPoint(B)
+	 * and the if of the predecessor(C) of the node(A) to this source(B) in order to find the closest path
+	 * 
+	 * each time we execute a dijkstra from a source, we complete the graph, adding the predecessor(C)
+	 * of the current node(A) on the shortest path to the studied delivery point B
 	 */
-	protected List<Long> visitedNodes;
-	/**
-	 * List of the Nodes from which we are sure of the shortest distance form source
-	 * The value of the Pair is hence definitive
-	 * Corresponds to the "black" color in the algorithm
-	 */
-	Map<Long, Pair> settledNodes;
+	protected Map<Long, Map<Long, Long>> fullDijkstra;
 	
 	/**
 	 * Empty Constructor
 	 */
 	public Dijkstra() {
     	dijkstraGraph = new HashMap<Long, Pair>();
-    	visitedNodes = new ArrayList<Long>();
-    	settledNodes = new HashMap<Long, Pair>();
+    	fullDijkstra = new HashMap<Long, Map<Long,Long>>();
+	}
+public static void main(String[] args) {
+		
+    	Map<Long, List<Segment>>completeMap = new HashMap<Long, List<Segment>>();
+        Intersection i0 = new Intersection((long)0,(float)5.0,(float)3.0);
+        Intersection i1 = new Intersection((long)1,(float)3.0,(float)3.0);
+        Intersection i2 = new Intersection((long)2,(float)4.0,(float)3.0);
+        Intersection i3 = new Intersection((long)3,(float)1.0,(float)3.0);
+        Intersection i4 = new Intersection((long)4,(float)1.0,(float)3.0);
+        Intersection i5 = new Intersection((long)5,(float)1.0,(float)3.0);
+        Segment s0 = new Segment(i0,i1,2);
+        Segment s1 = new Segment(i1,i3,3);
+        Segment s2 = new Segment(i0,i3,4);
+        Segment s3 = new Segment(i0,i2,4);
+        Segment s4 = new Segment(i2,i3,1);
+        Segment s5 = new Segment(i2,i4,3);
+        Segment s6 = new Segment(i3,i4,20);
+        Segment s7 = new Segment(i3,i5,15);
+        List<Segment> a0 = new ArrayList<Segment>();
+        List<Segment> a1 = new ArrayList<Segment>();
+        List<Segment> a2 = new ArrayList<Segment>();
+        List<Segment> a3 = new ArrayList<Segment>();
+        List<Segment> a4 = new ArrayList<Segment>();
+        List<Segment> a5 = new ArrayList<Segment>();
+        a0.add(s0);
+        a0.add(s2);
+        a0.add(s3);
+        a1.add(s1);
+        a2.add(s4);
+        a2.add(s5);
+        a3.add(s6);
+        a3.add(s7);
+        completeMap.put((long)0, a0);
+        completeMap.put((long)1, a1);
+        completeMap.put((long)2, a2);
+        completeMap.put((long)3, a3);
+        completeMap.put((long)4, a4);
+        completeMap.put((long)5, a5);
+        List<Long> listDeliveryPoints = new ArrayList<Long>();
+        listDeliveryPoints.add((long)0);
+        listDeliveryPoints.add((long)3);
+        //System.out.println(completeMap.toString());
+        Dijkstra dij = new Dijkstra();
+        List<Long> grey = new ArrayList<Long>();
+        grey.add((long)0);
+        grey.add((long)3);
+        grey.add((long)5);
+        
+       dij.doDijkstra(completeMap, grey);
+    }
+	/**
+	 * Function called to retrieve a graph containing the minimum length
+	 * between all deliveryPoints
+	 * 
+	 * @param completeMap
+	 * @param listDeliveryPoints
+	 * @return Map<idDelivery, Map<idDelivery, lengthBetweenTheTwoDeliveries>>
+	 */
+	public Map<Long, Map<Long, Float>> doDijkstra (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints){
+		Map<Long, Map<Long, Float>> tspGraph = new HashMap<Long, Map<Long,Float>>();
+		
+		for(Long idDeliveryNode : listDeliveryPoints) {
+			Map<Long,Float> tspSubGraph = new HashMap<Long, Float>();
+			dijkstraGraph.clear();
+			tspSubGraph.clear();
+			tspSubGraph = findShortestPathsFromSource(completeMap, listDeliveryPoints, idDeliveryNode);
+			tspGraph.put(idDeliveryNode,tspSubGraph);
+		}
+		return tspGraph;
 	}
 	
-	/**
-	 * Constructor
-	 * 
-	 * @param completeMap : a Map matching the id of a Node with a list of all segments departing from this node
-	 * @param source : the id of the Node from which we want to start the Dijkstra algorithm
-	 */
-	public Dijkstra(Map<Long, List<Segment>> completeMap, Long source) {
-		dijkstraGraph = new HashMap<Long, Pair>();
-    	visitedNodes = new ArrayList<Long>();
-    	settledNodes = new HashMap<Long, Pair>();
+	public Map<Long, Float> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source){
+        /*
+         * Map containing the delivery points and the distance between the two
+         */
+		Map<Long,Float> tspSubGraph = new HashMap<Long, Float>();
+		int nbOfDeliveryPointsFound =0;
+        /*
+         * List of nodes of which the distance from source is the shortest
+         */
+        List<Long> settledNodes = new ArrayList<Long>();
+    	/*
+    	 * List of the Nodes already visited at least once but not yet evaluated (settled)
+    	 * Corresponds to the "grey" color in the algorithm
+    	 */
+        List<Long> visitedNodes = new ArrayList<Long>();
+        
         /*for each Node sj in S do
     	*  d[sj] <- MAXVALUE ; 
     	*  pred(sj) <- -1;
@@ -60,13 +134,7 @@ public class Dijkstra {
           	Pair p = new Pair(key, (float)0);
               dijkstraGraph.put(key, p);
           }
-      }
-
-	}
-
-	
-	public Map<Long, Pair> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source){
-        int nbOfDeliveryPointsFound =0;
+		}
 		/*
          * s0 is visited(grey)
          */
@@ -79,7 +147,7 @@ public class Dijkstra {
         	/*
         	 * Let si be the visited(grey) Node such that d[si] is minimal
         	 */
-        	Long currentNode = findClosestNodeInGraph();
+        	Long currentNode = findClosestNodeInGraph(visitedNodes);
         	System.out.println("closestNode : " + currentNode);
         	/*
         	 * For each Node sj that belongs to the successors of si
@@ -89,7 +157,7 @@ public class Dijkstra {
         		/*
         		 * if the Node sj is not already settled
         		 */
-        		if(!settledNodes.containsKey(successor)) {
+        		if(!settledNodes.contains(successor)) {
 	            	System.out.println("	successor : " + successor);
 	        		/*
 	        		 * if sj is unvisited(white) or visited(grey) then update distance if necessary
@@ -117,9 +185,18 @@ public class Dijkstra {
 	        	 * we remove the node from the visited list and from the DijsktraGraph since 
 	        	 * we won't pass through this node anymore
 	        	 */
-	        	settledNodes.put(currentNode, dijkstraGraph.get(currentNode));
+	        	settledNodes.add(currentNode);
+	        	if(listDeliveryPoints.contains(currentNode)) {
+	        		tspSubGraph.put(currentNode,dijkstraGraph.get(currentNode).getDistFromSource());
+	        	}
 	        	dijkstraGraph.remove(currentNode);
 	        	visitedNodes.remove(currentNode);
+	        	
+	        	/*
+	        	 * If we have found all delivery points, there
+	        	 * is no need continuing the algorithm,
+	        	 * hence we stop the function and return the current settled nodes
+	        	 */
 	        	if(listDeliveryPoints.contains(currentNode)) {
 	        		nbOfDeliveryPointsFound++;
 	        		if(nbOfDeliveryPointsFound == listDeliveryPoints.size()) {
@@ -129,7 +206,7 @@ public class Dijkstra {
 	        	}
         
         }
-        return settledNodes;
+        return tspSubGraph;
     }
 	
 	/**
@@ -153,7 +230,7 @@ public class Dijkstra {
      * 
      * @return
      */
-    public Long findClosestNodeInGraph (){
+    public Long findClosestNodeInGraph (List<Long> visitedNodes){
     	Long closestNode = (long) -1;
     	float minDistance = Float.MAX_VALUE;
     	float distFromSource;
