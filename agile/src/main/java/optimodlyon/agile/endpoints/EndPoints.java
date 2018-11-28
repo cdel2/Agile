@@ -28,4 +28,10 @@ public class EndPoints {
         controller.GetDeliveries(file);
         return controller.map;
     }
+    
+    @GetMapping("/calc/{nb}")
+    public CityMap get(@PathVariable int nb) {
+        //ArrayList<Integer> points = controller.doAlgorithm(nb);
+        return controller.map;
+    }
 }

@@ -39,32 +39,33 @@ public class TSP {
 		map.put((long)3, successors3);
 		map.put((long)4, successors4);
 		doTSP(map, (long)1);
+		
 	}
 	
 	/**
      * 
      * @param map a map containing idNodes as Keys and a map of (idDestinations, distance) as Values
-     * @param idEntrepot id of Entrepot in map
+     * @param idWarehouse id of Entrepot in map
      * @return PathLength, which is a class created for TSP which is a pair of an ordonned array symbolising the path and its length
      */
-	public static PathLength doTSP(HashMap<Long, HashMap<Long, Float>> map, Long idEntrepot){
-		ArrayList<PathLength> possiblePaths = startTSP(map, (long)1);
+	public static PathLength doTSP(HashMap<Long, HashMap<Long, Float>> map, Long idWarehouse){
+		ArrayList<PathLength> possiblePaths = startTSP(map, idWarehouse);
 		System.out.println("Liste des chemins possibles : " + possiblePaths);
 		PathLength shortestPath = findShortestPath(possiblePaths);
 		System.out.println("Chemin le plus court trouvé : " + shortestPath.getPath() + "de longueur : " + shortestPath.getLength());
 		return shortestPath;
 	}
 	
-	public static ArrayList<PathLength> startTSP(HashMap<Long, HashMap<Long, Float>> unordoredMap, Long idEntrepot) {
+	public static ArrayList<PathLength> startTSP(HashMap<Long, HashMap<Long, Float>> unordoredMap, Long idWarehouse) {
 		ArrayList<PathLength> finalResults = new ArrayList<PathLength>(); //This list will contain all the resulting pair of (path, length) possible.
-		HashMap<Long, Float> successors = new HashMap<Long, Float>(unordoredMap.get(idEntrepot));
-		unordoredMap.remove(idEntrepot);
+		HashMap<Long, Float> successors = new HashMap<Long, Float>(unordoredMap.get(idWarehouse));
+		unordoredMap.remove(idWarehouse);
 		ArrayList<Long> currentPath = new ArrayList();
     	Float currentLength;
     	Iterator it = successors.entrySet().iterator();
     	while (it.hasNext()) {
 	    	currentPath.clear();
-	    	currentPath.add(idEntrepot);
+	    	currentPath.add(idWarehouse);
 	    	currentLength =(float) 0;
 	        Map.Entry currentPair = (Map.Entry)it.next();
 	        it.remove(); // avoids a ConcurrentModificationException

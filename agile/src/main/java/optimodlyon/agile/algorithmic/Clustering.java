@@ -6,7 +6,7 @@ import optimodlyon.agile.models.CityMap;
 
 public class Clustering {
 	
-	ArrayList<Delivery> dispatchCluster (CityMap M){
+	ArrayList<Delivery> sortCluster (CityMap M){
 		
 		
 		//Initialisation des valeurs 
@@ -144,4 +144,22 @@ public class Clustering {
         
         return listTri; 
 	}
+	
+	public ArrayList<ArrayList<Delivery>> dispatchCluster(CityMap map, int deliverers){
+		ArrayList<Delivery> sortedDeliveries = sortCluster(map);
+		ArrayList<ArrayList<Delivery>> clusters = new ArrayList<ArrayList<Delivery>>(deliverers);
+		int j = 0;
+		ArrayList<Delivery> currentCluster = new ArrayList<Delivery>();
+		int clusterN = (int) Math.ceil(sortedDeliveries.size()/deliverers);
+		for(int i=0;i<sortedDeliveries.size();i++) {
+			currentCluster.add(sortedDeliveries.get(i));
+			if(i==(sortedDeliveries.size()%deliverers)) {
+				ArrayList<Delivery> finalCluster = new ArrayList<Delivery>(currentCluster);
+				clusters.add(currentCluster);
+				currentCluster.clear();
+			}
+		}
+		return clusters;
+	}
+	
 }
