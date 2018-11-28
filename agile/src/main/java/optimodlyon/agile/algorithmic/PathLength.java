@@ -1,23 +1,23 @@
 package optimodlyon.agile.algorithmic;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.introspect.WithMember;
 
 public class PathLength {
-	ArrayList<Long> path;
+	List<Long> path;
 	Float length;
 	
-	public PathLength(ArrayList<Long> aPath, Float aLength) {
+	public PathLength(List<Long> aPath, Float aLength) {
 		path = aPath;
 		length = aLength;
 	}
 
-	public ArrayList<Long> getPath() {
+	public List<Long> getPath() {
 		return path;
 	}
 
-	public void setPath(ArrayList<Long> aPath) {
+	public void setPath(List<Long> aPath) {
 		this.path = aPath;
 	}
 

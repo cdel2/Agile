@@ -1,9 +1,7 @@
 package optimodlyon.agile.controller;
-import java.awt.List;
 import java.nio.file.Path;
-import java.util.ArrayList;
 
-import java.util.HashMap;
+import java.util.*;
 
 import optimodlyon.agile.algorithmic.Clustering;
 import optimodlyon.agile.algorithmic.Dijkstra;
@@ -38,10 +36,10 @@ public class Controller {
 		for(ArrayList<Delivery> round : rounds) {
 			i++;
 			ArrayList<Long> roundID = Clustering.createIdArray(round);
-			
 			map.getWarehouse();
 			roundID.add(map.getWarehouse().getId());
-			HashMap<Long, HashMap<Long, Float>> graph = dijkstra.doDijkstra(map.graph, roundID);
+			Map<Long, List<Segment>> mapGraph = clustering.reform(map.graph);
+			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(mapGraph, roundID);
 			PathLength finalRound = tsp.doTSP(graph, (long)1);
 			System.out.println("round" + i + finalRound);
 			finalRounds.add(finalRound);

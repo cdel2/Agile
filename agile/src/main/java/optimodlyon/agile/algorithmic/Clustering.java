@@ -1,8 +1,14 @@
 package optimodlyon.agile.algorithmic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.Intersection;
+import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.models.CityMap;
 
 public class Clustering {
@@ -171,4 +177,15 @@ public class Clustering {
 		return ids;
 	}
 	
+	
+	public Map<Long, List<Segment>> reform(HashMap<Long, ArrayList<Segment>> map){
+		Map<Long, ArrayList<Segment>> newMap = new HashMap<Long, ArrayList<Segment>>(map);
+	    Iterator it = newMap.entrySet().iterator();
+	    Map<Long, List<Segment>> finalMap = new HashMap<Long, List<Segment>>();
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        finalMap.put((long)pair.getKey(), (List<Segment>) pair.getValue());
+		}
+		return finalMap;
+	}
 }
