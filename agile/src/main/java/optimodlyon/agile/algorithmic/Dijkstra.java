@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import optimodlyon.agile.models.Segment;
 /**
  * @author William Occelli
@@ -64,9 +63,11 @@ public class Dijkstra {
       }
 
 	}
+
 	
 	public Map<Long, Pair> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source){
-        /*
+        int nbOfDeliveryPointsFound =0;
+		/*
          * s0 is visited(grey)
          */
         visitedNodes.add(source);
@@ -119,6 +120,13 @@ public class Dijkstra {
 	        	settledNodes.put(currentNode, dijkstraGraph.get(currentNode));
 	        	dijkstraGraph.remove(currentNode);
 	        	visitedNodes.remove(currentNode);
+	        	if(listDeliveryPoints.contains(currentNode)) {
+	        		nbOfDeliveryPointsFound++;
+	        		if(nbOfDeliveryPointsFound == listDeliveryPoints.size()) {
+	        			System.out.println("Finished");
+	        			break;
+	        		}
+	        	}
         
         }
         return settledNodes;
