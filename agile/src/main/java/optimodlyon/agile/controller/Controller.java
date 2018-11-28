@@ -1,11 +1,17 @@
 package optimodlyon.agile.controller;
+import java.awt.List;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 import java.util.HashMap;
 
 import optimodlyon.agile.algorithmic.Clustering;
+import optimodlyon.agile.algorithmic.Dijkstra;
+import optimodlyon.agile.algorithmic.PathLength;
+import optimodlyon.agile.algorithmic.TSP;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
+import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.xml.DeserializerXML;
 
@@ -22,12 +28,25 @@ public class Controller {
 		map = newMap;
 	}
 	
-	public void doAlgorithm(int nb) {
+	public ArrayList<PathLength> doAlgorithm(int nb) {
 		Clustering clustering = new Clustering();
-		ArrayList<ArrayList<Delivery>> rounds = clustering.dispatchCluster(map, nb);
+		Dijkstra dijkstra = new Dijkstra();
+		TSP tsp = new TSP();
+		ArrayList<ArrayList<Delivery>> rounds = clustering.dispatchCluster(map, nb); 
+		int i =0;
+		ArrayList<PathLength> finalRounds = new ArrayList<PathLength>();
 		for(ArrayList<Delivery> round : rounds) {
+			i++;
+			ArrayList<Long> roundID = Clustering.createIdArray(round);
 			
+			map.getWarehouse();
+			roundID.add(map.getWarehouse().getId());
+			HashMap<Long, HashMap<Long, Float>> graph = dijkstra.doDijkstra(map.graph, roundID);
+			PathLength finalRound = tsp.doTSP(graph, (long)1);
+			System.out.println("round" + i + finalRound);
+			finalRounds.add(finalRound);
 		}
+		return finalRounds;
 	}
 
 }

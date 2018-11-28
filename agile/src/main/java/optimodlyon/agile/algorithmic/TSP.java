@@ -12,7 +12,7 @@ import org.springframework.context.support.StaticApplicationContext;
 
 public class TSP {
 
-	public static void main(String[] args) {
+	public void main(String[] args) {
 		HashMap<Long, Float> successors1 = new HashMap<Long, Float>();
 		successors1.put((long)2, (float)8);
 		successors1.put((long)3, (float)7);
@@ -48,7 +48,7 @@ public class TSP {
      * @param idWarehouse id of Entrepot in map
      * @return PathLength, which is a class created for TSP which is a pair of an ordonned array symbolising the path and its length
      */
-	public static PathLength doTSP(HashMap<Long, HashMap<Long, Float>> map, Long idWarehouse){
+	public PathLength doTSP(HashMap<Long, HashMap<Long, Float>> map, Long idWarehouse){
 		ArrayList<PathLength> possiblePaths = startTSP(map, idWarehouse);
 		System.out.println("Liste des chemins possibles : " + possiblePaths);
 		PathLength shortestPath = findShortestPath(possiblePaths);
@@ -56,7 +56,7 @@ public class TSP {
 		return shortestPath;
 	}
 	
-	public static ArrayList<PathLength> startTSP(HashMap<Long, HashMap<Long, Float>> unordoredMap, Long idWarehouse) {
+	public ArrayList<PathLength> startTSP(HashMap<Long, HashMap<Long, Float>> unordoredMap, Long idWarehouse) {
 		ArrayList<PathLength> finalResults = new ArrayList<PathLength>(); //This list will contain all the resulting pair of (path, length) possible.
 		HashMap<Long, Float> successors = new HashMap<Long, Float>(unordoredMap.get(idWarehouse));
 		unordoredMap.remove(idWarehouse);
@@ -80,7 +80,7 @@ public class TSP {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public static ArrayList<PathLength> nextNode(HashMap<Long, HashMap<Long, Float>> unordoredMap, HashMap<Long, Float> currentSuccessors, ArrayList<Long> currentPath, Float currentLength, ArrayList<PathLength> finalResults) {
+	public ArrayList<PathLength> nextNode(HashMap<Long, HashMap<Long, Float>> unordoredMap, HashMap<Long, Float> currentSuccessors, ArrayList<Long> currentPath, Float currentLength, ArrayList<PathLength> finalResults) {
 //		System.out.println(currentPath);
 //		System.out.println(currentLength);
 //		System.out.println(unordoredMap);
@@ -110,7 +110,7 @@ public class TSP {
 		}
 	}
 	
-	public static HashMap<Long, HashMap<Long, Float>> copyMap(HashMap<Long, HashMap<Long, Float>> map){
+	public HashMap<Long, HashMap<Long, Float>> copyMap(HashMap<Long, HashMap<Long, Float>> map){
 		HashMap<Long, HashMap<Long, Float>> newMap = new HashMap<Long, HashMap<Long, Float>>();
 	    Iterator it = map.entrySet().iterator();
 	    while (it.hasNext()) {
@@ -121,7 +121,7 @@ public class TSP {
 		return newMap;
 	}
 	
-	public static PathLength findShortestPath(ArrayList<PathLength> possiblePaths) {
+	public PathLength findShortestPath(ArrayList<PathLength> possiblePaths) {
 		if(possiblePaths.size()==0) return null;
 		else {
 			PathLength bestPath = possiblePaths.get(0);

@@ -2,6 +2,7 @@ package optimodlyon.agile.algorithmic;
 
 import java.util.ArrayList;
 import optimodlyon.agile.models.Delivery;
+import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.CityMap;
 
 public class Clustering {
@@ -13,7 +14,6 @@ public class Clustering {
 
         //Initialisation entrepot et nbLivraisons et nbVlivreurs
 		ArrayList<Delivery> listDel = M.getListDelivery();
-		
         int nbLivreurs = M.getNbDeliverers();
         int nbLivraisons = listDel.size(); 
         
@@ -128,38 +128,47 @@ public class Clustering {
 
         //Création de la liste de delivery retour
         
+        /*
         ArrayList<Delivery> listTri = new ArrayList<Delivery>();
         for (int r=0; r<nbLivraisons-1; r++){
         	boolean stop = false;
         	int cmp = 0;
         	while (!stop) {
+        		System.out.println(cmp);
         		if (resX.get(r)+xWareHouse==listDel.get(cmp).getLongitude() && resY.get(r)+yWareHouse==listDel.get(cmp).getLatitude()) {
         			listTri.add(listDel.get(cmp));
         		}
         		cmp++;
         	}
-        	
         }
-        
-        
-        return listTri; 
+        */
+        return listDel; 
 	}
 	
 	public ArrayList<ArrayList<Delivery>> dispatchCluster(CityMap map, int deliverers){
 		ArrayList<Delivery> sortedDeliveries = sortCluster(map);
-		ArrayList<ArrayList<Delivery>> clusters = new ArrayList<ArrayList<Delivery>>(deliverers);
+		ArrayList<ArrayList<Delivery>> clusters = new ArrayList<ArrayList<Delivery>>();
 		int j = 0;
 		ArrayList<Delivery> currentCluster = new ArrayList<Delivery>();
 		int clusterN = (int) Math.ceil(sortedDeliveries.size()/deliverers);
 		for(int i=0;i<sortedDeliveries.size();i++) {
 			currentCluster.add(sortedDeliveries.get(i));
-			if(i==(sortedDeliveries.size()%deliverers)) {
+			if(0==((i-1)%clusterN) && i!=0) {
 				ArrayList<Delivery> finalCluster = new ArrayList<Delivery>(currentCluster);
-				clusters.add(currentCluster);
+				clusters.add(finalCluster);
 				currentCluster.clear();
 			}
 		}
 		return clusters;
+	}
+	
+	//Creates an Array of IDs for Dijkstra arguments
+	public static ArrayList<Long> createIdArray(ArrayList<Delivery> deliveryArray){
+		ArrayList<Long> ids = new ArrayList<Long>();
+		for(Delivery delivery : deliveryArray) {
+			ids.add(delivery.getId());
+		}
+		return ids;
 	}
 	
 }

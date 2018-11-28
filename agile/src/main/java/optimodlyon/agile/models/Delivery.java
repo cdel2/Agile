@@ -23,6 +23,13 @@ public class Delivery extends Intersection{
 		super(id);
 		timeArrival = ta;
 	}
+	
+	/**
+	 * @return the timeArrival
+	 */
+	public String toString() {
+		return "Intersection id : " + id + " lat : "+latitude +  " long : "+longitude;
+	}
 
 	/**
 	 * @return the timeArrival
