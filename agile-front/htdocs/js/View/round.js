@@ -21,7 +21,7 @@ class Round{
                 let round = data[i].listPath;
                 let color1 = object.colors[i];
                 var temp = {display:true, color:color1, data:[]};
-                $("#pathMenu").append("<div id='colorSample' style='background-color:"+color1+";'></div>");
+                $("#pathMenu").append("<div id='colorSample' style='background-color:"+color1+";' onclick='Ctrl.disableRound(this)'></div>");
                 for(var j in round){
                    let path = round[j].path;
                    for(var k in path){
@@ -62,7 +62,11 @@ class Round{
         
     }
 
-    disablePath(){
-        
+    switchPathDisplay(color, state){
+        for(var i in this.paths){
+            if(this.paths[i].color === color){
+                this.paths[i].display=state;
+            }
+        }
     }
 }

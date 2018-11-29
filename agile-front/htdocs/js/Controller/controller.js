@@ -71,5 +71,18 @@ class Controller{
         }
     }
 
-
+    disableRound(el){
+        var jel = $(el);
+        if(jel.hasClass('hiddenPath')){
+            jel.removeClass("hiddenPath");
+            $(el).html("");
+            this.View.Round.switchPathDisplay(el.style.backgroundColor, true);
+            this.View.update();
+        }else{
+            jel.addClass("hiddenPath");
+            $(el).html("<i class='fas fa-eye-slash eye'></i>");
+            this.View.Round.switchPathDisplay(el.style.backgroundColor, false);
+            this.View.update();
+        }
+    }
 }
