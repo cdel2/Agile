@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.print.attribute.standard.Destination;
+
 import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.Segment;
 /**
@@ -338,5 +341,26 @@ public static void main(String[] args) {
 		}
     	
     	return newDist;
+    }
+    
+    /**
+     * Function that creates the shortestPath between an origin and a destination.
+     * This path is an array of ID of intersection
+     * 
+     * @param origin
+     * @param destination
+     * @return List<Long> the ordered list of ID of intersection to visit to run the shortest path
+     */
+    public List<Long> createPath(Long origin, Long destination){
+    	List<Long> idIntersections = new ArrayList<Long>();
+    	Map<Long, Long> map = fullDijkstra.get(origin);
+    	Long currentId = origin;
+    	idIntersections.add(origin);
+    	while((long)currentId!=(long)destination) {
+    		map = fullDijkstra.get(currentId);
+    		currentId = map.get(currentId);
+    		idIntersections.add(currentId);
+    	}
+    	return idIntersections;
     }
 }

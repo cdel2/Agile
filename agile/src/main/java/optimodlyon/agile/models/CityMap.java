@@ -117,7 +117,7 @@ public class CityMap {
 		ArrayList<Segment> segments = graph.get(origin);
 		Segment finalSegment;
 		for (Segment segment : segments) {
-			if(segment.getEnd().getId()==destination) {
+			if((long)segment.getEnd().getId()==(long)destination) {
 				return segment;
 			}
 		}
