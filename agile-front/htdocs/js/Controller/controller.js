@@ -1,6 +1,6 @@
 class Controller{
     constructor(){
-        this.selectedMap = "petit";
+        this.selectedMap = $("#mapSelector").val().toLowerCase();
         this.selectedDel = "grand-12";
         this.View;
         this.state = new InitState();
@@ -24,24 +24,7 @@ class Controller{
     }
 
     changeMap(element){
-        switch(element.value){
-            case "Big":
-                console.log("ok1");
-                this.selectedMap = "grand";
-                break;
-            case "Average":
-                console.log("ok2");
-                this.selectedMap = "moyen";
-                break;
-            case "Small":
-                console.log("ok3");
-                this.selectedMap = "petit";
-                break;
-            default:
-                console.log("ok4");
-                this.selectedMap = "grand";
-                break;
-        }
+        this.selectedMap = element.value.toLowerCase();
     }
 
     changeDel(element){

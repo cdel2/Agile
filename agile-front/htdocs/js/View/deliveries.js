@@ -15,6 +15,7 @@ class Deliveries{
     load(delFile1){
         let object = this;
         let delFile = delFile1;
+        $("#loaderEl").show();
         $.ajax({
             url: "http://localhost:8080/deliveries/dl-"+delFile,
             type:"GET"
@@ -30,6 +31,9 @@ class Deliveries{
             console.log("Delivery file not loaded !");
             alertBox("Something wrong happened !");
             Ctrl.View.update();
+            Ctrl.state = new MapState();
+        }).always(function(){    
+            $("#loaderEl").hide();
         });        
     }
 
