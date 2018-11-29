@@ -114,12 +114,19 @@ class Viewer{
 
     zoom(rate){
         var temp = this.zoomLevel + rate;
-        if(temp>0.8 && temp<3){
+        if(temp>=1 && temp<3){
             this.zoomLevel = temp;
             this.deltaY += (this.Canvas.height/2)*rate;
             this.deltaX -= (this.Canvas.width/2)*rate; 
+            /*if(this.deltaX>0){
+                this.deltaX=0;
+            }
+            if(this.deltaY<0){
+                this.deltaY=0;
+            }*/
             this.update();
         }
+        
     }
 
     panSetup(){
