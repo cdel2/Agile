@@ -90,7 +90,7 @@ public class DeserializerXML {
   	public static CityMap deserializeDelivery(String file, CityMap map) {
   		try {
 
-  	        File fXmlFile = new File("src/main/java/optimodlyon/agile/xml/"+file+".xml");
+  	        File fXmlFile = new File("src/main/java/optimodlyon/agile/files/"+file+".xml");
 
   	        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
   	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
