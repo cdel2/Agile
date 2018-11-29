@@ -1,66 +1,57 @@
 class Round{
     constructor(){
         this.paths = [];
+        this.colors = ["green", "yellow", "purple", "blue", "lime", "aqua", "fuschia"]
     }
 
-    load(Coord1){
+    load(num1){
         let object = this;
-        let Coord = Coord1;
+        let num = num1;
+        $("#loaderEl").show();
+        var ajaxTime= new Date().getTime();
         $.ajax({
-            url: "deliveries/round.xml",
+            url: "http://localhost:8080/calc/"+num,
             type:"GET"
-        }).done(function( xmlDoc ) {
-            var del = xmlDoc.getElementsByTagName("round")[0].getElementsByTagName("livreur");
-            for(var j = 0; j < del.length; j++){
-                let round = del[j].childNodes;
-                let path = [];
-                for(var i = 0; i < round.length; i++){
-                    let el = round[i];
-                    //console.log(el);
-                    if(el.tagName === "entrepot" || el.tagName === "livraison"){
-                    path.push(Coord[el.getAttribute("adresse")]);
-                    }
+        }).done(function( data ) {
+            var totalTime = new Date().getTime()-ajaxTime;
+            for(var i in data){
+                //console.log(data[i]);
+                let round = data[i];
+                var temp = [];
+                for(var j in round){
+                   // console.log(round[j]);
+                    temp.push(round[j]);
                 }
-                object.paths.push(path);
+                object.paths.push(temp);
             }
+            $("#execTime").text("  "+totalTime/1000+"s");
             Ctrl.View.update();
         }).fail(function(textStatus, errorThrown){
+            alertBox("Something wrong happened !");
             console.log("Round file not loaded !");
             console.log(textStatus);
+        }).always(function(){
+            $("#loaderEl").hide();
         });
     }
 
-    display(ctx, view){
-        
-        for(var i = 0; i < this.paths.length; i++){
+    display(ctx){
+        for(var i in this.paths){
             ctx.beginPath();
             let path = this.paths[i];
-            let color = this.colorGen();
-            for(var j = 0; j<path.length-1; j++){
-                //console.log(path);
+            for(var j=0; j<path.length-1; j++){
                 let start = path[j];
                 let end = path[j+1];
-                ctx.strokeStyle = color;
+                
+                //console.log(i);
+                //console.log(this.colorGen(i));
+                ctx.strokeStyle = this.colors[i];
                 ctx.lineWidth = 5;
-                ctx.moveTo(view.norm(start.long, true),view.norm(start.lat, false));
-                ctx.lineTo(view.norm(end.long, true),view.norm(end.lat, false));
+                ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
+                ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
             }
             ctx.stroke();
         }
         
-    }
-
-    colorGen(){
-        var temp = Math.floor(3*Math.random());
-        switch(temp){
-            case 0:
-                return "green";
-            case 1:
-                return "yellow";
-            case 2:
-                return "purple";
-            default:
-                return "blue";
-        }
     }
 }

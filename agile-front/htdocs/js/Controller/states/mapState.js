@@ -1,8 +1,8 @@
 class MapState extends State{
     constructor(){
         super();
-        enableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#mapSelector", "#delSelector", "#addDel"]);
-        disableButtons(["#addDel", "#rmvDel"]);
+        enableButtons(["#undo", "#redo", "#loadDel", "#loadMap", "#mapSelector", "#delSelector", "#addDel"]);
+        disableButtons(["#addDel", "#rmvDel", "#loadRounds"]);
         $("#snoInfoBox").hide();
         console.log("Etat mapState"); 
     }

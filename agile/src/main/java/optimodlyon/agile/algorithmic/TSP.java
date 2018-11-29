@@ -201,24 +201,5 @@ public class TSP {
 		}
 	}
 
-	public List<List<Intersection>> makeRounds(ArrayList<PathLength> list, CityMap map) {
-		List<List<Intersection>> rounds = new ArrayList<List<Intersection>>();
-		for (PathLength pl : list) {
-			List<Intersection> round = new ArrayList<Intersection>();
-			List<Long> r = pl.getPath();
-			for (Long id : r) {
-				//System.out.println(list);
-				//System.out.println(pl);
-				//System.out.println(id);
-				//System.out.println(map.graph.containsKey(id));
-				ArrayList<Segment> segments = (map.graph).get(id);
-				Segment seg = segments.get(0);
-				Intersection intersection = seg.getStart();
-				round.add(intersection);
-			}
-			rounds.add(round);
-		}
-		return rounds;
-	}
-
+	
 }
