@@ -92,6 +92,7 @@ public static void main(String[] args) {
 	 * @return Map<idDelivery, Map<idDelivery, lengthBetweenTheTwoDeliveries>>
 	 */
 	public Map<Long, Map<Long, Float>> doDijkstra (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints){
+		
 		Map<Long, Map<Long, Float>> tspGraph = new HashMap<Long, Map<Long,Float>>();
 		
 		/*
@@ -113,6 +114,21 @@ public static void main(String[] args) {
 		System.out.println(fullDijkstra.toString());
 		return tspGraph;
 	}
+	
+	/*
+	public void formatFullDijkstra (List<Long> listIdDeliveries) {
+		Long currentNode;
+		Map<Long,Map<Long,Long>> dijkstraForDeliveries = new HashMap<Long, Map<Long,Long>>();
+		for(Long idDelivery : listIdDeliveries) {
+			for(Long idSource : listIdDeliveries) {
+				currentNode = idDelivery;
+				while(currentNode != idSource) {
+					dijkstraForDeliveries.
+				}
+			}
+		}
+	}*/
+	
 	
 	public Map<Long, Float> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source){
         /*
@@ -136,11 +152,20 @@ public static void main(String[] args) {
     	*  sj is white;
     	*  d[s0] <- 0;
     	*/
+        
+        System.out.println("SOurce" + source);
+        if(completeMap.containsKey(source)) {
+        	System.out.println(completeMap.get(source).toString());
+        	System.out.println("Source present in map");
+        } else {
+        	System.out.println("Source not present in map");
+        }
 		for (Long key : completeMap.keySet()) {
-          if(key != source){
+          if((long)key != (long)source){
           	Pair p = new Pair((long)-1, Float.MAX_VALUE);
               dijkstraGraph.put(key,p);
           } else {
+        	System.out.println("Source initialized to zero");
           	Pair p = new Pair(key, (float)0);
               dijkstraGraph.put(key, p);
           }
@@ -176,7 +201,16 @@ public static void main(String[] args) {
 	        		if(!visitedNodes.contains(successor)) {
 	        			visitedNodes.add(successor);
 	        			System.out.println("	successor " + successor + " added to graph");
-	        			System.out.println("	dist of successor: " + dijkstraGraph.get(successor).getDistFromSource());
+	        			//System.out.println("	dist of successor: " + dijkstraGraph.get(successor).getDistFromSource());
+	        		}
+	        		/*
+	        		 * If the node is an end point of a segment but not yet an intersection
+	        		 */
+	        		if(!dijkstraGraph.containsKey(successor)) {
+	        			Pair p = new Pair(currentNode, Float.MAX_VALUE);
+	        			dijkstraGraph.put(successor,p);
+	        			Map<Long,Long> m = new HashMap<Long, Long>();
+	        			fullDijkstra.put(successor, m);
 	        		}
 	        		Float newDist = UpdateDistance(currentNode, successor, completeMap);
 	        		/*
@@ -199,8 +233,9 @@ public static void main(String[] args) {
 	        	if(listDeliveryPoints.contains(currentNode)) {
 	        		tspSubGraph.put(currentNode,dijkstraGraph.get(currentNode).getDistFromSource());
 	        	}
+	        	System.out.println(currentNode + " removed from dijkstraGraph");
 	        	fullDijkstra.get(currentNode).put(source, dijkstraGraph.get(currentNode).getIdPredecessor());
-	        	System.out.println(fullDijkstra.toString());
+	        	System.out.println(fullDijkstra.get(currentNode).toString());
 	        	dijkstraGraph.remove(currentNode);
 	        	visitedNodes.remove(currentNode);
 	        	
@@ -231,8 +266,10 @@ public static void main(String[] args) {
 	 */
     public static List<Long> getIdSuccessors(Map<Long, List<Segment>> completeMap, Long source){
     	ArrayList<Long> successors = new ArrayList<Long>();
-    	for(Segment s : completeMap.get(source)) {
-    		successors.add(s.getEnd().getId()) ;
+    	if(completeMap.containsKey(source)) {
+	    	for(Segment s : completeMap.get(source)) {
+	    		successors.add(s.getEnd().getId()) ;
+	    	}
     	}
     	return successors;
     }
@@ -248,8 +285,9 @@ public static void main(String[] args) {
     	float distFromSource;
 		for (Long key : visitedNodes) {
 			System.out.println("Looking for closestNode for :" + key);
+			System.out.println(dijkstraGraph.get(key).getDistFromSource());
     		distFromSource = dijkstraGraph.get(key).getDistFromSource();
-    		if(distFromSource < minDistance) {
+    		if((float)distFromSource < (float)minDistance) {
     			closestNode = key;
     			minDistance = distFromSource;
     		}
@@ -278,7 +316,7 @@ public static void main(String[] args) {
     	 */
     	for(Segment s : completeMap.get(currentNode)) {
     		idNode = s.getEnd().getId();
-    		if(idNode == goalNode) {
+    		if((long)idNode == (long)goalNode) {
     			distFromCurrentToGoal = s.getDuration();
     			break;
     		}
