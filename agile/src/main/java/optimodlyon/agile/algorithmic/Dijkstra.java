@@ -230,7 +230,7 @@ public static void main(String[] args) {
 	        	 * we won't pass through this node anymore
 	        	 */
 	        	settledNodes.add(currentNode);
-	        	if(listDeliveryPoints.contains(currentNode)) {
+	        	if(listDeliveryPoints.contains(currentNode) && (long)currentNode != (long)source) {
 	        		tspSubGraph.put(currentNode,dijkstraGraph.get(currentNode).getDistFromSource());
 	        	}
 	        	System.out.println(currentNode + " removed from dijkstraGraph");
