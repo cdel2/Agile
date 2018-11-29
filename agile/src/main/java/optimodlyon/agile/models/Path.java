@@ -49,7 +49,7 @@ public class Path {
 
 	public Intersection getEnd()
 	{
-		Intersection end = (listSegment.get(listSegment.size()-1)).getStart();
+		Intersection end = (listSegment.get(listSegment.size()-1)).getEnd();
 		return end;
 	}
 	
