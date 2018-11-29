@@ -62,8 +62,8 @@ public class TSP {
 		List<Round> possibleRounds = startTSP(graph, map, dijkstra);
 		//System.out.println("Liste des chemins possibles : " + possiblePaths);
 		// Find the shortest path
-		Round shortestRound = findShortestPath(possibleRounds);
-		System.out.println("Chemin le plus court trouvé : " + shortestRound.getClass() + "de longueur : " + shortestRound.get());
+		Round shortestRound = findShortestRound(possibleRounds);
+		System.out.println("Chemin le plus court trouvé : " + shortestRound.getClass() + "de longueur : " + shortestRound.getTotalDuration());
 		return shortestRound;
 	}
 

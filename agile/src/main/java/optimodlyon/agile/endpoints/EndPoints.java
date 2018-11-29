@@ -28,7 +28,7 @@ public class EndPoints {
     }
     
     @GetMapping("/deliveries/{file}")
-    public CityMap get(@PathVariable String file) {
+    public CityMap getDeliveries(@PathVariable String file) {
         controller.GetDeliveries(file);
         return controller.map;
     }
