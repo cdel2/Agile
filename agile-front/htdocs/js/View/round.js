@@ -1,31 +1,19 @@
 class Round{
     constructor(){
         this.paths = [];
-        this.colors = ["green", "yellow", "purple", "blue"]
+        this.colors = ["green", "yellow", "purple", "blue", "lime", "aqua", "fuschia"]
     }
 
     load(num1){
         let object = this;
         let num = num1;
         $("#loaderEl").show();
+        var ajaxTime= new Date().getTime();
         $.ajax({
             url: "http://localhost:8080/calc/"+num,
             type:"GET"
         }).done(function( data ) {
-            //console.log(data);
-            /*var del = xmlDoc.getElementsByTagName("round")[0].getElementsByTagName("livreur");
-            for(var j = 0; j < del.length; j++){
-                let round = del[j].childNodes;
-                let path = [];
-                for(var i = 0; i < round.length; i++){
-                    let el = round[i];
-                    //console.log(el);
-                    if(el.tagName === "entrepot" || el.tagName === "livraison"){
-                    path.push(Coord[el.getAttribute("adresse")]);
-                    }
-                }
-                object.paths.push(path);
-            }*/
+            var totalTime = new Date().getTime()-ajaxTime;
             for(var i in data){
                 //console.log(data[i]);
                 let round = data[i];
@@ -36,12 +24,12 @@ class Round{
                 }
                 object.paths.push(temp);
             }
+            $("#execTime").text("  "+totalTime/1000+"s");
             Ctrl.View.update();
         }).fail(function(textStatus, errorThrown){
             alertBox("Something wrong happened !");
             console.log("Round file not loaded !");
             console.log(textStatus);
-            Ctrl.state = new MapState();
         }).always(function(){
             $("#loaderEl").hide();
         });
