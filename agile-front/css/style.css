@@ -1,0 +1,56 @@
+
+
+#infCol{
+    background-color: #f3f3f3;
+}
+#mapCol{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#map{
+    background-color: beige;
+    cursor: pointer;
+}
+
+
+#snoAlertBox{
+    position:absolute;
+    z-index:1400;
+    top:2%;
+    right:4%;
+    margin:0px auto;
+    text-align:center;
+    display: none;
+}
+
+#snoInfoBox{
+    position:absolute;
+    z-index:1400;
+    top:2%;
+    left:4%;
+    margin:0px auto;
+    text-align:center;
+    display: none;
+    background-color: #f3f3f3;
+    opacity: 0.8 !important;
+    text-align: left;
+}
+
+#mapCtrl{
+    position:absolute;
+    z-index:1400;
+    bottom:2%;
+    right:4%;
+    margin:0px auto;
+    text-align:center;
+}
+
+#stateChange{
+    position:absolute;
+    z-index:1400;
+    bottom:2%;
+    left:4%;
+    margin:0px auto;
+    text-align:center;
+}
