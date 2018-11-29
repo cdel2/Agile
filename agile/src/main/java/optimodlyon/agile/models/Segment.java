@@ -37,7 +37,7 @@ public class Segment {
 	}
 	
 	public String toString() {
-		return "start : " + start + " end : " + end;
+		return "start : " + start + " end : " + end + " duration : " + duration;
 	}
 	
 }

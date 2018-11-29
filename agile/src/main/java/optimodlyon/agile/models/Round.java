@@ -9,7 +9,7 @@ public class Round {
 	private Warehouse start;
 	
 	public Round() {
-		listPath.clear();
+		listPath = new ArrayList<Path>();
 	}
 
 	/**

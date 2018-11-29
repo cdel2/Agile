@@ -114,15 +114,15 @@ public class CityMap {
 	 * @param destination
 	 */
 	public Segment getSegmentFromGraph(Long origin, Long destination) {
-		System.out.println("research segment");
 		ArrayList<Segment> segments = graph.get(origin);
 		Segment finalSegment;
 		for (Segment segment : segments) {
-			System.out.println(segment.getEnd().getId() + " is not " + destination);
 			if((long)segment.getEnd().getId()==(long)destination) {
+				System.out.println(segment);
 				return segment;
 			}
 		}
+		System.out.println("pas de segment trouvé");
 		return null;
 	}
 }

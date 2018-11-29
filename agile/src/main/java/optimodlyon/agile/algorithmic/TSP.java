@@ -124,11 +124,16 @@ public class TSP {
 		if (unorderedMap.isEmpty()) {
 			// if not, we add the current path (which is a possible final path) to
 			// finalResults.
-			System.out.println(currentPath + ">>>>>>>>>>>>>>>" + map);
-			Path pathFound = new Path();
+			//System.out.println(currentPath + ">>>>>>>>>>>>>>>" + map);
+			
+			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
+			Collections.reverse(IntersectionIds);
+			Path pathFound = new Path(IntersectionIds, map);
 			Round currentRound = new Round();
-			for (int i = 0; i < currentPath.size() - 1; i++) {
-				List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(i), currentPath.get(i + 1));
+			currentRound.addPath(pathFound);
+			for (int i = 1; i < currentPath.size() - 1; i++) {
+				IntersectionIds = dijkstra.createPathIds(currentPath.get(i), currentPath.get(i + 1));
+				Collections.reverse(IntersectionIds);
 				pathFound = new Path(IntersectionIds, map);
 				currentRound.addPath(pathFound);
 			}
@@ -202,10 +207,10 @@ public class TSP {
 			List<Intersection> round = new ArrayList<Intersection>();
 			List<Long> r = pl.getPath();
 			for (Long id : r) {
-				System.out.println(list);
-				System.out.println(pl);
-				System.out.println(id);
-				System.out.println(map.graph.containsKey(id));
+				//System.out.println(list);
+				//System.out.println(pl);
+				//System.out.println(id);
+				//System.out.println(map.graph.containsKey(id));
 				ArrayList<Segment> segments = (map.graph).get(id);
 				Segment seg = segments.get(0);
 				Intersection intersection = seg.getStart();
