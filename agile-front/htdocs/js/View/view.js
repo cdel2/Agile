@@ -42,7 +42,7 @@ class Viewer{
             this.Deliveries.display(this.Canvas.ctx, this);
         }
         if(this.Round != null){
-            this.Round.display(this.Canvas.ctx, this);
+            this.Round.display(this.Canvas.ctx, this.Map.coord);
         }
     }
 

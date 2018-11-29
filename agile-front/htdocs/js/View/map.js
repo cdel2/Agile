@@ -55,15 +55,13 @@ class Map{
 
     display(ctx){
         ctx.beginPath();
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3;
         for(var segListId in this.graph){
             let segList = this.graph[segListId];
             for(var seg in segList){
                 let start = segList[seg].start;
                 let end = segList[seg].end;
-
-
-                ctx.strokeStyle = "black";
-                ctx.lineWidth = 3;
                 ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
             }
