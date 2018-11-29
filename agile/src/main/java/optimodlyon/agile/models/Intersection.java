@@ -18,10 +18,6 @@ public class Intersection {
 		this.id = id;
 	}
 	
-	ArrayList<Intersection> findSuccessors(){
-		ArrayList<Intersection> listSuccessors = new ArrayList();
-		return listSuccessors;
-	}
 
 	/**
 	 * @return the latitude
@@ -67,7 +63,7 @@ public class Intersection {
 	
 
 	
-	public static ArrayList<Intersection> FindSuccessorSegments(Intersection start, CityMap map)
+	public static ArrayList<Intersection> findSuccessorSegments(Intersection start, CityMap map)
 	{
 		ArrayList<Segment> seg = map.graph.get(start.getId());
 		//System.out.println(map.graph.get(start.getId()));
