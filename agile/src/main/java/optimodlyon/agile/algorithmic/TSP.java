@@ -63,7 +63,7 @@ public class TSP {
 		//System.out.println("Liste des chemins possibles : " + possiblePaths);
 		// Find the shortest path
 		Round shortestRound = findShortestRound(possibleRounds);
-		System.out.println("Chemin le plus court trouvé : " + shortestRound.getClass() + "de longueur : " + shortestRound.getTotalDuration());
+		//System.out.println("Chemin le plus court trouvé : " + shortestRound.getClass() + "de longueur : " + shortestRound.getTotalDuration());
 		return shortestRound;
 	}
 

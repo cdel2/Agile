@@ -26,7 +26,7 @@ public class Path {
 			Long destination = idIntersections.get(i+1);
 			Segment currentSegment = map.getSegmentFromGraph(origin, destination);
 			listSegment.add(currentSegment);
-			System.out.println(currentSegment);
+			//System.out.println(currentSegment);
 			duration+=currentSegment.getDuration();
 		}
 	}
