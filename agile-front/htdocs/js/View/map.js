@@ -6,11 +6,11 @@ class Map{
         this.longRange = 0;
     }
     
-    load(mapFile1){
+    load(mapFile){
         let object = this;
-        let mapFile = mapFile1;
+        $("#loaderEl").show();
         $.ajax({
-            url: "http://localhost:8080/map/"+mapFile1,
+            url: "http://localhost:8080/map/"+mapFile,
             type:"GET"
         }).done(function( map ) {
             let latRange = [Number.MAX_VALUE, Number.MIN_VALUE];
@@ -46,8 +46,11 @@ class Map{
         }).fail(function(){
             console.log("Map file not loaded !");
             alertBox("Something wrong happened !");
+            Ctrl.state = new InitState();
             Ctrl.View.update();
-        });  
+        }).always(function(){  
+            $("#loaderEl").hide();
+        });
     }
 
     display(ctx){

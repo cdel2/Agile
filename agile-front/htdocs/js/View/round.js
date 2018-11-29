@@ -41,6 +41,7 @@ class Round{
             alertBox("Something wrong happened !");
             console.log("Round file not loaded !");
             console.log(textStatus);
+            Ctrl.state = new MapState();
         }).always(function(){
             $("#loaderEl").hide();
         });
