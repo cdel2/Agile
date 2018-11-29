@@ -106,6 +106,23 @@ public class CityMap {
 	public void setWarehouse(Warehouse wh) {
 		this.warehouse = wh;
 	}
+	
+	/**
+	 * Finds a segment knowing his origin and his destination
+	 * 
+	 * @param origin
+	 * @param destination
+	 */
+	public Segment getSegmentFromGraph(Long origin, Long destination) {
+		ArrayList<Segment> segments = graph.get(origin);
+		Segment finalSegment;
+		for (Segment segment : segments) {
+			if(segment.getEnd().getId()==destination) {
+				return segment;
+			}
+		}
+		return null;
+	}
 }
 
 
