@@ -41,6 +41,7 @@ class Round{
 
     display(ctx, coord){
         ctx.lineWidth = 5;
+        ctx.globalAlpha = 1;
         for(var i in this.paths){
             ctx.beginPath();
             ctx.strokeStyle = this.colors[i];

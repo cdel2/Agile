@@ -63,6 +63,8 @@ class Deliveries{
         ctx.beginPath();
         ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
         ctx.fillStyle = color;
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3;
         ctx.globalAlpha = 0.7;
         ctx.fill();
         ctx.stroke();
