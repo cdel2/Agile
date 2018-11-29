@@ -59,7 +59,7 @@ class Map{
                 let end = segList[seg].end;
 
 
-                ctx.strokeStyle = "dark";
+                ctx.strokeStyle = "black";
                 ctx.lineWidth = 3;
                 ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));

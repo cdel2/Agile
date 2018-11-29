@@ -44,6 +44,7 @@
         <div id="stateChange">
           <button type="button" class="btn btn-dark" id="undo"><i class="fas fa-undo"></i></button>
           <button type="button" class="btn btn-dark" id="redo"><i class="fas fa-redo"></i></button>
+          <div id="loaderEl" class='loader'></div>
         </div>
         <canvas id="map"></canvas>
       </div>
@@ -78,9 +79,10 @@
         <hr />
         <div class="form-group">
           <label for="numInput">Number of persons</label>
-          <input type="email" id="numInput" class="form-control" placeholder="Between 1 and 6">
+          <input id="numInput" class="form-control" placeholder="Defaut value - 3">
         </div>
         <button type="button" id="loadRounds" class="btn btn-warning" onclick="Ctrl.loadRound();" disabled>Calculate rounds</button>
+        
       </div>
     </div>
   </div>

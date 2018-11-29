@@ -16,7 +16,11 @@ class Controller{
     }
 
     loadRound(){
-        this.View.loadRound();
+        let value = $("#numInput").val();
+        if(value === ""){
+            value = 3;
+        }
+        this.View.loadRound(value);
     }
 
     changeMap(element){
