@@ -351,7 +351,7 @@ public static void main(String[] args) {
      * @param destination
      * @return List<Long> the ordered list of ID of intersection to visit to run the shortest path
      */
-    public List<Long> createPath(Long origin, Long destination){
+    public List<Long> createPathIds(Long origin, Long destination){
     	List<Long> idIntersections = new ArrayList<Long>();
     	Map<Long, Long> map = fullDijkstra.get(origin);
     	Long currentId = origin;

@@ -1,6 +1,6 @@
 package optimodlyon.agile.endpoints;
 
-import optimodlyon.agile.algorithmic.PathLength;
+import optimodlyon.agile.models.Round;
 import optimodlyon.agile.controller.Controller;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
@@ -34,16 +34,16 @@ public class EndPoints {
     }
     
     @GetMapping("/calc/{nb}")
-    public List<List<Intersection>> get(@PathVariable int nb) {
-    	List<List<Intersection>> algo = controller.doAlgorithm(nb);
+    public List<Round> get(@PathVariable int nb) {
+    	List<Round> algo = controller.doAlgorithm(nb);
         return algo;
     }
     
     @GetMapping("/testcalc/{nb}")
-    public List<List<Intersection>> getRounds(@PathVariable int nb) {
+    public List<Round> getRounds(@PathVariable int nb) {
     	controller.InitializeGraph("petit");
     	controller.GetDeliveries("dl-petit-6");
-    	List<List<Intersection>> algo = controller.doAlgorithm(nb);
+    	List<Round> algo = controller.doAlgorithm(nb);
         return algo;
     }
 }

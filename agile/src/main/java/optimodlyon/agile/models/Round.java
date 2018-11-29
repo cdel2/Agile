@@ -64,4 +64,7 @@ public class Round {
 		this.startTime = startTime;
 	}
 	
+	public void addPath(Path aPath) {
+		this.listPath.add(aPath);
+	}
 }
