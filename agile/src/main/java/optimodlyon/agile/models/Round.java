@@ -6,7 +6,7 @@ public class Round {
 	private Date startTime;
 	private Date endTime;
 	private ArrayList<Path> listPath;
-	private Delivery start;
+	private Warehouse start;
 
 	/**
 	 * @return the startTime
@@ -18,14 +18,14 @@ public class Round {
 	/**
 	 * @return the start
 	 */
-	public Delivery getStart() {
+	public Warehouse getStart() {
 		return start;
 	}
 
 	/**
 	 * @param start the start to set
 	 */
-	public void setStart(Delivery start) {
+	public void setStart(Warehouse start) {
 		this.start = start;
 	}
 

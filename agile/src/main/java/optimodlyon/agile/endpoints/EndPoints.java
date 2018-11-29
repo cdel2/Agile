@@ -1,7 +1,9 @@
 package optimodlyon.agile.endpoints;
 
+import optimodlyon.agile.algorithmic.PathLength;
 import optimodlyon.agile.controller.Controller;
 import optimodlyon.agile.models.CityMap;
+import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.Segment;
 
 import java.util.ArrayList;
@@ -27,5 +29,19 @@ public class EndPoints {
     public CityMap get(@PathVariable String file) {
         controller.GetDeliveries(file);
         return controller.map;
+    }
+    
+    @GetMapping("/calc/{nb}")
+    public int get(@PathVariable int nb) {
+    	ArrayList<PathLength> algo = controller.doAlgorithm(nb);
+        return 0;
+    }
+    
+    @GetMapping("/testcalc/{nb}")
+    public int getRounds(@PathVariable int nb) {
+    	controller.InitializeGraph("petit");
+    	controller.GetDeliveries("dl-petit-6");
+    	ArrayList<PathLength> algo = controller.doAlgorithm(nb);
+        return 0;
     }
 }

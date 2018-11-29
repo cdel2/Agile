@@ -1,14 +1,18 @@
 class Controller{
     constructor(){
-        this.selectedMap = "moyen";
+        this.selectedMap = "petit";
         this.selectedDel = "grand-12";
         this.View;
         this.state = new InitState();
+        
+        //Interaction
+        this.lastX; this.lastY;
+        this.dragged = false;
+        this.clicked = false;
     }
 
     loadDeliveries(){
         this.View.loadDeliveries(this.selectedDel);
-        this.state = new DelState();
     }
 
     loadRound(){
@@ -44,7 +48,6 @@ class Controller{
         this.View = new Viewer();
         this.View.setupCanvas();
         this.View.loadMap(this.selectedMap);
-        this.state = new MapState();
         switch(this.selectedMap){
             case "petit":
                 $("#delSelector").html("<option>6</option><option>3</option>");

@@ -23,10 +23,13 @@ class Deliveries{
             for(var el in del.listDelivery){
                object.delNodes.push(del.listDelivery[el]);
             }
+            
+            Ctrl.state = new DelState();
             Ctrl.View.update();
         }).fail(function(){
             console.log("Delivery file not loaded !");
             alertBox("Something wrong happened !");
+            Ctrl.View.update();
         });        
     }
 
@@ -42,9 +45,7 @@ class Deliveries{
             this.drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.userNodeDisp.radius, this.userNodeDisp.color, ctx);
         }
         if(this.nodeInfo!=null){
-            
             let node = this.nodeInfo;
-            console.log(node);
 
             ctx.globalAlpha = 0.8;
             ctx.drawImage(this.img, View.norm(node.longitude, true)-47/2,View.norm(node.latitude, false)-75);

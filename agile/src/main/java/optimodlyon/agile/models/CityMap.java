@@ -15,6 +15,14 @@ public class CityMap {
 	public CityMap() {
 
 	}
+	
+	public CityMap(HashMap<Long, ArrayList<Segment>> graph, int nbDeliverers, Warehouse warehouse, ArrayList<Delivery> listDelivery) {
+		this.graph = graph;
+		this.nbDeliverers = nbDeliverers;
+		this.warehouse = warehouse;
+		this.listDelivery = listDelivery;
+	}
+	
 	public CityMap(HashMap<Long, ArrayList<Segment>> graph) {
 		this.graph = graph;
 		warehouse = null;

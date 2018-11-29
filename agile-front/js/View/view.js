@@ -15,9 +15,6 @@ class Viewer{
 
         this.deltaX =0;
         this.deltaY=0;
-        this.lastX; this.lastY;
-        this.dragged = false;
-        this.clicked = false;
     }
 
     loadMap(mapFile){

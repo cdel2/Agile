@@ -40,10 +40,13 @@ class Map{
             object.latRange = latRange;
             object.longRange = longRange;
             console.log(this.coord);
+
             Ctrl.View.update();
+            Ctrl.state = new MapState();
         }).fail(function(){
             console.log("Map file not loaded !");
             alertBox("Something wrong happened !");
+            Ctrl.View.update();
         });  
     }
 

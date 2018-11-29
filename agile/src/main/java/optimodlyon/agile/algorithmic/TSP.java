@@ -12,64 +12,65 @@ import org.springframework.context.support.StaticApplicationContext;
 
 public class TSP {
 
-	public static void main(String[] args) {
-		HashMap<Long, Float> successors1 = new HashMap<Long, Float>();
+	public void main(String[] args) {
+		Map<Long, Float> successors1 = new HashMap<Long, Float>();
 		successors1.put((long)2, (float)8);
 		successors1.put((long)3, (float)7);
 		successors1.put((long)4, (float)6);
 
-		HashMap<Long, Float> successors2 = new HashMap<Long, Float>();
+		Map<Long, Float> successors2 = new HashMap<Long, Float>();
 		successors2.put((long)1, (float)2);
 		successors2.put((long)3, (float)3);
 		successors2.put((long)4, (float)1);
 
-		HashMap<Long, Float> successors3 = new HashMap<Long, Float>();
+		Map<Long, Float> successors3 = new HashMap<Long, Float>();
 		successors3.put((long)1, (float)2);
 		successors3.put((long)2, (float)3);
 		successors3.put((long)4, (float)1);
 
-		HashMap<Long, Float> successors4 = new HashMap<Long, Float>();
+		Map<Long, Float> successors4 = new HashMap<Long, Float>();
 		successors4.put((long)1, (float)8);
 		successors4.put((long)2, (float)4);
 		successors4.put((long)3, (float)5);
 
-		HashMap<Long, HashMap<Long, Float>> map = new HashMap<Long, HashMap<Long, Float>>();
+		Map<Long, Map<Long, Float>> map = new HashMap<Long, Map<Long, Float>>();
 		map.put((long)1, successors1);
 		map.put((long)2, successors2);
 		map.put((long)3, successors3);
 		map.put((long)4, successors4);
 		doTSP(map, (long)1);
+		
 	}
 	
 	/**
      * 
      * @param map a map containing idNodes as Keys and a map of (idDestinations, distance) as Values
-     * @param idEntrepot id of Entrepot in map
+     * @param idWarehouse id of Entrepot in map
      * @return PathLength, which is a class created for TSP which is a pair of an ordonned array symbolising the path and its length
      */
-	public static PathLength doTSP(HashMap<Long, HashMap<Long, Float>> map, Long idEntrepot){
-		ArrayList<PathLength> possiblePaths = startTSP(map, (long)1);
+	public PathLength doTSP(Map<Long, Map<Long, Float>> map, Long idWarehouse){
+		List<PathLength> possiblePaths = startTSP(map, idWarehouse);
 		System.out.println("Liste des chemins possibles : " + possiblePaths);
 		PathLength shortestPath = findShortestPath(possiblePaths);
 		System.out.println("Chemin le plus court trouvé : " + shortestPath.getPath() + "de longueur : " + shortestPath.getLength());
 		return shortestPath;
 	}
 	
-	public static ArrayList<PathLength> startTSP(HashMap<Long, HashMap<Long, Float>> unordoredMap, Long idEntrepot) {
-		ArrayList<PathLength> finalResults = new ArrayList<PathLength>(); //This list will contain all the resulting pair of (path, length) possible.
-		HashMap<Long, Float> successors = new HashMap<Long, Float>(unordoredMap.get(idEntrepot));
-		unordoredMap.remove(idEntrepot);
-		ArrayList<Long> currentPath = new ArrayList();
+	public List<PathLength> startTSP(Map<Long, Map<Long, Float>> unorderedMap, Long idWarehouse) {
+		List<PathLength> finalResults = new ArrayList<PathLength>(); //This list will contain all the resulting pair of (path, length) possible.
+		Map<Long, Float> successors = new HashMap<Long, Float>(unorderedMap.get(idWarehouse));
+		unorderedMap.remove(idWarehouse);
+		List<Long> currentPath = new ArrayList();
     	Float currentLength;
     	Iterator it = successors.entrySet().iterator();
     	while (it.hasNext()) {
 	    	currentPath.clear();
-	    	currentPath.add(idEntrepot);
+	    	currentPath.add(idWarehouse);
 	    	currentLength =(float) 0;
 	        Map.Entry currentPair = (Map.Entry)it.next();
 	        it.remove(); // avoids a ConcurrentModificationException
-	        HashMap<Long, Float> currentSuccessors = new HashMap<Long, Float>(unordoredMap.get(currentPair.getKey()));
-	        HashMap<Long, HashMap<Long, Float>> newUnordoredMap = copyMap(unordoredMap);
+	        Map<Long, Float> currentSuccessors = new HashMap<Long, Float>(unorderedMap.get(currentPair.getKey()));
+	        Map<Long, Map<Long, Float>> newUnordoredMap = copyMap(unorderedMap);
 	        newUnordoredMap.remove(currentPair.getKey());
         	currentLength+=(float)currentPair.getValue();
         	currentPath.add((long)currentPair.getKey());
@@ -79,7 +80,7 @@ public class TSP {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public static ArrayList<PathLength> nextNode(HashMap<Long, HashMap<Long, Float>> unordoredMap, HashMap<Long, Float> currentSuccessors, ArrayList<Long> currentPath, Float currentLength, ArrayList<PathLength> finalResults) {
+	public List<PathLength> nextNode(Map<Long, Map<Long, Float>> unordoredMap, Map<Long, Float> currentSuccessors, List<Long> currentPath, Float currentLength, List<PathLength> finalResults) {
 //		System.out.println(currentPath);
 //		System.out.println(currentLength);
 //		System.out.println(unordoredMap);
@@ -95,12 +96,13 @@ public class TSP {
 		        Map.Entry newPair = (Map.Entry)it.next();
 		        it.remove();
 		        if(unordoredMap.containsKey(newPair.getKey())) {
-		        	ArrayList<Long> newPath = (ArrayList) currentPath.clone();
+		        	ArrayList<Long> p = new ArrayList<Long>(currentPath);
+		        	List<Long> newPath = (List) p.clone();
 		        	Float newLength = currentLength;
 		        	newLength+=(float)newPair.getValue();
 		        	newPath.add((long)newPair.getKey());
-			        HashMap<Long, Float> newSuccessors = new HashMap<Long, Float>(unordoredMap.get(newPair.getKey()));
-			        HashMap<Long, HashMap<Long, Float>> newUnordoredMap =copyMap(unordoredMap);
+			        Map<Long, Float> newSuccessors = new HashMap<Long, Float>(unordoredMap.get(newPair.getKey()));
+			        Map<Long, Map<Long, Float>> newUnordoredMap =copyMap(unordoredMap);
 			        newUnordoredMap.remove(newPair.getKey());
 			        finalResults = nextNode(newUnordoredMap, newSuccessors, newPath, newLength, finalResults);
 				}
@@ -109,18 +111,18 @@ public class TSP {
 		}
 	}
 	
-	public static HashMap<Long, HashMap<Long, Float>> copyMap(HashMap<Long, HashMap<Long, Float>> map){
-		HashMap<Long, HashMap<Long, Float>> newMap = new HashMap<Long, HashMap<Long, Float>>();
+	public Map<Long, Map<Long, Float>> copyMap(Map<Long, Map<Long, Float>> map){
+		Map<Long, Map<Long, Float>> newMap = new HashMap<Long, Map<Long, Float>>();
 	    Iterator it = map.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
-	    	HashMap<Long, Float> insideMap = new HashMap<Long, Float>(map.get(pair.getKey()));
+	    	Map<Long, Float> insideMap = new HashMap<Long, Float>(map.get(pair.getKey()));
 	        newMap.put((long)pair.getKey(), insideMap);
 		}
 		return newMap;
 	}
 	
-	public static PathLength findShortestPath(ArrayList<PathLength> possiblePaths) {
+	public PathLength findShortestPath(List<PathLength> possiblePaths) {
 		if(possiblePaths.size()==0) return null;
 		else {
 			PathLength bestPath = possiblePaths.get(0);
