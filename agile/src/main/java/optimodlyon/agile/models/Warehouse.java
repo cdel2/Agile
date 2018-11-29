@@ -8,6 +8,12 @@ public class Warehouse extends Intersection {
 	private Date timeArrival;
 	private Date timeStart;
 	
+	public Warehouse(Long id, float latitude, float longitude, Date ts)
+	{
+		super(id, latitude, longitude);
+		timeStart = ts;
+	}
+	
 	public Warehouse(Long id, Date ts)
 	{
 		super(id);
