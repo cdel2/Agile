@@ -1,0 +1,89 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>OptimodLyon</title>
+  <link rel="icon" href="map.ico" />
+
+  <script src="https://code.jquery.com/jquery-3.3.1.js" crossorigin="anonymous"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script>d3.select(self.frameElement).style("height", "140px")</script>
+  <script src="js/util.js"></script>
+  <script src="js/View/map.js"></script>
+  <script src="js/View/deliveries.js"></script>
+  <script src="js/View/round.js"></script>
+  <script src="js/View/view.js"></script>
+  <script src="js/Controller/controller.js"></script>
+  <script src="js/Controller/states/state.js"></script>
+  <script src="js/Controller/states/initState.js"></script>
+  <script src="js/Controller/states/mapState.js"></script>
+  <script src="js/Controller/states/addPointState.js"></script>
+  <script src="js/Controller/states/rmvPointState.js"></script>
+  <script src="js/Controller/states/delState.js"></script>
+  <script src="js/main.js"></script>
+
+
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row" style="height:100%;">
+      <div class="col-8" id="mapCol">
+        <div id="snoInfoBox" class="alert alert-dark" data-alert="alert"></div>
+        <div id="snoAlertBox" class="alert alert-danger" data-alert="alert"></div>
+        <div id="mapCtrl">
+          <button type="button" class="btn btn-dark" id="resetZoom" onclick="Ctrl.View.reset();"><i class="fas fa-times"></i></button>
+          <button type="button" class="btn btn-dark" id="zoom+" onclick="Ctrl.View.zoom(0.2);"><i class="fas fa-search-plus"></i></button>
+          <button type="button" class="btn btn-dark" id="zoom-" onclick="Ctrl.View.zoom(-0.2);"><i class="fas fa-search-minus"></i></button>
+        </div>
+        <div id="stateChange">
+          <button type="button" class="btn btn-dark" id="undo"><i class="fas fa-undo"></i></button>
+          <button type="button" class="btn btn-dark" id="redo"><i class="fas fa-redo"></i></button>
+        </div>
+        <canvas id="map"></canvas>
+      </div>
+
+      <div class="col-4" id="infCol">
+        <br />
+        <h3>OptimodLyon</h3>
+        <br />
+        <div class="form-group">
+          <label for="mapSelector">Map</label>
+          <select class="form-control" id="mapSelector" onchange="Ctrl.changeMap(this);">
+            <option>Big</option>
+            <option>Average</option>
+            <option>Small</option>
+          </select>
+        </div>
+        <button type="button" id="loadMap" class="btn btn-warning" onclick="Ctrl.loadMap();">Load map</button>
+        <br />
+        <hr />
+        <div class="form-group">
+          <label for="delSelector">Delivery plan (number of points)</label>
+          <select class="form-control" id="delSelector" onchange="Ctrl.changeDel(this);">
+            <option>20</option>
+            <option>15</option>
+            <option>12</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-warning" id="loadDel" onclick="Ctrl.loadDeliveries();">Load deliveries</button>
+        <button type="button" class="btn btn-warning" id="addDel" onclick="Ctrl.addPoint();" disabled><i class="fas fa-plus"></i></button>
+        <button type="button" class="btn btn-warning" id="rmvDel" onclick="Ctrl.rmvPoint();" disabled><i class="fas fa-minus"></i></button>
+        <br />
+        <hr />
+        <div class="form-group">
+          <label for="numInput">Number of persons</label>
+          <input type="email" id="numInput" class="form-control" placeholder="Between 1 and 6">
+        </div>
+        <button type="button" id="loadRounds" class="btn btn-warning" onclick="Ctrl.loadRound();" disabled>Calculate rounds</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
