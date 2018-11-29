@@ -6,11 +6,11 @@ class Map{
         this.longRange = 0;
     }
     
-    load(mapFile){
+    load(mapFile1){
         let object = this;
-        $("#loaderEl").show();
+        let mapFile = mapFile1;
         $.ajax({
-            url: "http://localhost:8080/map/"+mapFile,
+            url: "http://localhost:8080/map/"+mapFile1,
             type:"GET"
         }).done(function( map ) {
             let latRange = [Number.MAX_VALUE, Number.MIN_VALUE];
@@ -46,11 +46,8 @@ class Map{
         }).fail(function(){
             console.log("Map file not loaded !");
             alertBox("Something wrong happened !");
-            Ctrl.state = new InitState();
             Ctrl.View.update();
-        }).always(function(){  
-            $("#loaderEl").hide();
-        });
+        });  
     }
 
     display(ctx){
@@ -62,7 +59,7 @@ class Map{
                 let end = segList[seg].end;
 
 
-                ctx.strokeStyle = "black";
+                ctx.strokeStyle = "dark";
                 ctx.lineWidth = 3;
                 ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));

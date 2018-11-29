@@ -26,13 +26,12 @@ class Viewer{
 
     loadDeliveries(delFile){
         this.Deliveries = new Deliveries();
-        this.Round = null;
         this.Deliveries.load(delFile);
     }
 
-    loadRound(num){
+    loadRound(){
         this.Round = new Round();
-        this.Round.load(num);
+        this.Round.load(this.Map.coord);
     }
 
     update(){
