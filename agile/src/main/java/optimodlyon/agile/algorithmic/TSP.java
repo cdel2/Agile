@@ -125,7 +125,8 @@ public class TSP {
 			// if not, we add the current path (which is a possible final path) to
 			// finalResults.
 			//System.out.println(currentPath + ">>>>>>>>>>>>>>>" + map);
-			
+			currentPath.add(map.getWarehouse().getId());
+			currentLength+=(currentSuccessors.get(map.getWarehouse().getId()));
 			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
 			Collections.reverse(IntersectionIds);
 			Path pathFound = new Path(IntersectionIds, map);
