@@ -25,12 +25,12 @@ public class Path {
 		}
 	}
 	
-	/*
-	Delivery getStartDelivery()
+	
+	public Intersection getStart()
 	{
-		Delivery start = this.listSegment.get(0).getStart();
+		Intersection start = this.listSegment.get(0).getStart();
 		return start;
-	}*/
+	}
 
 	/**
 	 * @return the duration
@@ -46,11 +46,19 @@ public class Path {
 		this.duration = duration;
 	}
 
-/*
-	Delivery getEndDelivery()
+
+	public Intersection getEnd()
 	{
-		Delivery end = (listSegment.get(listSegment.size()-1)).getStart();
+		Intersection end = (listSegment.get(listSegment.size()-1)).getStart();
 		return end;
 	}
-	*/
+	
+	public String toString()
+	{
+		String path = "start : " + this.getStart().toString() + " end : " + this.getEnd().toString() + "\n" + listSegment.toString();
+		return path;
+	}
+	
+	
+	
 }

@@ -46,6 +46,8 @@ public class TSP {
 		map.put((long)4, successors4);
 		tsp.doTSP(map, (long)1);
 		
+		
+		
 	}
 	
 	/**

@@ -11,6 +11,12 @@ public class Round {
 	/**
 	 * @return the startTime
 	 */
+	public Round(ArrayList<Path> listPath, Warehouse start)
+	{
+		this.listPath = listPath;
+		this.start = start;
+	}
+	
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -62,6 +68,22 @@ public class Round {
 	 */
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
+	}
+	
+	public float getTotalDuration()
+	{
+		float duration = 0;
+		for(int i = 0; i < listPath.size(); i++)
+		{
+			duration = listPath.get(i).getDuration() + duration;
+		}
+		
+		return duration;
+	}
+	
+	public String toString()
+	{
+		return "duration : " + this.getTotalDuration() +"\n"+ this.listPath.toString();
 	}
 	
 }
