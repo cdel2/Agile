@@ -26,7 +26,7 @@ public class Controller {
 		map = newMap;
 	}
 	
-	public ArrayList<PathLength> doAlgorithm(int nb) {
+	public List<List<Intersection>> doAlgorithm(int nb) {
 		Clustering clustering = new Clustering();
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
@@ -40,11 +40,13 @@ public class Controller {
 			roundID.add(map.getWarehouse().getId());
 			Map<Long, List<Segment>> mapGraph = clustering.reform(map.graph);
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(mapGraph, roundID);
-			PathLength finalRound = tsp.doTSP(graph, (long)1);
+			System.out.println(">>>>>>>" + graph);
+			PathLength finalRound = tsp.doTSP(graph, map.getWarehouse().getId());
 			System.out.println("round" + i + finalRound);
 			finalRounds.add(finalRound);
 		}
-		return finalRounds;
+		List<List<Intersection>> ret = tsp.makeRounds(finalRounds, map);
+		return ret;
 	}
 
 }

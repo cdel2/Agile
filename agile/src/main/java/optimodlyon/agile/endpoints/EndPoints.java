@@ -4,10 +4,12 @@ import optimodlyon.agile.algorithmic.PathLength;
 import optimodlyon.agile.controller.Controller;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
+import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.Segment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,16 +34,16 @@ public class EndPoints {
     }
     
     @GetMapping("/calc/{nb}")
-    public int get(@PathVariable int nb) {
-    	ArrayList<PathLength> algo = controller.doAlgorithm(nb);
-        return 0;
+    public List<List<Intersection>> get(@PathVariable int nb) {
+    	List<List<Intersection>> algo = controller.doAlgorithm(nb);
+        return algo;
     }
     
     @GetMapping("/testcalc/{nb}")
-    public int getRounds(@PathVariable int nb) {
+    public List<List<Intersection>> getRounds(@PathVariable int nb) {
     	controller.InitializeGraph("petit");
     	controller.GetDeliveries("dl-petit-6");
-    	ArrayList<PathLength> algo = controller.doAlgorithm(nb);
-        return 0;
+    	List<List<Intersection>> algo = controller.doAlgorithm(nb);
+        return algo;
     }
 }
