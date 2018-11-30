@@ -1,7 +1,7 @@
 class Round{
     constructor(){
         this.paths = [];
-        this.colors = ["green", "yellow", "purple", "blue", "lime", "aqua", "fuschia"];
+        this.colors = ["green", "yellow", "purple", "blue", "lime", "aqua", "fuschia", "red", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
 
     }
 
@@ -33,17 +33,20 @@ class Round{
             }
             $("#execTime").text("  "+totalTime/1000+"s");
             Ctrl.View.update();
+            Ctrl.state = new CalcState();
         }).fail(function(textStatus){
             alertBox("Something wrong happened !");
             console.log("Round file not loaded !");
             console.log(textStatus);
+            Ctrl.state = new DelState();
         }).always(function(){
             $("#loaderEl").hide();
         });
     }
 
     display(ctx, coord){
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 4*(Ctrl.View.zoomLevel +1);
+        
         ctx.globalAlpha = 1;
         for(var i in this.paths){
             if(this.paths[i].display){

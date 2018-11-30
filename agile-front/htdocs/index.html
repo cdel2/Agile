@@ -21,6 +21,7 @@
   <script src="js/Controller/states/addPointState.js"></script>
   <script src="js/Controller/states/rmvPointState.js"></script>
   <script src="js/Controller/states/delState.js"></script>
+  <script src="js/Controller/states/calcState.js"></script>
   <script src="js/main.js"></script>
 
 
@@ -73,8 +74,8 @@
           </select>
         </div>
         <button type="button" class="btn btn-warning" id="loadDel" onclick="Ctrl.loadDeliveries();">Charger livraisons</button>
-        <button type="button" class="btn btn-warning" id="addDel" onclick="Ctrl.addPoint();" disabled><i class="fas fa-plus"></i></button>
-        <button type="button" class="btn btn-warning" id="rmvDel" onclick="Ctrl.rmvPoint();" disabled><i class="fas fa-minus"></i></button>
+        <button type="button" class="btn btn-warning" id="addDel" onclick="Ctrl.addPoint();" disabled hidden><i class="fas fa-plus"></i></button>
+        <button type="button" class="btn btn-warning" id="rmvDel" onclick="Ctrl.rmvPoint();" disabled hidden><i class="fas fa-minus"></i></button>
         <br />
         <hr />
         <div class="form-group">
@@ -85,7 +86,7 @@
         <span id="execTime"></span>
         <br />
         <br />
-        <div id="pathMenu" class="breadcrumb"></div>
+        <div id="pathMenu" class="breadcrumb" hidden></div>
       </div>
     </div>
   </div>

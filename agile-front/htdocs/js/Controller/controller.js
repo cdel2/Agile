@@ -16,6 +16,7 @@ class Controller{
     }
 
     loadRound(){
+        $("#pathMenu").html("");
         let value = $("#numInput").val();
         if(value === ""){
             value = 3;

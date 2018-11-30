@@ -137,7 +137,7 @@ class Viewer{
         this.Canvas.html.addEventListener('mousemove', function(evt){
             Ctrl.state.handleMouseMove(evt);
         },false);
-        //window.addEventListener('mouseup', Ctrl.state.handleMouseUp,false);
+        
         this.Canvas.html.addEventListener('mouseup', function(evt){
             Ctrl.state.handleMouseUp(evt);
         },false);

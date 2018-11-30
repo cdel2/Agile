@@ -53,7 +53,7 @@ class Deliveries{
 
             ctx.globalAlpha = 0.8;
             ctx.drawImage(this.img, View.norm(node.longitude, true)-47/2,View.norm(node.latitude, false)-75);
-            showMessage(true, "Duration : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
+            showMessage(true, "Durée : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
             ctx.beginPath();         
 
         }
