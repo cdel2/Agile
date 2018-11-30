@@ -79,20 +79,13 @@ class Map{
         let bestDistance = Number.MAX_VALUE;
         for (var prop in Ctrl.View.Map.coord) {
             let node = this.coord[prop];
-            let temp = this.distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
+            let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
             if(temp<bestDistance){
                 bestDistance = temp;
                 bestNode = this.coord[prop];
             }
         }
         return bestNode;
-    }
-
-    distance(Xa, Ya, Xb, Yb){
-        let tempLat = Yb-Ya;
-        let tempLong = Xb-Xa;
-        let temp = tempLat*tempLat + tempLong*tempLong;
-        return Math.sqrt(temp);
     }
 
     drawCircle(X, Y, R, color, ctx){

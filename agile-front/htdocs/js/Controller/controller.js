@@ -87,4 +87,22 @@ class Controller{
             this.View.update();
         }
     }
+
+    pathToForeground(el, id){
+        var jel = $(el);
+        if(jel.hasClass('activeLine')){
+            jel.removeClass("activeLine");
+            this.View.Round.pathToForeground(id);
+            this.View.update();
+        }else{
+            let list = $(".activeLine");
+            console.log(list);
+            for(var i=0; i<list.length; i++){
+                $(list[i]).removeClass("activeLine");
+            }
+            jel.addClass("activeLine");
+            this.View.Round.pathToForeground(id);
+            this.View.update();
+        }
+    }
 }

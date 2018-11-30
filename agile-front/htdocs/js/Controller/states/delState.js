@@ -27,8 +27,7 @@ class DelState extends State{
     
     handleMouseUp(evt){
         let View = Ctrl.View;
-        if(!Ctrl.dragged && evt.srcElement.tagName==="CANVAS"){
-            console.log("ok");
+        if(Ctrl.dragged===false  && evt.srcElement.tagName==="CANVAS"){
             let ratio = View.Canvas.ratio;
             var node = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
             View.Deliveries.nodeInfos(node);

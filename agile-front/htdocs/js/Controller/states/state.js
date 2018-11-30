@@ -52,8 +52,6 @@ class State{
     
     MouseUp(evt){
         Ctrl.clicked=false;
-        if(Ctrl.dragged){
-            Ctrl.dragged = false;
-        }
+        Ctrl.dragged = false;
     }
 }

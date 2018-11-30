@@ -102,12 +102,16 @@
     width: 100%;
     display: flex;
     margin-bottom: 2%;
-    background-color: lightgray;
+    background-color: #EBEBEB  ;
     cursor: pointer;
 }
 
 .pathLine:hover{
-    background-color: gray;
+    background-color: lightgray;
+}
+
+.activeLine{
+    background-color: lightgray  ;
 }
 
 .viewButton{

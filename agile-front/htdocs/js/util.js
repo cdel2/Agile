@@ -32,11 +32,9 @@ function showMessage(bool, text){
     }
 }
 
-window.onresize = function(event) {
-    Ctrl.View.setupCanvas();
-    Ctrl.View.update();
-};
-
-window.addEventListener('mouseup', function(evt){
-    Ctrl.state.handleMouseUp(evt);
-},false);
+function distance(Xa, Ya, Xb, Yb){
+    let tempLat = Yb-Ya;
+    let tempLong = Xb-Xa;
+    let temp = tempLat*tempLat + tempLong*tempLong;
+    return Math.sqrt(temp);
+}

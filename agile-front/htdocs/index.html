@@ -78,14 +78,15 @@
         <button type="button" class="btn btn-warning" id="rmvDel" onclick="Ctrl.rmvPoint();" disabled hidden><i class="fas fa-minus"></i></button>
         <br />
         <hr />
-        <form onsubmit="return Ctrl.loadRound();">
+        <div onsubmit="Ctrl.loadRound(); return false;">
           <div class="form-group">
             <label for="numInput">Nombre de livreurs</label>
             <input id="numInput" class="form-control" placeholder="Valeur par défaut : 3">
           </div>
-          <button type="submit" id="loadRounds" class="btn btn-warning" disabled>Calculer itinéraires</button>
+          <button type="submit" id="loadRounds" class="btn btn-warning" onclick="Ctrl.loadRound();" disabled>Calculer itinéraires</button>
           <span id="execTime"></span>
-        </form>
+        </div>
+        <hr />
         <div id="pathMenu"></div>
         <br />
       </div>

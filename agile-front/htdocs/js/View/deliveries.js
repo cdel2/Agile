@@ -108,15 +108,20 @@ class Deliveries{
                 if(this.nodeInfo != null && this.comparePos(this.nodeInfo, node1)){
                     this.nodeInfo=null;
                     showMessage(false);
+                    return;
                 }else{
                     this.nodeInfo=node1;
+                    return;
                 }
             }
         }
+        this.nodeInfo = null;
+        return;
     }
 
     comparePos(node, node1){
-        if(node.longitude === node1.longitude && node.latitude === node1.latitude){
+        console.log(Math.abs(node.longitude-node1.longitude));
+        if(Math.abs(node.longitude-node1.longitude)<0.002 && Math.abs(node.latitude-node1.latitude)<0.002){
             return true;
         }
         return false;

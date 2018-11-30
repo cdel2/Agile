@@ -18,8 +18,8 @@ class Viewer{
     }
 
     loadMap(mapFile){
-        this.panSetup();
-        this.zoomSetup();
+        //this.panSetup();
+        //this.zoomSetup();
         this.Map = new Map();
         this.Map.load(mapFile);
     }
@@ -115,7 +115,7 @@ class Viewer{
 
     zoom(rate){
         var temp = this.zoomLevel + rate;
-        if(temp>=1 && temp<3){
+        if(temp>=0.9 && temp<3){
             this.zoomLevel = temp;
             this.deltaY += (this.Canvas.height/2)*rate;
             this.deltaX -= (this.Canvas.width/2)*rate; 
@@ -128,27 +128,5 @@ class Viewer{
             this.update();
         }
         
-    }
-
-    panSetup(){
-        this.Canvas.html.addEventListener('mousedown', function(evt){
-            Ctrl.state.handleMouseDown(evt);
-        },false);
-        this.Canvas.html.addEventListener('mousemove', function(evt){
-            Ctrl.state.handleMouseMove(evt);
-        },false);
-        
-        this.Canvas.html.addEventListener('mouseup', function(evt){
-            Ctrl.state.handleMouseUp(evt);
-        },false);
-    }
-
-    zoomSetup(){
-        this.Canvas.html.addEventListener('DOMMouseScroll',function(evt){
-            Ctrl.state.handleScroll(evt);
-        },false);
-        this.Canvas.html.addEventListener('mousewheel',function(evt){
-            Ctrl.state.handleScroll(evt);
-        },false);
     }
 }
