@@ -5,6 +5,7 @@ class MapState extends State{
         disableButtons(["#addDel", "#rmvDel", "#loadRounds"]);
         $("#snoInfoBox").hide();
         $("#pathMenu").hide();
+        $("#timeline").hide();
         console.log("Etat mapState"); 
     }
     

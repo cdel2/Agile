@@ -3,7 +3,7 @@ class Round{
         this.paths = [];
         this.colors = ["green", "yellow", "purple", "blue", "lime", "aqua", "fuschia", "red", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
         this.firstPath = 0;
-
+        this.stop=null;
     }
 
     load(num1){
@@ -67,18 +67,21 @@ class Round{
         let path = this.paths[this.firstPath];
         if(path.display){
             ctx.lineWidth = Ctrl.View.Canvas.ratio*2*(Ctrl.View.zoomLevel +1);
-            ctx.beginPath();
             for(var j in path.data){
+                ctx.beginPath();
                 let path = this.paths[this.firstPath].data;
                 ctx.strokeStyle = this.paths[this.firstPath].color;
                 let start = coord[path[j].start];
                 let end = coord[path[j].end];
                 ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
+                ctx.stroke();
+                if(this.stop != null && this.stop.longitude === end.longitude && this.stop.latitude === end.latitude){
+                    ctx.setLineDash([10, 5]);
+                }
             }
-        ctx.stroke();
         }
-        
+        ctx.setLineDash([]);
     }
 
     switchPathDisplay(id1, state){
@@ -105,5 +108,9 @@ class Round{
 
     pathToForeground(id){
         this.firstPath = id;
+    }
+
+    setStop(node){
+        this.stop = node;
     }
 }

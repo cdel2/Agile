@@ -7,6 +7,7 @@ class DelState extends State{
         console.log("Etat delState"); 
         $("#snoInfoBox").hide();
         $("#pathMenu").hide();
+        $("#timeline").hide();
         
         $("#addDel").html("<i class='fas fa-plus'></i>").addClass("btn-warning").removeClass("btn-success");
         $("#rmvDel").html("<i class='fas fa-minus'></i>").addClass("btn-warning").removeClass("btn-success");

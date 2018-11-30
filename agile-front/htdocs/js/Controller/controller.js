@@ -5,6 +5,8 @@ class Controller{
         this.View;
         this.state = new InitState();
         
+        this.time = null;
+
         //Interaction
         this.lastX; this.lastY;
         this.dragged = false;
@@ -104,5 +106,9 @@ class Controller{
             this.View.Round.pathToForeground(id);
             this.View.update();
         }
+    }
+
+    changeTime(time){
+        console.log(time.value);
     }
 }
