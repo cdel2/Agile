@@ -1,8 +1,8 @@
 class Deliveries{
     constructor(){
-        this.warehouseDisp = {radius: 8, color: "red"};
-        this.nodeDisp = {radius: 4, color: "blue"};
-        this.userNodeDisp = {radius: 4, color: "green"};
+        this.warehouseDisp = {radius: Ctrl.View.Canvas.ratio*8, color: "red"};
+        this.nodeDisp = {radius: Ctrl.View.Canvas.ratio*4, color: "blue"};
+        this.userNodeDisp = {radius: Ctrl.View.Canvas.ratio*4, color: "green"};
         this.warehouse = null;
         this.delNodes = [];
         this.userDelNodes = [];

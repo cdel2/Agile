@@ -22,6 +22,7 @@ class Controller{
             value = 3;
         }
         this.View.loadRound(value);
+        return false;
     }
 
     changeMap(element){
@@ -72,17 +73,17 @@ class Controller{
         }
     }
 
-    disableRound(el){
+    disableRound(el, id){
         var jel = $(el);
         if(jel.hasClass('hiddenPath')){
             jel.removeClass("hiddenPath");
-            $(el).html("");
-            this.View.Round.switchPathDisplay(el.style.backgroundColor, true);
+            $(el).html("<i class='fas fa-eye'></i>");
+            this.View.Round.switchPathDisplay(id, true);
             this.View.update();
         }else{
             jel.addClass("hiddenPath");
             $(el).html("<i class='fas fa-eye-slash eye'></i>");
-            this.View.Round.switchPathDisplay(el.style.backgroundColor, false);
+            this.View.Round.switchPathDisplay(id, false);
             this.View.update();
         }
     }

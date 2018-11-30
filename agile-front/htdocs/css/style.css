@@ -2,6 +2,8 @@
 
 #infCol{
     background-color: #f3f3f3;
+    /*position: absolute;*/
+    overflow-y: scroll;
 }
 #mapCol{
     padding-left: 0;
@@ -73,8 +75,9 @@
 }
 
 #pathMenu{
-    display: flex;
     border-radius: 5px;
+    border-color: gray;
+    /*background-color: lightgray;*/
 }
 
 #colorSample{
@@ -92,4 +95,23 @@
 
 .eye{
     margin: auto;
+}
+
+.pathLine{
+    border-radius: 5px;
+    width: 100%;
+    display: flex;
+    margin-bottom: 2%;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.pathLine:hover{
+    background-color: gray;
+}
+
+.viewButton{
+    position: absolute;
+    right: 15px;
+    margin: 15px;
 }

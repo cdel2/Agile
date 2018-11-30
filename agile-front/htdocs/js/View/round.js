@@ -20,8 +20,8 @@ class Round{
             for(var i in data){
                 let round = data[i].listPath;
                 let color1 = object.colors[i];
-                var temp = {display:true, color:color1, data:[]};
-                $("#pathMenu").append("<div id='colorSample' style='background-color:"+color1+";' onclick='Ctrl.disableRound(this)'></div>");
+                var temp = {id:i, display:true, color:color1, data:[]};
+                $("#pathMenu").append(object.createPathHtml(color1,100, i));
                 for(var j in round){
                    let path = round[j].path;
                    for(var k in path){
@@ -45,7 +45,7 @@ class Round{
     }
 
     display(ctx, coord){
-        ctx.lineWidth = 1*(Ctrl.View.zoomLevel +1);
+        ctx.lineWidth = Ctrl.View.Canvas.ratio*1*(Ctrl.View.zoomLevel +1);
         
         ctx.globalAlpha = 1;
         for(var i in this.paths){
@@ -65,11 +65,20 @@ class Round{
         
     }
 
-    switchPathDisplay(color, state){
+    switchPathDisplay(id, state){
         for(var i in this.paths){
-            if(this.paths[i].color === color){
+            if(this.paths[i].id === id){
                 this.paths[i].display=state;
             }
         }
+    }
+
+    createPathHtml(color, totalTime, id){
+        var temp =  "<div class='pathLine'>";
+        temp += "<div id='colorSample' style='background-color:"+color+";'></div>";
+        temp += totalTime;
+        temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.disableRound(this, "+id+")'><i class='fas fa-eye'></i></button>"
+        temp += "</div>";
+        return temp;
     }
 }
