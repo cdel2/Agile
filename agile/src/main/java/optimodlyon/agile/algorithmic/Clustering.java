@@ -180,7 +180,12 @@ public class Clustering {
 			}
 			clusters.add(currentCluster);
 		}
+		
 		else {
+			if(deliverers>nbdeliveries)
+			{
+				deliverers=nbdeliveries;
+			}
 		int modulo = nbdeliveries%deliverers;
 		int divider=(nbdeliveries-modulo)/deliverers;
 		int currentDiv=0;
