@@ -1,0 +1,26 @@
+package optimodlyon.agile.states;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import optimodlyon.agile.models.CityMap;
+import optimodlyon.agile.models.CityMap;
+import optimodlyon.agile.models.Segment;
+import optimodlyon.agile.xml.DeserializerXML;
+
+public class DefaultState implements State {
+
+	
+	public void loadMap(String file) {
+		HashMap<Long, ArrayList<Segment>> graph = DeserializerXML.deserializeMap(file);
+		CityMap.getInstance().setGraph(graph);
+	}
+	
+	public void loadDeliveries(String file) throws Exception {
+		throw new Exception("Impossible de charger des livraisons");
+	}
+	
+	public void startCalculation(int nb) throws Exception{
+		throw new Exception("Impossible de commencer le calcul");
+	}
+}

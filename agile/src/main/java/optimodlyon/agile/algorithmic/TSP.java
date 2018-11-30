@@ -18,7 +18,7 @@ public class TSP {
 	 */
 	public static void main(String[] args) {
 		TSP tsp = new TSP();
-		CityMap map = new CityMap();
+		CityMap map = CityMap.getInstance();
 		Map<Long, Float> successors1 = new HashMap<Long, Float>();
 		successors1.put((long) 2, (float) 8);
 		successors1.put((long) 3, (float) 7);

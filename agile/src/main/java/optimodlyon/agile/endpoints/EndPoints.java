@@ -3,6 +3,7 @@ package optimodlyon.agile.endpoints;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.controller.Controller;
 import optimodlyon.agile.models.CityMap;
+import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.Segment;
@@ -21,24 +22,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class EndPoints {
 	Controller controller = new Controller();
 	
-    @GetMapping("/map/{type}")
-    public CityMap  getMap(@PathVariable String type) {
-        controller.InitializeGraph(type);
-        return controller.map;
+	//AJOUTER LA GESTION DES ERREURS
+    @GetMapping("/map/{file}")
+    public CityMap  getMap(@PathVariable String file) {
+        controller.InitializeGraph(file);
+        return CityMap.getInstance();
     }
     
     @GetMapping("/deliveries/{file}")
     public CityMap getDeliveries(@PathVariable String file) {
         controller.GetDeliveries(file);
-        return controller.map;
+        return CityMap.getInstance();
     }
+    
     
     @GetMapping("/calc/{nb}")
     public List<Round> get(@PathVariable int nb) {
-    	List<Round> algo = controller.doAlgorithm(nb);
-        return algo;
+    	controller.doAlgorithm(nb);
+        return CityMap.getInstance().getListRounds();
     }
     
+    /*
     @GetMapping("/testcalc/{nb}")
     public List<Round> getRounds(@PathVariable int nb) {
     	controller.InitializeGraph("petit");
@@ -46,4 +50,5 @@ public class EndPoints {
     	List<Round> algo = controller.doAlgorithm(nb);
         return algo;
     }
+    */
 }

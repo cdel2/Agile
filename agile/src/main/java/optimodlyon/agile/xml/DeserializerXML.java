@@ -18,7 +18,7 @@ import optimodlyon.agile.models.Segment;
 
 public class DeserializerXML {
 
-  public static CityMap deserializeMap(String type) {
+  public static HashMap<Long, ArrayList<Segment>> deserializeMap(String type) {
 	
     try {
 
@@ -76,11 +76,9 @@ public class DeserializerXML {
             } else {
             	throw new Exception();
             }
-        }
+        }        
         
-        CityMap map = new CityMap(graph);
-        
-        return map;
+        return graph;
         
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,65 +87,51 @@ public class DeserializerXML {
         }
     }
   
-  	public static CityMap deserializeDelivery(String file, CityMap map) {
-  		try {
+  public static ArrayList<Delivery> deserializeDeliveries(String file) {
+		try {
 
-  	        File fXmlFile = new File("src/main/java/optimodlyon/agile/files/"+file+".xml");
+	        File fXmlFile = new File("src/main/java/optimodlyon/agile/files/"+file+".xml");
 
-  	        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-  	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-  	        Document doc = dBuilder.parse(fXmlFile);
-  	        doc.getDocumentElement().normalize();
-  	                
-  	        NodeList dList = doc.getElementsByTagName("livraison"); 
-  	        NodeList entrepot = doc.getElementsByTagName("entrepot"); 
-  	        
-  	        ArrayList<Delivery> listDelivery = new ArrayList<Delivery>();
-  	        Long id;
-  	        Date timeStart;
-  	        float duration; 
-  	        Delivery delivery;
-  	        Warehouse warehouse;
-  	        
-  	        final Element nodeE = (Element) entrepot.item(0);
-  	        String dateXML = nodeE.getAttribute("heureDepart");
-  	        SimpleDateFormat dateFormat = new SimpleDateFormat("h:m:s");
-  	        timeStart = dateFormat.parse(dateXML);
-  	        id = Long.parseLong(nodeE.getAttribute("adresse"));
-  	        
-  	        warehouse = new Warehouse(id, timeStart);
-  	        warehouse.findLatitudeLongitude(map.graph);
-  	        
-  	        for (int i = 0; i<dList.getLength(); i++) {
-  	            final Element nodeD = (Element) dList.item(i);
-  	            id = Long.parseLong(nodeD.getAttribute("adresse"));
-  	            duration = Float.valueOf(nodeD.getAttribute("duree"));
-  	            if(!durationIsValid(duration))
-  	            {
-  	            	throw new Exception();
-  	            }
-  	            delivery = new Delivery(id, duration);
-  	            if(delivery.findLatitudeLongitude(map.graph))
-  	            {
-  	  	            listDelivery.add(delivery);
-  	            } else {
-  	            	throw new Exception();
-  	            }
-  	        }
-  	        
-  	        map.setListDelivery(listDelivery);
-  	        map.setWarehouse(warehouse);
-  	        
-  	        return map;
-  	        
-  	        } catch (Exception e) {
-  	            e.printStackTrace();
-  	            System.out.println("XML file for deliveries is wrong");
-  	            return null;
-  	        }
-  		
-  		
-  	}
+	        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+	        Document doc = dBuilder.parse(fXmlFile);
+	        doc.getDocumentElement().normalize();
+	        NodeList dList = doc.getElementsByTagName("livraison");   
+	        
+	        ArrayList<Delivery> listDelivery = new ArrayList<Delivery>();
+	        Long id;
+	        float duration; 
+	        Delivery delivery;
+
+	        
+	        for (int i = 0; i<dList.getLength(); i++) {
+	            final Element nodeD = (Element) dList.item(i);
+	            id = Long.parseLong(nodeD.getAttribute("adresse"));
+	            duration = Float.valueOf(nodeD.getAttribute("duree"));
+	            if(!durationIsValid(duration))
+	            {
+	            	throw new Exception();
+	            }
+	            delivery = new Delivery(id, duration);
+	            if(delivery.findLatitudeLongitude(CityMap.getInstance().getGraph()))
+	            {
+	  	            listDelivery.add(delivery);
+	            } else {
+	            	throw new Exception();
+	            }
+	        }
+	        
+	        return listDelivery;
+	        
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            System.out.println("XML file for deliveries is wrong");
+	            return null;
+	        }
+		
+		
+	}
+	
   	
   	public static boolean durationIsValid(float duration)
   	{
@@ -157,6 +141,40 @@ public class DeserializerXML {
   		} else {
   			return false;
   		}
+  	}
+  	
+  	public static Warehouse deserializeWarehouse(String file) {
+  		try {
+
+  	        File fXmlFile = new File("src/main/java/optimodlyon/agile/files/"+file+".xml");
+
+  	        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+  	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+  	        Document doc = dBuilder.parse(fXmlFile);
+  	        doc.getDocumentElement().normalize();
+  	                
+  	        NodeList entrepot = doc.getElementsByTagName("entrepot"); 
+  	        Long id;
+  	        Date timeStart;
+  	        Warehouse warehouse;
+  	        
+  	        final Element nodeE = (Element) entrepot.item(0);
+  	        String dateXML = nodeE.getAttribute("heureDepart");
+  	        SimpleDateFormat dateFormat = new SimpleDateFormat("h:m:s");
+  	        timeStart = dateFormat.parse(dateXML);
+  	        id = Long.parseLong(nodeE.getAttribute("adresse"));
+  	        
+  	        warehouse = new Warehouse(id, timeStart);
+  	        warehouse.findLatitudeLongitude(CityMap.getInstance().getGraph());
+  	        return warehouse;
+  	        
+  	        } catch (Exception e) {
+  	            e.printStackTrace();
+  	            System.out.println("XML file for warehouse is wrong");
+  	            return null;
+  	        }
+  		
+  		
   	}
   	
   	

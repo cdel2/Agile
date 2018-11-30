@@ -1,34 +1,47 @@
 package optimodlyon.agile.models;
 import java.util.ArrayList;
-import java.util.HashMap;
 
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+
+
+@Lazy(true)
 public class CityMap {
 	private float height;
 	private float width;
 	private int nbDeliverers;
-	//private int nbDeliveries;
-	//private ArrayList<Segment> listSegment;
-	private ArrayList<Delivery> listDelivery;
+	private ArrayList<Delivery> listDelivery = new ArrayList<Delivery>();
 	private Warehouse warehouse;
-	public HashMap<Long, ArrayList<Segment>> graph;
+	private HashMap<Long, ArrayList<Segment>> graph = new HashMap<Long, ArrayList<Segment>> ();
+	private List<Round> listRounds;
 	
-	public CityMap() {
+	private static CityMap instance = null;
+	
+	private CityMap() 
+	{
+		System.out.println("appel au constructeur du singleton citymap");
+	}
+	
+	public static CityMap getInstance() {
+		//System.out.println("lol");
+		if (instance == null)
+			instance = new CityMap();
+		else {
+			System.out.println("je ne suis pas nul !");
+		}
+		return instance;
+	}
+	
+	
+	public void setGraph(HashMap<Long, ArrayList<Segment>> graph) {
+		this.graph = graph;
+	}
+	
+	
 
-	}
-	
-	public CityMap(HashMap<Long, ArrayList<Segment>> graph, int nbDeliverers, Warehouse warehouse, ArrayList<Delivery> listDelivery) {
-		this.graph = graph;
-		this.nbDeliverers = nbDeliverers;
-		this.warehouse = warehouse;
-		this.listDelivery = listDelivery;
-	}
-	
-	public CityMap(HashMap<Long, ArrayList<Segment>> graph) {
-		this.graph = graph;
-		warehouse = null;
-	}
-	
-	
 	/**
 	 * @return the height
 	 */
@@ -124,6 +137,18 @@ public class CityMap {
 		}
 		System.out.println("pas de segment trouvé");
 		return null;
+	}
+
+	public HashMap<Long, ArrayList<Segment>> getGraph() {
+		return graph;
+	}
+
+	public void setListRounds(List<Round> finalRound) {
+		listRounds = finalRound;		
+	}
+
+	public List<Round> getListRounds() {
+		return listRounds;
 	}
 }
 
