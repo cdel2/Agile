@@ -5,6 +5,8 @@ class Controller{
         this.View;
         this.state = new InitState();
         
+        this.time = null;
+
         //Interaction
         this.lastX; this.lastY;
         this.dragged = false;
@@ -22,6 +24,7 @@ class Controller{
             value = 3;
         }
         this.View.loadRound(value);
+        return false;
     }
 
     changeMap(element){
@@ -72,18 +75,40 @@ class Controller{
         }
     }
 
-    disableRound(el){
+    disableRound(el, id){
         var jel = $(el);
         if(jel.hasClass('hiddenPath')){
             jel.removeClass("hiddenPath");
-            $(el).html("");
-            this.View.Round.switchPathDisplay(el.style.backgroundColor, true);
+            $(el).html("<i class='fas fa-eye'></i>");
+            this.View.Round.switchPathDisplay(id, true);
             this.View.update();
         }else{
             jel.addClass("hiddenPath");
             $(el).html("<i class='fas fa-eye-slash eye'></i>");
-            this.View.Round.switchPathDisplay(el.style.backgroundColor, false);
+            this.View.Round.switchPathDisplay(id, false);
             this.View.update();
         }
+    }
+
+    pathToForeground(el, id){
+        var jel = $(el);
+        if(jel.hasClass('activeLine')){
+            jel.removeClass("activeLine");
+            this.View.Round.pathToForeground(id);
+            this.View.update();
+        }else{
+            let list = $(".activeLine");
+            console.log(list);
+            for(var i=0; i<list.length; i++){
+                $(list[i]).removeClass("activeLine");
+            }
+            jel.addClass("activeLine");
+            this.View.Round.pathToForeground(id);
+            this.View.update();
+        }
+    }
+
+    changeTime(time){
+        console.log(time.value);
     }
 }

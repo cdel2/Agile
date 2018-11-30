@@ -2,6 +2,8 @@
 
 #infCol{
     background-color: #f3f3f3;
+    /*position: absolute;*/
+    overflow-y: scroll;
 }
 #mapCol{
     padding-left: 0;
@@ -46,6 +48,41 @@
     text-align:center;
 }
 
+#timeline{
+    position:absolute;
+    z-index:1400;
+    bottom:2%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    text-align:center;
+    background-color: #343a40;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+    border-radius: 5px;
+    color: white;
+    left: 50%;
+    transform: translate(-50%, 0); 
+}
+
+#timelineIn{
+    width: 100%;
+}
+
+#timelineIn .slider-handle{
+    background: #ffc107;
+}
+
+#timelineIn .in-selection{
+    background: #ffc107;
+}
+
+#timelineIn .slider-selection {
+    background: #ffdb70;
+}
+
 #stateChange{
     position:absolute;
     z-index:1400;
@@ -73,8 +110,9 @@
 }
 
 #pathMenu{
-    display: flex;
     border-radius: 5px;
+    border-color: gray;
+    /*background-color: lightgray;*/
 }
 
 #colorSample{
@@ -85,11 +123,29 @@
     border-radius: 5px;
     color: white;
 }
-
-#colorSample:hover {
-    filter: brightness(60%);
-}
-
 .eye{
     margin: auto;
+}
+
+.pathLine{
+    border-radius: 5px;
+    width: 100%;
+    display: flex;
+    margin-bottom: 2%;
+    background-color: #EBEBEB  ;
+    cursor: pointer;
+}
+
+.pathLine:hover{
+    background-color: lightgray;
+}
+
+.activeLine{
+    background-color: lightgray  ;
+}
+
+.viewButton{
+    position: absolute;
+    right: 15px;
+    margin: 15px;
 }

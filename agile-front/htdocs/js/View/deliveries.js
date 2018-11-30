@@ -1,8 +1,8 @@
 class Deliveries{
     constructor(){
-        this.warehouseDisp = {radius: 8, color: "red"};
-        this.nodeDisp = {radius: 4, color: "blue"};
-        this.userNodeDisp = {radius: 4, color: "green"};
+        this.warehouseDisp = {radius: Ctrl.View.Canvas.ratio*8, color: "red"};
+        this.nodeDisp = {radius: Ctrl.View.Canvas.ratio*4, color: "blue"};
+        this.userNodeDisp = {radius: Ctrl.View.Canvas.ratio*4, color: "green"};
         this.warehouse = null;
         this.delNodes = [];
         this.userDelNodes = [];
@@ -91,35 +91,31 @@ class Deliveries{
         }
     }
 
-    nodeInfos(node){
-        if(this.comparePos(this.warehouse, node)){
-            if(this.nodeInfo != null && this.comparePos(this.nodeInfo, this.warehouse)){
-                this.nodeInfo=null;
-                showMessage(false);
-                return;
-            }else{
-                this.nodeInfo=this.warehouse;
-                return;
+    findBestNode(X,Y){
+        let bestNode;
+        var bestDistance = Number.MAX_VALUE;
+        let tab = this.userDelNodes.concat(this.delNodes);
+        tab.push(this.warehouse);
+        console.log(tab);
+        for (var prop in tab) {
+            let node = tab[prop];
+            let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
+            if(temp<bestDistance){
+                bestDistance = temp;
+                bestNode = node;
             }
         }
-        for(var i=0; i<this.delNodes.length; i++){
-            let node1 = this.delNodes[i];
-            if(this.comparePos(node, node1)){
-                if(this.nodeInfo != null && this.comparePos(this.nodeInfo, node1)){
-                    this.nodeInfo=null;
-                    showMessage(false);
-                }else{
-                    this.nodeInfo=node1;
-                }
-            }
+        console.log(bestDistance);
+        if(bestDistance>25){
+            return null;
+        }else{
+            return bestNode;
         }
     }
 
-    comparePos(node, node1){
-        if(node.longitude === node1.longitude && node.latitude === node1.latitude){
-            return true;
-        }
-        return false;
+    nodeInfos(node){
+        this.nodeInfo = node;
+        return;
     }
 
     removeNode(node){

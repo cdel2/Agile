@@ -2,7 +2,8 @@ class Round{
     constructor(){
         this.paths = [];
         this.colors = ["green", "yellow", "purple", "blue", "lime", "aqua", "fuschia", "red", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
-
+        this.firstPath = 0;
+        this.stop=null;
     }
 
     load(num1){
@@ -17,11 +18,11 @@ class Round{
             console.log(data);
             
             var totalTime = new Date().getTime()-ajaxTime;
-            for(var i in data){
+            for(var i=0; i<data.length; i++){
                 let round = data[i].listPath;
                 let color1 = object.colors[i];
-                var temp = {display:true, color:color1, data:[]};
-                $("#pathMenu").append("<div id='colorSample' style='background-color:"+color1+";' onclick='Ctrl.disableRound(this)'></div>");
+                var temp = {id:i, display:true, color:color1, data:[]};
+                $("#pathMenu").append(object.createPathHtml(color1,100, i));
                 for(var j in round){
                    let path = round[j].path;
                    for(var k in path){
@@ -45,11 +46,11 @@ class Round{
     }
 
     display(ctx, coord){
-        ctx.lineWidth = 1*(Ctrl.View.zoomLevel +1);
+        ctx.lineWidth = Ctrl.View.Canvas.ratio*1*(Ctrl.View.zoomLevel +1);
         
         ctx.globalAlpha = 1;
         for(var i in this.paths){
-            if(this.paths[i].display){
+            if(this.paths[i].display && i!=this.firstPath){
                 let path = this.paths[i].data;
                 ctx.beginPath();
                 ctx.strokeStyle = this.paths[i].color;
@@ -63,13 +64,53 @@ class Round{
             }
         }
         
-    }
-
-    switchPathDisplay(color, state){
-        for(var i in this.paths){
-            if(this.paths[i].color === color){
-                this.paths[i].display=state;
+        let path = this.paths[this.firstPath];
+        if(path.display){
+            ctx.lineWidth = Ctrl.View.Canvas.ratio*2*(Ctrl.View.zoomLevel +1);
+            for(var j in path.data){
+                ctx.beginPath();
+                let path = this.paths[this.firstPath].data;
+                ctx.strokeStyle = this.paths[this.firstPath].color;
+                let start = coord[path[j].start];
+                let end = coord[path[j].end];
+                ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
+                ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
+                ctx.stroke();
+                if(this.stop != null && this.stop.longitude === end.longitude && this.stop.latitude === end.latitude){
+                    ctx.setLineDash([10, 5]);
+                }
             }
         }
+        ctx.setLineDash([]);
+    }
+
+    switchPathDisplay(id1, state){
+        console.log(id1);
+        for(var i in this.paths){
+            console.log(this.paths[i].id);
+            if(this.paths[i].id === id1){
+                console.log("coucou");
+                this.paths[i].display=state;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    createPathHtml(color, totalTime, id){
+        var temp =  "<div class='pathLine' onclick='Ctrl.pathToForeground(this,"+id+");'>";
+        temp += "<div id='colorSample' style='background-color:"+color+";'></div>";
+        temp += totalTime;
+        temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.disableRound(this, "+id+")'><i class='fas fa-eye'></i></button>"
+        temp += "</div>";
+        return temp;
+    }
+
+    pathToForeground(id){
+        this.firstPath = id;
+    }
+
+    setStop(node){
+        this.stop = node;
     }
 }
