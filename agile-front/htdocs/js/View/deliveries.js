@@ -1,8 +1,8 @@
 class Deliveries{
     constructor(){
-        this.warehouseDisp = {radius: 15, color: "red"};
-        this.nodeDisp = {radius: 10, color: "blue"};
-        this.userNodeDisp = {radius: 10, color: "green"};
+        this.warehouseDisp = {radius: 8, color: "red"};
+        this.nodeDisp = {radius: 4, color: "blue"};
+        this.userNodeDisp = {radius: 4, color: "green"};
         this.warehouse = null;
         this.delNodes = [];
         this.userDelNodes = [];
@@ -61,13 +61,13 @@ class Deliveries{
 
     drawCircle(X, Y, R, color, ctx){
         ctx.beginPath();
-        ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
+        ctx.arc(X, Y, R*(Ctrl.View.zoomLevel/2 +1), 0, 2 * Math.PI, false);
         ctx.fillStyle = color;
         ctx.strokeStyle = "black";
         ctx.lineWidth = 3;
         ctx.globalAlpha = 0.7;
         ctx.fill();
-        ctx.stroke();
+        //ctx.stroke();
     }
 
     addUserNode(node){

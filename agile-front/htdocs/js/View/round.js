@@ -45,7 +45,7 @@ class Round{
     }
 
     display(ctx, coord){
-        ctx.lineWidth = 4*(Ctrl.View.zoomLevel +1);
+        ctx.lineWidth = 1*(Ctrl.View.zoomLevel +1);
         
         ctx.globalAlpha = 1;
         for(var i in this.paths){
