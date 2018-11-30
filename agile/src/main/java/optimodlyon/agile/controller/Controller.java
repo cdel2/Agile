@@ -48,5 +48,35 @@ public class Controller {
 		List<List<Intersection>> ret = tsp.makeRounds(finalRounds, map);
 		return ret;
 	}
+	
+	public List<List<Intersection>> doAlgorithmWithoutClustering(int nb) {
+		Clustering clustering = new Clustering();
+		Dijkstra dijkstra = new Dijkstra();
+		TSP tsp = new TSP();
+		
+		ArrayList<Delivery> listDel = map.getListDelivery();
+		ArrayList<Long> roundID = new ArrayList<Long>();
+		
+		//récupération des id de delivery et stockage dans une liste
+		for (int i = 0; i < listDel.size(); i++) {
+			roundID.add(listDel.get(i).getId());
+		}
+		
+		map.getWarehouse();
+		roundID.add(map.getWarehouse().getId());
+		Map<Long, List<Segment>> mapGraph = clustering.reform(map.graph);
+		
+		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(mapGraph, roundID);
+		
+		ArrayList<PathLength> finalRounds = new ArrayList<PathLength>();
+	
+		System.out.println(">>>>>>>" + graph);
+		PathLength finalRound = tsp.doTSP(graph, map.getWarehouse().getId());
+		
+		finalRounds.add(finalRound);
+		
+		List<List<Intersection>> ret = tsp.makeRounds(finalRounds, map);
+		return ret;
+	}
 
 }
