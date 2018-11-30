@@ -40,7 +40,7 @@ public class Controller {
 			arrayOfIntersectionIds.add(map.getWarehouse().getId());
 			Map<Long, List<Segment>> mapGraph = clustering.reform(map.graph);
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(mapGraph, arrayOfIntersectionIds);
-			Round round = tsp.doTSP(graph, map, dijkstra);
+			Round round = tsp.brutForceTSP(graph, map, dijkstra);
 			finalRound.add(round);
 		}
 		//System.out.println(finalRound);
