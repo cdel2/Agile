@@ -59,11 +59,17 @@ public class Delivery extends Intersection{
 		this.timeArrival = timeArrival;
 	}
 	
-	public void findLatitudeLongitude(HashMap<Long, ArrayList<Segment>> graph) {
+	public boolean findLatitudeLongitude(HashMap<Long, ArrayList<Segment>> graph) {
 		Segment segment = (graph.get(this.id)).get(0);
-		Intersection correspondingInter = segment.getStart();
-		this.latitude = correspondingInter.latitude;
-		this.longitude = correspondingInter.longitude;
+		if(segment != null)
+		{
+			Intersection correspondingInter = segment.getStart();
+			this.latitude = correspondingInter.latitude;
+			this.longitude = correspondingInter.longitude;
+			return true;
+		} else {
+			return false;
+		}
 		
 	}
 

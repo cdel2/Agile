@@ -118,7 +118,7 @@ public class CityMap {
 		Segment finalSegment;
 		for (Segment segment : segments) {
 			if((long)segment.getEnd().getId()==(long)destination) {
-				System.out.println(segment);
+				//System.out.println(segment);
 				return segment;
 			}
 		}

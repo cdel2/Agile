@@ -15,6 +15,7 @@ class Deliveries{
     load(delFile1){
         let object = this;
         let delFile = delFile1;
+        $("#loaderEl").show();
         $.ajax({
             url: "http://localhost:8080/deliveries/dl-"+delFile,
             type:"GET"
@@ -30,6 +31,9 @@ class Deliveries{
             console.log("Delivery file not loaded !");
             alertBox("Something wrong happened !");
             Ctrl.View.update();
+            Ctrl.state = new MapState();
+        }).always(function(){    
+            $("#loaderEl").hide();
         });        
     }
 
@@ -59,6 +63,8 @@ class Deliveries{
         ctx.beginPath();
         ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
         ctx.fillStyle = color;
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3;
         ctx.globalAlpha = 0.7;
         ctx.fill();
         ctx.stroke();

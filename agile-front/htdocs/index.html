@@ -44,6 +44,7 @@
         <div id="stateChange">
           <button type="button" class="btn btn-dark" id="undo"><i class="fas fa-undo"></i></button>
           <button type="button" class="btn btn-dark" id="redo"><i class="fas fa-redo"></i></button>
+          <div id="loaderEl" class='loader'></div>
         </div>
         <canvas id="map"></canvas>
       </div>
@@ -53,34 +54,38 @@
         <h3>OptimodLyon</h3>
         <br />
         <div class="form-group">
-          <label for="mapSelector">Map</label>
+          <label for="mapSelector">Taille du plan</label>
           <select class="form-control" id="mapSelector" onchange="Ctrl.changeMap(this);">
-            <option>Big</option>
-            <option>Average</option>
-            <option>Small</option>
+            <option>Grand</option>
+            <option selected="selected">Moyen</option>
+            <option>Petit</option>
           </select>
         </div>
-        <button type="button" id="loadMap" class="btn btn-warning" onclick="Ctrl.loadMap();">Load map</button>
+        <button type="button" id="loadMap" class="btn btn-warning" onclick="Ctrl.loadMap();">Charger plan</button>
         <br />
         <hr />
         <div class="form-group">
-          <label for="delSelector">Delivery plan (number of points)</label>
+          <label for="delSelector">Fichier de livraison</label>
           <select class="form-control" id="delSelector" onchange="Ctrl.changeDel(this);">
             <option>20</option>
             <option>15</option>
             <option>12</option>
           </select>
         </div>
-        <button type="button" class="btn btn-warning" id="loadDel" onclick="Ctrl.loadDeliveries();">Load deliveries</button>
+        <button type="button" class="btn btn-warning" id="loadDel" onclick="Ctrl.loadDeliveries();">Charger livraisons</button>
         <button type="button" class="btn btn-warning" id="addDel" onclick="Ctrl.addPoint();" disabled><i class="fas fa-plus"></i></button>
         <button type="button" class="btn btn-warning" id="rmvDel" onclick="Ctrl.rmvPoint();" disabled><i class="fas fa-minus"></i></button>
         <br />
         <hr />
         <div class="form-group">
-          <label for="numInput">Number of persons</label>
-          <input type="email" id="numInput" class="form-control" placeholder="Between 1 and 6">
+          <label for="numInput">Nombre de livreurs</label>
+          <input id="numInput" class="form-control" placeholder="Valeur par défaut : 3">
         </div>
-        <button type="button" id="loadRounds" class="btn btn-warning" onclick="Ctrl.loadRound();" disabled>Calculate rounds</button>
+        <button type="button" id="loadRounds" class="btn btn-warning" onclick="Ctrl.loadRound();" disabled>Calculer itinéraires</button>
+        <span id="execTime"></span>
+        <br />
+        <br />
+        <div id="pathMenu" class="breadcrumb"></div>
       </div>
     </div>
   </div>

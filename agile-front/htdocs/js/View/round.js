@@ -1,66 +1,72 @@
 class Round{
     constructor(){
         this.paths = [];
+        this.colors = ["green", "yellow", "purple", "blue", "lime", "aqua", "fuschia"];
+
     }
 
-    load(Coord1){
+    load(num1){
         let object = this;
-        let Coord = Coord1;
+        let num = num1;
+        $("#loaderEl").show();
+        var ajaxTime= new Date().getTime();
         $.ajax({
-            url: "deliveries/round.xml",
+            url: "http://localhost:8080/calc/"+num,
             type:"GET"
-        }).done(function( xmlDoc ) {
-            var del = xmlDoc.getElementsByTagName("round")[0].getElementsByTagName("livreur");
-            for(var j = 0; j < del.length; j++){
-                let round = del[j].childNodes;
-                let path = [];
-                for(var i = 0; i < round.length; i++){
-                    let el = round[i];
-                    //console.log(el);
-                    if(el.tagName === "entrepot" || el.tagName === "livraison"){
-                    path.push(Coord[el.getAttribute("adresse")]);
-                    }
+        }).done(function( data ) {
+            console.log(data);
+            
+            var totalTime = new Date().getTime()-ajaxTime;
+            for(var i in data){
+                let round = data[i].listPath;
+                let color1 = object.colors[i];
+                var temp = {display:true, color:color1, data:[]};
+                $("#pathMenu").append("<div id='colorSample' style='background-color:"+color1+";' onclick='Ctrl.disableRound(this)'></div>");
+                for(var j in round){
+                   let path = round[j].path;
+                   for(var k in path){
+                       var el = path[k];
+                       temp.data.push({start:el.start.id, end:el.end.id});
+                   }
                 }
-                object.paths.push(path);
+                object.paths.push(temp);
             }
+            $("#execTime").text("  "+totalTime/1000+"s");
             Ctrl.View.update();
-        }).fail(function(textStatus, errorThrown){
+        }).fail(function(textStatus){
+            alertBox("Something wrong happened !");
             console.log("Round file not loaded !");
             console.log(textStatus);
+        }).always(function(){
+            $("#loaderEl").hide();
         });
     }
 
-    display(ctx, view){
-        
-        for(var i = 0; i < this.paths.length; i++){
-            ctx.beginPath();
-            let path = this.paths[i];
-            let color = this.colorGen();
-            for(var j = 0; j<path.length-1; j++){
-                //console.log(path);
-                let start = path[j];
-                let end = path[j+1];
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 5;
-                ctx.moveTo(view.norm(start.long, true),view.norm(start.lat, false));
-                ctx.lineTo(view.norm(end.long, true),view.norm(end.lat, false));
+    display(ctx, coord){
+        ctx.lineWidth = 5;
+        ctx.globalAlpha = 1;
+        for(var i in this.paths){
+            if(this.paths[i].display){
+                let path = this.paths[i].data;
+                ctx.beginPath();
+                ctx.strokeStyle = this.paths[i].color;
+                for(var j in path){
+                    let start = coord[path[j].start];
+                    let end = coord[path[j].end];
+                    ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
+                    ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
+                }
+                ctx.stroke();
             }
-            ctx.stroke();
         }
         
     }
 
-    colorGen(){
-        var temp = Math.floor(3*Math.random());
-        switch(temp){
-            case 0:
-                return "green";
-            case 1:
-                return "yellow";
-            case 2:
-                return "purple";
-            default:
-                return "blue";
+    switchPathDisplay(color, state){
+        for(var i in this.paths){
+            if(this.paths[i].color === color){
+                this.paths[i].display=state;
+            }
         }
     }
 }

@@ -26,22 +26,24 @@ class Viewer{
 
     loadDeliveries(delFile){
         this.Deliveries = new Deliveries();
+        this.Round = null;
         this.Deliveries.load(delFile);
     }
 
-    loadRound(){
+    loadRound(num){
         this.Round = new Round();
-        this.Round.load(this.Map.coord);
+        this.Round.load(num);
     }
 
     update(){
         this.Canvas.ctx.clearRect(0, 0, this.Canvas.width, this.Canvas.height);
         this.Map.display(this.Canvas.ctx);
+
+        if(this.Round != null){
+            this.Round.display(this.Canvas.ctx, this.Map.coord);
+        }
         if(this.Deliveries != null){
             this.Deliveries.display(this.Canvas.ctx, this);
-        }
-        if(this.Round != null){
-            this.Round.display(this.Canvas.ctx, this);
         }
     }
 

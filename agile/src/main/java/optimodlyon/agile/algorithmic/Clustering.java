@@ -14,7 +14,90 @@ import optimodlyon.agile.models.*;
 
 public class Clustering {
 	public static void main (String[] args) throws ParseException {
-		ArrayList<Segment> segments = new ArrayList<Segment>();
+		int deliverers=6;
+		
+		ArrayList<Integer> sortedDeliveries = new ArrayList<Integer>();
+		sortedDeliveries.add(1);
+		sortedDeliveries.add(2);
+		sortedDeliveries.add(3);
+		sortedDeliveries.add(4);
+		sortedDeliveries.add(5);
+		sortedDeliveries.add(6);
+		
+		ArrayList<ArrayList<Integer>> clusters = new ArrayList<ArrayList<Integer>>();
+		int nbdeliveries=sortedDeliveries.size();
+		if(deliverers==1)
+		{
+			ArrayList<Integer> currentCluster = new ArrayList<Integer>();
+			for(int i=0;i<nbdeliveries;i++)
+			{
+				currentCluster.add(sortedDeliveries.get(i));
+				System.out.println(currentCluster);
+			}
+			clusters.add(currentCluster);
+			System.out.println(clusters);
+		}
+		if(deliverers==6)
+		{
+			ArrayList<Integer> currentCluster = new ArrayList<Integer>();
+			for(int i=0;i<nbdeliveries;i++)
+			{
+				currentCluster.add(sortedDeliveries.get(i));
+				clusters.add(currentCluster);
+				currentCluster.clear();
+			}
+			System.out.println(clusters);
+		}/*
+		else {
+		int modulo = nbdeliveries%deliverers;
+		int divider=(nbdeliveries-modulo)/deliverers;
+		int currentDiv=0;
+		ArrayList<Integer> listIndex = new ArrayList<Integer>();
+			for(int i=0;i<modulo;i++)
+			{
+			listIndex.add(divider+currentDiv);
+			currentDiv+=divider+1;
+			System.out.println(listIndex);
+			}
+		currentDiv--;
+			for(int j=modulo;j<deliverers;j++)
+			{
+			listIndex.add(currentDiv+divider);
+			currentDiv+=divider;
+			System.out.println(listIndex);
+			}
+		ArrayList<Integer> currentCluster=new ArrayList<Integer>(sortedDeliveries.subList(0, listIndex.get(0)+1));
+		clusters.add(currentCluster);
+		System.out.println(clusters);
+		for(int k=1;k<listIndex.size();k++)
+			{
+				currentCluster=new ArrayList<Integer>(sortedDeliveries.subList(listIndex.get(k-1)+1, listIndex.get(k)+1));
+
+				System.out.println(listIndex.get(k-1));
+				System.out.println(listIndex.get(k));
+				clusters.add(currentCluster);
+			}
+		System.out.println(clusters);}*/
+			
+		/*
+		for(int i=listIndex.get(modulo);i<deliverers;i++)
+		{
+			listIndex.add(divider+currentDiv);
+			currentDiv+=divider-1;
+			System.out.println(listIndex);
+		}
+		System.out.println(listIndex);
+		ArrayList<Integer> currentCluster=new ArrayList<Integer>(sortedDeliveries.subList(0, listIndex.get(0)));
+		clusters.add(currentCluster);
+		System.out.println(clusters);
+		for(int k=1;k<listIndex.size();k++)
+		{
+			currentCluster=new ArrayList<Integer>(sortedDeliveries.subList(listIndex.get(k-1), listIndex.get(k)));
+			clusters.add(currentCluster);
+		}
+		System.out.println(clusters);*/
+	}
+		/*ArrayList<Segment> segments = new ArrayList<Segment>();
 	    Intersection i0 = new Intersection((long)0,(float)0.0,(float)0.0);
 	    
 	    Intersection i1 = new Intersection((long)1,(float)0.0,(float)2.0);
@@ -32,7 +115,7 @@ public class Clustering {
 	    /*
 	    for (int i = 0; i < segments.size(); i++) {
 	    	System.out.println(segments.get(i));
-	    }*/
+	    }
 	    HashMap<Long, ArrayList<Segment>> graph = new HashMap<Long, ArrayList<Segment>>();
 	    
 	    graph.put(i0.getId(), segments);
@@ -63,7 +146,7 @@ public class Clustering {
 		/*
 	    for (int i = 0; i < theoricList.size(); i++) {
 	    	System.out.println("del" + theoricList.get(i));
-	    }*/
+	    }
 	    
 		CityMap map = new CityMap(graph, 2, wsh, list);
 		
@@ -75,7 +158,7 @@ public class Clustering {
 	    for (int i = 0; i < list2.size(); i++) {
 	    	System.out.println("new del" + list2.get(i));
 	    }
-	}
+	}*/
 	
 	
 	
@@ -89,7 +172,7 @@ public class Clustering {
 		ArrayList<Delivery> listDel = M.getListDelivery();
         int nbLivreurs = M.getNbDeliverers();
         int nbLivraisons = listDel.size(); 
-        System.out.println(nbLivraisons);
+        //System.out.println(nbLivraisons);
         float xWareHouse = M.getWarehouse().getLongitude();
         float yWareHouse = M.getWarehouse().getLatitude();
         
@@ -102,14 +185,14 @@ public class Clustering {
         
         
         for (int i =0; i<nbLivraisons;i++){
-            System.out.println(listDel.get(i));
+            //System.out.println(listDel.get(i));
          }
         
         for (int i =0; i<nbLivraisons;i++){
             resX.add(listDel.get(i).getLongitude());
-            System.out.println(listDel.get(i).getLongitude());
+            //System.out.println(listDel.get(i).getLongitude());
             resY.add(listDel.get(i).getLatitude());
-            System.out.println(listDel.get(i).getLatitude());
+            //System.out.println(listDel.get(i).getLatitude());
          }
         
         
@@ -210,7 +293,7 @@ public class Clustering {
         	boolean stop = false;
         	int cmp = 0;
         	while (!stop) {
-        		System.out.println(cmp);
+        		//System.out.println(cmp);
         		if (resX.get(r)+xWareHouse==listDel.get(cmp).getLongitude() && resY.get(r)+yWareHouse==listDel.get(cmp).getLatitude()) {
         			listTri.add(listDel.get(cmp));
         			stop=true;
@@ -222,22 +305,85 @@ public class Clustering {
         return listTri; 
 	}
 	
+	public ArrayList<ArrayList<Delivery>> pushFrontDelivery(ArrayList<ArrayList<Delivery>> goalDeliveries,ArrayList<ArrayList<Delivery>> sortedDeliveries){
+		ArrayList<Delivery> currentCluster = new ArrayList<Delivery>();
+		currentCluster= goalDeliveries.get(goalDeliveries.size()-1);
+		
+		return sortedDeliveries;
+	}
+	
 	public ArrayList<ArrayList<Delivery>> dispatchCluster(CityMap map, int deliverers){
 		ArrayList<Delivery> sortedDeliveries = sortCluster(map);
 		ArrayList<ArrayList<Delivery>> clusters = new ArrayList<ArrayList<Delivery>>();
-		int j = 0;
-		ArrayList<Delivery> currentCluster = new ArrayList<Delivery>();
-		int clusterN = (int) Math.ceil(sortedDeliveries.size()/deliverers);
-		for(int i=0;i<sortedDeliveries.size();i++) {
-			currentCluster.add(sortedDeliveries.get(i));
-			if(0==((i-1)%clusterN) && i!=0) {
-				ArrayList<Delivery> finalCluster = new ArrayList<Delivery>(currentCluster);
-				clusters.add(finalCluster);
-				currentCluster.clear();
+		
+		int nbdeliveries=sortedDeliveries.size();
+		if(deliverers==1)
+		{
+			ArrayList<Delivery> currentCluster = new ArrayList<Delivery>();
+			for(int i=0;i<nbdeliveries;i++)
+			{
+				currentCluster.add(sortedDeliveries.get(i));
+			}
+			clusters.add(currentCluster);
+		}
+		else {
+		int modulo = nbdeliveries%deliverers;
+		int divider=(nbdeliveries-modulo)/deliverers;
+		int currentDiv=0;
+		ArrayList<Integer> listIndex = new ArrayList<Integer>();
+			for(int i=0;i<modulo;i++)
+			{
+			listIndex.add(divider+currentDiv);
+			currentDiv+=divider+1;
+			}
+		currentDiv--;
+			for(int j=modulo;j<deliverers;j++)
+			{
+			listIndex.add(currentDiv+divider);
+			currentDiv+=divider;
+			}
+		ArrayList<Delivery> currentCluster=new ArrayList<Delivery>(sortedDeliveries.subList(0, listIndex.get(0)+1));
+		clusters.add(currentCluster);
+		for(int k=1;k<listIndex.size();k++)
+			{
+				currentCluster=new ArrayList<Delivery>(sortedDeliveries.subList(listIndex.get(k-1)+1, listIndex.get(k)+1));
+
+				clusters.add(currentCluster);
 			}
 		}
 		return clusters;
 	}
+		/*
+		
+		
+		
+		ArrayList<Delivery> sortedDeliveries = sortCluster(map);
+		ArrayList<ArrayList<Delivery>> clusters = new ArrayList<ArrayList<Delivery>>();
+		int nbdeliveries=sortedDeliveries.size();
+		int modulo = nbdeliveries%deliverers;
+		int divider=(nbdeliveries-modulo)/2;
+		int currentDiv=0;
+		ArrayList<Integer> listIndex = new ArrayList<Integer>();
+		for(int i=0;i<divider-1;i++)
+		{
+			for(int j=0;j<modulo;j++)
+			{
+			listIndex.add(divider+1+currentDiv);
+			currentDiv=divider+1;
+			}
+			listIndex.add(divider+currentDiv);
+			currentDiv=divider;
+		}
+		
+		ArrayList<Delivery> currentCluster=new ArrayList<Delivery>(sortedDeliveries.subList(0, listIndex.get(0)));
+		clusters.add(currentCluster);
+		for(int k=1;k<listIndex.size();k++)
+		{
+			currentCluster=new ArrayList<Delivery>(sortedDeliveries.subList(listIndex.get(k-1)+1, listIndex.get(k)));
+			clusters.add(currentCluster);
+		}
+		return clusters;
+	}*/
 	
 	//Creates an Array of IDs for Dijkstra arguments
 	public static ArrayList<Long> createIdArray(ArrayList<Delivery> deliveryArray){

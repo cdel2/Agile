@@ -63,7 +63,7 @@ public class TSP {
 		//System.out.println("Liste des chemins possibles : " + possiblePaths);
 		// Find the shortest path
 		Round shortestRound = findShortestRound(possibleRounds);
-		System.out.println("Chemin le plus court trouvé : " + shortestRound.getClass() + "de longueur : " + shortestRound.getTotalDuration());
+		//System.out.println("Chemin le plus court trouvé : " + shortestRound.getClass() + "de longueur : " + shortestRound.getTotalDuration());
 		return shortestRound;
 	}
 
@@ -125,7 +125,8 @@ public class TSP {
 			// if not, we add the current path (which is a possible final path) to
 			// finalResults.
 			//System.out.println(currentPath + ">>>>>>>>>>>>>>>" + map);
-			
+			currentPath.add(map.getWarehouse().getId());
+			currentLength+=(currentSuccessors.get(map.getWarehouse().getId()));
 			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
 			Collections.reverse(IntersectionIds);
 			Path pathFound = new Path(IntersectionIds, map);
@@ -201,24 +202,5 @@ public class TSP {
 		}
 	}
 
-	public List<List<Intersection>> makeRounds(ArrayList<PathLength> list, CityMap map) {
-		List<List<Intersection>> rounds = new ArrayList<List<Intersection>>();
-		for (PathLength pl : list) {
-			List<Intersection> round = new ArrayList<Intersection>();
-			List<Long> r = pl.getPath();
-			for (Long id : r) {
-				//System.out.println(list);
-				//System.out.println(pl);
-				//System.out.println(id);
-				//System.out.println(map.graph.containsKey(id));
-				ArrayList<Segment> segments = (map.graph).get(id);
-				Segment seg = segments.get(0);
-				Intersection intersection = seg.getStart();
-				round.add(intersection);
-			}
-			rounds.add(round);
-		}
-		return rounds;
-	}
-
+	
 }
