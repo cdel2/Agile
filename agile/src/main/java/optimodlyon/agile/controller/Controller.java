@@ -43,7 +43,7 @@ public class Controller {
 			Round round = tsp.doTSP(graph, map, dijkstra);
 			finalRound.add(round);
 		}
-		System.out.println(finalRound);
+		//System.out.println(finalRound);
 		return finalRound;
 	}
 
