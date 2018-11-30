@@ -7,6 +7,10 @@ public class Round {
 	private Date endTime;
 	private ArrayList<Path> listPath;
 	private Warehouse start;
+	
+	public Round() {
+		listPath = new ArrayList<Path>();
+	}
 
 	/**
 	 * @return the startTime
@@ -70,8 +74,11 @@ public class Round {
 		this.startTime = startTime;
 	}
 	
-	public float getTotalDuration()
-	{
+	public void addPath(Path aPath) {
+		this.listPath.add(aPath);
+	}
+
+	public float getTotalDuration() {
 		float duration = 0;
 		for(int i = 0; i < listPath.size(); i++)
 		{
@@ -81,8 +88,7 @@ public class Round {
 		return duration;
 	}
 	
-	public String toString()
-	{
+	public String toString() {
 		return "duration : " + this.getTotalDuration() +"\n"+ this.listPath.toString();
 	}
 	

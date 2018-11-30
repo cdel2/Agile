@@ -36,3 +36,7 @@ window.onresize = function(event) {
     Ctrl.View.setupCanvas();
     Ctrl.View.update();
 };
+
+window.addEventListener('mouseup', function(evt){
+    Ctrl.state.handleMouseUp(evt);
+},false);

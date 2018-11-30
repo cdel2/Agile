@@ -1,4 +1,4 @@
-class DelState extends State{
+class CalcState extends State{
     constructor(){
         super();
 
@@ -6,7 +6,7 @@ class DelState extends State{
         disableButtons([""]);
         console.log("Etat delState"); 
         $("#snoInfoBox").hide();
-        $("#pathMenu").hide();
+        $("#pathMenu").show();
         
         $("#addDel").html("<i class='fas fa-plus'></i>").addClass("btn-warning").removeClass("btn-success");
         $("#rmvDel").html("<i class='fas fa-minus'></i>").addClass("btn-warning").removeClass("btn-success");

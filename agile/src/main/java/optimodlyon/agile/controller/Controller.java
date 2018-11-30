@@ -1,11 +1,11 @@
 package optimodlyon.agile.controller;
-import java.nio.file.Path;
 
 import java.util.*;
 
 import optimodlyon.agile.algorithmic.Clustering;
 import optimodlyon.agile.algorithmic.Dijkstra;
-import optimodlyon.agile.algorithmic.PathLength;
+import optimodlyon.agile.models.Path;
+import optimodlyon.agile.models.Round;
 import optimodlyon.agile.algorithmic.TSP;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
@@ -26,27 +26,25 @@ public class Controller {
 		map = newMap;
 	}
 	
-	public List<List<Intersection>> doAlgorithm(int nb) {
+	public List<Round> doAlgorithm(int nb) {
 		Clustering clustering = new Clustering();
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
-		ArrayList<ArrayList<Delivery>> rounds = clustering.dispatchCluster(map, nb); 
+		ArrayList<ArrayList<Delivery>> clusters = clustering.dispatchCluster(map, nb); 
 		int i =0;
-		ArrayList<PathLength> finalRounds = new ArrayList<PathLength>();
-		for(ArrayList<Delivery> round : rounds) {
+		List<Round> finalRound = new ArrayList<Round>();
+		for(ArrayList<Delivery> cluster : clusters) {
 			i++;
-			ArrayList<Long> roundID = Clustering.createIdArray(round);
+			ArrayList<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
 			map.getWarehouse();
-			roundID.add(map.getWarehouse().getId());
+			arrayOfIntersectionIds.add(map.getWarehouse().getId());
 			Map<Long, List<Segment>> mapGraph = clustering.reform(map.graph);
-			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(mapGraph, roundID);
-			System.out.println(">>>>>>>" + graph);
-			PathLength finalRound = tsp.doTSP(graph, map.getWarehouse().getId());
-			System.out.println("round" + i + finalRound);
-			finalRounds.add(finalRound);
+			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(mapGraph, arrayOfIntersectionIds);
+			Round round = tsp.brutForceTSP(graph, map, dijkstra);
+			finalRound.add(round);
 		}
-		List<List<Intersection>> ret = tsp.makeRounds(finalRounds, map);
-		return ret;
+		//System.out.println(finalRound);
+		return finalRound;
 	}
 	
 	public List<List<Intersection>> doAlgorithmWithoutClustering(int nb) {

@@ -8,6 +8,11 @@ public class Path {
 	private float duration;
 	private ArrayList<Segment> listSegment;
 	
+	public Path() {
+		duration = 0;
+		listSegment.clear();
+	}
+	
 	/**
 	 * Constructeur d'un path à partir d'une liste d'ID d'intersections et d'une map
 	 * 
@@ -21,6 +26,7 @@ public class Path {
 			Long destination = idIntersections.get(i+1);
 			Segment currentSegment = map.getSegmentFromGraph(origin, destination);
 			listSegment.add(currentSegment);
+			//System.out.println(currentSegment);
 			duration+=currentSegment.getDuration();
 		}
 	}
@@ -38,6 +44,10 @@ public class Path {
 	public float getDuration() {
 		return duration;
 	}
+	
+	public ArrayList<Segment> getPath() {
+		return this.listSegment;
+	}
 
 	/**
 	 * @param duration the duration to set
@@ -49,7 +59,7 @@ public class Path {
 
 	public Intersection getEnd()
 	{
-		Intersection end = (listSegment.get(listSegment.size()-1)).getStart();
+		Intersection end = (listSegment.get(listSegment.size()-1)).getEnd();
 		return end;
 	}
 	
@@ -57,6 +67,10 @@ public class Path {
 	{
 		String path = "start : " + this.getStart().toString() + " end : " + this.getEnd().toString() + "\n" + listSegment.toString();
 		return path;
+	}
+	
+	public void addSegment(Segment aSegment) {
+		this.listSegment.add(aSegment);
 	}
 	
 	

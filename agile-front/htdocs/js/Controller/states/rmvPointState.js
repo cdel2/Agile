@@ -3,6 +3,7 @@ class RmvPointState{
         $("#rmvDel").html("<i class='fas fa-check'></i>").addClass("btn-success").removeClass("btn-warning");
         disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#addDel", "#mapSelector", "#delSelector"]);
         console.log("Etat addPointState"); 
+        $("#pathMenu").hide();
     }
     
     handleScroll(evt){

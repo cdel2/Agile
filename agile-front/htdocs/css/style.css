@@ -71,3 +71,25 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+#pathMenu{
+    display: flex;
+    border-radius: 5px;
+}
+
+#colorSample{
+    cursor:pointer;
+    width: 30px;
+    height: 30px;
+    margin: 15px;
+    border-radius: 5px;
+    color: white;
+}
+
+#colorSample:hover {
+    filter: brightness(60%);
+}
+
+.eye{
+    margin: auto;
+}

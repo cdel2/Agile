@@ -73,7 +73,9 @@ public class DeserializerXML {
             		segments.add(seg);
             		graph.put(originInter.getId(), segments);
             	}
-            }        	
+            } else {
+            	throw new Exception();
+            }
         }
         
         CityMap map = new CityMap(graph);
@@ -82,7 +84,7 @@ public class DeserializerXML {
         
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("caca");
+            System.out.println("XML file for CityMap is wrong");
             return null;
         }
     }
@@ -120,9 +122,17 @@ public class DeserializerXML {
   	            final Element nodeD = (Element) dList.item(i);
   	            id = Long.parseLong(nodeD.getAttribute("adresse"));
   	            duration = Float.valueOf(nodeD.getAttribute("duree"));
+  	            if(!durationIsValid(duration))
+  	            {
+  	            	throw new Exception();
+  	            }
   	            delivery = new Delivery(id, duration);
-  	            delivery.findLatitudeLongitude(map.graph);
-  	            listDelivery.add(delivery);
+  	            if(delivery.findLatitudeLongitude(map.graph))
+  	            {
+  	  	            listDelivery.add(delivery);
+  	            } else {
+  	            	throw new Exception();
+  	            }
   	        }
   	        
   	        map.setListDelivery(listDelivery);
@@ -132,10 +142,24 @@ public class DeserializerXML {
   	        
   	        } catch (Exception e) {
   	            e.printStackTrace();
-  	            System.out.println("caca");
+  	            System.out.println("XML file for deliveries is wrong");
   	            return null;
   	        }
+  		
+  		
   	}
-  
+  	
+  	public static boolean durationIsValid(float duration)
+  	{
+  		if(duration >=0)
+  		{
+  			return true;
+  		} else {
+  			return false;
+  		}
+  	}
+  	
+  	
+  	
 }
 

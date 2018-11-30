@@ -1,8 +1,8 @@
 class Deliveries{
     constructor(){
-        this.warehouseDisp = {radius: 15, color: "red"};
-        this.nodeDisp = {radius: 10, color: "blue"};
-        this.userNodeDisp = {radius: 10, color: "green"};
+        this.warehouseDisp = {radius: 8, color: "red"};
+        this.nodeDisp = {radius: 4, color: "blue"};
+        this.userNodeDisp = {radius: 4, color: "green"};
         this.warehouse = null;
         this.delNodes = [];
         this.userDelNodes = [];
@@ -53,7 +53,7 @@ class Deliveries{
 
             ctx.globalAlpha = 0.8;
             ctx.drawImage(this.img, View.norm(node.longitude, true)-47/2,View.norm(node.latitude, false)-75);
-            showMessage(true, "Duration : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
+            showMessage(true, "Durée : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
             ctx.beginPath();         
 
         }
@@ -61,11 +61,13 @@ class Deliveries{
 
     drawCircle(X, Y, R, color, ctx){
         ctx.beginPath();
-        ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
+        ctx.arc(X, Y, R*(Ctrl.View.zoomLevel/2 +1), 0, 2 * Math.PI, false);
         ctx.fillStyle = color;
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3;
         ctx.globalAlpha = 0.7;
         ctx.fill();
-        ctx.stroke();
+        //ctx.stroke();
     }
 
     addUserNode(node){
