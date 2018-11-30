@@ -57,7 +57,7 @@ public class TSP {
 	 * @param idWarehouse
 	 * @return PathLength
 	 */
-	public Round doTSP(Map<Long, Map<Long, Float>> graph, CityMap map, Dijkstra dijkstra) {
+	public Round brutForceTSP(Map<Long, Map<Long, Float>> graph, CityMap map, Dijkstra dijkstra) {
 		// Get all possible paths in the graph
 		List<Round> possibleRounds = startTSP(graph, map, dijkstra);
 		//System.out.println("Liste des chemins possibles : " + possiblePaths);
