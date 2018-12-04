@@ -96,4 +96,12 @@ public class Round {
 		return "duration : " + this.getTotalDuration() +"\n"+ this.listPath.toString();
 	}
 	
+	public float getDuration() {
+		return this.duration;
+	}
+	
+	public void setDuration(float d) {
+		duration = d;
+	}
+	
 }
