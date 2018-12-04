@@ -2,8 +2,8 @@ class DelState extends State{
     constructor(){
         super();
 
-        enableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#rmvDel", "#mapSelector", "#delSelector", "#addDel", "#addDel"]);
-        disableButtons([""]);
+        enableButtons(["#loadDel", "#loadRounds", "#loadMap", "#mapSelector", "#delSelector"]);
+        disableButtons(["#undo", "#redo", "#addDel", "#rmvDel"]);
         console.log("Etat delState"); 
         $("#snoInfoBox").hide();
         $("#pathMenu").hide();
