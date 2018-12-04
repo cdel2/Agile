@@ -26,13 +26,16 @@ class AddPointState extends State{
     
     handleMouseUp(evt){
         let View = Ctrl.View;
+        let a = false;
         if(!Ctrl.dragged && evt.srcElement.tagName==="CANVAS"){
             console.log("CANVAS");
             let ratio = View.Canvas.ratio;
             var node = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
             View.Deliveries.addUserNode(node);
             View.update();
+            a = true;
         }
         super.MouseUp(evt);
+        if(a) Ctrl.state = new CalcState();
     }
 }

@@ -86,8 +86,6 @@ class Deliveries{
         }*/
         if(true){
             this.userDelNodes.push(node);
-            
-            Ctrl.State = new CalcState();
         }else{
             alertBox("Point already on map !");
         }

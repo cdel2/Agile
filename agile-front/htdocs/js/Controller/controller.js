@@ -18,12 +18,17 @@ class Controller{
     }
 
     loadRound(){
-        $("#pathMenu").html("");
-        let value = $("#numInput").val();
-        if(value === ""){
-            value = 3;
+        if(this.state.constructor.name === "AddPointState"){
+            this.state = new CalcState();
+            this.View.update();
+        }else{
+            $("#pathMenu").html("");
+            let value = $("#numInput").val();
+            if(value === ""){
+                value = 3;
+            }
+            this.View.loadRound(value);
         }
-        this.View.loadRound(value);
         return false;
     }
 
@@ -68,9 +73,9 @@ class Controller{
 
     rmvPoint(){
         if(this.state.constructor.name === "RmvPointState"){
-            this.state = new DelState();
+            this.state = new CalcState();
             this.View.update();
-        }else if(this.state.constructor.name === "DelState"){
+        }else if(this.state.constructor.name === "CalcState"){
             this.state= new RmvPointState();
             this.View.update();
         }
