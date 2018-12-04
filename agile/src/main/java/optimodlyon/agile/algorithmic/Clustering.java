@@ -18,12 +18,12 @@ public class Clustering {
 	}
 	
 
-	ArrayList<Delivery> sortCluster (CityMap M){
+	List<Delivery> sortCluster (CityMap M){
 
 		//Initialisation des valeurs 
 
         //Initialisation entrepot et nbLivraisons et nbVlivreurs
-		ArrayList<Delivery> listDel = M.getListDelivery();
+		List<Delivery> listDel = M.getListDelivery();
         int nbLivreurs = M.getNbDeliverers();
         int nbLivraisons = listDel.size(); 
         //System.out.println(nbLivraisons);
@@ -32,9 +32,9 @@ public class Clustering {
         
         // Création des listes retours X, Y, O
         // ResX contient des longitudes, ResY des latitudes
-        ArrayList<Float> resX = new ArrayList<Float>();
-        ArrayList<Float> resY = new ArrayList<Float>();
-        ArrayList<Double> resO = new ArrayList<Double>();
+        List<Float> resX = new ArrayList<Float>();
+        List<Float> resY = new ArrayList<Float>();
+        List<Double> resO = new ArrayList<Double>();
         
         
         
@@ -142,7 +142,7 @@ public class Clustering {
         }
 
         //Création de la liste de delivery retour        
-        ArrayList<Delivery> listTri = new ArrayList<Delivery>();
+        List<Delivery> listTri = new ArrayList<Delivery>();
         for (int r=0; r<nbLivraisons; r++){
         	boolean stop = false;
         	int cmp = 0;
@@ -159,21 +159,21 @@ public class Clustering {
         return listTri; 
 	}
 	
-	public ArrayList<ArrayList<Delivery>> pushFrontDelivery(ArrayList<ArrayList<Delivery>> goalDeliveries,ArrayList<ArrayList<Delivery>> sortedDeliveries){
-		ArrayList<Delivery> currentCluster = new ArrayList<Delivery>();
+	public List<List<Delivery>> pushFrontDelivery(List<List<Delivery>> goalDeliveries,List<List<Delivery>> sortedDeliveries){
+		List<Delivery> currentCluster = new ArrayList<Delivery>();
 		currentCluster= goalDeliveries.get(goalDeliveries.size()-1);
 		
 		return sortedDeliveries;
 	}
 	
-	public ArrayList<ArrayList<Delivery>> dispatchCluster(CityMap map, int deliverers){
-		ArrayList<Delivery> sortedDeliveries = sortCluster(map);
-		ArrayList<ArrayList<Delivery>> clusters = new ArrayList<ArrayList<Delivery>>();
+	public List<List<Delivery>> dispatchCluster(CityMap map, int deliverers){
+		List<Delivery> sortedDeliveries = sortCluster(map);
+		List<List<Delivery>> clusters = new ArrayList<List<Delivery>>();
 		
 		int nbdeliveries=sortedDeliveries.size();
 		if(deliverers==1)
 		{
-			ArrayList<Delivery> currentCluster = new ArrayList<Delivery>();
+			List<Delivery> currentCluster = new ArrayList<Delivery>();
 			for(int i=0;i<nbdeliveries;i++)
 			{
 				currentCluster.add(sortedDeliveries.get(i));
@@ -201,7 +201,7 @@ public class Clustering {
 			listIndex.add(currentDiv+divider);
 			currentDiv+=divider;
 			}
-		ArrayList<Delivery> currentCluster=new ArrayList<Delivery>(sortedDeliveries.subList(0, listIndex.get(0)+1));
+		List<Delivery> currentCluster=new ArrayList<Delivery>(sortedDeliveries.subList(0, listIndex.get(0)+1));
 		clusters.add(currentCluster);
 		for(int k=1;k<listIndex.size();k++)
 			{
@@ -214,8 +214,8 @@ public class Clustering {
 	}
 	
 	//Creates an Array of IDs for Dijkstra arguments
-	public static ArrayList<Long> createIdArray(ArrayList<Delivery> deliveryArray){
-		ArrayList<Long> ids = new ArrayList<Long>();
+	public static List<Long> createIdArray(List<Delivery> deliveryArray){
+		List<Long> ids = new ArrayList<Long>();
 		for(Delivery delivery : deliveryArray) {
 			ids.add(delivery.getId());
 		}
