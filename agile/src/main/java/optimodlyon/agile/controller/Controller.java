@@ -36,7 +36,7 @@ public class Controller {
 				
 	}
 
-	public void GetDeliveries(String file) {
+	public void getDeliveries(String file) {
 		try {
 			currentState.loadDeliveries(file);
 			currentState = new LoadedDeliveriesState();
@@ -44,6 +44,7 @@ public class Controller {
 			System.out.println("Erreur lors de GetDeliveries : " + e);
 		}		
 	}
+	
 	
 	public void doAlgorithm(int nb) {
 		try {

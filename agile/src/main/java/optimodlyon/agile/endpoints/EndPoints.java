@@ -9,6 +9,7 @@ import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Segment;
+import optimodlyon.agile.models.Warehouse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
+
 
 @CrossOrigin(origins = "http://localhost:8000")
 @RestController
@@ -34,8 +36,13 @@ public class EndPoints {
     
     @GetMapping("/deliveries/{file}")
     public List<Delivery> getDeliveries(@PathVariable String file) {
-        controller.GetDeliveries(file);
+        controller.getDeliveries(file);
         return MapManagement.getInstance().getListDelivery();
+    }
+    
+    @GetMapping("/warehouse")
+    public Warehouse getWarehouse() {
+        return MapManagement.getInstance().getWarehouse();
     }
     
     
