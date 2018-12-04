@@ -1,10 +1,9 @@
 class AddPointState extends State{
     constructor(){
         super();
-        $("#addDel").html("<i class='fas fa-check'></i>").addClass("btn-success").removeClass("btn-warning");
+        $("#addDel").html("<i class='fas fa-ban'></i>").addClass("btn-danger").removeClass("btn-warning");
         disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#rmvDel", "#mapSelector", "#delSelector"]);
-        console.log("Etat addPointState"); 
-        $("#pathMenu").hide();
+        console.log("Etat addPointState");
     }
     
     handleScroll(evt){
