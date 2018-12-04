@@ -4,21 +4,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Warehouse extends Intersection {
-	private Date timeArrival;
+public class Warehouse extends Delivery {
 	private Date timeStart;
 	
 	public Warehouse(Long id, float latitude, float longitude, Date ts)
 	{
-		super(id, latitude, longitude);
+		super(id, 600);
 		timeStart = ts;
 	}
 	
 	public Warehouse(Long id, Date ts)
 	{
-		super(id);
+		super(id, 600);
 		timeStart = ts;
 	}
+	
+
 	
 	/**
 	 * @return the timeArrival
@@ -48,11 +49,6 @@ public class Warehouse extends Intersection {
 		this.timeArrival = timeArrival;
 	}
 	
-	public void findLatitudeLongitude(HashMap<Long, ArrayList<Segment>> graph) {
-		Segment segment = (graph.get(this.id)).get(0);
-		Intersection correspondingInter = segment.getStart();
-		this.latitude = correspondingInter.latitude;
-		this.longitude = correspondingInter.longitude;
-		
-	}
+	
+
 }
