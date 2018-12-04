@@ -38,4 +38,10 @@ public class LoadedDeliveriesState extends DefaultState{
 		
 		map.setListRounds(finalRound);
 	}
+	
+	@Override
+	public void addDelivery (Long newDelivery) {
+		
+		
+	}
 }
