@@ -17,7 +17,7 @@ public class MapManagment{
         		
         Warehouse w = new Warehouse(id,date);
         
-        System.out.println(w.duration);
+        //System.out.println(w.duration);
         //CityMap map = DeserializerXML.deserializeMap("petit");
 
         
