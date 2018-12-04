@@ -50,9 +50,11 @@ class Deliveries{
         }
         if(this.nodeInfo!=null){
             let node = this.nodeInfo;
-
+            let ratio = Ctrl.View.Canvas.ratio*0.7;
+            let imgH = ratio*this.img.height;
+            let imgW = ratio*this.img.width;
             ctx.globalAlpha = 0.8;
-            ctx.drawImage(this.img, View.norm(node.longitude, true)-47/2,View.norm(node.latitude, false)-75);
+            ctx.drawImage(this.img, View.norm(node.longitude, true)-imgW/2,View.norm(node.latitude, false)-imgH, imgW, imgH);
             showMessage(true, "Durée : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
             ctx.beginPath();         
 

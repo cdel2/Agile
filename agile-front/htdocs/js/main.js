@@ -14,13 +14,15 @@ function init(){
     };
 
     $("#sliderInit").slider({
-        ticks: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
-        ticks_labels: ['8h', '9h', '10h', '11h', '12h', "13h", '14h', '15h', '16h', '17h', '18h'],
-        ticks_snap_bounds: 30
+        tooltip: 'always',
+        formatter: function(value) {
+            var time = timeFormat(value);
+            console.log(time);
+            return pad(time[0],2)+":"+pad(time[1],2);
+        }
     }).on('slide', function(val){
         Ctrl.changeTime(val);
-    })
-    .data('slider');
+    });
     
     /*window.addEventListener('mouseup', function(evt){
         Ctrl.state.handleMouseUp(evt);
