@@ -56,10 +56,11 @@ class Controller{
     }
 
     addPoint(){
+        console.log()
         if(this.state.constructor.name === "AddPointState"){
-            this.state = new DelState();
+            this.state = new CalcState();
             this.View.update();
-        }else if(this.state.constructor.name === "DelState"){
+        }else if(this.state.constructor.name === "CalcState"){
             this.state= new AddPointState();
             this.View.update();
         }
@@ -114,6 +115,5 @@ class Controller{
         var rawMinutes = time.value-hour*10;
         var minutes = (rawMinutes/10)*60;
         $("#timeDisp").text(pad(hour,2)+":"+pad(minutes,2));
-        console.log(time.value);
     }
 }

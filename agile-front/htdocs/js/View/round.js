@@ -2,7 +2,7 @@ class Round{
     constructor(){
         this.paths = [];
         this.colors = ["green", "yellow", "purple", "blue", "lime", "aqua", "fuschia", "red", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
-        this.firstPath = 0;
+        this.firstPath = -1;
         this.stop=null;
     }
 
@@ -21,7 +21,7 @@ class Round{
             for(var i=0; i<data.length; i++){
                 let round = data[i].listPath;
                 let color1 = object.colors[i];
-                var temp = {id:i, display:true, color:color1, data:[]};
+                var temp = {id:i, display:true, color:color1, data:[], arrival:data[i].arrival};
                 $("#pathMenu").append(object.createPathHtml(color1,100, i));
                 for(var j in round){
                    let path = round[j].path;
@@ -52,14 +52,14 @@ class Round{
         
         ctx.globalAlpha = 1;
         for(var i in this.paths){
-            if(this.paths[i].display && i!=this.firstPath){
+            if(this.paths[i].display && (this.firstPath===-1 || (i!=this.firstPath))){
                 let totalPath = this.paths[i].data;
                 this.drawSegment(totalPath, coord, ctx, this.paths[i].color, 1);
             }
         }
         
         let path = this.paths[this.firstPath];
-        if(path.display){
+        if(this.firstPath!=-1 && path.display){
             for(var j in path.data){
                 let totalPath = path.data;
                 this.drawSegment(totalPath, coord, ctx, path.color, 2);
