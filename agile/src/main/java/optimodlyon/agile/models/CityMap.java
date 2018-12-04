@@ -13,28 +13,15 @@ import org.springframework.context.annotation.Scope;
 public class CityMap {
 	private float height;
 	private float width;
-	private int nbDeliverers;
-	private List<Delivery> listDelivery = new ArrayList<Delivery>();
-	private Warehouse warehouse;
+	//private int nbDeliverers;
+	//private List<Delivery> listDelivery = new ArrayList<Delivery>();
+	//private Warehouse warehouse;
 	private Map<Long, List<Segment>> graph = new HashMap<Long, List<Segment>> ();
-	private List<Round> listRounds;
+	//private List<Round> listRounds;
 	
 	private static CityMap instance = null;
 	
-	private CityMap() 
-	{
-		System.out.println("appel au constructeur du singleton citymap");
-	}
-	
-	public static CityMap getInstance() {
-		//System.out.println("lol");
-		if (instance == null)
-			instance = new CityMap();
-		else {
-			System.out.println("je ne suis pas nul !");
-		}
-		return instance;
-	}
+	public CityMap() {}
 	
 	
 	public void setGraph(Map<Long, List<Segment>> graph) {
@@ -53,16 +40,16 @@ public class CityMap {
 	/**
 	 * @return the listDelivery
 	 */
-	public List<Delivery> getListDelivery() {
+	/*public List<Delivery> getListDelivery() {
 		return listDelivery;
-	}
+	}*/
 
 	/**
 	 * @param listDelivery the listDelivery to set
 	 */
-	public void setListDelivery(List<Delivery> listDelivery) {
+	/*public void setListDelivery(List<Delivery> listDelivery) {
 		this.listDelivery = listDelivery;
-	}
+	}*/
 
 	/**
 	 * @return the width
@@ -88,9 +75,9 @@ public class CityMap {
 	/**
 	 * @return the nbDeliverers
 	 */
-	public int getNbDeliverers() {
+	/*public int getNbDeliverers() {
 		return nbDeliverers;
-	}
+	}*/
 	/**
 	 * @return the nbDeliveries
 	 */
@@ -102,9 +89,9 @@ public class CityMap {
 	/**
 	 * @param nbDeliverers the nbDeliverers to set
 	 */
-	public void setNbDeliverers(int nbDeliverers) {
+	/*public void setNbDeliverers(int nbDeliverers) {
 		this.nbDeliverers = nbDeliverers;
-	}
+	}*/
 	
 	/**
 	 * @param nbDeliveries the nbDeliveries to set
@@ -113,13 +100,13 @@ public class CityMap {
 		this.nbDeliveries = nbDeliveries;
 	}*/
 	
-	public Warehouse getWarehouse() {
+	/*public Warehouse getWarehouse() {
 		return warehouse;
-	}
+	}*/
 	
-	public void setWarehouse(Warehouse wh) {
+	/*public void setWarehouse(Warehouse wh) {
 		this.warehouse = wh;
-	}
+	}*/
 	
 	/**
 	 * Finds a segment knowing his origin and his destination
@@ -144,15 +131,16 @@ public class CityMap {
 		return graph;
 	}
 
-	public void setListRounds(List<Round> finalRound) {
+	/*public void setListRounds(List<Round> finalRound) {
 		listRounds = finalRound;		
-	}
+	}*/
 
-	public List<Round> getListRounds() {
+	/*public List<Round> getListRounds() {
 		return listRounds;
-	}
+	}*/
 	
 	public Delivery getDeliveryById(Long id) {
+		List<Delivery> listDelivery = MapManagement.getInstance().getListDelivery();
 		for(Delivery delivery : listDelivery) {
 			if((long)delivery.getId()==(long)id){
 				return delivery;

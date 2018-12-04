@@ -17,7 +17,7 @@ public class TSP {
 	 */
 	public static void main(String[] args) {
 		TSP tsp = new TSP();
-		CityMap map = CityMap.getInstance();
+		CityMap map = MapManagement.getInstance().getMap();
 		Map<Long, Float> successors1 = new HashMap<Long, Float>();
 		successors1.put((long) 2, (float) 8);
 		successors1.put((long) 3, (float) 7);
@@ -75,7 +75,7 @@ public class TSP {
 	 * @return List<PathLength>
 	 */
 	List<Round> startTSP(Map<Long, Map<Long, Float>> unorderedMap, CityMap map, Dijkstra dijkstra) {
-		Long idWarehouse = map.getWarehouse().getId();
+		Long idWarehouse = MapManagement.getInstance().getWarehouse().getId();
 		// This list will contain all the resulting pair of (path, length) possible.
 		List<Round> possibleRounds = new ArrayList<Round>();
 		// This contains all the remainings successors (we remove every visited node)
@@ -124,8 +124,8 @@ public class TSP {
 			// if not, we add the current path (which is a possible final path) to
 			// finalResults.
 			//System.out.println(currentPath + ">>>>>>>>>>>>>>>" + map);
-			currentPath.add(map.getWarehouse().getId());
-			currentLength+=(currentSuccessors.get(map.getWarehouse().getId()));
+			currentPath.add(MapManagement.getInstance().getWarehouse().getId());
+			currentLength+=(currentSuccessors.get(MapManagement.getInstance().getWarehouse().getId()));
 			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
 			Long firstArrivalId = currentPath.get(0);
 			Delivery firstArrival = map.getDeliveryById(firstArrivalId);

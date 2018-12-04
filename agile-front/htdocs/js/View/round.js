@@ -15,6 +15,7 @@ class Round{
             url: "http://localhost:8080/calc/"+num,
             type:"GET"
         }).done(function( data ) {
+            console.log("coucou");
             console.log(data);
             
             var totalTime = new Date().getTime()-ajaxTime;

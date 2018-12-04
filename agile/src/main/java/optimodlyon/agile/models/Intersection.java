@@ -66,7 +66,7 @@ public class Intersection {
 	
 	public static List<Intersection> findSuccessorSegments(Intersection start)
 	{
-		List<Segment> seg = CityMap.getInstance().getGraph().get(start.getId());
+		List<Segment> seg = MapManagement.getInstance().getMap().getGraph().get(start.getId());
 		//System.out.println(map.graph.get(start.getId()));
 		List <Intersection> endIntersection = new ArrayList<Intersection>();
 		for(Segment s : seg) {

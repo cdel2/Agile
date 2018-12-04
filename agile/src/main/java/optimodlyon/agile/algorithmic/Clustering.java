@@ -18,17 +18,17 @@ public class Clustering {
 	}
 	
 
-	List<Delivery> sortCluster (CityMap M){
+	List<Delivery> sortCluster (){
 
 		//Initialisation des valeurs 
-
+		CityMap M = MapManagement.getInstance().getMap();
         //Initialisation entrepot et nbLivraisons et nbVlivreurs
-		List<Delivery> listDel = M.getListDelivery();
-        int nbLivreurs = M.getNbDeliverers();
+		List<Delivery> listDel = MapManagement.getInstance().getListDelivery();
+        int nbLivreurs = MapManagement.getInstance().getListDeliverer().size();
         int nbLivraisons = listDel.size(); 
         //System.out.println(nbLivraisons);
-        float xWareHouse = M.getWarehouse().getLongitude();
-        float yWareHouse = M.getWarehouse().getLatitude();
+        float xWareHouse = MapManagement.getInstance().getWarehouse().getLongitude();
+        float yWareHouse = MapManagement.getInstance().getWarehouse().getLatitude();
         
         // Création des listes retours X, Y, O
         // ResX contient des longitudes, ResY des latitudes
@@ -167,7 +167,7 @@ public class Clustering {
 	}
 	
 	public List<List<Delivery>> dispatchCluster(CityMap map, int deliverers){
-		List<Delivery> sortedDeliveries = sortCluster(map);
+		List<Delivery> sortedDeliveries = sortCluster();
 		List<List<Delivery>> clusters = new ArrayList<List<Delivery>>();
 		
 		int nbdeliveries=sortedDeliveries.size();

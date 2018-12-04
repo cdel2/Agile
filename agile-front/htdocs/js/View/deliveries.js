@@ -73,20 +73,18 @@ class Deliveries{
     }
 
     addUserNode(node){
-        let good = true;
+        /*let good = true;
         for(var i=0; i<this.delNodes.length; i++){
             let node1 = this.delNodes[i];
-            if(this.comparePos(node, node1)){
-                good=false;
-            }
+            good=false;
         }
         for(var i=0; i<this.userDelNodes.length; i++){
             let node1 = this.userDelNodes[i];         
             if(this.comparePos(node, node1)){
                 good=false;
             }   
-        }
-        if(good){
+        }*/
+        if(true){
             this.userDelNodes.push(node);
         }else{
             alertBox("Point already on map !");
