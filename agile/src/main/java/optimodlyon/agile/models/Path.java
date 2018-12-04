@@ -7,6 +7,7 @@ import java.util.List;
 public class Path {
 	private float duration;
 	private ArrayList<Segment> listSegment;
+	private Delivery arrival;
 	
 	public Path() {
 		duration = 0;
@@ -14,9 +15,7 @@ public class Path {
 	}
 	
 	/**
-	 * Constructeur d'un path à partir d'une liste d'ID d'intersections et d'une map
 	 * 
-	 * @return the duration
 	 */
 	public Path(List<Long> idIntersections, CityMap map) {
 		listSegment = new ArrayList<Segment>();
@@ -29,6 +28,8 @@ public class Path {
 			//System.out.println(currentSegment);
 			duration+=currentSegment.getDuration();
 		}
+		Long idDelivery = this.getEnd().getId();
+		this.arrival = map.getDeliveryById(idDelivery);
 	}
 	
 	
@@ -44,6 +45,13 @@ public class Path {
 	public float getDuration() {
 		return duration;
 	}
+
+	/**
+	 * @return the delivery at the end of the path
+	 */
+	public Delivery getArrival() {
+		return arrival;
+	}
 	
 	public ArrayList<Segment> getPath() {
 		return this.listSegment;
@@ -54,6 +62,13 @@ public class Path {
 	 */
 	public void setDuration(float duration) {
 		this.duration = duration;
+	}
+
+	/**
+	 * @param a the delivery to set
+	 */
+	public void setArrival(Delivery a) {
+		this.arrival = a;
 	}
 
 
