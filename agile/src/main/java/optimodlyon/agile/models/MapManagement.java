@@ -65,11 +65,12 @@ public class MapManagement{
 	
 	public void attributeRound(List<Round> listRound)
 	{
+		int i =0;
 		for(Long it : listDeliverer.keySet())
 		{
-			Iterator<Round> round = listRound.iterator();
-			listDeliverer.get(it).getListRound().add(round.next());
-
+			
+			listDeliverer.get(it).getListRound().add(listRound.get(i));
+			i++;
 		}
 	}
 	
@@ -88,9 +89,27 @@ public class MapManagement{
 			}
 			deliverer = new Deliverer(id);
 			listDeliverer.put(id,deliverer);
-			
+	
 		}
 	}
+	
+	/*public static void main(String[] args) {
+		Map<Long,String> listDeliverer = new HashMap<Long,String>();
+		listDeliverer.put((long) 1, "a");
+		listDeliverer.put((long) 2, "b");
+		listDeliverer.put((long) 1, "c");
+		List<String> listRound = new ArrayList<String>();
+		listRound.add("aa");
+		listRound.add("bb");
+		listRound.add("cc");
+		int i = 0;
+		for(Long it : listDeliverer.keySet())
+		{
+			System.out.println("round : " +listRound.get(i));	
+			System.out.println("deli : " +it);	
+			i++;
+		}
+	}*/
 	
 
 }
