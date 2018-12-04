@@ -93,16 +93,17 @@ class Controller{
     pathToForeground(el, id){
         var jel = $(el);
         if(jel.hasClass('activeLine')){
-            jel.removeClass("activeLine");
+            jel.parent().parent().removeClass("activeLine");
             this.View.Round.pathToForeground(id);
             this.View.update();
         }else{
             let list = $(".activeLine");
             console.log(list);
             for(var i=0; i<list.length; i++){
+                console.log($(list[i]).parent());
                 $(list[i]).removeClass("activeLine");
             }
-            jel.addClass("activeLine");
+            jel.parent().parent().addClass("activeLine");
             this.View.Round.pathToForeground(id);
             this.View.update();
         }
