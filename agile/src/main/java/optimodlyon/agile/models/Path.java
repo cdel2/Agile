@@ -17,7 +17,7 @@ public class Path {
 	/**
 	 * 
 	 */
-	public Path(List<Long> idIntersections, CityMap map) {
+	public Path(List<Long> idIntersections, CityMap map, Delivery arrival) {
 		listSegment = new ArrayList<Segment>();
 		duration = 0;
 		for(int i=0; i<idIntersections.size()-1; i++) {
@@ -29,7 +29,7 @@ public class Path {
 			duration+=currentSegment.getDuration();
 		}
 		Long idDelivery = this.getEnd().getId();
-		this.arrival = map.getDeliveryById(idDelivery);
+		this.arrival = arrival;
 	}
 	
 	

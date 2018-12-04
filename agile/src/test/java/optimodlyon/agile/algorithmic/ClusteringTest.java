@@ -10,7 +10,7 @@ public class ClusteringTest {
 
 	@Test
 	public void testDispatchCluster() {
-		CityMap map = new CityMap();
+		CityMap map = CityMap.getInstance();
 		fail("Not yet implemented");
 	}
 

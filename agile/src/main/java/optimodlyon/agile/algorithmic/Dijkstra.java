@@ -84,7 +84,7 @@ public static void main(String[] args) {
         grey.add((long)3);
         grey.add((long)5);
         
-       dij.doDijkstra(completeMap, grey);
+        dij.doDijkstra(completeMap, grey);
     }
 	/**
 	 * Function called to retrieve a graph containing the minimum length

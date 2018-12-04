@@ -10,7 +10,6 @@ import javafx.util.*;
 import org.apache.logging.log4j.Marker;
 import org.springframework.context.support.StaticApplicationContext;
 
-//TODO : Commenter et mettre en forme cette merde parce que c'est vraiment pas beau;
 
 public class TSP {
 	/**
@@ -128,14 +127,18 @@ public class TSP {
 			currentPath.add(map.getWarehouse().getId());
 			currentLength+=(currentSuccessors.get(map.getWarehouse().getId()));
 			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
+			Long firstArrivalId = currentPath.get(0);
+			Delivery firstArrival = map.getDeliveryById(firstArrivalId);
 			Collections.reverse(IntersectionIds);
-			Path pathFound = new Path(IntersectionIds, map);
+			Path pathFound = new Path(IntersectionIds, map, firstArrival);
 			Round currentRound = new Round();
 			currentRound.addPath(pathFound);
 			for (int i = 1; i < currentPath.size() - 1; i++) {
 				IntersectionIds = dijkstra.createPathIds(currentPath.get(i), currentPath.get(i + 1));
+				Long arrivalId = currentPath.get(0);
+				Delivery arrival = map.getDeliveryById(arrivalId);
 				Collections.reverse(IntersectionIds);
-				pathFound = new Path(IntersectionIds, map);
+				pathFound = new Path(IntersectionIds, map, arrival);
 				currentRound.addPath(pathFound);
 			}
 			possibleRounds.add(currentRound);

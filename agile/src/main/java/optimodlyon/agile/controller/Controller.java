@@ -53,6 +53,19 @@ public class Controller {
 		}	
 	}
 	
+	/**
+	 * method used to add a Delivery and calculate the best path (and best deliverer) 
+	 * to deliver this point 
+	 * @param idNewNode
+	 */
+	public void NewDelivery(Long idNewNode) {
+		try {
+			
+		} catch(Exception e) {
+			System.out.println("Error adding a delivery : " + e);
+		}
+	}
+	
 	
 	/*
 	public List<List<Intersection>> doAlgorithmWithoutClustering(int nb) {
