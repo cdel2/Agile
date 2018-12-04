@@ -26,7 +26,7 @@ import optimodlyon.agile.models.Segment;
 public class DeserializerXML {
 	public static void main (String [] args) {
 		deserializeMap("petit");
-		System.out.println(CityMap.getInstance().getHeight());
+		System.out.println(MapManagement.getInstance().getMap().getHeight());
 		deserializeDeliveries("dl-petit-3");
 	}
 	
@@ -145,7 +145,7 @@ public class DeserializerXML {
 		            id = Long.parseLong(nodeD.getAttribute("adresse"));
 		            duration = Float.valueOf(nodeD.getAttribute("duree"));
 		            delivery = new Delivery(id, duration);
-		            if(delivery.findLatitudeLongitude(CityMap.getInstance().getGraph()))
+		            if(delivery.findLatitudeLongitude(MapManagement.getInstance().getMap().getGraph()))
 		            {
 		  	            listDelivery.add(delivery);
 		            } else {
@@ -189,7 +189,7 @@ public class DeserializerXML {
   	        id = Long.parseLong(nodeE.getAttribute("adresse"));
   	        
   	        warehouse = new Warehouse(id, timeStart);
-  	        warehouse.findLatitudeLongitude(CityMap.getInstance().getGraph());
+  	        warehouse.findLatitudeLongitude(MapManagement.getInstance().getMap().getGraph());
   	        return warehouse;
   	        
   	        } catch (Exception e) {
