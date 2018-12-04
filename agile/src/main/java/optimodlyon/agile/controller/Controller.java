@@ -1,22 +1,9 @@
 package optimodlyon.agile.controller;
 
-import java.util.*;
-
-import optimodlyon.agile.algorithmic.Clustering;
-import optimodlyon.agile.algorithmic.Dijkstra;
-import optimodlyon.agile.models.Path;
-import optimodlyon.agile.models.Round;
-import optimodlyon.agile.algorithmic.TSP;
-import optimodlyon.agile.models.CityMap;
-import optimodlyon.agile.models.CityMap;
-import optimodlyon.agile.models.Delivery;
-import optimodlyon.agile.models.Intersection;
-import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.states.DefaultState;
 import optimodlyon.agile.states.LoadedMapState;
 import optimodlyon.agile.states.LoadedDeliveriesState;
 import optimodlyon.agile.states.State;
-import optimodlyon.agile.xml.DeserializerXML;
 
 public class Controller {
 	public State currentState;
@@ -35,22 +22,13 @@ public class Controller {
 				
 	}
 
-	public void GetDeliveries(String file) {
-		try {
+	public void GetDeliveries(String file) throws Exception{
 			currentState.loadDeliveries(file);
-			currentState = new LoadedDeliveriesState();
-		} catch(Exception e) {
-			System.out.println("Erreur lors de GetDeliveries : " + e);
-		}		
+			currentState = new LoadedDeliveriesState();	
 	}
 	
-	public void doAlgorithm(int nb) {
-		try {
+	public void doAlgorithm(int nb) throws Exception{
 			currentState.startCalculation(nb);
-			//currentState = new CalculatedSate();
-		} catch(Exception e) {
-			System.out.println("Erreur lors de DoAlgorithm : " + e);
-		}	
 	}
 	
 	/**

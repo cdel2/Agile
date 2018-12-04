@@ -2,6 +2,7 @@ package optimodlyon.agile.endpoints;
 
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.controller.Controller;
+import optimodlyon.agile.exceptions.UnprocessableEntity;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 public class EndPoints {
 	Controller controller = new Controller();
-	
-	//AJOUTER LA GESTION DES ERREURS
+
     @GetMapping("/map/{file}")
     public CityMap  getMap(@PathVariable String file) {
         controller.InitializeGraph(file);
@@ -30,15 +32,27 @@ public class EndPoints {
     }
     
     @GetMapping("/deliveries/{file}")
-    public CityMap getDeliveries(@PathVariable String file) {
-        controller.GetDeliveries(file);
+    public CityMap getDeliveries(@PathVariable String file, HttpServletResponse response) {
+    	try {
+            controller.GetDeliveries(file);
+    		
+    	} catch(Exception e) {
+    		throw new UnprocessableEntity("Le fichier du plan de la ville n'a pas été chargé.");
+    	}       
+        
         return CityMap.getInstance();
     }
     
     
     @GetMapping("/calc/{nb}")
     public List<Round> get(@PathVariable int nb) {
-    	controller.doAlgorithm(nb);
+    	try {
+        	controller.doAlgorithm(nb);
+    		
+    	} catch(Exception e) {
+    		throw new UnprocessableEntity("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
+    	} 
+    	
         return CityMap.getInstance().getListRounds();
     }
     
