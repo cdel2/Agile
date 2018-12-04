@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class Delivery extends Intersection{
 	private Date timeArrival;
-	private float duration; 
+	private float duration;
 
 	public Delivery(Date ta, float dur, Long id, float latitude, float longitude) {
 		super(id, latitude, longitude);

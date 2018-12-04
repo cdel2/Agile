@@ -150,6 +150,15 @@ public class CityMap {
 	public List<Round> getListRounds() {
 		return listRounds;
 	}
+	
+	public Delivery getDeliveryById(Long id) {
+		for(Delivery delivery : listDelivery) {
+			if((long)delivery.getId()==(long)id){
+				return delivery;
+			}
+		}
+		return null;
+	}
 }
 
 
