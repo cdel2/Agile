@@ -20,20 +20,7 @@ public class CityMap {
 	
 	private static CityMap instance = null;
 	
-	private CityMap() 
-	{
-		System.out.println("appel au constructeur du singleton citymap");
-	}
-	
-	public static CityMap getInstance() {
-		//System.out.println("lol");
-		if (instance == null)
-			instance = new CityMap();
-		else {
-			System.out.println("je ne suis pas nul !");
-		}
-		return instance;
-	}
+	public CityMap() {}
 	
 	
 	public void setGraph(HashMap<Long, ArrayList<Segment>> graph) {

@@ -1,5 +1,7 @@
 package optimodlyon.agile.states;
 
+import optimodlyon.agile.models.*;
+
 import java.util.ArrayList;
 
 import optimodlyon.agile.models.CityMap;
@@ -16,7 +18,7 @@ public class LoadedMapState extends DefaultState{
 		System.out.println("loading deliveries...");
 		ArrayList<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
 		Warehouse whs = DeserializerXML.deserializeWarehouse(file);
-		CityMap.getInstance().setListDelivery(listDelivery);
-		CityMap.getInstance().setWarehouse(whs);
+		MapManagement.getInstance().getMap().setListDelivery(listDelivery);
+		MapManagement.getInstance().getMap().setWarehouse(whs);
 	}
 }

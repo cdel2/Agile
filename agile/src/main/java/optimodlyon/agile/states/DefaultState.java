@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import optimodlyon.agile.models.CityMap;
+import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.xml.DeserializerXML;
@@ -13,7 +14,7 @@ public class DefaultState implements State {
 	
 	public void loadMap(String file) {
 		HashMap<Long, ArrayList<Segment>> graph = DeserializerXML.deserializeMap(file);
-		CityMap.getInstance().setGraph(graph);
+		MapManagement.getInstance().getMap().setGraph(graph);
 	}
 	
 	public void loadDeliveries(String file) throws Exception {

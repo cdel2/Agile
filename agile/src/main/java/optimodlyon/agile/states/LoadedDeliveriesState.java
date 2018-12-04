@@ -9,6 +9,7 @@ import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
+import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Segment;
 
@@ -20,7 +21,7 @@ public class LoadedDeliveriesState extends DefaultState{
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
 		
-		CityMap map = CityMap.getInstance();
+		CityMap map = MapManagement.getInstance().getMap();
 		ArrayList<ArrayList<Delivery>> clusters = clustering.dispatchCluster(map, nb); 
 		
 		int i =0;

@@ -6,6 +6,7 @@ import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.Intersection;
+import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Segment;
 
 import java.util.ArrayList;
@@ -26,20 +27,20 @@ public class EndPoints {
     @GetMapping("/map/{file}")
     public CityMap  getMap(@PathVariable String file) {
         controller.InitializeGraph(file);
-        return CityMap.getInstance();
+        return MapManagement.getInstance().getMap();
     }
     
     @GetMapping("/deliveries/{file}")
     public CityMap getDeliveries(@PathVariable String file) {
         controller.GetDeliveries(file);
-        return CityMap.getInstance();
+        return MapManagement.getInstance().getMap();
     }
     
     
     @GetMapping("/calc/{nb}")
     public List<Round> get(@PathVariable int nb) {
     	controller.doAlgorithm(nb);
-        return CityMap.getInstance().getListRounds();
+        return MapManagement.getInstance().getMap().getListRounds();
     }
     
     /*

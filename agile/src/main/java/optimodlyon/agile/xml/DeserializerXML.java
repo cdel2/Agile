@@ -113,7 +113,7 @@ public class DeserializerXML {
 	            	throw new Exception();
 	            }
 	            delivery = new Delivery(id, duration);
-	            if(delivery.findLatitudeLongitude(CityMap.getInstance().getGraph()))
+	            if(delivery.findLatitudeLongitude(MapManagement.getInstance().getMap().getGraph()))
 	            {
 	  	            listDelivery.add(delivery);
 	            } else {
@@ -165,7 +165,7 @@ public class DeserializerXML {
   	        id = Long.parseLong(nodeE.getAttribute("adresse"));
   	        
   	        warehouse = new Warehouse(id, timeStart);
-  	        warehouse.findLatitudeLongitude(CityMap.getInstance().getGraph());
+  	        warehouse.findLatitudeLongitude(MapManagement.getInstance().getMap().getGraph());
   	        return warehouse;
   	        
   	        } catch (Exception e) {
