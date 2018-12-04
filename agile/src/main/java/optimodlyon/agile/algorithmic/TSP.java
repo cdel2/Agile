@@ -10,7 +10,6 @@ import javafx.util.*;
 import org.apache.logging.log4j.Marker;
 import org.springframework.context.support.StaticApplicationContext;
 
-//TODO : Commenter et mettre en forme cette merde parce que c'est vraiment pas beau;
 
 public class TSP {
 	/**
@@ -76,7 +75,7 @@ public class TSP {
 	 * @return List<PathLength>
 	 */
 	List<Round> startTSP(Map<Long, Map<Long, Float>> unorderedMap, CityMap map, Dijkstra dijkstra) {
-		Long idWarehouse = map.getWarehouse().getId();
+		Long idWarehouse = MapManagement.getInstance().getWarehouse().getId();
 		// This list will contain all the resulting pair of (path, length) possible.
 		List<Round> possibleRounds = new ArrayList<Round>();
 		// This contains all the remainings successors (we remove every visited node)
@@ -125,17 +124,21 @@ public class TSP {
 			// if not, we add the current path (which is a possible final path) to
 			// finalResults.
 			//System.out.println(currentPath + ">>>>>>>>>>>>>>>" + map);
-			currentPath.add(map.getWarehouse().getId());
-			currentLength+=(currentSuccessors.get(map.getWarehouse().getId()));
+			currentPath.add(MapManagement.getInstance().getWarehouse().getId());
+			currentLength+=(currentSuccessors.get(MapManagement.getInstance().getWarehouse().getId()));
 			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
+			Long firstArrivalId = currentPath.get(0);
+			Delivery firstArrival = map.getDeliveryById(firstArrivalId);
 			Collections.reverse(IntersectionIds);
-			Path pathFound = new Path(IntersectionIds, map);
+			Path pathFound = new Path(IntersectionIds, map, firstArrival);
 			Round currentRound = new Round();
 			currentRound.addPath(pathFound);
 			for (int i = 1; i < currentPath.size() - 1; i++) {
 				IntersectionIds = dijkstra.createPathIds(currentPath.get(i), currentPath.get(i + 1));
+				Long arrivalId = currentPath.get(0);
+				Delivery arrival = map.getDeliveryById(arrivalId);
 				Collections.reverse(IntersectionIds);
-				pathFound = new Path(IntersectionIds, map);
+				pathFound = new Path(IntersectionIds, map, arrival);
 				currentRound.addPath(pathFound);
 			}
 			possibleRounds.add(currentRound);

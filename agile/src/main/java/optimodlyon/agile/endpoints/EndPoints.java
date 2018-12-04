@@ -3,6 +3,7 @@ package optimodlyon.agile.endpoints;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.controller.Controller;
 import optimodlyon.agile.models.CityMap;
+import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.Intersection;
@@ -12,6 +13,7 @@ import optimodlyon.agile.models.Segment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,25 +33,25 @@ public class EndPoints {
     }
     
     @GetMapping("/deliveries/{file}")
-    public CityMap getDeliveries(@PathVariable String file) {
+    public List<Delivery> getDeliveries(@PathVariable String file) {
         controller.GetDeliveries(file);
-        return MapManagement.getInstance().getMap();
+        return MapManagement.getInstance().getListDelivery();
     }
     
     
     @GetMapping("/calc/{nb}")
-    public List<Round> get(@PathVariable int nb) {
+    public Map<Long,Deliverer> get(@PathVariable int nb) {
+    	System.out.println("endpointDebut");
     	controller.doAlgorithm(nb);
-        return MapManagement.getInstance().getMap().getListRounds();
+    	System.out.println("endpointFin");
+        return MapManagement.getInstance().getListDeliverer();
     }
     
-    /*
-    @GetMapping("/testcalc/{nb}")
-    public List<Round> getRounds(@PathVariable int nb) {
-    	controller.InitializeGraph("petit");
-    	controller.GetDeliveries("dl-petit-6");
-    	List<Round> algo = controller.doAlgorithm(nb);
-        return algo;
-    }
-    */
+//    @GetMapping("/testcalc/{nb}")
+//    public List<Round> getRounds(@PathVariable int nb) {
+//    	controller.InitializeGraph("petit");
+//    	controller.GetDeliveries("dl-petit-6");
+//    	controller.doAlgorithm(nb);
+//        return CityMap.getInstance().getListRounds();
+//    }
 }

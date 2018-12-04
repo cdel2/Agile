@@ -28,6 +28,7 @@ public class Controller {
 	public void InitializeGraph(String file) {
 		try {
 			currentState.loadMap(file);
+			System.out.println("load");
 			currentState = new LoadedMapState();
 		} catch(Exception e) {
 			System.out.println("Erreur lors de InitializeGraph : " + e);

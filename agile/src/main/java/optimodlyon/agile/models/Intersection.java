@@ -1,6 +1,7 @@
 package optimodlyon.agile.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Intersection {
@@ -63,11 +64,11 @@ public class Intersection {
 	
 
 	
-	public static ArrayList<Intersection> findSuccessorSegments(Intersection start)
+	public static List<Intersection> findSuccessorSegments(Intersection start)
 	{
-		ArrayList<Segment> seg = MapManagement.getInstance().getMap().getGraph().get(start.getId());
+		List<Segment> seg = MapManagement.getInstance().getMap().getGraph().get(start.getId());
 		//System.out.println(map.graph.get(start.getId()));
-		ArrayList <Intersection> endIntersection = new ArrayList<Intersection>();
+		List <Intersection> endIntersection = new ArrayList<Intersection>();
 		for(Segment s : seg) {
 			Intersection e=s.getEnd();
 			endIntersection.add(e);

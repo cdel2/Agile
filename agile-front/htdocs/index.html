@@ -45,21 +45,15 @@
           <input type="text" id="sliderInit" data-slider-id="timelineIn" data-slider-min="80" data-slider-max="180" data-slider-step="1" data-slider-value="120"/>
         </div>
         <div id="mapCtrl">
+          <div id="loaderEl" class='loader'></div>
           <button type="button" class="btn btn-dark" id="resetZoom" onclick="Ctrl.View.reset();"><i class="fas fa-times"></i></button>
           <button type="button" class="btn btn-dark" id="zoom+" onclick="Ctrl.View.zoom(0.2);"><i class="fas fa-search-plus"></i></button>
           <button type="button" class="btn btn-dark" id="zoom-" onclick="Ctrl.View.zoom(-0.2);"><i class="fas fa-search-minus"></i></button>
-        </div>
-        <div id="stateChange">
-          <button type="button" class="btn btn-dark" id="undo"><i class="fas fa-undo"></i></button>
-          <button type="button" class="btn btn-dark" id="redo"><i class="fas fa-redo"></i></button>
-          <div id="loaderEl" class='loader'></div>
         </div>
         <canvas id="map"></canvas>
       </div>
 
       <div class="col-4" id="infCol">
-        <br />
-        <h3>OptimodLyon</h3>
         <br />
         <div class="form-group">
           <label for="mapSelector">Taille du plan</label>
@@ -72,6 +66,7 @@
         <button type="button" id="loadMap" class="btn btn-warning" onclick="Ctrl.loadMap();">Charger plan</button>
         <br />
         <hr />
+        
         <div class="form-group">
           <label for="delSelector">Fichier de livraison</label>
           <select class="form-control" id="delSelector" onchange="Ctrl.changeDel(this);">
@@ -83,6 +78,7 @@
         <button type="button" class="btn btn-warning" id="loadDel" onclick="Ctrl.loadDeliveries();">Charger livraisons</button>
         <br />
         <hr />
+
         <div onsubmit="Ctrl.loadRound(); return false;">
           <div class="form-group">
             <label for="numInput">Nombre de livreurs</label>
@@ -92,6 +88,17 @@
           <span id="execTime"></span>
         </div>
         <hr />
+
+        <div id="addPointSection">
+          <button type="button" class="btn btn-warning" id="addDel" onclick="Ctrl.addPoint();" disabled><i class="fas fa-plus"></i></button>
+          <button type="button" class="btn btn-warning" id="rmvDel" onclick="Ctrl.rmvPoint();" disabled><i class="fas fa-minus"></i></button>
+          <div id="stateChange">
+            <button type="button" class="btn btn-warning" id="undo"><i class="fas fa-undo"></i></button>
+            <button type="button" class="btn btn-warning" id="redo"><i class="fas fa-redo"></i></button>
+          </div>
+        </div>
+        <hr />
+
         <div id="pathMenu"></div>
         <br />
       </div>

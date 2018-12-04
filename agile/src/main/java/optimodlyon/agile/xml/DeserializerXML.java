@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java. text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Intersection;
@@ -18,7 +20,7 @@ import optimodlyon.agile.models.Segment;
 
 public class DeserializerXML {
 
-  public static HashMap<Long, ArrayList<Segment>> deserializeMap(String type) {
+  public static Map<Long, List<Segment>> deserializeMap(String type) {
 	
     try {
 
@@ -31,7 +33,7 @@ public class DeserializerXML {
                 
         NodeList nList = doc.getElementsByTagName("noeud"); 
         
-        HashMap<Long, Intersection> intersections = new HashMap<Long, Intersection>(); 
+        Map<Long, Intersection> intersections = new HashMap<Long, Intersection>(); 
         Long id;
         float latitude;
         float longitude;
@@ -52,7 +54,7 @@ public class DeserializerXML {
         Long idOrigin;
         Long idDestination;
         float duration;
-        HashMap<Long, ArrayList<Segment>> graph = new HashMap<Long, ArrayList<Segment>>();
+        Map<Long, List<Segment>> graph = new HashMap<Long, List<Segment>>();
         
         for (int i = 0; i<nList.getLength(); i++) {
         	final Element node = (Element) nList.item(i);
@@ -69,7 +71,7 @@ public class DeserializerXML {
             		graph.get(originInter.getId()).add(seg);
             	}
             	else {
-            		ArrayList <Segment> segments = new ArrayList<Segment>();
+            		List <Segment> segments = new ArrayList<Segment>();
             		segments.add(seg);
             		graph.put(originInter.getId(), segments);
             	}
@@ -87,7 +89,7 @@ public class DeserializerXML {
         }
     }
   
-  public static ArrayList<Delivery> deserializeDeliveries(String file) {
+  public static List<Delivery> deserializeDeliveries(String file) {
 		try {
 
 	        File fXmlFile = new File("src/main/java/optimodlyon/agile/files/"+file+".xml");
@@ -98,7 +100,7 @@ public class DeserializerXML {
 	        doc.getDocumentElement().normalize();
 	        NodeList dList = doc.getElementsByTagName("livraison");   
 	        
-	        ArrayList<Delivery> listDelivery = new ArrayList<Delivery>();
+	        List<Delivery> listDelivery = new ArrayList<Delivery>();
 	        Long id;
 	        float duration; 
 	        Delivery delivery;

@@ -98,11 +98,13 @@ class Round{
     }
 
     createPathHtml(color, totalTime, id){
-        var temp =  "<div class='pathLine' onclick='Ctrl.pathToForeground(this,"+id+");'>";
+        var temp =  "<div class='pathLine'>";
         temp += "<div id='colorSample' style='background-color:"+color+";'></div>";
         temp += totalTime;
+        temp += "<div class='delLineButtons'>";
+        temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.pathToForeground(this,"+id+");'><i class='fas fa-arrow-up'></i></button>";
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.disableRound(this, "+id+")'><i class='fas fa-eye'></i></button>"
-        temp += "</div>";
+        temp += "</div></div>";
         return temp;
     }
 

@@ -12,37 +12,63 @@ import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Segment;
+import optimodlyon.agile.models.Warehouse;
+import optimodlyon.agile.xml.DeserializerXML;
 
 public class LoadedDeliveriesState extends DefaultState{
 	
 	@Override
-	public void  startCalculation(int nb) {		
+	public void  startCalculation(int nb) {	
+		System.out.println("calculating...");
 		Clustering clustering = new Clustering();
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
 		
-		CityMap map = MapManagement.getInstance().getMap();
-		ArrayList<ArrayList<Delivery>> clusters = clustering.dispatchCluster(map, nb); 
+		MapManagement.getInstance().getMap();
+		MapManagement.getInstance().initializeListDeliverer(nb);
+		List<List<Delivery>> clusters = clustering.dispatchCluster(MapManagement.getInstance().getMap(), nb); 
 		
 		int i =0;
 		List<Round> finalRound = new ArrayList<Round>();
-		for(ArrayList<Delivery> cluster : clusters) {
+		for(List<Delivery> cluster : clusters) {
 			i++;
-			ArrayList<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
-			map.getWarehouse();
-			arrayOfIntersectionIds.add(map.getWarehouse().getId());
-			Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
-			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(mapGraph, arrayOfIntersectionIds);
-			Round round = tsp.brutForceTSP(graph, map, dijkstra);
+			List<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
+			MapManagement.getInstance().getWarehouse();
+			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
+			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
+			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
+			Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra);
 			finalRound.add(round);
 		}
 		
-		map.setListRounds(finalRound);
+		MapManagement.getInstance().attributeRound(finalRound); //A TESTER SI CA MARCHE!
+	}
+	
+
+	@Override
+	/**
+	 * Checks if a deliverer has finished his round
+	 * Calculates the shortest path from warehouse to the new point
+	 * Chooses the best deliverer depending on its finishing time 
+	 */
+	public void addDelivery (Long newDelivery) {
+		/*
+		 * Calculate the shortest path from warehouse to newPoint
+		 */
+		Dijkstra dijkstra = new Dijkstra();
+		List<Long> newDel = new ArrayList<Long>();
+		newDel.add(newDelivery);
+		CityMap map = MapManagement.getInstance().getMap();
+		newDel.add(MapManagement.getInstance().getWarehouse().getId());
+		
 	}
 	
 	@Override
-	public void addDelivery (Long newDelivery) {
-		
-		
+	public void loadDeliveries(String file) {
+		System.out.println("loading deliveries...");
+		List<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
+		Warehouse whs = DeserializerXML.deserializeWarehouse(file);
+		MapManagement.getInstance().setListDelivery(listDelivery);
+		MapManagement.getInstance().setWarehouse(whs);
 	}
 }

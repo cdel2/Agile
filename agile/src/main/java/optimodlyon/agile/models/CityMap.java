@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -12,18 +13,18 @@ import org.springframework.context.annotation.Scope;
 public class CityMap {
 	private float height;
 	private float width;
-	private int nbDeliverers;
-	private ArrayList<Delivery> listDelivery = new ArrayList<Delivery>();
-	private Warehouse warehouse;
-	private HashMap<Long, ArrayList<Segment>> graph = new HashMap<Long, ArrayList<Segment>> ();
-	private List<Round> listRounds;
+	//private int nbDeliverers;
+	//private List<Delivery> listDelivery = new ArrayList<Delivery>();
+	//private Warehouse warehouse;
+	private Map<Long, List<Segment>> graph = new HashMap<Long, List<Segment>> ();
+	//private List<Round> listRounds;
 	
 	private static CityMap instance = null;
 	
 	public CityMap() {}
 	
 	
-	public void setGraph(HashMap<Long, ArrayList<Segment>> graph) {
+	public void setGraph(Map<Long, List<Segment>> graph) {
 		this.graph = graph;
 	}
 	
@@ -39,16 +40,16 @@ public class CityMap {
 	/**
 	 * @return the listDelivery
 	 */
-	public ArrayList<Delivery> getListDelivery() {
+	/*public List<Delivery> getListDelivery() {
 		return listDelivery;
-	}
+	}*/
 
 	/**
 	 * @param listDelivery the listDelivery to set
 	 */
-	public void setListDelivery(ArrayList<Delivery> listDelivery) {
+	/*public void setListDelivery(List<Delivery> listDelivery) {
 		this.listDelivery = listDelivery;
-	}
+	}*/
 
 	/**
 	 * @return the width
@@ -74,9 +75,9 @@ public class CityMap {
 	/**
 	 * @return the nbDeliverers
 	 */
-	public int getNbDeliverers() {
+	/*public int getNbDeliverers() {
 		return nbDeliverers;
-	}
+	}*/
 	/**
 	 * @return the nbDeliveries
 	 */
@@ -88,9 +89,9 @@ public class CityMap {
 	/**
 	 * @param nbDeliverers the nbDeliverers to set
 	 */
-	public void setNbDeliverers(int nbDeliverers) {
+	/*public void setNbDeliverers(int nbDeliverers) {
 		this.nbDeliverers = nbDeliverers;
-	}
+	}*/
 	
 	/**
 	 * @param nbDeliveries the nbDeliveries to set
@@ -99,13 +100,13 @@ public class CityMap {
 		this.nbDeliveries = nbDeliveries;
 	}*/
 	
-	public Warehouse getWarehouse() {
+	/*public Warehouse getWarehouse() {
 		return warehouse;
-	}
+	}*/
 	
-	public void setWarehouse(Warehouse wh) {
+	/*public void setWarehouse(Warehouse wh) {
 		this.warehouse = wh;
-	}
+	}*/
 	
 	/**
 	 * Finds a segment knowing his origin and his destination
@@ -114,7 +115,7 @@ public class CityMap {
 	 * @param destination
 	 */
 	public Segment getSegmentFromGraph(Long origin, Long destination) {
-		ArrayList<Segment> segments = graph.get(origin);
+		List<Segment> segments = graph.get(origin);
 		Segment finalSegment;
 		for (Segment segment : segments) {
 			if((long)segment.getEnd().getId()==(long)destination) {
@@ -126,16 +127,26 @@ public class CityMap {
 		return null;
 	}
 
-	public HashMap<Long, ArrayList<Segment>> getGraph() {
+	public Map<Long, List<Segment>> getGraph() {
 		return graph;
 	}
 
-	public void setListRounds(List<Round> finalRound) {
+	/*public void setListRounds(List<Round> finalRound) {
 		listRounds = finalRound;		
-	}
+	}*/
 
-	public List<Round> getListRounds() {
+	/*public List<Round> getListRounds() {
 		return listRounds;
+	}*/
+	
+	public Delivery getDeliveryById(Long id) {
+		List<Delivery> listDelivery = MapManagement.getInstance().getListDelivery();
+		for(Delivery delivery : listDelivery) {
+			if((long)delivery.getId()==(long)id){
+				return delivery;
+			}
+		}
+		return null;
 	}
 }
 

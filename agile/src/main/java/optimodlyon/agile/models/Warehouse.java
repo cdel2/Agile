@@ -19,15 +19,6 @@ public class Warehouse extends Delivery {
 		timeStart = ts;
 	}
 	
-
-	
-	/**
-	 * @return the timeArrival
-	 */
-	public Date getTimeArrival() {
-		return timeArrival;
-	}
-
 	/**
 	 * @return the timeStart
 	 */
@@ -41,14 +32,5 @@ public class Warehouse extends Delivery {
 	public void setTimeStart(Date timeStart) {
 		this.timeStart = timeStart;
 	}
-
-	/**
-	 * @param timeArrival the timeArrival to set
-	 */
-	public void setTimeArrival(Date timeArrival) {
-		this.timeArrival = timeArrival;
-	}
-	
-	
 
 }
