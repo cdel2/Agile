@@ -114,6 +114,5 @@ class Controller{
         var rawMinutes = time.value-hour*10;
         var minutes = (rawMinutes/10)*60;
         $("#timeDisp").text(pad(hour,2)+":"+pad(minutes,2));
-        console.log(time.value);
     }
 }

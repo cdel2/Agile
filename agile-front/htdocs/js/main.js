@@ -17,7 +17,7 @@ function init(){
         tooltip: 'always',
         formatter: function(value) {
             var time = timeFormat(value);
-            console.log(time);
+            //console.log(time);
             return pad(time[0],2)+":"+pad(time[1],2);
         }
     }).on('slide', function(val){

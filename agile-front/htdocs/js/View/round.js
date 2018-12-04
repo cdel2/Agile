@@ -21,7 +21,7 @@ class Round{
             for(var i=0; i<data.length; i++){
                 let round = data[i].listPath;
                 let color1 = object.colors[i];
-                var temp = {id:i, display:true, color:color1, data:[]};
+                var temp = {id:i, display:true, color:color1, data:[], arrival:data[i].arrival};
                 $("#pathMenu").append(object.createPathHtml(color1,100, i));
                 for(var j in round){
                    let path = round[j].path;
