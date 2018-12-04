@@ -48,15 +48,6 @@
     text-align:center;
 }
 
-#stateChange{
-    position:absolute;
-    z-index:1400;
-    bottom:2%;
-    left:4%;
-    margin:0px auto;
-    text-align:center;
-}
-
 .loader {
     border: 4px solid #343a40; /* Light grey */
     border-top: 4px solid #ffc107; /* Blue */
@@ -109,8 +100,16 @@
     background-color: lightgray  ;
 }
 
-.viewButton{
+.delLineButtons{
     position: absolute;
     right: 15px;
     margin: 15px;
+}
+
+.viewButton{
+    margin-left: 4px;
+}
+
+#stateChange{
+    float: right;
 }
