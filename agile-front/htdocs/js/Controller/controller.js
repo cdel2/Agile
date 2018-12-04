@@ -56,10 +56,11 @@ class Controller{
     }
 
     addPoint(){
+        console.log()
         if(this.state.constructor.name === "AddPointState"){
-            this.state = new DelState();
+            this.state = new CalcState();
             this.View.update();
-        }else if(this.state.constructor.name === "DelState"){
+        }else if(this.state.constructor.name === "CalcState"){
             this.state= new AddPointState();
             this.View.update();
         }
