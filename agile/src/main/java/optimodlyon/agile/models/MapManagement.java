@@ -75,6 +75,7 @@ public class MapManagement{
 	
 	public void initializeListDeliverer(int nb)
 	{
+		listDeliverer.clear();
 		Long id = new Random().nextLong();
 		Deliverer deliverer = new Deliverer(id);
 		listDeliverer.put(id,deliverer);
