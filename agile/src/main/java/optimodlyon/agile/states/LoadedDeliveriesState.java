@@ -11,6 +11,8 @@ import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Segment;
+import optimodlyon.agile.models.Warehouse;
+import optimodlyon.agile.xml.DeserializerXML;
 
 public class LoadedDeliveriesState extends DefaultState{
 	

@@ -47,6 +47,7 @@ public class EndPoints {
     public List<Round> getRounds(@PathVariable int nb) {
     	controller.InitializeGraph("petit");
     	controller.GetDeliveries("dl-petit-6");
+    	controller.GetDeliveries("dl-petit-6");
     	List<Round> algo = controller.doAlgorithm(nb);
         return algo;
     }

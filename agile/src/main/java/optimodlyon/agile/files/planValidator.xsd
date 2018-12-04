@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+         <!-- XML Schema Generated from XML Document on Tue Dec 04 2018 09:06:53 GMT+0100 (Central European Standard Time) -->
+         <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
+         <xs:element name="reseau">
+               <xs:complexType>
+                     <xs:sequence>
+                           <xs:element name="noeud" maxOccurs="unbounded">
+                                 <xs:complexType>
+                                       <xs:attribute name="id" type="xs:unsignedLong"></xs:attribute>
+                                       <xs:attribute name="latitude" type="xs:double"></xs:attribute>
+                                       <xs:attribute name="longitude" type="xs:double"></xs:attribute>
+                                 </xs:complexType>
+                           </xs:element>
+                           <xs:element name="troncon" maxOccurs="unbounded">
+                                 <xs:complexType>
+                                       <xs:attribute name="destination" type="xs:unsignedLong"></xs:attribute>
+                                       <xs:attribute name="longueur" type="xs:double"></xs:attribute>
+                                       <xs:attribute name="nomRue" type="xs:string"></xs:attribute>
+                                       <xs:attribute name="origine" type="xs:unsignedLong"></xs:attribute>
+                                 </xs:complexType>
+                           </xs:element>
+                     </xs:sequence>
+               </xs:complexType>
+         </xs:element>
+   </xs:schema>
