@@ -20,13 +20,24 @@ class Deliveries{
             url: "http://localhost:8080/deliveries/dl-"+delFile,
             type:"GET"
         }).done(function( del ) {
-            object.warehouse = del.warehouse;
-            for(var el in del.listDelivery){
-               object.delNodes.push(del.listDelivery[el]);
+            for(var el in del){
+               object.delNodes.push(del[el]);
             }
             
-            Ctrl.state = new DelState();
-            Ctrl.View.update();
+            $.ajax({
+                url: "http://localhost:8080/warehouse",
+                type:"GET"
+            }).done(function( del ) {
+                object.warehouse = del;
+                Ctrl.state = new DelState();
+                Ctrl.View.update();
+            }).fail(function(){
+                alertBox("Warehouse data not loaded !");
+                Ctrl.View.update();
+                Ctrl.state = new MapState();
+            }).always(function(){    
+                $("#loaderEl").hide();
+            });
         }).fail(function(){
             console.log("Delivery file not loaded !");
             alertBox("Something wrong happened !");
