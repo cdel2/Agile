@@ -2,7 +2,7 @@ class Round{
     constructor(){
         this.paths = [];
         this.colors = ["green", "yellow", "purple", "blue", "lime", "aqua", "fuschia", "red", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
-        this.firstPath = 0;
+        this.firstPath = -1;
         this.stop=null;
     }
 
@@ -15,20 +15,23 @@ class Round{
             url: "http://localhost:8080/calc/"+num,
             type:"GET"
         }).done(function( data ) {
+            console.log("coucou");
             console.log(data);
             
             var totalTime = new Date().getTime()-ajaxTime;
             for(var i=0; i<data.length; i++){
                 let round = data[i].listPath;
                 let color1 = object.colors[i];
-                var temp = {id:i, display:true, color:color1, data:[]};
+                var temp = {id:i, display:true, color:color1, data:[], arrival:data[i].arrival};
                 $("#pathMenu").append(object.createPathHtml(color1,100, i));
                 for(var j in round){
                    let path = round[j].path;
+                   let roudPart = [];
                    for(var k in path){
                        var el = path[k];
-                       temp.data.push({start:el.start.id, end:el.end.id});
+                       roudPart.push({start:el.start.id, end:el.end.id});
                    }
+                   temp.data.push(roudPart);
                 }
                 object.paths.push(temp);
             }
@@ -50,38 +53,36 @@ class Round{
         
         ctx.globalAlpha = 1;
         for(var i in this.paths){
-            if(this.paths[i].display && i!=this.firstPath){
-                let path = this.paths[i].data;
-                ctx.beginPath();
-                ctx.strokeStyle = this.paths[i].color;
-                for(var j in path){
-                    let start = coord[path[j].start];
-                    let end = coord[path[j].end];
-                    ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
-                    ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
-                }
-                ctx.stroke();
+            if(this.paths[i].display && (this.firstPath===-1 || (i!=this.firstPath))){
+                let totalPath = this.paths[i].data;
+                this.drawSegment(totalPath, coord, ctx, this.paths[i].color, 1);
             }
         }
         
         let path = this.paths[this.firstPath];
-        if(path.display){
-            ctx.lineWidth = Ctrl.View.Canvas.ratio*2*(Ctrl.View.zoomLevel +1);
+        if(this.firstPath!=-1 && path.display){
             for(var j in path.data){
-                ctx.beginPath();
-                let path = this.paths[this.firstPath].data;
-                ctx.strokeStyle = this.paths[this.firstPath].color;
+                let totalPath = path.data;
+                this.drawSegment(totalPath, coord, ctx, path.color, 2);
+            }
+        }
+    }
+    //[10,5]
+    drawSegment(totalPath, coord, ctx, color, thickness){
+        for(var j in totalPath){
+            let path = totalPath[j];
+            ctx.beginPath();
+            ctx.setLineDash([]);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = Ctrl.View.Canvas.ratio*thickness*(Ctrl.View.zoomLevel +1);
+            for(var j in path){
                 let start = coord[path[j].start];
                 let end = coord[path[j].end];
                 ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
-                ctx.stroke();
-                if(this.stop != null && this.stop.longitude === end.longitude && this.stop.latitude === end.latitude){
-                    ctx.setLineDash([10, 5]);
-                }
             }
+            ctx.stroke();
         }
-        ctx.setLineDash([]);
     }
 
     switchPathDisplay(id1, state){
@@ -100,7 +101,7 @@ class Round{
     createPathHtml(color, totalTime, id){
         var temp =  "<div class='pathLine'>";
         temp += "<div id='colorSample' style='background-color:"+color+";'></div>";
-        temp += totalTime;
+        temp += "<p id='roundDes'>Durée : 20<br>Temps : 45</p>";
         temp += "<div class='delLineButtons'>";
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.pathToForeground(this,"+id+");'><i class='fas fa-arrow-up'></i></button>";
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.disableRound(this, "+id+")'><i class='fas fa-eye'></i></button>"

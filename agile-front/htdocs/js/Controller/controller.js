@@ -18,12 +18,17 @@ class Controller{
     }
 
     loadRound(){
-        $("#pathMenu").html("");
-        let value = $("#numInput").val();
-        if(value === ""){
-            value = 3;
+        if(this.state.constructor.name === "AddPointState"){
+            this.state = new CalcState();
+            this.View.update();
+        }else{
+            $("#pathMenu").html("");
+            let value = $("#numInput").val();
+            if(value === ""){
+                value = 3;
+            }
+            this.View.loadRound(value);
         }
-        this.View.loadRound(value);
         return false;
     }
 
@@ -56,10 +61,11 @@ class Controller{
     }
 
     addPoint(){
+        console.log()
         if(this.state.constructor.name === "AddPointState"){
-            this.state = new DelState();
+            this.state = new CalcState();
             this.View.update();
-        }else if(this.state.constructor.name === "DelState"){
+        }else if(this.state.constructor.name === "CalcState"){
             this.state= new AddPointState();
             this.View.update();
         }
@@ -67,9 +73,9 @@ class Controller{
 
     rmvPoint(){
         if(this.state.constructor.name === "RmvPointState"){
-            this.state = new DelState();
+            this.state = new CalcState();
             this.View.update();
-        }else if(this.state.constructor.name === "DelState"){
+        }else if(this.state.constructor.name === "CalcState"){
             this.state= new RmvPointState();
             this.View.update();
         }
@@ -93,16 +99,17 @@ class Controller{
     pathToForeground(el, id){
         var jel = $(el);
         if(jel.hasClass('activeLine')){
-            jel.removeClass("activeLine");
+            jel.parent().parent().removeClass("activeLine");
             this.View.Round.pathToForeground(id);
             this.View.update();
         }else{
             let list = $(".activeLine");
             console.log(list);
             for(var i=0; i<list.length; i++){
+                console.log($(list[i]).parent());
                 $(list[i]).removeClass("activeLine");
             }
-            jel.addClass("activeLine");
+            jel.parent().parent().addClass("activeLine");
             this.View.Round.pathToForeground(id);
             this.View.update();
         }
@@ -113,6 +120,5 @@ class Controller{
         var rawMinutes = time.value-hour*10;
         var minutes = (rawMinutes/10)*60;
         $("#timeDisp").text(pad(hour,2)+":"+pad(minutes,2));
-        console.log(time.value);
     }
 }
