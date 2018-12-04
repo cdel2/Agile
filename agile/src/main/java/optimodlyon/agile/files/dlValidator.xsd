@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+         <!-- XML Schema Generated from XML Document on Tue Dec 04 2018 10:03:36 GMT+0100 (Central European Standard Time) -->
+         <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
+         <xs:element name="demandeDeLivraisons">
+               <xs:complexType>
+                     <xs:sequence>
+                           <xs:element name="entrepot" maxOccurs="1" minOccurs="1">
+                                 <xs:complexType>
+                                       <xs:attribute name="adresse" type="xs:unsignedLong"></xs:attribute>
+                                       <xs:attribute name="heureDepart" type="xs:string"></xs:attribute>
+                                 </xs:complexType>
+                           </xs:element>
+                           <xs:element name="livraison" maxOccurs="unbounded">
+                                 <xs:complexType>
+                                       <xs:attribute name="adresse" type="xs:unsignedInt"></xs:attribute>
+                                       <xs:attribute name="duree" type="xs:unsignedInt"></xs:attribute>
+                                 </xs:complexType>
+                           </xs:element>
+                     </xs:sequence>
+               </xs:complexType>
+         </xs:element>
+   </xs:schema>
