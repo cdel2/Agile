@@ -2,9 +2,9 @@ package optimodlyon.agile.endpoints;
 
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.controller.Controller;
+import optimodlyon.agile.exceptions.UnprocessableEntityException;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Deliverer;
-import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.MapManagement;
@@ -30,13 +30,18 @@ public class EndPoints {
 	//AJOUTER LA GESTION DES ERREURS
     @GetMapping("/map/{file}")
     public CityMap  getMap(@PathVariable String file) {
-        controller.InitializeGraph(file);
+        controller.initializeGraph(file);
         return MapManagement.getInstance().getMap();
     }
     
     @GetMapping("/deliveries/{file}")
     public List<Delivery> getDeliveries(@PathVariable String file) {
-        controller.getDeliveries(file);
+    	try {
+            controller.getDeliveries(file);    		
+    	} catch (Exception e)
+    	{
+    		throw new UnprocessableEntityException("Le fichier du plan de la ville n'a pas été chargé.");
+    	}
         return MapManagement.getInstance().getListDelivery();
     }
     
@@ -48,9 +53,13 @@ public class EndPoints {
     
     @GetMapping("/calc/{nb}")
     public Map<Long,Deliverer> get(@PathVariable int nb) {
-    	System.out.println("endpointDebut");
-    	controller.doAlgorithm(nb);
-    	System.out.println("endpointFin");
+    	try {
+        	System.out.println("endpointDebut");
+        	controller.doAlgorithm(nb);
+        	System.out.println("endpointFin");
+    	} catch (Exception e) {
+    		throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
+    	}
         return MapManagement.getInstance().getListDeliverer();
     }
     

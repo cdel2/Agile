@@ -12,7 +12,7 @@ public class Controller {
 		currentState = new DefaultState();
 	}
 	
-	public void InitializeGraph(String file) {
+	public void initializeGraph(String file) {
 		try {
 			currentState.loadMap(file);
 			currentState = new LoadedMapState();
@@ -22,7 +22,7 @@ public class Controller {
 				
 	}
 
-	public void GetDeliveries(String file) throws Exception{
+	public void getDeliveries(String file) throws Exception{
 			currentState.loadDeliveries(file);
 			currentState = new LoadedDeliveriesState();	
 	}
@@ -36,7 +36,7 @@ public class Controller {
 	 * to deliver this point 
 	 * @param idNewNode
 	 */
-	public void NewDelivery(Long idNewNode) {
+	public void newDelivery(Long idNewNode) {
 		try {
 			
 		} catch(Exception e) {
