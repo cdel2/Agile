@@ -23,17 +23,17 @@ public class LoadedDeliveriesState extends DefaultState{
 		TSP tsp = new TSP();
 		
 		CityMap map = CityMap.getInstance();
-		ArrayList<ArrayList<Delivery>> clusters = clustering.dispatchCluster(map, nb); 
+		List<List<Delivery>> clusters = clustering.dispatchCluster(map, nb); 
 		
 		int i =0;
 		List<Round> finalRound = new ArrayList<Round>();
-		for(ArrayList<Delivery> cluster : clusters) {
+		for(List<Delivery> cluster : clusters) {
 			i++;
-			ArrayList<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
+			List<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
 			map.getWarehouse();
 			arrayOfIntersectionIds.add(map.getWarehouse().getId());
-			Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
-			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(mapGraph, arrayOfIntersectionIds);
+			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
+			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), arrayOfIntersectionIds);
 			Round round = tsp.brutForceTSP(graph, map, dijkstra);
 			finalRound.add(round);
 		}
@@ -41,9 +41,31 @@ public class LoadedDeliveriesState extends DefaultState{
 		map.setListRounds(finalRound);
 	}
 	
+
 	@Override
+	/**
+	 * Checks if a deliverer has finished his round
+	 * Calculates the shortest path from warehouse to the new point
+	 * Chooses the best deliverer depending on its finishing time 
+	 */
 	public void addDelivery (Long newDelivery) {
+		/*
+		 * Calculate the shortest path from warehouse to newPoint
+		 */
+		Dijkstra dijkstra = new Dijkstra();
+		List<Long> newDel = new ArrayList<Long>();
+		newDel.add(newDelivery);
+		CityMap map = CityMap.getInstance();
+		newDel.add(map.getWarehouse().getId());
 		
-		
+	}
+	
+	@Override
+	public void loadDeliveries(String file) {
+		System.out.println("loading deliveries...");
+		List<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
+		Warehouse whs = DeserializerXML.deserializeWarehouse(file);
+		CityMap.getInstance().setListDelivery(listDelivery);
+		CityMap.getInstance().setWarehouse(whs);
 	}
 }

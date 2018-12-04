@@ -42,14 +42,11 @@ public class EndPoints {
         return CityMap.getInstance().getListRounds();
     }
     
-    /*
-    @GetMapping("/testcalc/{nb}")
-    public List<Round> getRounds(@PathVariable int nb) {
-    	controller.InitializeGraph("petit");
-    	controller.GetDeliveries("dl-petit-6");
-    	controller.GetDeliveries("dl-petit-6");
-    	List<Round> algo = controller.doAlgorithm(nb);
-        return algo;
-    }
-    */
+//    @GetMapping("/testcalc/{nb}")
+//    public List<Round> getRounds(@PathVariable int nb) {
+//    	controller.InitializeGraph("petit");
+//    	controller.GetDeliveries("dl-petit-6");
+//    	controller.doAlgorithm(nb);
+//        return CityMap.getInstance().getListRounds();
+//    }
 }

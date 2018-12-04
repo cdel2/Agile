@@ -57,6 +57,7 @@ class Map{
         ctx.beginPath();
         ctx.strokeStyle = "gray";
         ctx.lineWidth = Ctrl.View.Canvas.ratio*(Ctrl.View.zoomLevel/2 +1);
+        ctx.setLineDash([]);
         for(var segListId in this.graph){
             let segList = this.graph[segListId];
             for(var seg in segList){

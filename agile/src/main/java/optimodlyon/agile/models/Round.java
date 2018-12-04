@@ -5,11 +5,13 @@ import java.util.ArrayList;
 public class Round {
 	private Date startTime;
 	private Date endTime;
+	private float duration;
 	private ArrayList<Path> listPath;
 	private Warehouse start;
 	
 	public Round() {
 		listPath = new ArrayList<Path>();
+		duration=0;
 	}
 
 	/**
@@ -76,6 +78,8 @@ public class Round {
 	
 	public void addPath(Path aPath) {
 		this.listPath.add(aPath);
+		this.duration+=aPath.getDuration();
+		this.duration+=aPath.getArrival().getDuration();
 	}
 
 	public float getTotalDuration() {
@@ -90,6 +94,14 @@ public class Round {
 	
 	public String toString() {
 		return "duration : " + this.getTotalDuration() +"\n"+ this.listPath.toString();
+	}
+	
+	public float getDuration() {
+		return this.duration;
+	}
+	
+	public void setDuration(float d) {
+		duration = d;
 	}
 	
 }

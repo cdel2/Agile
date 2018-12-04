@@ -2,8 +2,8 @@ class DelState extends State{
     constructor(){
         super();
 
-        enableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#rmvDel", "#mapSelector", "#delSelector", "#addDel", "#addDel"]);
-        disableButtons([""]);
+        enableButtons(["#loadDel", "#loadRounds", "#loadMap", "#mapSelector", "#delSelector"]);
+        disableButtons(["#undo", "#redo", "#addDel", "#rmvDel"]);
         console.log("Etat delState"); 
         $("#snoInfoBox").hide();
         $("#pathMenu").hide();
@@ -27,13 +27,13 @@ class DelState extends State{
     }
     
     handleMouseUp(evt){
-        let View = Ctrl.View;
+        /*let View = Ctrl.View;
         if(Ctrl.dragged===false  && evt.srcElement.tagName==="CANVAS"){
             let ratio = View.Canvas.ratio;
             var node = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
             View.Deliveries.nodeInfos(node);
             View.update();
-        }
+        }*/
         
         super.MouseUp(evt);
     }
