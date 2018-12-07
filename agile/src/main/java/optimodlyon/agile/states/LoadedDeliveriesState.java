@@ -16,6 +16,7 @@ import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.models.Warehouse;
+import optimodlyon.agile.util.Time;
 import optimodlyon.agile.xml.DeserializerXML;
 
 public class LoadedDeliveriesState extends DefaultState{
@@ -70,14 +71,25 @@ public class LoadedDeliveriesState extends DefaultState{
 		 *Find the best deliverer 
 		 */
 		Map<Long,Deliverer> delivererMap = MapManagement.getInstance().getListDeliverer();
-		/*int minTime = 9999; int tmpTime;
+		Time minTime = new Time(99,99,99); Time tmpTime; Long keyBestDeliv = (long)-1;
 		for (Long key : delivererMap.keySet()) {
-			Date tmp = delivererMap.get(key).getListRound().get(0).getEndTime();
-			tmpTime = tmp.getHours()*10 + tmp.getMinutes();
-			if(tmp.before(minDate)) {
-				minDate = tmp;
+			tmpTime = delivererMap.get(key).getListRound().get(0).getEndTime();
+			if(tmpTime.isBefore(minTime)) {
+				minTime = tmpTime;
+				keyBestDeliv = key;
 			}
-		}*/
+		}
+		/*
+		 * Add the new round to a deliverer's round list
+		 */
+		if(keyBestDeliv != -1) {
+			
+			//round.setStartTime(minTime); round.setEndTime();
+			List<Round> newRoundList = delivererMap.get(keyBestDeliv).getListRound();
+			newRoundList.add(round);
+			delivererMap.get(keyBestDeliv).setListRound(newRoundList);
+			MapManagement.getInstance().setListDeliverer(delivererMap);
+		}
 	}
 	
 	@Override

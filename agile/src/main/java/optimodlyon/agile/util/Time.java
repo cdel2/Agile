@@ -59,7 +59,7 @@ public class Time {
 		hours=hours%24;
 	}
 	
-	boolean isBefore(Time t2) {
+	public boolean isBefore(Time t2) {
 		boolean b=false;
 		if(this.hours < t2.hours) 
 			b = true;
