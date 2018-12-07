@@ -45,10 +45,10 @@ public class CalculatingState extends DefaultState {
 			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
 			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
-			Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra);
+			Round round = tsp.brutForceTSP(graph, dijkstra, MapManagement.getInstance().getWarehouse().getTimeStart());
 			finalRound.add(round);
 		}
 		
-		MapManagement.getInstance().attributeRound(finalRound); //A TESTER SI CA MARCHE!
+		MapManagement.getInstance().assignRounds(finalRound); //A TESTER SI CA MARCHE!
 	}
 }
