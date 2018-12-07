@@ -40,7 +40,7 @@ public class Path {
 	 */
 	public Time getDepartureTime() {
 		Delivery delivery = MapManagement.getInstance().getDeliveryById(findStart().getId());
-		Time previousDeliveryArrival = delivery.getTimeArrival();
+		Time previousDeliveryArrival = new Time(delivery.getTimeArrival());
 		System.out.println(delivery);
 		Time departureTime = previousDeliveryArrival.addTime(delivery.getDuration());
 		return departureTime;

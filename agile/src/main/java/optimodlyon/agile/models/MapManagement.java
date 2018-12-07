@@ -94,7 +94,7 @@ public class MapManagement{
 	
 
 	
-	public Delivery getDeliveryById(Long id) {
+	public static Delivery getDeliveryById(Long id) {
 		List<Delivery> listDelivery = getInstance().getListDelivery();
 		for(Delivery delivery : listDelivery) {
 			if((long)delivery.getId()==(long)id){
