@@ -175,20 +175,26 @@ public class DeserializerXML {
   	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
   	        Document doc = dBuilder.parse(fXmlFile);
   	        doc.getDocumentElement().normalize();
-  	                
-  	        NodeList entrepot = doc.getElementsByTagName("entrepot"); 
-  	        Long id;
-  	        Time timeStart;
-  	        Warehouse warehouse;
-  	        
-  	        final Element nodeE = (Element) entrepot.item(0);
-  	        String timeXML = nodeE.getAttribute("heureDepart");
-  	        timeStart = new Time(timeXML);
-  	        id = Long.parseLong(nodeE.getAttribute("adresse"));
-  	        
-  	        warehouse = new Warehouse(id, timeStart);
-  	        warehouse.findLatitudeLongitude(MapManagement.getInstance().getMap().getGraph());
-  	        return warehouse;
+  	      
+        	File fXsdFile = new File("src/main/java/optimodlyon/agile/files/dlValidator.xsd");	       
+	        
+  	        if(validateSchema(fXmlFile, fXsdFile)) { 
+	  	        NodeList entrepot = doc.getElementsByTagName("entrepot"); 
+	  	        Long id;
+	  	        Time timeStart;
+	  	        Warehouse warehouse;
+	  	        
+	  	        final Element nodeE = (Element) entrepot.item(0);
+	  	        String timeXML = nodeE.getAttribute("heureDepart");
+	  	        timeStart = new Time(timeXML);
+	  	        id = Long.parseLong(nodeE.getAttribute("adresse"));
+	  	        
+	  	        warehouse = new Warehouse(id, timeStart);
+	  	        warehouse.findLatitudeLongitude(MapManagement.getInstance().getMap().getGraph());
+	  	        return warehouse;
+	  	    }
+	  	    
+  	        return null;
   	        
   	        } catch (Exception e) {
   	            e.printStackTrace();

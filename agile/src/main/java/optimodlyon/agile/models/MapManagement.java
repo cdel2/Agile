@@ -92,6 +92,30 @@ public class MapManagement{
 		}
 	}
 	
+
+	
+	public Delivery getDeliveryById(Long id) {
+		List<Delivery> listDelivery = getInstance().getListDelivery();
+		for(Delivery delivery : listDelivery) {
+			if((long)delivery.getId()==(long)id){
+				return delivery;
+			}
+		}
+		return getInstance().getWarehouse();
+	}
+	
+	/**
+	 * Add a round to a deliverer if the startTime of the round to add
+	 * is after the endTime of the last round of the deliverer
+	 * @param deliv
+	 * @param roundToAdd
+	 */
+	public void addRoundToADeliverer(Deliverer deliv, Round roundToAdd) {
+		if(deliv != null && roundToAdd != null) {
+			this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
+		}
+	}
+	
 	/*public static void main(String[] args) {
 		Map<Long,String> listDeliverer = new HashMap<Long,String>();
 		listDeliverer.put((long) 1, "a");

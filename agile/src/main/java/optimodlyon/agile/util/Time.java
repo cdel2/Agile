@@ -4,7 +4,6 @@ public class Time {
 	int hours;
 	int minutes;
 	int seconds;
-
 	
 	/*
 	 * constructor of time from int hours, int minutes and int seconds
@@ -14,6 +13,12 @@ public class Time {
 		minutes=m;
 		seconds=s;
 		updateTime();
+	}
+	
+	public Time(Time t) {
+		hours=t.hours;
+		minutes=t.minutes;
+		seconds=t.seconds;
 	}
 	
 	/*
@@ -60,12 +65,24 @@ public class Time {
 		hours=hours%24;
 	}
 	
+	public boolean isBefore(Time t2) {
+		boolean b=false;
+		if(this.hours < t2.hours) 
+			b = true;
+		if(this.hours == t2.hours) {
+			if(this.minutes < t2.minutes)
+				b=true;
+			else if (this.minutes == t2.minutes) {
+				if(this.seconds < t2.seconds)
+					b=true;
+			}
+		}
+		return b;
+	}
+	
 	/*
 	 * Is it better to make a constructor of time with a time as parameters ?
 	 */
-	public Time copyTime() {
-		return new Time(hours, minutes, seconds);
-	}
 	
 	/*
 	 * WTF : Si je ne mets pas les getters et les setters, j'ai l'erreur suivante

@@ -1,6 +1,8 @@
 package optimodlyon.agile.states;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +10,13 @@ import optimodlyon.agile.algorithmic.Clustering;
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
 import optimodlyon.agile.models.CityMap;
+import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.models.Warehouse;
+import optimodlyon.agile.util.Time;
 import optimodlyon.agile.xml.DeserializerXML;
 
 public class LoadedDeliveriesState extends DefaultState{
@@ -37,31 +41,14 @@ public class LoadedDeliveriesState extends DefaultState{
 			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
 			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
-			Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra);
+			Time startTime=new Time("8:00:00");
+			Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra, startTime);
 			finalRound.add(round);
 		}
 		
 		MapManagement.getInstance().attributeRound(finalRound); //A TESTER SI CA MARCHE!
 	}
 	
-
-	@Override
-	/**
-	 * Checks if a deliverer has finished his round
-	 * Calculates the shortest path from warehouse to the new point
-	 * Chooses the best deliverer depending on its finishing time 
-	 */
-	public void addDelivery (Long newDelivery) {
-		/*
-		 * Calculate the shortest path from warehouse to newPoint
-		 */
-		Dijkstra dijkstra = new Dijkstra();
-		List<Long> newDel = new ArrayList<Long>();
-		newDel.add(newDelivery);
-		CityMap map = MapManagement.getInstance().getMap();
-		newDel.add(MapManagement.getInstance().getWarehouse().getId());
-		
-	}
 	
 	@Override
 	public void loadDeliveries(String file) {
