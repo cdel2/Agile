@@ -46,7 +46,7 @@ public class LoadedDeliveriesState extends DefaultState{
 			finalRound.add(round);
 		}
 		
-		MapManagement.getInstance().attributeRound(finalRound); //A TESTER SI CA MARCHE!
+		MapManagement.getInstance().assignRounds(finalRound); //A TESTER SI CA MARCHE!
 	}
 	
 	
