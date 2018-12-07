@@ -92,8 +92,10 @@ public class MapManagement{
 		}
 	}
 	
-	/*public static void main(String[] args) {
-		Map<Long,String> listDeliverer = new HashMap<Long,String>();
+	public static void main(String[] args) {
+		Intersection origin = new Intersection((long)1, (float)-50, (float)50);
+		System.out.println(origin);
+		/*Map<Long,String> listDeliverer = new HashMap<Long,String>();
 		listDeliverer.put((long) 1, "a");
 		listDeliverer.put((long) 2, "b");
 		listDeliverer.put((long) 1, "c");
@@ -107,8 +109,8 @@ public class MapManagement{
 			System.out.println("round : " +listRound.get(i));	
 			System.out.println("deli : " +it);	
 			i++;
-		}
-	}*/
+		}*/
+	}
 	
 
 }
