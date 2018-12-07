@@ -70,14 +70,16 @@ public class Intersection {
 	{
 		Map<Long, List<Segment>> myhmap = MapManagement.getInstance().getMap().getGraph();
 		List<Segment> seg = MapManagement.getInstance().getMap().getGraph().get(id);
-		System.out.println(MapManagement.getInstance());
+
+		//System.out.println(MapManagement.getInstance());
+		//System.out.println(MapManagement.getInstance().getMap().getGraph());
 		List <Intersection> endIntersection = new ArrayList<Intersection>();
 		for(Segment s : seg) {
 			Intersection e=s.getEnd();
 			endIntersection.add(e);
         }
 		for(Intersection i : endIntersection) {
-        	System.out.println(i);
+        	//System.out.println(i);
         }
 		return endIntersection;
 	}

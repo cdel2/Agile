@@ -11,6 +11,7 @@ import javax.print.attribute.standard.Destination;
 import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Segment;
+import optimodlyon.agile.xml.DeserializerXML;
 /**
  * @author William Occelli
  *
@@ -40,42 +41,50 @@ public class Dijkstra {
     	fullDijkstra = new HashMap<Long, Map<Long,Long>>();
 	}
 public static void main(String[] args) {
-		/*
-    	Map<Long, List<Segment>>completeMap = new HashMap<Long, List<Segment>>();
-        Intersection i0 = new Intersection((long)0,(float)5.0,(float)3.0);
-        Intersection i1 = new Intersection((long)1,(float)3.0,(float)3.0);
-        Intersection i2 = new Intersection((long)2,(float)4.0,(float)3.0);
-        Intersection i3 = new Intersection((long)3,(float)1.0,(float)3.0);
-        Intersection i4 = new Intersection((long)4,(float)1.0,(float)3.0);
-        Intersection i5 = new Intersection((long)5,(float)1.0,(float)3.0);
-        Segment s0 = new Segment(i0,i1,2);
-        Segment s1 = new Segment(i1,i3,3);
-        Segment s2 = new Segment(i0,i3,4);
-        Segment s3 = new Segment(i0,i2,4);
-        Segment s4 = new Segment(i2,i3,1);
-        Segment s5 = new Segment(i2,i4,3);
-        Segment s6 = new Segment(i3,i4,20);
-        Segment s7 = new Segment(i3,i5,15);
-        List<Segment> a0 = new ArrayList<Segment>();
-        List<Segment> a1 = new ArrayList<Segment>();
-        List<Segment> a2 = new ArrayList<Segment>();
-        List<Segment> a3 = new ArrayList<Segment>();
-        List<Segment> a4 = new ArrayList<Segment>();
-        List<Segment> a5 = new ArrayList<Segment>();
-        a0.add(s0);
-        a0.add(s2);
-        a0.add(s3);
-        a1.add(s1);
-        a2.add(s4);
-        a2.add(s5);
-        a3.add(s6);
-        a3.add(s7);
-        completeMap.put((long)0, a0);
-        completeMap.put((long)1, a1);
-        completeMap.put((long)2, a2);
-        completeMap.put((long)3, a3);
-        completeMap.put((long)4, a4);
-        completeMap.put((long)5, a5);
+		
+	Map<Long, List<Segment>>completeMap = new HashMap<Long, List<Segment>>();
+    Intersection i0 = new Intersection((long)0,(float)5.0,(float)3.0);
+    Intersection i1 = new Intersection((long)1,(float)3.0,(float)3.0);
+    Intersection i2 = new Intersection((long)2,(float)4.0,(float)3.0);
+    Intersection i3 = new Intersection((long)3,(float)1.0,(float)3.0);
+    Intersection i4 = new Intersection((long)4,(float)1.0,(float)3.0);
+    Intersection i5 = new Intersection((long)5,(float)1.0,(float)3.0);
+    Segment s0 = new Segment(i0,i1,2);
+    Segment s1 = new Segment(i1,i3,3);
+    Segment s2 = new Segment(i0,i3,4);
+    Segment s3 = new Segment(i0,i2,4);
+    Segment s4 = new Segment(i2,i3,1);
+    Segment s5 = new Segment(i2,i4,3);
+    Segment s6 = new Segment(i3,i4,20);
+    Segment s7 = new Segment(i3,i5,15);
+    List<Segment> a0 = new ArrayList<Segment>();
+    List<Segment> a1 = new ArrayList<Segment>();
+    List<Segment> a2 = new ArrayList<Segment>();
+    List<Segment> a3 = new ArrayList<Segment>();
+    List<Segment> a4 = new ArrayList<Segment>();
+    List<Segment> a5 = new ArrayList<Segment>();
+    a0.add(s0);
+    a0.add(s2);
+    a0.add(s3);
+    a1.add(s1);
+    a2.add(s4);
+    a2.add(s5);
+    a3.add(s6);
+    a3.add(s7);
+    completeMap.put((long)0, a0);
+    completeMap.put((long)1, a1);
+    completeMap.put((long)2, a2);
+    completeMap.put((long)3, a3);
+    completeMap.put((long)4, a4);
+    completeMap.put((long)5, a5);
+	MapManagement.getInstance().getMap().setGraph(completeMap);
+	List<Intersection> answer = new ArrayList<Intersection>();
+	answer.add(i1);
+	answer.add(i3);
+	answer.add(i2);
+	List<Intersection> test = i0.findSuccessorSegments();
+	int test2=0;
+        /*
         List<Long> listDeliveryPoints = new ArrayList<Long>();
         listDeliveryPoints.add((long)0);
         listDeliveryPoints.add((long)3);
