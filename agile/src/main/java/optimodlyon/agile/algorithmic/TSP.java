@@ -9,8 +9,12 @@ import java.io.Console;
 import java.util.*;
 import javafx.util.*;
 
+import org.apache.catalina.valves.rewrite.Substitution.SubstitutionElement;
 import org.apache.logging.log4j.Marker;
+import org.omg.PortableServer.ThreadPolicyOperations;
 import org.springframework.context.support.StaticApplicationContext;
+
+import ch.qos.logback.core.util.Duration;
 
 
 public class TSP {
@@ -65,6 +69,7 @@ public class TSP {
 		// Find the shortest path
 		Round shortestRound = findShortestRound(possibleRounds);
 		//System.out.println("Chemin le plus court trouvé : " + shortestRound.getClass() + "de longueur : " + shortestRound.getTotalDuration());
+		//shortestRound.setDeliveriesTime();
 		return shortestRound;
 	}
 
@@ -103,6 +108,7 @@ public class TSP {
 			possibleRounds = nextNode(newUnordoredMap, currentSuccessors, currentPath, currentLength, possibleRounds,
 					dijkstra, startTime);
 		}
+		System.out.println(startTime);
 		return (possibleRounds);
 	}
 
@@ -126,21 +132,27 @@ public class TSP {
 			// if not, we add the current path (which is a possible final path) to
 			// finalResults.
 			//System.out.println(currentPath + ">>>>>>>>>>>>>>>" + map);
+			Time currentTime = new Time(startTime);
 			currentPath.add(MapManagement.getInstance().getWarehouse().getId());
 			currentLength+=(currentSuccessors.get(MapManagement.getInstance().getWarehouse().getId()));
 			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
 			Long firstArrivalId = currentPath.get(1);
 			Delivery firstArrival = MapManagement.getInstance().getDeliveryById(firstArrivalId);
-			Path pathFound = new Path(IntersectionIds, firstArrival);
+			Path pathFound = new Path(IntersectionIds, firstArrival, currentTime);
 			Round currentRound = new Round(MapManagement.getInstance().getWarehouse(), startTime);
+			System.out.println("Departure : " + pathFound.getDepartureTime() + " Duration : " + pathFound.getDuration() + 
+					", " + pathFound.getArrival().getDuration() + " Arrival : " + pathFound.getArrival().getTimeArrival());
 			currentRound.addPath(pathFound);
 			for (int i = 1; i < currentPath.size() - 1; i++) {
 				IntersectionIds = dijkstra.createPathIds(currentPath.get(i), currentPath.get(i + 1));
 				Long arrivalId = currentPath.get(i+1);
 				Delivery arrival = MapManagement.getInstance().getDeliveryById(arrivalId);
-				pathFound = new Path(IntersectionIds, arrival);
+				pathFound = new Path(IntersectionIds, arrival, currentTime);
+				System.out.println("Departure : " + pathFound.getDepartureTime() + " Duration : " + pathFound.getDuration() + 
+						", " + pathFound.getArrival().getDuration() + " Arrival : " + pathFound.getArrival().getTimeArrival());
 				currentRound.addPath(pathFound);
 			}
+			System.out.println();
 			possibleRounds.add(currentRound);
 			return possibleRounds;
 		} else {
@@ -200,6 +212,10 @@ public class TSP {
 			for (Round round : possibleRounds) {
 				if (round.getTotalDuration() < bestRound.getTotalDuration())
 					bestRound = round;
+			}
+			for(Path path : bestRound.getListPath()) {
+				System.out.println("Departure : " + path.getDepartureTime() + " Duration : " + path.getDuration() + 
+						", " + path.getArrival().getDuration() + " Arrival : " + path.getArrival().getTimeArrival());
 			}
 			return bestRound;
 		}

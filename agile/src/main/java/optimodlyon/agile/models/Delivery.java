@@ -58,7 +58,7 @@ public class Delivery extends Intersection{
 	 * @param timeArrival the timeArrival to set
 	 */
 	public void setTimeArrival(Time timeArrival) {
-		this.timeArrival = timeArrival;
+		this.timeArrival = new Time(timeArrival);
 	}
 	
 	public boolean findLatitudeLongitude(Map<Long, List<Segment>> graph) {

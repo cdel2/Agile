@@ -10,6 +10,7 @@ public class Path {
 	private float duration;
 	private ArrayList<Segment> listSegment;
 	private Delivery arrival;
+	Time departureTime;
 
 	
 	public Path() {
@@ -20,7 +21,8 @@ public class Path {
 	/**
 	 * 
 	 */
-	public Path(List<Long> idIntersections, Delivery arrival) {
+	public Path(List<Long> idIntersections, Delivery arrival, Time currentTime) {
+		departureTime=new Time(currentTime);
 		listSegment = new ArrayList<Segment>();
 		duration = 0;
 		for(int i=0; i<idIntersections.size()-1; i++) {
@@ -33,16 +35,15 @@ public class Path {
 		}
 		Long idDelivery = this.findEnd().getId();
 		this.arrival = arrival;
+		currentTime.addTime(duration);
+		arrival.setTimeArrival(currentTime);
+		currentTime.addTime(this.arrival.getDuration());
 	}
 
 	/**
 	 * @return the duration
 	 */
 	public Time getDepartureTime() {
-		Delivery delivery = MapManagement.getInstance().getDeliveryById(findStart().getId());
-		Time previousDeliveryArrival = new Time(delivery.getTimeArrival());
-		System.out.println(delivery);
-		Time departureTime = previousDeliveryArrival.addTime(delivery.getDuration());
 		return departureTime;
 	}
 	

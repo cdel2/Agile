@@ -89,7 +89,6 @@ public class Round {
 	public void addPath(Path aPath) {
 		this.listPath.add(aPath);
 		endTime.addTime(aPath.getDuration());
-		aPath.getArrival().setTimeArrival(new Time(endTime));
 		endTime.addTime(aPath.getArrival().getDuration());
 	}
 
@@ -102,6 +101,15 @@ public class Round {
 		
 		return duration;
 	}
+	
+//	public void setDeliveriesTime() {
+//		Time currentTime=new Time(startTime);
+//		for(Path path : listPath) {
+//			currentTime.addTime(path.getDuration());
+//			path.changeArrivalTime(currentTime);
+//			currentTime.addTime(path.getArrival().getDuration());
+//		}
+//	}
 	
 	public String toString() {
 		return "duration : " + this.getTotalDuration() +"\n"+ this.listPath.toString();
