@@ -115,9 +115,7 @@ class Controller{
         }
     }
 
-    changeTime(time){
-        //$("#sliderInit").slider('setValue', 150);
-        timeToSlider(time);
+    changeTime(time){        
         $("#timeDisp").text(pad(time.hours,2)+":"+pad(time.minutes,2));
         this.View.time = time;
         this.View.update();

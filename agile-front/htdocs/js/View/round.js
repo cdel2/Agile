@@ -38,7 +38,7 @@ class Round{
                    }
                    let arrival = round[j].arrival;
                    temp.data.push({roundSeg : roudPart, arrival:{id:arrival.id, timeArrival:arrival.timeArrival}}); //REVOIR
-                   deliveryTemp.push({id:arrival.id, timeArrival:arrival.timeArrival, duration:arrival.duration, color: color1});
+                   deliveryTemp.push({id:arrival.id, timeArrival:arrival.timeArrival, duration:arrival.duration, color: color1, idPath: cmpt});
                 }
                 object.paths[cmpt] = temp;
                 Ctrl.View.Deliveries.delNodes[cmpt] = deliveryTemp;
@@ -106,23 +106,18 @@ class Round{
     }
 
     createPathHtml(color, startTime, endTime, id){
-        console.log(startTime);
-        console.log(endTime);
-        var temp =  "<div class='pathLine'>";
+        var temp =  "<div class='pathLine' id='pl"+id+"'>";
         temp += "<div id='colorSample' style='background-color:"+color+";'></div>";
         temp += "<p id='roundDes'>Depart : "+timeToString(startTime)+"<br>Arrivée : "+timeToString(endTime)+"</p>";
         temp += "<div class='delLineButtons'>";
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.pathToForeground(this,"+id+");'><i class='fas fa-arrow-up'></i></button>";
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.disableRound(this, "+id+")'><i class='fas fa-eye'></i></button>"
         temp += "</div></div>";
+        temp += "<div class='collapse' id='cl"+id+"'><div class='card card-body'>Heyyyyyyyyyyyyyyyyyyyyyyyyyyy</div></div>"
         return temp;
     }
 
     pathToForeground(id){
         this.firstPath = id;
-    }
-
-    setStop(node){
-        this.stop = node;
     }
 }

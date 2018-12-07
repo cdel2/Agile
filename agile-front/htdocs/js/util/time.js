@@ -45,7 +45,7 @@ function initSlider(ticks1){
     }
     ticks += "180]";
     $("#sliderInit").attr('data-slider-ticks', ticks);
-    $("#sliderInit").attr('data-slider-ticks-snap-bounds', 5);
+    $("#sliderInit").attr('data-slider-ticks-snap-bounds', 1);
     $("#sliderInit").slider({
         //ticks:[112, 130],
         //tooltip: 'always',
