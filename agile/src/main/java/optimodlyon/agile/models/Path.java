@@ -17,13 +17,13 @@ public class Path {
 	/**
 	 * 
 	 */
-	public Path(List<Long> idIntersections, CityMap map, Delivery arrival) {
+	public Path(List<Long> idIntersections, Delivery arrival) {
 		listSegment = new ArrayList<Segment>();
 		duration = 0;
 		for(int i=0; i<idIntersections.size()-1; i++) {
 			Long origin = idIntersections.get(i);
 			Long destination = idIntersections.get(i+1);
-			Segment currentSegment = map.getSegmentFromGraph(origin, destination);
+			Segment currentSegment = MapManagement.getInstance().getMap().getSegmentFromGraph(origin, destination);
 			listSegment.add(currentSegment);
 			//System.out.println(currentSegment);
 			duration+=currentSegment.getDuration();
