@@ -34,7 +34,7 @@ class Round{
                    let roudPart = [];
                    for(var k in path){
                        var el = path[k];
-                       roudPart.push({start:el.start.id, end:el.end.id});
+                       roudPart.push({start:el.start.id, end:el.end.id, passageTime:el.passageTime});
                    }
                    let arrival = round[j].arrival;
                    temp.data.push({roundSeg : roudPart, arrival:{id:arrival.id, timeArrival:arrival.timeArrival}}); //REVOIR
@@ -79,24 +79,24 @@ class Round{
         let present = true; //true if we are before time
         for(var j in totalPath){
             let path = totalPath[j];
-            if(compareTime(path.arrival.timeArrival, time) >= 0) present = false;
-            if(present){
-                ctx.globalAlpha = 1; 
-                ctx.setLineDash([]);
-            }else{ 
-                ctx.globalAlpha = 0.4;
-                ctx.setLineDash([10,5]);
-            }
             ctx.strokeStyle = color;
             ctx.lineWidth = Ctrl.View.Canvas.ratio*thickness*(Ctrl.View.zoomLevel +1);
-            ctx.beginPath();
             for(var j in path.roundSeg){
+                if(present){
+                    ctx.globalAlpha = 1; 
+                    ctx.setLineDash([]);
+                    if(compareTime(path.roundSeg[j].passageTime, time) >= 0) present = false;
+                }else{ 
+                    ctx.globalAlpha = 0.4;
+                    ctx.setLineDash([10,5]);
+                }
+                ctx.beginPath();
                 let start = coord[path.roundSeg[j].start];
                 let end = coord[path.roundSeg[j].end];
                 ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
+                ctx.stroke();
             }
-            ctx.stroke();
         }
     }
 
