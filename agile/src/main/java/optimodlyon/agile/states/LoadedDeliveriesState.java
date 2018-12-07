@@ -67,7 +67,8 @@ public class LoadedDeliveriesState extends DefaultState{
 		CityMap map = MapManagement.getInstance().getMap();
 		newDel.add(MapManagement.getInstance().getWarehouse().getId());
 		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), newDel);
-		Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra);
+		Time startTime=new Time("8:00:00");
+		Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra, startTime);
 		/*
 		 *Find the best deliverer 
 		 */
