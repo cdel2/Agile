@@ -24,8 +24,8 @@ class Round{
             for(var i in data){
                 let round = data[i].listRound[0].listPath;
                 let color1 = object.colors[cmpt];
-                console.log(data[i].arrival);
-                var temp = {display:true, color:color1, data:[], departureTime:{hours:8, minutes:0, seconds:0}, arrivalTime:data[i].listRound[0].endTime};
+                let deliveryTemp = [];
+                let temp = {display:true, color:color1, data:[], departureTime:{hours:8, minutes:0, seconds:0}, arrivalTime:data[i].listRound[0].endTime};
                 $("#pathMenu").append(object.createPathHtml(color1, data[i].listRound[0].startTime, data[i].listRound[0].endTime, cmpt));
                 for(var j in round){
                    let path = round[j].path;
@@ -35,11 +35,14 @@ class Round{
                        roudPart.push({start:el.start.id, end:el.end.id});
                    }
                    let arrival = round[j].arrival;
-                   temp.data.push({roundSeg : roudPart, arrival:{id:arrival.id, timeArrival:arrival.timeArrival}});
+                   temp.data.push({roundSeg : roudPart, arrival:{id:arrival.id, timeArrival:arrival.timeArrival}}); //REVOIR
+                   deliveryTemp.push({id:arrival.id, timeArrival:arrival.timeArrival, duration:arrival.duration, color: color1});
                 }
                 object.paths[cmpt] = temp;
+                Ctrl.View.Deliveries.delNodes[cmpt] = deliveryTemp;
                 cmpt++;
             }
+            delete Ctrl.View.Deliveries.delNodes[-1];
 
             Ctrl.View.update();
             Ctrl.state = new CalcState();

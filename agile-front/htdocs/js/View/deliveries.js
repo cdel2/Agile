@@ -23,8 +23,7 @@ class Deliveries{
             console.log(del);
             var tmp = [];
             for(var el in del){
-                console.log({id:del[el].id, duration:del[el].duration});
-               tmp.push({id:del[el].id, duration:del[el].duration});
+               tmp.push({id:del[el].id, duration:del[el].duration, color:"blue"});
             }
             object.delNodes[-1] = tmp;
             
@@ -53,10 +52,6 @@ class Deliveries{
     }
 
     display(ctx, View, coord){
-        //affichage warehouse
-        let node = this.warehouse;
-        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.warehouseDisp.radius, this.warehouseDisp.color, ctx);
-        
         for(var del in this.delNodes){
             let pathNodes = this.delNodes[del];
             for(var i = 0; i < pathNodes.length; i++){
@@ -68,6 +63,10 @@ class Deliveries{
             let node = this.userDelNodes[i];
             drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.userNodeDisp.radius, this.userNodeDisp.color, ctx);
         }
+
+        //affichage warehouse
+        let node = this.warehouse;
+        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.warehouseDisp.radius, this.warehouseDisp.color, ctx);        
 
         //afficha pin
         if(this.nodeInfo!=null){
