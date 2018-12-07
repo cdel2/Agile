@@ -129,10 +129,23 @@ public class MapManagement{
 	 * @param deliv
 	 * @param roundToAdd
 	 */
-	public void addRoundToADeliverer(Deliverer deliv, Round roundToAdd) {
+	public boolean addRoundToADeliverer(Deliverer deliv, Round roundToAdd) {
+		boolean res=false;
 		if(deliv != null && roundToAdd != null) {
-			this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
+			if(this.listDeliverer.containsKey(deliv.getId())) {
+				res = this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
+			}
 		}
+		return res;
+	}
+	
+	public boolean addDeliveryToListDelivery(Delivery newDelivery) {
+		boolean res = false;
+		if(!this.listDelivery.contains(newDelivery)) {
+			this.listDelivery.add(newDelivery);
+			res=true;
+		}
+		return res;
 	}
 	
 	public static void main(String[] args) {

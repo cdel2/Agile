@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import optimodlyon.agile.models.CityMap;
+import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Segment;
