@@ -13,6 +13,7 @@ import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.models.Warehouse;
+import optimodlyon.agile.util.Time;
 import optimodlyon.agile.xml.DeserializerXML;
 
 public class LoadedDeliveriesState extends DefaultState{
@@ -37,7 +38,8 @@ public class LoadedDeliveriesState extends DefaultState{
 			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
 			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
-			Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra);
+			Time startTime=new Time("8:00:00");
+			Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra, startTime);
 			finalRound.add(round);
 		}
 		
