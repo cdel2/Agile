@@ -4,7 +4,6 @@ public class Time {
 	int hours;
 	int minutes;
 	int seconds;
-
 	
 	/*
 	 * constructor of time from int hours, int minutes and int seconds
@@ -64,6 +63,21 @@ public class Time {
 			hours+=h;
 		}
 		hours=hours%24;
+	}
+	
+	public boolean isBefore(Time t2) {
+		boolean b=false;
+		if(this.hours < t2.hours) 
+			b = true;
+		if(this.hours == t2.hours) {
+			if(this.minutes < t2.minutes)
+				b=true;
+			else if (this.minutes == t2.minutes) {
+				if(this.seconds < t2.seconds)
+					b=true;
+			}
+		}
+		return b;
 	}
 	
 	/*
