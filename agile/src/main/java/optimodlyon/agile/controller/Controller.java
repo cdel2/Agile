@@ -35,17 +35,22 @@ public class Controller {
 	}
 	
 	public void doAlgorithm(int nb) throws Exception {
+		/*
 		//executorService manages an in-memory queue and schedules submitted tasks based on thread availability.
 		//newCachedThreadPool Creates a thread pool that creates new threads as needed, but will reuse previously constructed threads when they are available. 
 	    ExecutorService executorService = Executors.newCachedThreadPool();
 	    
 	    //submit a task (startCalculation)
 	    Future<Boolean> future = executorService.submit(() -> {
-	    	currentState.startCalculation(nb);
 	    	currentState = new CalculatingState();
-	        //Thread.sleep(10000l);
+	    	System.out.println("je commence le calcul");
+	    	currentState.startCalculation(nb);
+	    	System.out.println("je finis le calcul");
+	    	System.out.println("j'ai crée l'état calculating");
+	        //Thread.sleep(10000);
 	        return Boolean.TRUE;
 	    });
+	    
 	    
 	    if (future.isDone() && !future.isCancelled()) {
 	    	try {
@@ -55,7 +60,19 @@ public class Controller {
 	    	} catch (InterruptedException | ExecutionException | TimeoutException e) {
 	    	    e.printStackTrace();
 	    	}
+	    }*/
+	    /*
+	    Boolean result = future.get(10, TimeUnit.SECONDS);
+	    
+	    if(result) {
+	    	System.out.println("j'ai crée l'état calculated");
+	    	currentState = new CalculatedState();
 	    }
+	    else {
+	    	System.out.println("calcul trop long!");
+	    }*/
+		currentState.startCalculation(nb);
+		currentState = new CalculatedState();	
 	}
 	
 	/**

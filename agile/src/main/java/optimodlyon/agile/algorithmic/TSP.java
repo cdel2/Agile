@@ -7,7 +7,6 @@ import java.awt.Paint;
 import java.awt.font.GraphicAttribute;
 import java.io.Console;
 import java.util.*;
-import javafx.util.*;
 
 import org.apache.catalina.valves.rewrite.Substitution.SubstitutionElement;
 import org.apache.logging.log4j.Marker;

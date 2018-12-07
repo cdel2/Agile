@@ -10,9 +10,7 @@ import optimodlyon.agile.models.Warehouse;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,40 +59,12 @@ public class EndPoints {
     @GetMapping("/calc/{nb}")
     public Map<Long,Deliverer> get(@PathVariable int nb) {
     	try {
-        	//System.out.println("endpointDebut");
+        	System.out.println("endpointDebut");
         	controller.doAlgorithm(nb);
-        	//System.out.println("endpointFin");
+        	System.out.println("endpointFin");
     	} catch (Exception e) {
     		throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
     	}
         return MapManagement.getInstance().getListDeliverer();
     } 
-    
-    @GetMapping("/test")
-    public CompletableFuture<String>  getTest() {
-    	return invoke();
-    }
-    
-    public CompletableFuture<String>  invoke() {/*
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-     
-        Future<String> future = executorService.submit(() -> {
-            // ...
-            //Thread.sleep(10000l);
-            return "Hello world";
-        });
-        
-        
-        return future;*/
-        
-	    CompletableFuture<String> completableFuture = new CompletableFuture<>();
-		//newCachedThreadPool Creates a thread pool that creates new threads as needed, but will reuse previously constructed threads when they are available. 
-	    Executors.newCachedThreadPool().submit(() -> {
-	        //Thread.sleep(500);
-	        completableFuture.complete("hello");
-	        return null;
-	    });
-	 
-	    return completableFuture;
-    }
 }
