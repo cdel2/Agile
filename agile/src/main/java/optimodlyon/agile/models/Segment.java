@@ -15,6 +15,14 @@ public class Segment {
 		this.end = end;
 		this.duration = duration;
 	}
+
+	public Segment(Segment seg) {
+		this.start = seg.start;
+		this.end = seg.end;
+		this.duration = seg.duration;
+		this.passageTime=seg.passageTime;
+	}
+	
 	public Intersection getStart() 
 	{
 		return start;

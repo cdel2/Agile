@@ -29,14 +29,14 @@ public class Path {
 			Long origin = idIntersections.get(i);
 			Long destination = idIntersections.get(i+1);
 			Segment currentSegment = MapManagement.getInstance().getMap().getSegmentFromGraph(origin, destination);
-			listSegment.add(currentSegment);
+			listSegment.add(new Segment(currentSegment));
 			//System.out.println(currentSegment);
 			duration+=currentSegment.getDuration();
 		}
 		Long idDelivery = this.findEnd().getId();
-		this.arrival = arrival;
+		this.arrival = new Delivery(arrival);
 		currentTime.addTime(duration);
-		arrival.setTimeArrival(currentTime);
+		this.arrival.setTimeArrival(currentTime);
 		currentTime.addTime(this.arrival.getDuration());
 	}
 	

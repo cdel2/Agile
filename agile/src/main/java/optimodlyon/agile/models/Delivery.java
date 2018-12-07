@@ -21,6 +21,12 @@ public class Delivery extends Intersection{
 		duration = dur;
 	}
 	
+	public Delivery(Delivery d) {
+		super(d);
+		timeArrival=d.timeArrival;
+		duration=d.duration;
+	}
+	
 	public Delivery(Long id, Time ta) {
 		super(id);
 		timeArrival = ta;
