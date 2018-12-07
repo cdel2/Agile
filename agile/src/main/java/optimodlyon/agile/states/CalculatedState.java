@@ -27,13 +27,16 @@ public class CalculatedState extends LoadedDeliveriesState{
 		/*
 		 * Calculate the shortest path from warehouse to newPoint
 		 */
-		Round newRound = calculateRoundForOneNode(idDelivery,MapManagement.getInstance().getMap(), bestDeliverer.getListRound().get(0).getEndTime());
-		Time endOfDay = new Time(18,00,00);
-		if(newRound != null && bestDeliverer != null) {
-			if(newRound.getEndTime().isBefore(endOfDay)) {
-				MapManagement.getInstance().addRoundToADeliverer(bestDeliverer, newRound);
+		if(MapManagement.getInstance().getMap().getGraph().containsKey(idDelivery) && bestDeliverer != null) {
+			Round newRound = calculateRoundForOneNode(idDelivery,MapManagement.getInstance().getMap(), bestDeliverer.getListRound().get(0).getEndTime());
+			Time endOfDay = new Time(18,00,00);
+			if(newRound != null && bestDeliverer != null) {
+				if(newRound.getEndTime().isBefore(endOfDay)) {
+					MapManagement.getInstance().addRoundToADeliverer(bestDeliverer, newRound);
+				}
 			}
 		}
+		
 	}
 	
 	/**
@@ -45,20 +48,26 @@ public class CalculatedState extends LoadedDeliveriesState{
 		/*
 		 * Initialize the minimum finishing Time to 99:99.99 and the idDeliverer to -1
 		 */
-		Time minTime = new Time(24,00,00); Time tmpTime; Long keyBestDeliv = (long)-1;
+		Time minTime = new Time(23,59,59); Time tmpTime = new Time(24,00,00); Long keyBestDeliv = (long)-1;
 		/*
 		 * We look at the first round of each deliverer and compare its finishing time 
 		 * to the current minimum finishing time
 		 */
 		for (Long key : delivererMap.keySet()) {
-			tmpTime = delivererMap.get(key).getListRound().get(0).getEndTime();
-			System.out.println(tmpTime.toString());
-			if(tmpTime.isBefore(minTime)) {
-				minTime = tmpTime;
-				keyBestDeliv = key;
-			} else {
-				System.out.println("chelou");
-			}
+			for(Round round : delivererMap.get(key).getListRound()) {
+					if(delivererMap.get(key).getListRound().size() <2) {
+						if(round != null) {
+							tmpTime = round.getEndTime();
+							if(tmpTime.isBefore(minTime)) {
+								minTime = tmpTime;
+								keyBestDeliv = key;
+							}
+						}
+					}
+					else {
+						//TODO Traitement spécial
+					}
+				}
 		}
 		/*
 		 * If we have found a corresponding deliverer, return the deliverer Object
