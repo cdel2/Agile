@@ -1,5 +1,5 @@
 package optimodlyon.agile.states;
 
-public class CalculatedState extends DefaultState{
+public class CalculatedState extends LoadedDeliveriesState{
 
 }
