@@ -74,7 +74,7 @@ class Deliveries{
             let imgW = ratio*this.img.width;
             ctx.globalAlpha = 0.8;
             ctx.drawImage(this.img, View.norm(node.longitude, true)-imgW/2,View.norm(node.latitude, false)-imgH, imgW, imgH);
-            showMessage(true, "Durée : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
+            //showMessage(true, "Durée : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
             ctx.beginPath();         
 
         }
@@ -136,11 +136,31 @@ class Deliveries{
             return;
         }
         if(this.selectedDel != null && (node.idPath === this.selectedDel.idPath)){
+            $("#cl"+node.idPath+"t").html(this.collapseFiller(node));
         }else{
             $(".collapse").collapse("hide");
+            $("#cl"+node.idPath+"t").html(this.collapseFiller(node));
             $("#cl"+node.idPath).collapse('show');
         }
         this.selectedDel = node;
+    }
+
+    collapseFiller(node){
+        let past = true;
+        let tmp = "";
+        let pathDel = this.delNodes[node.idPath];
+        for(var j in pathDel){
+                let del = pathDel[j];
+                if(node === del){
+                    tmp+="<b>"+j+" - Temps livraison : "+ del.duration + "s, Livraison en cours ("+timeToString(del.timeArrival)+")...<br/></b>";
+                    past=false;
+                }else if(past){
+                    tmp+="<i>"+j+" - Temps livraison : "+ del.duration + "s, Livré à "+timeToString(del.timeArrival)+"<br/></i>";
+                }else{
+                    tmp+=j+" - Temps livraison : "+ del.duration + "s, Sera livré à "+timeToString(del.timeArrival)+"<br/>";
+                }
+        }
+        return tmp;
     }
 
     removeNode(node){

@@ -113,7 +113,7 @@ class Round{
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.pathToForeground(this,"+id+");'><i class='fas fa-arrow-up'></i></button>";
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.disableRound(this, "+id+")'><i class='fas fa-eye'></i></button>"
         temp += "</div></div>";
-        temp += "<div class='collapse' id='cl"+id+"'><div class='card card-body'>Heyyyyyyyyyyyyyyyyyyyyyyyyyyy</div></div>"
+        temp += "<div class='collapse' id='cl"+id+"'><div class='card card-body' id='cl"+id+"t'></div></div>"
         return temp;
     }
 
