@@ -1,27 +1,39 @@
 package optimodlyon.agile.models;
-import java.util.Date;
+
+import optimodlyon.agile.util.Time;
 import java.util.ArrayList; 
 
 public class Round {
-	private Date startTime;
-	private Date endTime;
+	private Time startTime;
+	private Time endTime;
 	private ArrayList<Path> listPath;
 	private Warehouse start;
 	
-	public Round() {
+	public Round(Warehouse w) {
 		listPath = new ArrayList<Path>();
+		startTime = new Time("8:00:00");
+		endTime = new Time("8:00:00");
+		start = w;
 	}
 
 	/**
 	 * @return the startTime
 	 */
-	public Round(ArrayList<Path> listPath, Warehouse start)
+	public Round(ArrayList<Path> listPath, Warehouse start, Time st)
 	{
 		this.listPath = listPath;
 		this.start = start;
+		startTime= st;
+		float totalDuration = 0;
+		for (Path path : listPath) {
+			totalDuration+=path.getDuration();
+			totalDuration+=path.getArrival().getDuration();
+		}
+		endTime = Time.copyTime(startTime);
+		endTime.addTime(totalDuration);
 	}
 	
-	public Date getStartTime() {
+	public Time getStartTime() {
 		return startTime;
 	}
 
@@ -56,26 +68,29 @@ public class Round {
 	/**
 	 * @return the endTime
 	 */
-	public Date getEndTime() {
+	public Time getEndTime() {
 		return endTime;
 	}
 
 	/**
 	 * @param endTime the endTime to set
 	 */
-	public void setEndTime(Date endTime) {
+	public void setEndTime(Time endTime) {
 		this.endTime = endTime;
 	}
 
 	/**
 	 * @param startTime the startTime to set
 	 */
-	public void setStartTime(Date startTime) {
+	public void setStartTime(Time startTime) {
 		this.startTime = startTime;
 	}
 	
 	public void addPath(Path aPath) {
 		this.listPath.add(aPath);
+		float duration=aPath.getDuration();
+		duration+=aPath.getArrival().getDuration();
+		this.endTime.addTime(duration);
 	}
 
 	public float getTotalDuration() {

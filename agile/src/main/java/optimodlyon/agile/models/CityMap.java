@@ -146,7 +146,7 @@ public class CityMap {
 				return delivery;
 			}
 		}
-		return null;
+		return MapManagement.getInstance().getWarehouse();
 	}
 }
 

@@ -1,6 +1,7 @@
 package optimodlyon.agile.algorithmic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -361,6 +362,7 @@ public static void main(String[] args) {
     		currentId = map.get(origin);
     		idIntersections.add(currentId);
     	}
+		Collections.reverse(idIntersections);
     	return idIntersections;
     }
 }

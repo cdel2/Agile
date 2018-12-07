@@ -14,11 +14,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
-import java. text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import optimodlyon.agile.util.Time;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.Segment;
@@ -179,13 +178,12 @@ public class DeserializerXML {
   	                
   	        NodeList entrepot = doc.getElementsByTagName("entrepot"); 
   	        Long id;
-  	        Date timeStart;
+  	        Time timeStart;
   	        Warehouse warehouse;
   	        
   	        final Element nodeE = (Element) entrepot.item(0);
-  	        String dateXML = nodeE.getAttribute("heureDepart");
-  	        SimpleDateFormat dateFormat = new SimpleDateFormat("h:m:s");
-  	        timeStart = dateFormat.parse(dateXML);
+  	        String timeXML = nodeE.getAttribute("heureDepart");
+  	        timeStart = new Time(timeXML);
   	        id = Long.parseLong(nodeE.getAttribute("adresse"));
   	        
   	        warehouse = new Warehouse(id, timeStart);

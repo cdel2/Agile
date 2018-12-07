@@ -1,16 +1,16 @@
 package optimodlyon.agile.models;
+import optimodlyon.agile.util.Time;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Delivery extends Intersection{
-	private Date timeArrival;
+	private Time timeArrival;
 	private float duration;
 
-	public Delivery(Date ta, float dur, Long id, float latitude, float longitude) {
+	public Delivery(Time ta, float dur, Long id, float latitude, float longitude) {
 		super(id, latitude, longitude);
 		timeArrival = ta;
 		duration = dur;
@@ -21,7 +21,7 @@ public class Delivery extends Intersection{
 		duration = dur;
 	}
 	
-	public Delivery(Long id, Date ta) {
+	public Delivery(Long id, Time ta) {
 		super(id);
 		timeArrival = ta;
 	}
@@ -36,7 +36,7 @@ public class Delivery extends Intersection{
 	/**
 	 * @return the timeArrival
 	 */
-	public Date getTimeArrival() {
+	public Time getTimeArrival() {
 		return timeArrival;
 	}
 
@@ -57,7 +57,7 @@ public class Delivery extends Intersection{
 	/**
 	 * @param timeArrival the timeArrival to set
 	 */
-	public void setTimeArrival(Date timeArrival) {
+	public void setTimeArrival(Time timeArrival) {
 		this.timeArrival = timeArrival;
 	}
 	

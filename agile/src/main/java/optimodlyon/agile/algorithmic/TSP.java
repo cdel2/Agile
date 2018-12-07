@@ -127,17 +127,15 @@ public class TSP {
 			currentPath.add(MapManagement.getInstance().getWarehouse().getId());
 			currentLength+=(currentSuccessors.get(MapManagement.getInstance().getWarehouse().getId()));
 			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
-			Long firstArrivalId = currentPath.get(0);
+			Long firstArrivalId = currentPath.get(1);
 			Delivery firstArrival = map.getDeliveryById(firstArrivalId);
-			Collections.reverse(IntersectionIds);
 			Path pathFound = new Path(IntersectionIds, map, firstArrival);
-			Round currentRound = new Round();
+			Round currentRound = new Round(MapManagement.getInstance().getWarehouse());
 			currentRound.addPath(pathFound);
 			for (int i = 1; i < currentPath.size() - 1; i++) {
 				IntersectionIds = dijkstra.createPathIds(currentPath.get(i), currentPath.get(i + 1));
-				Long arrivalId = currentPath.get(0);
+				Long arrivalId = currentPath.get(i+1);
 				Delivery arrival = map.getDeliveryById(arrivalId);
-				Collections.reverse(IntersectionIds);
 				pathFound = new Path(IntersectionIds, map, arrival);
 				currentRound.addPath(pathFound);
 			}
