@@ -58,9 +58,9 @@ public class TSP {
 	 * @param idWarehouse
 	 * @return PathLength
 	 */
-	public Round brutForceTSP(Map<Long, Map<Long, Float>> graph, CityMap map, Dijkstra dijkstra, Time startTime) {
+	public Round brutForceTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra, Time startTime) {
 		// Get all possible paths in the graph
-		List<Round> possibleRounds = startTSP(graph, map, dijkstra, startTime);
+		List<Round> possibleRounds = startTSP(graph, dijkstra, startTime);
 		//System.out.println("Liste des chemins possibles : " + possiblePaths);
 		// Find the shortest path
 		Round shortestRound = findShortestRound(possibleRounds);
@@ -76,7 +76,7 @@ public class TSP {
 	 * @param idWarehouse
 	 * @return List<PathLength>
 	 */
-	List<Round> startTSP(Map<Long, Map<Long, Float>> unorderedMap, CityMap map, Dijkstra dijkstra, Time startTime) {
+	List<Round> startTSP(Map<Long, Map<Long, Float>> unorderedMap, Dijkstra dijkstra, Time startTime) {
 		Long idWarehouse = MapManagement.getInstance().getWarehouse().getId();
 		// This list will contain all the resulting pair of (path, length) possible.
 		List<Round> possibleRounds = new ArrayList<Round>();
@@ -100,7 +100,7 @@ public class TSP {
 			currentLength += (float) currentPair.getValue();
 			currentPath.add((long) currentPair.getKey());
 			// We add all possible paths to finalResults
-			possibleRounds = nextNode(newUnordoredMap, currentSuccessors, currentPath, currentLength, possibleRounds, map,
+			possibleRounds = nextNode(newUnordoredMap, currentSuccessors, currentPath, currentLength, possibleRounds,
 					dijkstra, startTime);
 		}
 		return (possibleRounds);
@@ -120,7 +120,7 @@ public class TSP {
 	 */
 	@SuppressWarnings("rawtypes")
 	List<Round> nextNode(Map<Long, Map<Long, Float>> unorderedMap, Map<Long, Float> currentSuccessors,
-			List<Long> currentPath, Float currentLength, List<Round> possibleRounds, CityMap map, Dijkstra dijkstra, Time startTime) {
+			List<Long> currentPath, Float currentLength, List<Round> possibleRounds, Dijkstra dijkstra, Time startTime) {
 		// We check if there are still nodes to visit
 		if (unorderedMap.isEmpty()) {
 			// if not, we add the current path (which is a possible final path) to
@@ -130,15 +130,15 @@ public class TSP {
 			currentLength+=(currentSuccessors.get(MapManagement.getInstance().getWarehouse().getId()));
 			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
 			Long firstArrivalId = currentPath.get(1);
-			Delivery firstArrival = map.getDeliveryById(firstArrivalId);
-			Path pathFound = new Path(IntersectionIds, map, firstArrival);
+			Delivery firstArrival = MapManagement.getInstance().getDeliveryById(firstArrivalId);
+			Path pathFound = new Path(IntersectionIds, firstArrival);
 			Round currentRound = new Round(MapManagement.getInstance().getWarehouse(), startTime);
 			currentRound.addPath(pathFound);
 			for (int i = 1; i < currentPath.size() - 1; i++) {
 				IntersectionIds = dijkstra.createPathIds(currentPath.get(i), currentPath.get(i + 1));
 				Long arrivalId = currentPath.get(i+1);
-				Delivery arrival = map.getDeliveryById(arrivalId);
-				pathFound = new Path(IntersectionIds, map, arrival);
+				Delivery arrival = MapManagement.getInstance().getDeliveryById(arrivalId);
+				pathFound = new Path(IntersectionIds, arrival);
 				currentRound.addPath(pathFound);
 			}
 			possibleRounds.add(currentRound);
@@ -161,7 +161,7 @@ public class TSP {
 					Map<Long, Float> newSuccessors = new HashMap<Long, Float>(unorderedMap.get(newPair.getKey()));
 					Map<Long, Map<Long, Float>> newUnordoredMap = copyMap(unorderedMap);
 					newUnordoredMap.remove(newPair.getKey());
-					possibleRounds = nextNode(newUnordoredMap, newSuccessors, newPath, newLength, possibleRounds, map,
+					possibleRounds = nextNode(newUnordoredMap, newSuccessors, newPath, newLength, possibleRounds,
 							dijkstra, startTime);
 				}
 			}

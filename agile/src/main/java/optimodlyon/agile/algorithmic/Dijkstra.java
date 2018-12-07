@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.print.attribute.standard.Destination;
 
 import optimodlyon.agile.models.Intersection;
+import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Segment;
 /**
  * @author William Occelli
@@ -38,8 +39,8 @@ public class Dijkstra {
     	dijkstraGraph = new HashMap<Long, Pair>();
     	fullDijkstra = new HashMap<Long, Map<Long,Long>>();
 	}
-/*public static void main(String[] args) {
-		
+public static void main(String[] args) {
+		/*
     	Map<Long, List<Segment>>completeMap = new HashMap<Long, List<Segment>>();
         Intersection i0 = new Intersection((long)0,(float)5.0,(float)3.0);
         Intersection i1 = new Intersection((long)1,(float)3.0,(float)3.0);
@@ -85,8 +86,8 @@ public class Dijkstra {
         grey.add((long)3);
         grey.add((long)5);
         
-        dij.doDijkstra(completeMap, grey);
-    }*/
+        dij.doDijkstra(completeMap, grey);*/
+    }
 	/**
 	 * Function called to retrieve a graph containing the minimum length
 	 * between all deliveryPoints
