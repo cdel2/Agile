@@ -38,12 +38,6 @@ class State{
             let newY = ratio*evt.offsetY;
             View.deltaX += newX-Ctrl.lastX;
             View.deltaY += newY-Ctrl.lastY;
-            /*if(View.deltaX>0){
-                View.deltaX=0;
-            }
-            if(View.deltaY<0){
-                View.deltaY=0;
-            }*/
             View.update();
             Ctrl.lastX = newX;
             Ctrl.lastY = newY;

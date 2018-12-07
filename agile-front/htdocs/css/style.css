@@ -118,3 +118,11 @@
     margin-top: auto;
     margin-bottom: auto;
 }
+
+#delDuration{
+    display: inline-flex;
+    position: absolute;
+    width:20%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}

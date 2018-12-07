@@ -89,12 +89,12 @@ class Round{
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
             }
             ctx.stroke();
-            let node = coord[path.arrival.id];
+            /*let node = coord[path.arrival.id];
             if(present){
                 drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 4, 'blue', ctx); 
             }else{
                 drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 4, 'lightblue', ctx);   
-            }
+            }*/
         }
     }
 
