@@ -13,7 +13,7 @@
                            </xs:element>
                            <xs:element name="livraison" maxOccurs="unbounded">
                                  <xs:complexType>
-                                       <xs:attribute name="adresse" type="xs:unsignedInt"></xs:attribute>
+                                       <xs:attribute name="adresse" type="xs:unsignedLong"></xs:attribute>
                                        <xs:attribute name="duree" type="xs:unsignedInt"></xs:attribute>
                                  </xs:complexType>
                            </xs:element>

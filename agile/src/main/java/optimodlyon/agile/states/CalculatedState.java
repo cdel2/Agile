@@ -12,7 +12,7 @@ import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.util.Time;
 
-public class CalculatedState extends DefaultState{
+public class CalculatedState extends LoadedDeliveriesState{
 	
 	
 	@Override
