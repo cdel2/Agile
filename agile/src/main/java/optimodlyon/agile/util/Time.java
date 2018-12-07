@@ -36,11 +36,11 @@ public class Time {
 	 * Adds s seconds to a time t
 	 */
 	public Time addTime(float s) {
-		if(s>3600) {
+		if(s>=3600) {
 			hours+=Math.floor(s/3600);
 			s=s%3600;
 		}
-		if(s>60) {
+		if(s>=60) {
 			minutes+=Math.floor(s/60);
 			s=s%60;
 		}
@@ -53,12 +53,12 @@ public class Time {
 	 * If seconds>60 or minutes>60 or hours>24, readjust the time.
 	 */
 	public void updateTime() {
-		if(seconds>60) {
+		if(seconds>=60) {
 			int m = (int) Math.floor(seconds/60);
 			seconds=seconds%60;
 			minutes+=m;
 		}
-		if(minutes>60) {
+		if(minutes>=60) {
 			int h = (int) Math.floor(minutes/60);
 			minutes=minutes%60;
 			hours+=h;

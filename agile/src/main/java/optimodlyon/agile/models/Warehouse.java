@@ -9,13 +9,13 @@ public class Warehouse extends Delivery {
 	
 	public Warehouse(Long id, float latitude, float longitude, Time ts)
 	{
-		super(id, 600);
+		super(id, 0);
 		timeStart = ts;
 	}
 	
 	public Warehouse(Long id, Time ts)
 	{
-		super(id, 600);
+		super(id, 0);
 		timeStart = ts;
 	}
 	

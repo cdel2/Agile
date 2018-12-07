@@ -21,6 +21,12 @@ public class Intersection {
 		this.id = id;
 	}
 	
+	public Intersection(Intersection i) {
+		id=i.id;
+		latitude=i.latitude;
+		longitude=i.longitude;
+	}
+	
 
 	/**
 	 * @return the latitude
