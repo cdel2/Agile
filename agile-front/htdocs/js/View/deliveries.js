@@ -49,7 +49,7 @@ class Deliveries{
         });        
     }
 
-    display(ctx, View, coord){
+    display(ctx, View, coord, time){
         for(var del in this.delNodes){
             let pathNodes = this.delNodes[del];
             for(var i = 0; i < pathNodes.length; i++){
@@ -77,6 +77,10 @@ class Deliveries{
             //showMessage(true, "Durée : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
             ctx.beginPath();         
 
+        }
+
+        if(this.delNodes[-1] === undefined){
+            this.updatePathsInfo(time);
         }
     }
 
@@ -122,6 +126,7 @@ class Deliveries{
     }
 
     selectDelivery(node){
+        console.log(node);
         if(node != null){
             let time = node.timeArrival;
             let sliderTime = timeToSlider(time);
@@ -135,30 +140,39 @@ class Deliveries{
             this.selectedDel = null;
             return;
         }
-        if(this.selectedDel != null && (node.idPath === this.selectedDel.idPath)){
-            $("#cl"+node.idPath+"t").html(this.collapseFiller(node));
-        }else{
+        if(this.selectedDel != null && (node.idPath != this.selectedDel.idPath)){
             Ctrl.pathToForeground(node.idPath);
             $(".collapse").collapse("hide");
-            $("#cl"+node.idPath+"t").html(this.collapseFiller(node));
+            $("#cl"+node.idPath).collapse('show');
+        }else{
             $("#cl"+node.idPath).collapse('show');
         }
         this.selectedDel = node;
     }
 
-    collapseFiller(node){
+    updatePathsInfo(time){
+        for(var j in this.delNodes){
+            $("#cl"+j+"t").html(this.collapseFiller(j, time));
+        }
+    }
+
+    collapseFiller(id, time){
         let past = true;
         let tmp = "";
-        let pathDel = this.delNodes[node.idPath];
+        let pathDel = this.delNodes[id];
         for(var j in pathDel){
                 let del = pathDel[j];
-                if(node === del){
-                    tmp+="<b>"+j+" - Temps livraison : "+ del.duration + "s, Livraison en cours ("+timeToString(del.timeArrival)+")...<br/></b>";
-                    past=false;
-                }else if(past){
-                    tmp+="<i>"+j+" - Temps livraison : "+ del.duration + "s, Livré à "+timeToString(del.timeArrival)+"<br/></i>";
+                if(this.selectDelivery!=null && this.selectedDel === del){
+                    tmp+="<b>"+j+" - Temps livraison : "+ del.duration + "s, Livré à "+timeToString(del.timeArrival)+" (selected)<br/></b>";
                 }else{
-                    tmp+=j+" - Temps livraison : "+ del.duration + "s, Sera livré à "+timeToString(del.timeArrival)+"<br/>";
+                    if(past && compareTime(del.timeArrival,time)>=0){
+                        past=false;
+                    }
+                    if(past){
+                        tmp+="<i>"+j+" - Temps livraison : "+ del.duration + "s, Livré à "+timeToString(del.timeArrival)+"<br/></i>";
+                    }else{
+                        tmp+=j+" - Temps livraison : "+ del.duration + "s, Sera livré à "+timeToString(del.timeArrival)+"<br/>";
+                    }
                 }
         }
         return tmp;

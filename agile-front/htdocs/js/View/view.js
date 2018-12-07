@@ -45,7 +45,7 @@ class Viewer{
         }
 
         if(this.Deliveries != null){
-            this.Deliveries.display(this.Canvas.ctx, this, this.Map.coord);
+            this.Deliveries.display(this.Canvas.ctx, this, this.Map.coord, this.time);
         }
     }
 
