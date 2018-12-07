@@ -138,16 +138,6 @@ public class CityMap {
 	/*public List<Round> getListRounds() {
 		return listRounds;
 	}*/
-	
-	public Delivery getDeliveryById(Long id) {
-		List<Delivery> listDelivery = MapManagement.getInstance().getListDelivery();
-		for(Delivery delivery : listDelivery) {
-			if((long)delivery.getId()==(long)id){
-				return delivery;
-			}
-		}
-		return MapManagement.getInstance().getWarehouse();
-	}
 }
 
 

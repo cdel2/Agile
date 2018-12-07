@@ -97,7 +97,7 @@ public class DelivererTest {
 		r2.setEndTime(t2);
 		
 		/*
-		 * Test: add a first round (the deliverer has no round yet
+		 * Test: add a first round (the deliverer has no round yet)
 		 */
 		Deliverer del = new Deliverer((long)1);
 		boolean b1 = del.addRoundToList(r1);
@@ -119,6 +119,11 @@ public class DelivererTest {
 		 */
 		boolean b3 = del.addRoundToList(r1);
 		assertEquals(b3,false);
+		/*
+		 * Test: add a null round
+		 */
+		boolean b4 = del.addRoundToList(null);
+		assertEquals(b4,false);
 	}
 
 }
