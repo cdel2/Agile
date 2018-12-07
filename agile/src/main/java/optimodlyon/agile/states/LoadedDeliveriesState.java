@@ -1,6 +1,8 @@
 package optimodlyon.agile.states;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ import optimodlyon.agile.algorithmic.Clustering;
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
 import optimodlyon.agile.models.CityMap;
+import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
@@ -56,11 +59,25 @@ public class LoadedDeliveriesState extends DefaultState{
 		 * Calculate the shortest path from warehouse to newPoint
 		 */
 		Dijkstra dijkstra = new Dijkstra();
+		TSP tsp = new TSP();
 		List<Long> newDel = new ArrayList<Long>();
 		newDel.add(newDelivery);
 		CityMap map = MapManagement.getInstance().getMap();
 		newDel.add(MapManagement.getInstance().getWarehouse().getId());
-		
+		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), newDel);
+		Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra);
+		/*
+		 *Find the best deliverer 
+		 */
+		Map<Long,Deliverer> delivererMap = MapManagement.getInstance().getListDeliverer();
+		/*int minTime = 9999; int tmpTime;
+		for (Long key : delivererMap.keySet()) {
+			Date tmp = delivererMap.get(key).getListRound().get(0).getEndTime();
+			tmpTime = tmp.getHours()*10 + tmp.getMinutes();
+			if(tmp.before(minDate)) {
+				minDate = tmp;
+			}
+		}*/
 	}
 	
 	@Override
