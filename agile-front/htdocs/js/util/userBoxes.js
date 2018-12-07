@@ -38,17 +38,3 @@ function distance(Xa, Ya, Xb, Yb){
     let temp = tempLat*tempLat + tempLong*tempLong;
     return Math.sqrt(temp);
 }
-
-function pad(n, width, z) {
-    z = z || '0';
-    n = n + '';
-    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-}
-
-//Format value between 80 to t 180 in [8,11 to 18h format
-function timeFormat(time){
-    var hour = Math.floor(time/10);
-    var rawMinutes = time-hour*10;
-    var minutes = (rawMinutes/10)*60;
-    return [hour, minutes];
-}
