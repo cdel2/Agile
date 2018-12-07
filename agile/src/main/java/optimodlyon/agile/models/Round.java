@@ -29,7 +29,7 @@ public class Round {
 			totalDuration+=path.getDuration();
 			totalDuration+=path.getArrival().getDuration();
 		}
-		endTime = Time.copyTime(startTime);
+		endTime = startTime.copyTime();
 		endTime.addTime(totalDuration);
 	}
 	
@@ -88,9 +88,9 @@ public class Round {
 	
 	public void addPath(Path aPath) {
 		this.listPath.add(aPath);
-		float duration=aPath.getDuration();
-		duration+=aPath.getArrival().getDuration();
-		this.endTime.addTime(duration);
+		endTime.addTime(aPath.getDuration());
+		aPath.getArrival().setTimeArrival(endTime.copyTime());
+		endTime.addTime(aPath.getArrival().getDuration());
 	}
 
 	public float getTotalDuration() {

@@ -60,8 +60,11 @@ public class Time {
 		hours=hours%24;
 	}
 	
-	public static Time copyTime(Time t) {
-		return new Time(t.getHours(), t.getMinutes(), t.getSeconds());
+	/*
+	 * Is it better to make a constructor of time with a time as parameters ?
+	 */
+	public Time copyTime() {
+		return new Time(hours, minutes, seconds);
 	}
 	
 	/*
