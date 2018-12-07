@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @CrossOrigin(origins = "http://localhost:8000")
@@ -27,7 +29,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class EndPoints {
 	Controller controller = new Controller();
 	
-	//AJOUTER LA GESTION DES ERREURS
     @GetMapping("/map/{file}")
     public CityMap  getMap(@PathVariable String file) {
         controller.initializeGraph(file);
@@ -50,24 +51,26 @@ public class EndPoints {
         return MapManagement.getInstance().getWarehouse();
     }
     
+    @PostMapping("/add/delivery/{idDelivery}")
+    public void addDelivery(@PathVariable Long idDelivery) {
+    	try {
+            controller.newDelivery(idDelivery);    		
+    	} catch (Exception e)
+    	{
+    		throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
+    	}
+    }
     
     @GetMapping("/calc/{nb}")
     public Map<Long,Deliverer> get(@PathVariable int nb) {
     	try {
-        	System.out.println("endpointDebut");
+        	//System.out.println("endpointDebut");
         	controller.doAlgorithm(nb);
-        	System.out.println("endpointFin");
+        	//System.out.println("endpointFin");
     	} catch (Exception e) {
     		throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
     	}
         return MapManagement.getInstance().getListDeliverer();
     }
-    
-//    @GetMapping("/testcalc/{nb}")
-//    public List<Round> getRounds(@PathVariable int nb) {
-//    	controller.InitializeGraph("petit");
-//    	controller.GetDeliveries("dl-petit-6");
-//    	controller.doAlgorithm(nb);
-//        return CityMap.getInstance().getListRounds();
-//    }
+ 
 }

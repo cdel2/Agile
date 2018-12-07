@@ -92,6 +92,18 @@ public class MapManagement{
 		}
 	}
 	
+
+	
+	public Delivery getDeliveryById(Long id) {
+		List<Delivery> listDelivery = getInstance().getListDelivery();
+		for(Delivery delivery : listDelivery) {
+			if((long)delivery.getId()==(long)id){
+				return delivery;
+			}
+		}
+		return getInstance().getWarehouse();
+	}
+	
 	/*public static void main(String[] args) {
 		Map<Long,String> listDeliverer = new HashMap<Long,String>();
 		listDeliverer.put((long) 1, "a");

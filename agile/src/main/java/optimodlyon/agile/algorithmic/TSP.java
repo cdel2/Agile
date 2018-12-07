@@ -1,6 +1,8 @@
 package optimodlyon.agile.algorithmic;
 
 import optimodlyon.agile.models.*;
+import optimodlyon.agile.util.*;
+
 import java.awt.Paint;
 import java.awt.font.GraphicAttribute;
 import java.io.Console;
@@ -56,7 +58,7 @@ public class TSP {
 	 * @param idWarehouse
 	 * @return PathLength
 	 */
-	public Round brutForceTSP(Map<Long, Map<Long, Float>> graph, CityMap map, Dijkstra dijkstra) {
+	public Round brutForceTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra, Time startTime) {
 		// Get all possible paths in the graph
 		List<Round> possibleRounds = startTSP(graph, dijkstra);
 		//System.out.println("Liste des chemins possibles : " + possiblePaths);
@@ -130,7 +132,7 @@ public class TSP {
 			Long firstArrivalId = currentPath.get(1);
 			Delivery firstArrival = MapManagement.getInstance().getMap().getDeliveryById(firstArrivalId);
 			Path pathFound = new Path(IntersectionIds, firstArrival);
-			Round currentRound = new Round(MapManagement.getInstance().getWarehouse());
+			Round currentRound = new Round(MapManagement.getInstance().getWarehouse(), MapManagement.getInstance().getWarehouse().getTimeStart());
 			currentRound.addPath(pathFound);
 			for (int i = 1; i < currentPath.size() - 1; i++) {
 				IntersectionIds = dijkstra.createPathIds(currentPath.get(i), currentPath.get(i + 1));
