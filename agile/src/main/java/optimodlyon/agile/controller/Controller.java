@@ -18,8 +18,7 @@ public class Controller {
 			currentState = new LoadedMapState();
 		} catch(Exception e) {
 			System.out.println("Erreur lors de InitializeGraph : " + e);
-		}
-				
+		}				
 	}
 
 	public void getDeliveries(String file) throws Exception{
@@ -27,8 +26,9 @@ public class Controller {
 			currentState = new LoadedDeliveriesState();	
 	}
 	
-	public void doAlgorithm(int nb) throws Exception{
+	public void doAlgorithm(int nb) throws Exception{		
 			currentState.startCalculation(nb);
+			
 	}
 	
 	/**
@@ -36,11 +36,7 @@ public class Controller {
 	 * to deliver this point 
 	 * @param idNewNode
 	 */
-	public void newDelivery(Long idNewNode) {
-		try {
-			
-		} catch(Exception e) {
-			System.out.println("Error adding a delivery : " + e);
-		}
+	public void newDelivery(Long idDelivery) throws Exception {
+		currentState.addDelivery(idDelivery);
 	}
 }

@@ -16,6 +16,7 @@ import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.models.Warehouse;
+import optimodlyon.agile.util.Time;
 import optimodlyon.agile.xml.DeserializerXML;
 
 public class LoadedDeliveriesState extends DefaultState{
@@ -40,45 +41,14 @@ public class LoadedDeliveriesState extends DefaultState{
 			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
 			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
-			Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra);
+			Time startTime=new Time("8:00:00");
+			Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra, startTime);
 			finalRound.add(round);
 		}
 		
 		MapManagement.getInstance().attributeRound(finalRound); //A TESTER SI CA MARCHE!
 	}
 	
-
-	@Override
-	/**
-	 * Checks if a deliverer has finished his round
-	 * Calculates the shortest path from warehouse to the new point
-	 * Chooses the best deliverer depending on its finishing time 
-	 */
-	public void addDelivery (Long newDelivery) {
-		/*
-		 * Calculate the shortest path from warehouse to newPoint
-		 */
-		Dijkstra dijkstra = new Dijkstra();
-		TSP tsp = new TSP();
-		List<Long> newDel = new ArrayList<Long>();
-		newDel.add(newDelivery);
-		CityMap map = MapManagement.getInstance().getMap();
-		newDel.add(MapManagement.getInstance().getWarehouse().getId());
-		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), newDel);
-		Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra);
-		/*
-		 *Find the best deliverer 
-		 */
-		Map<Long,Deliverer> delivererMap = MapManagement.getInstance().getListDeliverer();
-		/*int minTime = 9999; int tmpTime;
-		for (Long key : delivererMap.keySet()) {
-			Date tmp = delivererMap.get(key).getListRound().get(0).getEndTime();
-			tmpTime = tmp.getHours()*10 + tmp.getMinutes();
-			if(tmp.before(minDate)) {
-				minDate = tmp;
-			}
-		}*/
-	}
 	
 	@Override
 	public void loadDeliveries(String file) {

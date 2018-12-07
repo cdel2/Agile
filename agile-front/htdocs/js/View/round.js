@@ -24,7 +24,8 @@ class Round{
             for(var i in data){
                 let round = data[i].listRound[0].listPath;
                 let color1 = object.colors[cmpt];
-                var temp = {display:true, color:color1, data:[], arrival:data[i].arrival};
+                console.log(data[i].arrival);
+                var temp = {display:true, color:color1, data:[], departureTime:{hours:8, minutes:0, seconds:0}, arrivalTime:data[i].listRound[0].endTime};
                 $("#pathMenu").append(object.createPathHtml(color1,100, cmpt));
                 for(var j in round){
                    let path = round[j].path;
@@ -33,7 +34,8 @@ class Round{
                        var el = path[k];
                        roudPart.push({start:el.start.id, end:el.end.id});
                    }
-                   temp.data.push(roudPart);
+                   let arrival = round[j].arrival;
+                   temp.data.push({roundSeg : roudPart, arrival:{id:arrival.id, timeArrival:arrival.timeArrival}});
                 }
                 object.paths[cmpt] = temp;
                 cmpt++;
@@ -51,33 +53,38 @@ class Round{
         });
     }
 
-    display(ctx, coord){
+    display(ctx, coord, time){
         ctx.globalAlpha = 1;
         for(var i in this.paths){
             if(this.paths[i].display && (this.firstPath===-1 || (i!=this.firstPath))){
                 let totalPath = this.paths[i].data;
                 console.log(totalPath);
-                this.drawSegment(totalPath, coord, ctx, this.paths[i].color, 1);
+                this.drawSegment(totalPath, coord, ctx, this.paths[i].color, 1, time);
             }
         }
         
         let path = this.paths[this.firstPath];
         if(this.firstPath!=-1 && path.display){
             let totalPath = path.data;
-            this.drawSegment(totalPath, coord, ctx, path.color, 2);
+            this.drawSegment(totalPath, coord, ctx, path.color, 2, time);
         }
     }
     //[10,5]
-    drawSegment(totalPath, coord, ctx, color, thickness){
+    drawSegment(totalPath, coord, ctx, color, thickness, time){
         for(var j in totalPath){
             let path = totalPath[j];
             ctx.beginPath();
-            ctx.setLineDash([]);
+            console.log(totalPath);
+            if(compareTime(path.arrival.timeArrival, time) >= 0){
+                ctx.setLineDash([]);
+            }else{
+                ctx.setLineDash([10, 5]);
+            }
             ctx.strokeStyle = color;
             ctx.lineWidth = Ctrl.View.Canvas.ratio*thickness*(Ctrl.View.zoomLevel +1);
-            for(var j in path){
-                let start = coord[path[j].start];
-                let end = coord[path[j].end];
+            for(var j in path.roundSeg){
+                let start = coord[path.roundSeg[j].start];
+                let end = coord[path.roundSeg[j].end];
                 ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
             }

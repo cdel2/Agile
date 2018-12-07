@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Delivery extends Intersection{
-	private Time timeArrival;
-	private float duration;
+	protected Time timeArrival;
+	protected float duration;
 
 	public Delivery(Time ta, float dur, Long id, float latitude, float longitude) {
 		super(id, latitude, longitude);
@@ -30,7 +30,7 @@ public class Delivery extends Intersection{
 	 * @return the timeArrival
 	 */
 	public String toString() {
-		return "Intersection id : " + id + " lat : "+latitude +  " long : "+longitude;
+		return "Intersection id : " + id + " lat : "+latitude +  " long : "+longitude + " timeArrival : " + timeArrival;
 	}
 
 	/**
