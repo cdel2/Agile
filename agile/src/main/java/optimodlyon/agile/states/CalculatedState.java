@@ -73,7 +73,7 @@ public class CalculatedState extends DefaultState{
 		newDel.add(idIntersection);
 		newDel.add(MapManagement.getInstance().getWarehouse().getId());
 		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), newDel);
-		Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra, startTime);
+		Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
 		return round;
 	}
 }

@@ -40,7 +40,7 @@ public class Dijkstra {
     	fullDijkstra = new HashMap<Long, Map<Long,Long>>();
 	}
 public static void main(String[] args) {
-		
+		/*
     	Map<Long, List<Segment>>completeMap = new HashMap<Long, List<Segment>>();
         Intersection i0 = new Intersection((long)0,(float)5.0,(float)3.0);
         Intersection i1 = new Intersection((long)1,(float)3.0,(float)3.0);

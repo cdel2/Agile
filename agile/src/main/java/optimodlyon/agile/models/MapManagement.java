@@ -92,6 +92,28 @@ public class MapManagement{
 		}
 	}
 	
+	public Delivery getDeliveryById(Long id) {
+		List<Delivery> listDelivery = MapManagement.getInstance().getListDelivery();
+		for(Delivery delivery : listDelivery) {
+			if((long)delivery.getId()==(long)id){
+				return delivery;
+			}
+		}
+		return MapManagement.getInstance().getWarehouse();
+	}
+	
+	/**
+	 * Add a round to a deliverer if the startTime of the round to add
+	 * is after the endTime of the last round of the deliverer
+	 * @param deliv
+	 * @param roundToAdd
+	 */
+	public void addRoundToADeliverer(Deliverer deliv, Round roundToAdd) {
+		if(deliv != null && roundToAdd != null) {
+			this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
+		}
+	}
+	
 	public static void main(String[] args) {
 		Intersection origin = new Intersection((long)1, (float)-50, (float)50);
 		System.out.println(origin);
