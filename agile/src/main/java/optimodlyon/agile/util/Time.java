@@ -4,6 +4,7 @@ public class Time {
 	int hours;
 	int minutes;
 	int seconds;
+	float rest;
 	
 	/*
 	 * constructor of time from int hours, int minutes and int seconds
@@ -12,6 +13,7 @@ public class Time {
 		hours=h;
 		minutes=m;
 		seconds=s;
+		rest=0;
 		updateTime();
 	}
 	
@@ -19,6 +21,7 @@ public class Time {
 		hours=t.hours;
 		minutes=t.minutes;
 		seconds=t.seconds;
+		rest=t.rest;
 	}
 	
 	/*
@@ -29,6 +32,7 @@ public class Time {
 		hours=Integer.parseInt(t[0]);
 		minutes=Integer.parseInt(t[1]);
 		seconds=Integer.parseInt(t[2]);
+		rest=0;
 		updateTime();
 	}
 	
@@ -36,6 +40,7 @@ public class Time {
 	 * Adds s seconds to a time t
 	 */
 	public Time addTime(float s) {
+		s+=rest;
 		if(s>=3600) {
 			hours+=Math.floor(s/3600);
 			s=s%3600;
@@ -44,6 +49,7 @@ public class Time {
 			minutes+=Math.floor(s/60);
 			s=s%60;
 		}
+		rest=s%1;
 		seconds+=s;
 		updateTime();
 		return this;
@@ -53,6 +59,10 @@ public class Time {
 	 * If seconds>60 or minutes>60 or hours>24, readjust the time.
 	 */
 	public void updateTime() {
+		if(rest>=1) {
+			seconds+=Math.floor(rest);
+			rest=rest%1;
+		}
 		if(seconds>=60) {
 			int m = (int) Math.floor(seconds/60);
 			seconds=seconds%60;
@@ -81,19 +91,6 @@ public class Time {
 		return b;
 	}
 	
-	/*
-	 * Is it better to make a constructor of time with a time as parameters ?
-	 */
-	
-	/*
-	 * WTF : Si je ne mets pas les getters et les setters, j'ai l'erreur suivante
-	 * 
-	 * com.fasterxml.jackson.databind.exc.InvalidDefinitionException: 
-	 * No serializer found for class optimodlyon.agile.util.DayTime and 
-	 * no properties discovered to create BeanSerializer 
-	 * (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) 
-	 * (through reference chain: optimodlyon.agile.models.Warehouse["timeStart"])
-	 */
 	public int getHours() {
 		return hours;
 	}
