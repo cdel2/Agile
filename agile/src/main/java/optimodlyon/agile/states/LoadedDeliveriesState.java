@@ -51,13 +51,13 @@ public class LoadedDeliveriesState extends DefaultState{
 	 * Calculates the shortest path from warehouse to the new point
 	 * Chooses the best deliverer depending on its finishing time 
 	 */
-	public void addDelivery (Long newDelivery) {
+	public void addDelivery (Long idDelivery) {
 		/*
 		 * Calculate the shortest path from warehouse to newPoint
 		 */
 		Dijkstra dijkstra = new Dijkstra();
 		List<Long> newDel = new ArrayList<Long>();
-		newDel.add(newDelivery);
+		newDel.add(idDelivery);
 		CityMap map = MapManagement.getInstance().getMap();
 		newDel.add(MapManagement.getInstance().getWarehouse().getId());
 		

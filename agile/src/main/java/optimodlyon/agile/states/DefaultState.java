@@ -27,7 +27,7 @@ public class DefaultState implements State {
 		throw new Exception("Impossible de commencer le calcul");
 	}
 	
-	public void addDelivery(Long newDelivery)throws Exception {
+	public void addDelivery(Long idDelivery)throws Exception {
 		throw new Exception("Impossible d'ajouter une livraison");
 	}
 }

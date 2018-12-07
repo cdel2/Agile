@@ -5,5 +5,7 @@ public interface State {
 	
 	public void loadDeliveries(String file) throws Exception;
 	
-	public void startCalculation(int nb) throws Exception;;
+	public void startCalculation(int nb) throws Exception;
+	
+	public void addDelivery(Long idDelivery) throws Exception;
 }
