@@ -28,11 +28,22 @@ public class Deliverer {
 	 * round to add is after the endTime of the last Round of the deliverer
 	 * @param roundToAdd
 	 */
-	public void addRoundToList(Round roundToAdd) {
+	public boolean addRoundToList(Round roundToAdd) {
 		if(roundToAdd != null) {
-			if(listRound.get(listRound.size() - 1).getEndTime().isBefore(roundToAdd.getEndTime())) {
+			if(listRound.size() - 1 >= 0) {
+				if(listRound.get(listRound.size() - 1).getEndTime().isBefore(roundToAdd.getEndTime())) {
+					this.listRound.add(roundToAdd);
+					return true;
+				} else {
+					return false;
+				}
+			} else {
 				this.listRound.add(roundToAdd);
+				return true;
 			}
+			
+		} else {
+			return false;
 		}
 		
 	}
