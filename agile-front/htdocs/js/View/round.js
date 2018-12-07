@@ -110,8 +110,8 @@ class Round{
         temp += "<div id='colorSample' style='background-color:"+color+";'></div>";
         temp += "<p id='roundDes'>Depart : "+timeToString(startTime)+"<br>Arrivée : "+timeToString(endTime)+"</p>";
         temp += "<div class='delLineButtons'>";
-        temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.pathToForeground(this,"+id+");'><i class='fas fa-arrow-up'></i></button>";
-        temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.disableRound(this, "+id+")'><i class='fas fa-eye'></i></button>"
+        temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.pathToForeground("+id+");'><i class='fas fa-arrow-up'></i></button>";
+        temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.disableRound("+id+")'><i class='fas fa-eye'></i></button>"
         temp += "</div></div>";
         temp += "<div class='collapse' id='cl"+id+"'><div class='card card-body' id='cl"+id+"t'></div></div>"
         return temp;

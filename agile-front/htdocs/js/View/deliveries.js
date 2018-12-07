@@ -138,6 +138,7 @@ class Deliveries{
         if(this.selectedDel != null && (node.idPath === this.selectedDel.idPath)){
             $("#cl"+node.idPath+"t").html(this.collapseFiller(node));
         }else{
+            Ctrl.pathToForeground(node.idPath);
             $(".collapse").collapse("hide");
             $("#cl"+node.idPath+"t").html(this.collapseFiller(node));
             $("#cl"+node.idPath).collapse('show');

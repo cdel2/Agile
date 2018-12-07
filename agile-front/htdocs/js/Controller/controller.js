@@ -96,11 +96,11 @@ class Controller{
         }
     }
 
-    pathToForeground(el, id){
-        var jel = $(el);
-        if(jel.hasClass('activeLine')){
-            jel.parent().parent().removeClass("activeLine");
-            this.View.Round.pathToForeground(id);
+    pathToForeground(num){
+        let el = $("#pl"+num);
+        if(el.hasClass('activeLine')){
+            el.removeClass("activeLine");
+            this.View.Round.pathToForeground(num);
             this.View.update();
         }else{
             let list = $(".activeLine");
@@ -109,8 +109,8 @@ class Controller{
                 console.log($(list[i]).parent());
                 $(list[i]).removeClass("activeLine");
             }
-            jel.parent().parent().addClass("activeLine");
-            this.View.Round.pathToForeground(id);
+            el.addClass("activeLine");
+            this.View.Round.pathToForeground(num);
             this.View.update();
         }
     }
