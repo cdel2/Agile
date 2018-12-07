@@ -41,56 +41,14 @@ public class LoadedDeliveriesState extends DefaultState{
 			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
 			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
-			Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra);
+			Time startTime=new Time("8:00:00");
+			Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
 			finalRound.add(round);
 		}
 		
-		MapManagement.getInstance().attributeRound(finalRound); //A TESTER SI CA MARCHE!
+		MapManagement.getInstance().assignRounds(finalRound); //A TESTER SI CA MARCHE!
 	}
 	
-
-	@Override
-	/**
-	 * Checks if a deliverer has finished his round
-	 * Calculates the shortest path from warehouse to the new point
-	 * Chooses the best deliverer depending on its finishing time 
-	 */
-	public void addDelivery (Long idDelivery) {
-		/*
-		 * Calculate the shortest path from warehouse to newPoint
-		 */
-		Dijkstra dijkstra = new Dijkstra();
-		TSP tsp = new TSP();
-		List<Long> newDel = new ArrayList<Long>();
-		newDel.add(idDelivery);
-		CityMap map = MapManagement.getInstance().getMap();
-		newDel.add(MapManagement.getInstance().getWarehouse().getId());
-		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), newDel);
-		Round round = tsp.brutForceTSP(graph, MapManagement.getInstance().getMap(), dijkstra);
-		/*
-		 *Find the best deliverer 
-		 */
-		Map<Long,Deliverer> delivererMap = MapManagement.getInstance().getListDeliverer();
-		Time minTime = new Time(99,99,99); Time tmpTime; Long keyBestDeliv = (long)-1;
-		for (Long key : delivererMap.keySet()) {
-			tmpTime = delivererMap.get(key).getListRound().get(0).getEndTime();
-			if(tmpTime.isBefore(minTime)) {
-				minTime = tmpTime;
-				keyBestDeliv = key;
-			}
-		}
-		/*
-		 * Add the new round to a deliverer's round list
-		 */
-		if(keyBestDeliv != -1) {
-			
-			//round.setStartTime(minTime); round.setEndTime();
-			List<Round> newRoundList = delivererMap.get(keyBestDeliv).getListRound();
-			newRoundList.add(round);
-			delivererMap.get(keyBestDeliv).setListRound(newRoundList);
-			MapManagement.getInstance().setListDeliverer(delivererMap);
-		}
-	}
 	
 	@Override
 	public void loadDeliveries(String file) {

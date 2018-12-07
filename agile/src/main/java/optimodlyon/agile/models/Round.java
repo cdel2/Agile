@@ -9,10 +9,10 @@ public class Round {
 	private ArrayList<Path> listPath;
 	private Warehouse start;
 	
-	public Round(Warehouse w) {
+	public Round(Warehouse w, Time st) {
 		listPath = new ArrayList<Path>();
-		startTime = new Time("8:00:00");
-		endTime = new Time("8:00:00");
+		startTime = new Time(st);
+		endTime = new Time(st);
 		start = w;
 	}
 
@@ -29,7 +29,7 @@ public class Round {
 			totalDuration+=path.getDuration();
 			totalDuration+=path.getArrival().getDuration();
 		}
-		endTime = startTime.copyTime();
+		endTime = new Time(startTime);
 		endTime.addTime(totalDuration);
 	}
 	
@@ -89,7 +89,7 @@ public class Round {
 	public void addPath(Path aPath) {
 		this.listPath.add(aPath);
 		endTime.addTime(aPath.getDuration());
-		aPath.getArrival().setTimeArrival(endTime.copyTime());
+		aPath.getArrival().setTimeArrival(new Time(endTime));
 		endTime.addTime(aPath.getArrival().getDuration());
 	}
 

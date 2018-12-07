@@ -62,14 +62,21 @@ public class MapManagement{
 		this.listDeliverer = listDeliverer;
 	}
 	
-	public void attributeRound(List<Round> listRound)
+	/**
+	 * Function used to give each deliverer a round
+	 * If we have more deliverers than the number of rounds (N),
+	 * the N first deliverers will be assigned a round
+	 * @param listRound
+	 */
+	public void assignRounds(List<Round> listRound)
 	{
 		int i =0;
 		for(Long it : listDeliverer.keySet())
 		{
-			
-			listDeliverer.get(it).getListRound().add(listRound.get(i));
-			i++;
+			if(i < listRound.size()) {
+				listDeliverer.get(it).getListRound().add(listRound.get(i));
+				i++;
+			}
 		}
 	}
 	
@@ -92,8 +99,32 @@ public class MapManagement{
 		}
 	}
 	
-	/*public static void main(String[] args) {
-		Map<Long,String> listDeliverer = new HashMap<Long,String>();
+	public Delivery getDeliveryById(Long id) {
+		List<Delivery> listDelivery = MapManagement.getInstance().getListDelivery();
+		for(Delivery delivery : listDelivery) {
+			if((long)delivery.getId()==(long)id){
+				return delivery;
+			}
+		}
+		return MapManagement.getInstance().getWarehouse();
+	}
+	
+	/**
+	 * Add a round to a deliverer if the startTime of the round to add
+	 * is after the endTime of the last round of the deliverer
+	 * @param deliv
+	 * @param roundToAdd
+	 */
+	public void addRoundToADeliverer(Deliverer deliv, Round roundToAdd) {
+		if(deliv != null && roundToAdd != null) {
+			this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
+		}
+	}
+	
+	public static void main(String[] args) {
+		Intersection origin = new Intersection((long)1, (float)-50, (float)50);
+		System.out.println(origin);
+		/*Map<Long,String> listDeliverer = new HashMap<Long,String>();
 		listDeliverer.put((long) 1, "a");
 		listDeliverer.put((long) 2, "b");
 		listDeliverer.put((long) 1, "c");
@@ -107,8 +138,8 @@ public class MapManagement{
 			System.out.println("round : " +listRound.get(i));	
 			System.out.println("deli : " +it);	
 			i++;
-		}
-	}*/
+		}*/
+	}
 	
 
 }

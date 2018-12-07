@@ -15,6 +15,12 @@ public class Time {
 		updateTime();
 	}
 	
+	public Time(Time t) {
+		hours=t.hours;
+		minutes=t.minutes;
+		seconds=t.seconds;
+	}
+	
 	/*
 	 * constructor of time from sting with format hh:mm:ss
 	 */
@@ -77,9 +83,6 @@ public class Time {
 	/*
 	 * Is it better to make a constructor of time with a time as parameters ?
 	 */
-	public Time copyTime() {
-		return new Time(hours, minutes, seconds);
-	}
 	
 	/*
 	 * WTF : Si je ne mets pas les getters et les setters, j'ai l'erreur suivante

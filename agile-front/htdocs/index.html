@@ -9,7 +9,9 @@
   <script src="https://code.jquery.com/jquery-3.3.1.js" crossorigin="anonymous"></script>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>d3.select(self.frameElement).style("height", "140px")</script>
-  <script src="js/util.js"></script>
+  <script src="js/util/userBoxes.js"></script>
+  <script src="js/util/geometry.js"></script>
+  <script src="js/util/time.js"></script>
   <script src="js/View/map.js"></script>
   <script src="js/View/deliveries.js"></script>
   <script src="js/View/round.js"></script>
@@ -82,7 +84,7 @@
         <div onsubmit="Ctrl.loadRound(); return false;">
           <div class="form-group">
             <label for="numInput">Nombre de livreurs</label>
-            <input id="numInput" class="form-control" placeholder="Valeur par défaut : 3">
+            <input id="numInput" class="form-control" placeholder="Défaut : 3">
           </div>
           <button type="submit" id="loadRounds" class="btn btn-warning" onclick="Ctrl.loadRound();" disabled>Calculer itinéraires</button>
           <span id="execTime"></span>
@@ -92,6 +94,7 @@
         <div id="addPointSection">
           <button type="button" class="btn btn-warning" id="addDel" onclick="Ctrl.addPoint();" disabled><i class="fas fa-plus"></i></button>
           <button type="button" class="btn btn-warning" id="rmvDel" onclick="Ctrl.rmvPoint();" disabled><i class="fas fa-minus"></i></button>
+          <input type="text" class="form-control" id="delDuration" placeholder="200">
           <div id="stateChange">
             <button type="button" class="btn btn-warning" id="undo"><i class="fas fa-undo"></i></button>
             <button type="button" class="btn btn-warning" id="redo"><i class="fas fa-redo"></i></button>

@@ -30,7 +30,7 @@ public class Delivery extends Intersection{
 	 * @return the timeArrival
 	 */
 	public String toString() {
-		return "Intersection id : " + id + " lat : "+latitude +  " long : "+longitude;
+		return "Intersection id : " + id + " lat : "+latitude +  " long : "+longitude + " timeArrival : " + timeArrival;
 	}
 
 	/**
