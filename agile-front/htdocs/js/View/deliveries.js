@@ -31,7 +31,7 @@ class Deliveries{
                 url: "http://localhost:8080/warehouse",
                 type:"GET"
             }).done(function( del ) {
-                object.warehouse = del;
+                object.warehouse = {id:del.id, duration:null, color:"red"};
                 Ctrl.state = new DelState();
                 Ctrl.View.update();
             }).fail(function(){
@@ -56,17 +56,17 @@ class Deliveries{
             let pathNodes = this.delNodes[del];
             for(var i = 0; i < pathNodes.length; i++){
                 let node = coord[pathNodes[i].id];
-                drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.nodeDisp.radius, this.nodeDisp.color, ctx);
+                drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.nodeDisp.radius, pathNodes[i].color, ctx);
             }
         }
         for(var i = 0; i < this.userDelNodes.length; i++){
             let node = this.userDelNodes[i];
-            drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.userNodeDisp.radius, this.userNodeDisp.color, ctx);
+            drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.userNodeDisp.radius, pathNodes[i].color, ctx);
         }
 
         //affichage warehouse
-        let node = this.warehouse;
-        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.warehouseDisp.radius, this.warehouseDisp.color, ctx);        
+        let node = coord[this.warehouse.id];
+        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.warehouseDisp.radius, this.warehouse.color, ctx);        
 
         //afficha pin
         if(this.nodeInfo!=null){

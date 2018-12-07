@@ -15,7 +15,6 @@ function timeFormat(time){
 function timeToSlider(time){
     let minutes = time.minutes/60*10;
     let hours = time.hours*10;
-    console.log(minutes+hours);
 }
 
 function compareTime(time1, time2){
@@ -36,4 +35,22 @@ function compareTime(time1, time2){
 
 function timeToString(time){
     return pad(time.hours,2)+":"+pad(time.minutes,2);
+}
+
+function initSlider(ticks1){
+    $("#sliderInit").attr('data-slider-ticks', "[122, 150]");
+    $("#sliderInit").attr('data-slider-ticks-snap-bounds', 30);
+    $("#sliderInit").slider({
+        //ticks:[112, 130],
+        //tooltip: 'always',
+        formatter: function(value) {
+            var time = timeFormat(value);
+            return pad(time[0],2)+":"+pad(time[1],2);
+        }
+    }).on('slide', function(val){
+        var hour = Math.floor(val.value/10);
+        var rawMinutes = val.value-hour*10;
+        var minutes = (rawMinutes/10)*60;
+        Ctrl.changeTime({hours:hour, minutes:minutes, seconds:0});
+    });
 }

@@ -1,7 +1,7 @@
 class Round{
     constructor(){
         this.paths = new Object();
-        this.colors = ["green", "yellow", "purple", "blue", "lime", "aqua", "fuschia", "red", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
+        this.colors = ["green", "red", "purple", "blue", "lime", "aqua", "fuschia", "yellow", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
         this.firstPath = -1;
         this.stop=null;
     }
@@ -20,6 +20,7 @@ class Round{
             var totalTime = new Date().getTime()-ajaxTime;
             $("#execTime").text("  "+totalTime/1000+"s");
 
+            var endTimes = [];
             var cmpt = 0;
             for(var i in data){
                 let round = data[i].listRound[0].listPath;
@@ -27,6 +28,7 @@ class Round{
                 let deliveryTemp = [];
                 let temp = {display:true, color:color1, data:[], departureTime:{hours:8, minutes:0, seconds:0}, arrivalTime:data[i].listRound[0].endTime};
                 $("#pathMenu").append(object.createPathHtml(color1, data[i].listRound[0].startTime, data[i].listRound[0].endTime, cmpt));
+                endTimes.push(data[i].listRound[0].endTime);
                 for(var j in round){
                    let path = round[j].path;
                    let roudPart = [];
@@ -42,8 +44,9 @@ class Round{
                 Ctrl.View.Deliveries.delNodes[cmpt] = deliveryTemp;
                 cmpt++;
             }
-            delete Ctrl.View.Deliveries.delNodes[-1];
 
+            delete Ctrl.View.Deliveries.delNodes[-1];
+            initSlider(endTimes);
             Ctrl.View.update();
             Ctrl.state = new CalcState();
         }).fail(function(textStatus){
@@ -61,7 +64,7 @@ class Round{
         for(var i in this.paths){
             if(this.paths[i].display && (this.firstPath===-1 || (i!=this.firstPath))){
                 let totalPath = this.paths[i].data;
-                this.drawSegment(totalPath, coord, ctx, this.paths[i].color, 1, time);
+                this.drawSegment(totalPath, coord, ctx, this.paths[i].color, 1.5, time);
             }
         }
         
@@ -78,9 +81,11 @@ class Round{
             let path = totalPath[j];
             if(compareTime(path.arrival.timeArrival, time) >= 0) present = false;
             if(present){
+                ctx.globalAlpha = 1; 
                 ctx.setLineDash([]);
-            }else{
-                ctx.setLineDash([10, 5]);
+            }else{ 
+                ctx.globalAlpha = 0.4;
+                ctx.setLineDash([10,5]);
             }
             ctx.strokeStyle = color;
             ctx.lineWidth = Ctrl.View.Canvas.ratio*thickness*(Ctrl.View.zoomLevel +1);
@@ -92,12 +97,6 @@ class Round{
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
             }
             ctx.stroke();
-            /*let node = coord[path.arrival.id];
-            if(present){
-                drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 4, 'blue', ctx); 
-            }else{
-                drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 4, 'lightblue', ctx);   
-            }*/
         }
     }
 
