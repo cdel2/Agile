@@ -45,16 +45,19 @@ public class CalculatedState extends LoadedDeliveriesState{
 		/*
 		 * Initialize the minimum finishing Time to 99:99.99 and the idDeliverer to -1
 		 */
-		Time minTime = new Time(99,99,99); Time tmpTime; Long keyBestDeliv = (long)-1;
+		Time minTime = new Time(24,00,00); Time tmpTime; Long keyBestDeliv = (long)-1;
 		/*
 		 * We look at the first round of each deliverer and compare its finishing time 
 		 * to the current minimum finishing time
 		 */
 		for (Long key : delivererMap.keySet()) {
 			tmpTime = delivererMap.get(key).getListRound().get(0).getEndTime();
+			System.out.println(tmpTime.toString());
 			if(tmpTime.isBefore(minTime)) {
 				minTime = tmpTime;
 				keyBestDeliv = key;
+			} else {
+				System.out.println("chelou");
 			}
 		}
 		/*
