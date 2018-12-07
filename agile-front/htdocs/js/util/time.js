@@ -33,3 +33,7 @@ function compareTime(time1, time2){
         return -1;
     }
 }
+
+function timeToString(time){
+    return pad(time.hours,2)+":"+pad(time.minutes,2);
+}

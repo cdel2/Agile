@@ -1,8 +1,8 @@
 class Deliveries{
     constructor(){
-        this.warehouseDisp = {radius: Ctrl.View.Canvas.ratio*8, color: "red"};
-        this.nodeDisp = {radius: Ctrl.View.Canvas.ratio*4, color: "blue"};
-        this.userNodeDisp = {radius: Ctrl.View.Canvas.ratio*4, color: "green"};
+        this.warehouseDisp = {radius: 8, color: "red"};
+        this.nodeDisp = {radius: 4, color: "blue"};
+        this.userNodeDisp = {radius: 4, color: "green"};
         this.warehouse = null;
         this.delNodes = [];
         this.userDelNodes = [];
@@ -50,14 +50,14 @@ class Deliveries{
 
     display(ctx, View){
         let node = this.warehouse;
-        this.drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.warehouseDisp.radius, this.warehouseDisp.color, ctx);
+        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.warehouseDisp.radius, this.warehouseDisp.color, ctx);
         for(var i = 0; i < this.delNodes.length; i++){
             let node = this.delNodes[i];
-            this.drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.nodeDisp.radius, this.nodeDisp.color, ctx);
+            drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.nodeDisp.radius, this.nodeDisp.color, ctx);
         }
         for(var i = 0; i < this.userDelNodes.length; i++){
             let node = this.userDelNodes[i];
-            this.drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.userNodeDisp.radius, this.userNodeDisp.color, ctx);
+            drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.userNodeDisp.radius, this.userNodeDisp.color, ctx);
         }
         if(this.nodeInfo!=null){
             let node = this.nodeInfo;
@@ -70,17 +70,6 @@ class Deliveries{
             ctx.beginPath();         
 
         }
-    }
-
-    drawCircle(X, Y, R, color, ctx){
-        ctx.beginPath();
-        ctx.arc(X, Y, R*(Ctrl.View.zoomLevel/2 +1), 0, 2 * Math.PI, false);
-        ctx.fillStyle = color;
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 3;
-        ctx.globalAlpha = 0.7;
-        ctx.fill();
-        //ctx.stroke();
     }
 
     addUserNode(node){
