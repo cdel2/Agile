@@ -120,8 +120,15 @@ public class IntersectionTest {
         completeMap.put((long)3, a3);
         completeMap.put((long)4, a4);
         completeMap.put((long)5, a5);
-        i0.findSuccessorSegments();
+		MapManagement.getInstance().getMap().setGraph(completeMap);
 		
+		List<Intersection> answer = new ArrayList<Intersection>();
+		answer.add(i1);
+		answer.add(i3);
+		answer.add(i2);
+		for(int i=0;i<answer.size();i++) {
+			assertSame(i0.findSuccessorSegments().get(i),answer.get(i));
+		}
 	}
 
 	@Test
