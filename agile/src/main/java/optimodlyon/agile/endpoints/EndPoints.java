@@ -1,27 +1,24 @@
 package optimodlyon.agile.endpoints;
 
-import optimodlyon.agile.models.Round;
 import optimodlyon.agile.controller.Controller;
 import optimodlyon.agile.exceptions.UnprocessableEntityException;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
-import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.MapManagement;
-import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.models.Warehouse;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @CrossOrigin(origins = "http://localhost:8000")
@@ -71,6 +68,33 @@ public class EndPoints {
     		throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
     	}
         return MapManagement.getInstance().getListDeliverer();
+    } 
+    
+    @GetMapping("/test")
+    public CompletableFuture<String>  getTest() {
+    	return invoke();
     }
- 
+    
+    public CompletableFuture<String>  invoke() {/*
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+     
+        Future<String> future = executorService.submit(() -> {
+            // ...
+            //Thread.sleep(10000l);
+            return "Hello world";
+        });
+        
+        
+        return future;*/
+        
+	    CompletableFuture<String> completableFuture = new CompletableFuture<>();
+		//newCachedThreadPool Creates a thread pool that creates new threads as needed, but will reuse previously constructed threads when they are available. 
+	    Executors.newCachedThreadPool().submit(() -> {
+	        //Thread.sleep(500);
+	        completableFuture.complete("hello");
+	        return null;
+	    });
+	 
+	    return completableFuture;
+    }
 }

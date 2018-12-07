@@ -26,7 +26,7 @@ class Round{
                 let color1 = object.colors[cmpt];
                 console.log(data[i].arrival);
                 var temp = {display:true, color:color1, data:[], departureTime:{hours:8, minutes:0, seconds:0}, arrivalTime:data[i].listRound[0].endTime};
-                $("#pathMenu").append(object.createPathHtml(color1,100, cmpt));
+                $("#pathMenu").append(object.createPathHtml(color1, data[i].listRound[0].startTime, data[i].listRound[0].endTime, cmpt));
                 for(var j in round){
                    let path = round[j].path;
                    let roudPart = [];
@@ -58,7 +58,6 @@ class Round{
         for(var i in this.paths){
             if(this.paths[i].display && (this.firstPath===-1 || (i!=this.firstPath))){
                 let totalPath = this.paths[i].data;
-                console.log(totalPath);
                 this.drawSegment(totalPath, coord, ctx, this.paths[i].color, 1, time);
             }
         }
@@ -71,17 +70,18 @@ class Round{
     }
     //[10,5]
     drawSegment(totalPath, coord, ctx, color, thickness, time){
+        let present = true; //true if we are before time
         for(var j in totalPath){
             let path = totalPath[j];
-            ctx.beginPath();
-            console.log(totalPath);
-            if(compareTime(path.arrival.timeArrival, time) >= 0){
+            if(compareTime(path.arrival.timeArrival, time) >= 0) present = false;
+            if(present){
                 ctx.setLineDash([]);
             }else{
                 ctx.setLineDash([10, 5]);
             }
             ctx.strokeStyle = color;
             ctx.lineWidth = Ctrl.View.Canvas.ratio*thickness*(Ctrl.View.zoomLevel +1);
+            ctx.beginPath();
             for(var j in path.roundSeg){
                 let start = coord[path.roundSeg[j].start];
                 let end = coord[path.roundSeg[j].end];
@@ -89,26 +89,26 @@ class Round{
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
             }
             ctx.stroke();
+            /*let node = coord[path.arrival.id];
+            if(present){
+                drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 4, 'blue', ctx); 
+            }else{
+                drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 4, 'lightblue', ctx);   
+            }*/
         }
     }
 
-    switchPathDisplay(id1, state){
-        console.log(id1);
-        for(var i in this.paths){
-            console.log(this.paths[i].id);
-            if(this.paths[i].id === id1){
-                console.log("coucou");
-                this.paths[i].display=state;
-                return true;
-            }
-        }
+    switchPathDisplay(id, state){
+        this.paths[id].display = state;
         return false;
     }
 
-    createPathHtml(color, totalTime, id){
+    createPathHtml(color, startTime, endTime, id){
+        console.log(startTime);
+        console.log(endTime);
         var temp =  "<div class='pathLine'>";
         temp += "<div id='colorSample' style='background-color:"+color+";'></div>";
-        temp += "<p id='roundDes'>Durée : 20<br>Temps : 45</p>";
+        temp += "<p id='roundDes'>Depart : "+timeToString(startTime)+"<br>Arrivée : "+timeToString(endTime)+"</p>";
         temp += "<div class='delLineButtons'>";
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.pathToForeground(this,"+id+");'><i class='fas fa-arrow-up'></i></button>";
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.disableRound(this, "+id+")'><i class='fas fa-eye'></i></button>"

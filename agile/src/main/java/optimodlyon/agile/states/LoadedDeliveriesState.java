@@ -22,7 +22,7 @@ import optimodlyon.agile.xml.DeserializerXML;
 public class LoadedDeliveriesState extends DefaultState{
 	
 	@Override
-	public void  startCalculation(int nb) {	
+	public void startCalculation(int nb) {	
 		System.out.println("calculating...");
 		Clustering clustering = new Clustering();
 		Dijkstra dijkstra = new Dijkstra();
@@ -46,7 +46,7 @@ public class LoadedDeliveriesState extends DefaultState{
 			finalRound.add(round);
 		}
 		
-		MapManagement.getInstance().attributeRound(finalRound); //A TESTER SI CA MARCHE!
+		MapManagement.getInstance().assignRounds(finalRound); //A TESTER SI CA MARCHE!
 	}
 	
 	

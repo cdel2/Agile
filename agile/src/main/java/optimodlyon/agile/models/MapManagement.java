@@ -62,14 +62,21 @@ public class MapManagement{
 		this.listDeliverer = listDeliverer;
 	}
 	
-	public void attributeRound(List<Round> listRound)
+	/**
+	 * Function used to give each deliverer a round
+	 * If we have more deliverers than the number of rounds (N),
+	 * the N first deliverers will be assigned a round
+	 * @param listRound
+	 */
+	public void assignRounds(List<Round> listRound)
 	{
 		int i =0;
 		for(Long it : listDeliverer.keySet())
 		{
-			
-			listDeliverer.get(it).getListRound().add(listRound.get(i));
-			i++;
+			if(i < listRound.size()) {
+				listDeliverer.get(it).getListRound().add(listRound.get(i));
+				i++;
+			}
 		}
 	}
 	

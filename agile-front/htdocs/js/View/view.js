@@ -43,8 +43,9 @@ class Viewer{
         if(this.Round != null){
             this.Round.display(this.Canvas.ctx, this.Map.coord, this.time);
         }
+
         if(this.Deliveries != null){
-            this.Deliveries.display(this.Canvas.ctx, this);
+            this.Deliveries.display(this.Canvas.ctx, this, this.Map.coord);
         }
     }
 

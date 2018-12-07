@@ -72,7 +72,7 @@ class Map{
 
     highlightNode(node, ctx){
         Ctrl.View.update();
-        this.drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 15, "yellow", ctx);
+        drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 15, "yellow", ctx);
     }
 
     findBestNode(X,Y){
@@ -87,14 +87,5 @@ class Map{
             }
         }
         return bestNode;
-    }
-
-    drawCircle(X, Y, R, color, ctx){
-        ctx.beginPath();
-        ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
-        ctx.fillStyle = color;
-        ctx.globalAlpha = 0.7;
-        ctx.fill();
-        ctx.stroke();
     }
 }
