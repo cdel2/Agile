@@ -39,6 +39,14 @@ public class Path {
 		arrival.setTimeArrival(currentTime);
 		currentTime.addTime(this.arrival.getDuration());
 	}
+	
+	public void setSegmentsPassageTimes() {
+		Time currentTime = new Time(departureTime);
+		for (Segment seg : listSegment) {
+			seg.setPassageTime(new Time(currentTime));
+			currentTime.addTime(seg.getDuration());
+		}
+	}
 
 	/**
 	 * @return the duration

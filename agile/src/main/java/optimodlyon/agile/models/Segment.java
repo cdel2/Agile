@@ -2,10 +2,13 @@ package optimodlyon.agile.models;
 
 import java.util.ArrayList;
 
+import optimodlyon.agile.util.Time;
+
 public class Segment {
 	private Intersection start;
 	private Intersection end;
 	private float duration;
+	private Time passageTime;
 
 	public Segment(Intersection start, Intersection end, float duration) {
 		this.start = start;
@@ -34,6 +37,14 @@ public class Segment {
 	public Intersection getEnd()
 	{
 		return end;
+	}
+	
+	public Time getPassageTime() {
+		return passageTime;
+	}
+	
+	public void setPassageTime(Time passageTime) {
+		this.passageTime = passageTime;
 	}
 	
 	public String toString() {

@@ -141,6 +141,7 @@ public class TSP {
 			Round currentRound = new Round(MapManagement.getInstance().getWarehouse(), startTime);
 			System.out.println("Departure : " + pathFound.getDepartureTime() + " Duration : " + pathFound.getDuration() + 
 					", " + pathFound.getArrival().getDuration() + " Arrival : " + pathFound.getArrival().getTimeArrival());
+			pathFound.setSegmentsPassageTimes();
 			currentRound.addPath(pathFound);
 			for (int i = 1; i < currentPath.size() - 1; i++) {
 				IntersectionIds = dijkstra.createPathIds(currentPath.get(i), currentPath.get(i + 1));
@@ -149,6 +150,7 @@ public class TSP {
 				pathFound = new Path(IntersectionIds, arrival, currentTime);
 				System.out.println("Departure : " + pathFound.getDepartureTime() + " Duration : " + pathFound.getDuration() + 
 						", " + pathFound.getArrival().getDuration() + " Arrival : " + pathFound.getArrival().getTimeArrival());
+				pathFound.setSegmentsPassageTimes();
 				currentRound.addPath(pathFound);
 			}
 			System.out.println();
