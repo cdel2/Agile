@@ -12,20 +12,6 @@ function init(){
         Ctrl.View.setupCanvas();
         Ctrl.View.update();
     };
-
-    $("#sliderInit").slider({
-        tooltip: 'always',
-        formatter: function(value) {
-            var time = timeFormat(value);
-            //console.log(time);
-            return pad(time[0],2)+":"+pad(time[1],2);
-        }
-    }).on('slide', function(val){
-        var hour = Math.floor(val.value/10);
-        var rawMinutes = val.value-hour*10;
-        var minutes = (rawMinutes/10)*60;
-        Ctrl.changeTime({hours:hour, minutes:minutes, seconds:0});
-    });
     
     /*window.addEventListener('mouseup', function(evt){
         Ctrl.state.handleMouseUp(evt);

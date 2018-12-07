@@ -10,6 +10,7 @@ public class Path {
 	private float duration;
 	private ArrayList<Segment> listSegment;
 	private Delivery arrival;
+	Time departureTime;
 
 	
 	public Path() {
@@ -20,29 +21,37 @@ public class Path {
 	/**
 	 * 
 	 */
-	public Path(List<Long> idIntersections, Delivery arrival) {
+	public Path(List<Long> idIntersections, Delivery arrival, Time currentTime) {
+		departureTime=new Time(currentTime);
 		listSegment = new ArrayList<Segment>();
 		duration = 0;
 		for(int i=0; i<idIntersections.size()-1; i++) {
 			Long origin = idIntersections.get(i);
 			Long destination = idIntersections.get(i+1);
 			Segment currentSegment = MapManagement.getInstance().getMap().getSegmentFromGraph(origin, destination);
-			listSegment.add(currentSegment);
+			listSegment.add(new Segment(currentSegment));
 			//System.out.println(currentSegment);
 			duration+=currentSegment.getDuration();
 		}
 		Long idDelivery = this.findEnd().getId();
-		this.arrival = arrival;
+		this.arrival = new Delivery(arrival);
+		currentTime.addTime(duration);
+		this.arrival.setTimeArrival(currentTime);
+		currentTime.addTime(this.arrival.getDuration());
+	}
+	
+	public void setSegmentsPassageTimes() {
+		Time currentTime = new Time(departureTime);
+		for (Segment seg : listSegment) {
+			seg.setPassageTime(new Time(currentTime));
+			currentTime.addTime(seg.getDuration());
+		}
 	}
 
 	/**
 	 * @return the duration
 	 */
 	public Time getDepartureTime() {
-		Delivery delivery = MapManagement.getInstance().getDeliveryById(findStart().getId());
-		Time previousDeliveryArrival = new Time(delivery.getTimeArrival());
-		System.out.println(delivery);
-		Time departureTime = previousDeliveryArrival.addTime(delivery.getDuration());
 		return departureTime;
 	}
 	

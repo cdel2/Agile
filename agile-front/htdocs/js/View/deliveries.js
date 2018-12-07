@@ -4,7 +4,7 @@ class Deliveries{
         this.nodeDisp = {radius: 4, color: "blue"};
         this.userNodeDisp = {radius: 4, color: "green"};
         this.warehouse = null;
-        this.delNodes = [];
+        this.delNodes = new Object();
         this.userDelNodes = [];
         this.nodeInfo = null;
 
@@ -20,15 +20,18 @@ class Deliveries{
             url: "http://localhost:8080/deliveries/dl-"+delFile,
             type:"GET"
         }).done(function( del ) {
+            console.log(del);
+            var tmp = [];
             for(var el in del){
-               object.delNodes.push(del[el]);
+               tmp.push({id:del[el].id, duration:del[el].duration, color:"blue"});
             }
+            object.delNodes[-1] = tmp;
             
             $.ajax({
                 url: "http://localhost:8080/warehouse",
                 type:"GET"
             }).done(function( del ) {
-                object.warehouse = del;
+                object.warehouse = {id:del.id, duration:null, color:"red"};
                 Ctrl.state = new DelState();
                 Ctrl.View.update();
             }).fail(function(){
@@ -48,17 +51,24 @@ class Deliveries{
         });        
     }
 
-    display(ctx, View){
-        let node = this.warehouse;
-        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.warehouseDisp.radius, this.warehouseDisp.color, ctx);
-        for(var i = 0; i < this.delNodes.length; i++){
-            let node = this.delNodes[i];
-            drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.nodeDisp.radius, this.nodeDisp.color, ctx);
+    display(ctx, View, coord){
+        for(var del in this.delNodes){
+            let pathNodes = this.delNodes[del];
+            for(var i = 0; i < pathNodes.length; i++){
+                let node = coord[pathNodes[i].id];
+                drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.nodeDisp.radius, pathNodes[i].color, ctx);
+            }
         }
         for(var i = 0; i < this.userDelNodes.length; i++){
             let node = this.userDelNodes[i];
-            drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.userNodeDisp.radius, this.userNodeDisp.color, ctx);
+            drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.userNodeDisp.radius, pathNodes[i].color, ctx);
         }
+
+        //affichage warehouse
+        let node = coord[this.warehouse.id];
+        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.warehouseDisp.radius, this.warehouse.color, ctx);        
+
+        //afficha pin
         if(this.nodeInfo!=null){
             let node = this.nodeInfo;
             let ratio = Ctrl.View.Canvas.ratio*0.7;

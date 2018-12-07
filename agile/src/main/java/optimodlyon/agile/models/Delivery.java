@@ -21,6 +21,12 @@ public class Delivery extends Intersection{
 		duration = dur;
 	}
 	
+	public Delivery(Delivery d) {
+		super(d);
+		timeArrival=d.timeArrival;
+		duration=d.duration;
+	}
+	
 	public Delivery(Long id, Time ta) {
 		super(id);
 		timeArrival = ta;
@@ -58,7 +64,7 @@ public class Delivery extends Intersection{
 	 * @param timeArrival the timeArrival to set
 	 */
 	public void setTimeArrival(Time timeArrival) {
-		this.timeArrival = timeArrival;
+		this.timeArrival = new Time(timeArrival);
 	}
 	
 	public boolean findLatitudeLongitude(Map<Long, List<Segment>> graph) {
