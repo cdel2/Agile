@@ -1,5 +1,7 @@
 package optimodlyon.agile.states;
 
+import optimodlyon.agile.models.Delivery;
+
 public interface State {
 	public void loadMap(String file);
 	

@@ -32,6 +32,7 @@ public class Delivery extends Intersection{
 		timeArrival = ta;
 	}
 	
+	
 	/**
 	 * @return the timeArrival
 	 */

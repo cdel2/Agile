@@ -125,6 +125,15 @@ public class MapManagement{
 		return res;
 	}
 	
+	public boolean addDeliveryToListDelivery(Delivery newDelivery) {
+		boolean res = false;
+		if(!this.listDelivery.contains(newDelivery)) {
+			this.listDelivery.add(newDelivery);
+			res=true;
+		}
+		return res;
+	}
+	
 	public static void main(String[] args) {
 		Intersection origin = new Intersection((long)1, (float)-50, (float)50);
 		System.out.println(origin);

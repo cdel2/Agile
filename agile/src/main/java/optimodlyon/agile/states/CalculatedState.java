@@ -8,6 +8,7 @@ import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Deliverer;
+import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Path;
 import optimodlyon.agile.models.Round;
@@ -32,11 +33,12 @@ public class CalculatedState extends LoadedDeliveriesState{
 			Time endOfDay = new Time(18,00,00);
 			if(newRound != null && bestDeliverer != null) {
 				if(newRound.getEndTime().isBefore(endOfDay)) {
-					MapManagement.getInstance().addRoundToADeliverer(bestDeliverer, newRound);
+					if(MapManagement.getInstance().addRoundToADeliverer(bestDeliverer, newRound)) {
+						//MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
+					}
 				}
 			}
 		}
-		
 	}
 	
 	/**

@@ -112,5 +112,13 @@ public class MapManagementTest {
 		assertEquals(b4,false);
 		//Assertions.assertThat(MapManagement.getInstance().getListDeliverer().get(del2.getId()).getListRound()).contains(r4);
 	}
+	
+	@Test
+	public void testAddDeliveryToListDelivery() {
+		Delivery del = new Delivery((long)0,(float)5);
+		assertEquals(MapManagement.getInstance().addDeliveryToListDelivery(del),true);
+		assertEquals(MapManagement.getInstance().addDeliveryToListDelivery(del),false);
+		
+	}
 
 }
