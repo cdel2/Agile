@@ -55,6 +55,24 @@ public class Time {
 		return this;
 	}
 	
+	/**
+	 * add two Times, if we exceed the end of the day
+	 * the time is set to 23:59.59
+	 * @param t2
+	 * @return
+	 */
+	public Time addTime(Time t2) {
+		int prevHours = hours;
+		hours+=t2.hours;
+		minutes+=t2.minutes;
+		seconds+=t2.seconds;
+		updateTime();
+		if(prevHours > hours) {
+			hours = 23; minutes=59; seconds=59;
+		}
+		return this;
+	}
+	
 	/*
 	 * If seconds>60 or minutes>60 or hours>24, readjust the time.
 	 */
