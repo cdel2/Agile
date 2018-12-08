@@ -275,21 +275,29 @@ public class TSP {
 			// if not, we add the current path (which is a possible final path) to
 			// finalResults.
 			//System.out.println(currentPath + ">>>>>>>>>>>>>>>" + map);
+			Time currentTime = new Time(startTime);
 			currentPath.add(MapManagement.getInstance().getWarehouse().getId());
 			currentLength+=(currentSuccessors.get(MapManagement.getInstance().getWarehouse().getId()));
 			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
 			Long firstArrivalId = currentPath.get(1);
 			Delivery firstArrival = MapManagement.getInstance().getDeliveryById(firstArrivalId);
-			Path pathFound = new Path(IntersectionIds, firstArrival);
+			Path pathFound = new Path(IntersectionIds, firstArrival, currentTime);
 			Round currentRound = new Round(MapManagement.getInstance().getWarehouse(), startTime);
+			System.out.println("Departure : " + pathFound.getDepartureTime() + " Duration : " + pathFound.getDuration() + 
+					", " + pathFound.getArrival().getDuration() + " Arrival : " + pathFound.getArrival().getTimeArrival());
+			pathFound.setSegmentsPassageTimes();
 			currentRound.addPath(pathFound);
 			for (int i = 1; i < currentPath.size() - 1; i++) {
 				IntersectionIds = dijkstra.createPathIds(currentPath.get(i), currentPath.get(i + 1));
 				Long arrivalId = currentPath.get(i+1);
 				Delivery arrival = MapManagement.getInstance().getDeliveryById(arrivalId);
-				pathFound = new Path(IntersectionIds, arrival);
+				pathFound = new Path(IntersectionIds, arrival, currentTime);
+				System.out.println("Departure : " + pathFound.getDepartureTime() + " Duration : " + pathFound.getDuration() + 
+						", " + pathFound.getArrival().getDuration() + " Arrival : " + pathFound.getArrival().getTimeArrival());
+				pathFound.setSegmentsPassageTimes();
 				currentRound.addPath(pathFound);
 			}
+			System.out.println();
 			possibleRounds.add(currentRound);
 			return possibleRounds;
 		} else {
