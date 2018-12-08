@@ -7,13 +7,12 @@ import java.awt.Paint;
 import java.awt.font.GraphicAttribute;
 import java.io.Console;
 import java.util.*;
+import java.util.Map.Entry;
 
-import org.apache.catalina.valves.rewrite.Substitution.SubstitutionElement;
+import javafx.util.*;
+
 import org.apache.logging.log4j.Marker;
-import org.omg.PortableServer.ThreadPolicyOperations;
 import org.springframework.context.support.StaticApplicationContext;
-
-import ch.qos.logback.core.util.Duration;
 
 
 public class TSP {
@@ -22,33 +21,59 @@ public class TSP {
 	 */
 	public static void main(String[] args) {
 		TSP tsp = new TSP();
-		CityMap map = MapManagement.getInstance().getMap();
 		Map<Long, Float> successors1 = new HashMap<Long, Float>();
-		successors1.put((long) 2, (float) 8);
-		successors1.put((long) 3, (float) 7);
-		successors1.put((long) 4, (float) 6);
+		successors1.put((long) 2, (float) 600);
+		successors1.put((long) 3, (float) 1000);
+		successors1.put((long) 4, (float) 1900);
+		successors1.put((long) 5, (float) 1100);
+		
 
 		Map<Long, Float> successors2 = new HashMap<Long, Float>();
-		successors2.put((long) 1, (float) 2);
-		successors2.put((long) 3, (float) 3);
-		successors2.put((long) 4, (float) 1);
+		successors2.put((long) 1, (float) 600);
+		successors2.put((long) 3, (float) 1900);
+		successors2.put((long) 4, (float) 1900);
+		successors2.put((long) 5, (float) 1500);
+
 
 		Map<Long, Float> successors3 = new HashMap<Long, Float>();
-		successors3.put((long) 1, (float) 2);
-		successors3.put((long) 2, (float) 3);
-		successors3.put((long) 4, (float) 1);
+		successors3.put((long) 1, (float) 1000);
+		successors3.put((long) 2, (float) 1900);
+		successors3.put((long) 4, (float) 1700);
+		successors3.put((long) 5, (float) 1200);
+
 
 		Map<Long, Float> successors4 = new HashMap<Long, Float>();
-		successors4.put((long) 1, (float) 8);
-		successors4.put((long) 2, (float) 4);
-		successors4.put((long) 3, (float) 5);
+		successors4.put((long) 1, (float) 1900);
+		successors4.put((long) 2, (float) 1900);
+		successors4.put((long) 3, (float) 1700);
+		successors4.put((long) 5, (float) 1900);
+		
+		Map<Long, Float> successors5 = new HashMap<Long, Float>();
+		successors5.put((long) 1, (float) 1100);
+		successors5.put((long) 2, (float) 1500);
+		successors5.put((long) 3, (float) 1200);
+		successors5.put((long) 4, (float) 1900);
+
 
 		Map<Long, Map<Long, Float>> graph = new HashMap<Long, Map<Long, Float>>();
 		graph.put((long) 1, successors1);
 		graph.put((long) 2, successors2);
 		graph.put((long) 3, successors3);
 		graph.put((long) 4, successors4);
+		graph.put((long) 5, successors5);
+
 		// tsp.doTSP(graph, map);
+		System.out.println(graph);
+		Map<Long,Float> ri = tsp.generateRi(graph);
+		System.out.println(ri);
+		Map<Long,Float> ci = tsp.generateCi(graph, ri);
+		System.out.println(ci);
+		
+		Map<Long, Map<Long, Float>> graphique = graph;
+		Map<Long, Map<Long, Float>> map = tsp.generateNewGraph(graphique,ri,ci);
+
+		System.out.println(map);
+		
 
 	}
 
@@ -68,9 +93,129 @@ public class TSP {
 		// Find the shortest path
 		Round shortestRound = findShortestRound(possibleRounds);
 		//System.out.println("Chemin le plus court trouvé : " + shortestRound.getClass() + "de longueur : " + shortestRound.getTotalDuration());
-		//shortestRound.setDeliveriesTime();
 		return shortestRound;
 	}
+	
+	/*public Round startBrandBoundTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra, Time startTime)
+	{
+		Map<Long,Float> ri = generateRi(graph);
+		Map<Long, Float> ci = generateCi(graph,ri);//result after locating the minimal element in the map
+		Map<Long, Map<Long, Float>> newGraph = 		
+		return round;
+	}*/
+	
+	public Map<Long, Map<Long, Float>> branchBoundTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra)
+	{
+		Map<Long,Float> ri = generateRi(graph);
+		Map<Long, Float> ci = generateCi(graph,ri);
+		Map<Long, Map<Long, Float>> newGraph = generateNewGraph(graph, ri, ci);
+		System.out.println(newGraph);
+		return newGraph;
+	}
+	
+	public Map<Long,Float> generateRi(Map<Long, Map<Long, Float>> graph)
+	{
+		Map<Long,Float> ri = new HashMap<Long,Float>();
+		Iterator it = graph.entrySet().iterator();
+		float r;
+		long key;
+		while (it.hasNext()) {
+			key = (long) (((Entry) it.next()).getKey());
+			Map<Long, Float> currentSuccessors = new HashMap<Long, Float>(graph.get(key));
+			r = computeRi(currentSuccessors);
+			ri.put(key, r);
+		}
+		return ri;
+	}
+	
+	public Map<Long,Float> generateCi(Map<Long, Map<Long, Float>> graph,Map<Long,Float> ri )
+	{
+		Map<Long,Float> ci = new HashMap<Long,Float>();
+		Iterator it = graph.entrySet().iterator();
+		float c;
+		long key;
+		while (it.hasNext()) {
+			key = (long) (((Entry) it.next()).getKey());
+			Map<Long, Float> currentSuccessors = new HashMap<Long, Float>(graph.get(key));
+			c = computeCi(currentSuccessors, ri);
+			ci.put(key, c);
+		}
+		return ci;
+
+	}
+	
+	
+	public float computeRi(Map<Long, Float> successors)
+	{
+		Iterator it = successors.entrySet().iterator();
+		long key = (long) (((Entry) it.next()).getKey());
+		float min = successors.get(key);
+		float current;
+		while(it.hasNext())
+		{
+			key = (long) (((Entry) it.next()).getKey());			
+			current = successors.get(key);
+			if(current < min)
+			{
+				min = current;
+			}
+		}
+		return min;
+	}
+	
+	public float computeCi(Map<Long, Float> successors, Map<Long,Float> ri)
+	{
+		Iterator it = successors.entrySet().iterator();
+		long key = (long) (((Entry) it.next()).getKey());
+		float min = successors.get(key) - ri.get(key);
+		float current;
+		while(it.hasNext())
+		{
+			key = (long) (((Entry) it.next()).getKey());			
+			current = successors.get(key) - ri.get(key);
+			if(current < min)
+			{
+				min = current;
+			}
+		}
+		return min;
+	}
+	
+	public Map<Long, Map<Long, Float>> generateNewGraph(Map<Long, Map<Long, Float>> graph,Map<Long,Float> ri, Map<Long,Float> ci)
+	{
+		Map<Long, Map<Long, Float>> newGraph = new HashMap<Long, Map<Long, Float>>(graph);
+		Iterator it = newGraph.entrySet().iterator();
+		long key;
+		while (it.hasNext()) {
+			key = (long) (((Entry) it.next()).getKey());
+			Map<Long, Float> currentSuccessors = new HashMap<Long, Float>(graph.get(key));
+			Map<Long, Float> newSuccessors = computeDij(key, currentSuccessors, ri, ci );
+			newGraph.put(key, newSuccessors);
+		}
+		
+		return newGraph;
+	}
+	
+	public Map<Long, Float> computeDij(long keySource, Map<Long, Float> successors, Map<Long,Float> ri, Map<Long,Float> ci)
+	{
+		
+		Iterator it = successors.entrySet().iterator();
+		long key ;
+		float oldD;
+		float newD;
+		Map<Long, Float> newMap = new HashMap<Long,Float>();
+		while(it.hasNext())
+		{
+			key = (long) (((Entry) it.next()).getKey());			
+			oldD = successors.get(key);
+			newD = oldD - ri.get(keySource) - ci.get(keySource);
+			newMap.put(key, newD);
+			
+		}
+		return newMap;
+	}
+
+	
 
 	/**
 	 * startTSP gets all possible paths to travell through all points and their
@@ -107,7 +252,6 @@ public class TSP {
 			possibleRounds = nextNode(newUnordoredMap, currentSuccessors, currentPath, currentLength, possibleRounds,
 					dijkstra, startTime);
 		}
-		System.out.println(startTime);
 		return (possibleRounds);
 	}
 
@@ -213,10 +357,6 @@ public class TSP {
 			for (Round round : possibleRounds) {
 				if (round.getTotalDuration() < bestRound.getTotalDuration())
 					bestRound = round;
-			}
-			for(Path path : bestRound.getListPath()) {
-				System.out.println("Departure : " + path.getDepartureTime() + " Duration : " + path.getDuration() + 
-						", " + path.getArrival().getDuration() + " Arrival : " + path.getArrival().getTimeArrival());
 			}
 			return bestRound;
 		}

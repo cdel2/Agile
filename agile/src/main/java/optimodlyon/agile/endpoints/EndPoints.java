@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @CrossOrigin(origins = "http://localhost:8000")
 @RestController
 public class EndPoints {
-	Controller controller = new Controller();
+    Controller controller = new Controller();
 	
     @GetMapping("/map/{file}")
     public CityMap  getMap(@PathVariable String file) {
@@ -36,7 +36,7 @@ public class EndPoints {
             controller.getDeliveries(file);    		
     	} catch (Exception e)
     	{
-    		throw new UnprocessableEntityException("Le fichier du plan de la ville n'a pas été chargé.");
+            throw new UnprocessableEntityException("Le fichier du plan de la ville n'a pas été chargé.");
     	}
         return MapManagement.getInstance().getListDelivery();
     }
@@ -52,18 +52,18 @@ public class EndPoints {
             controller.newDelivery(idDelivery);    		
     	} catch (Exception e)
     	{
-    		throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
+            throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
     	}
     }
     
     @GetMapping("/calc/{nb}")
     public Map<Long,Deliverer> get(@PathVariable int nb) {
     	try {
-        	System.out.println("endpointDebut");
-        	controller.doAlgorithm(nb);
-        	System.out.println("endpointFin");
+            System.out.println("endpointDebut");
+            controller.doAlgorithm(nb);
+            System.out.println("endpointFin");
     	} catch (Exception e) {
-    		throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
+            throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
     	}
         return MapManagement.getInstance().getListDeliverer();
     } 
