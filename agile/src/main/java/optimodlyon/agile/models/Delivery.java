@@ -27,10 +27,19 @@ public class Delivery extends Intersection{
 		duration=d.duration;
 	}
 	
+	/*
+	 * Creates a delivery from an intersection and a duration.
+	 */
+	public Delivery(Intersection i, float duration) {
+		super(i);
+		this.duration=duration;
+	}
+	
 	public Delivery(Long id, Time ta) {
 		super(id);
 		timeArrival = ta;
 	}
+	
 	
 	/**
 	 * @return the timeArrival

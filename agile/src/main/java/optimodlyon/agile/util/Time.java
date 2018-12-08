@@ -87,6 +87,9 @@ public class Time {
 				if(this.seconds < t2.seconds)
 					b=true;
 			}
+			else {
+				b=false;
+			}
 		}
 		return b;
 	}

@@ -15,6 +15,7 @@ function timeFormat(time){
 function timeToSlider(time){
     let minutes = time.minutes/60*10;
     let hours = time.hours*10;
+    return hours + minutes;
 }
 
 function compareTime(time1, time2){
@@ -38,8 +39,13 @@ function timeToString(time){
 }
 
 function initSlider(ticks1){
-    $("#sliderInit").attr('data-slider-ticks', "[122, 150]");
-    $("#sliderInit").attr('data-slider-ticks-snap-bounds', 30);
+    let ticks = "[80,";
+    for(var j in ticks1){
+        ticks += timeToSlider(ticks1[j]) + ",";
+    }
+    ticks += "180]";
+    $("#sliderInit").attr('data-slider-ticks', ticks);
+    $("#sliderInit").attr('data-slider-ticks-snap-bounds', 1);
     $("#sliderInit").slider({
         //ticks:[112, 130],
         //tooltip: 'always',

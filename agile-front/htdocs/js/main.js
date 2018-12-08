@@ -13,9 +13,9 @@ function init(){
         Ctrl.View.update();
     };
     
-    /*window.addEventListener('mouseup', function(evt){
-        Ctrl.state.handleMouseUp(evt);
-    },false);*/
+    window.addEventListener('mouseup', function(evt){
+        Ctrl.clicked = false;
+    },false);
 
     let map = $("#map").get(0);
     map.addEventListener('mousedown', function(evt){

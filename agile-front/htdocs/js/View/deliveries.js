@@ -1,12 +1,10 @@
 class Deliveries{
     constructor(){
-        this.warehouseDisp = {radius: 8, color: "red"};
-        this.nodeDisp = {radius: 4, color: "blue"};
         this.userNodeDisp = {radius: 4, color: "green"};
         this.warehouse = null;
         this.delNodes = new Object();
         this.userDelNodes = [];
-        this.nodeInfo = null;
+        this.selectedDel = null;
 
         this.img = new Image();
         this.img.src = 'img/pin.png';
@@ -51,12 +49,12 @@ class Deliveries{
         });        
     }
 
-    display(ctx, View, coord){
+    display(ctx, View, coord, time){
         for(var del in this.delNodes){
             let pathNodes = this.delNodes[del];
             for(var i = 0; i < pathNodes.length; i++){
                 let node = coord[pathNodes[i].id];
-                drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.nodeDisp.radius, pathNodes[i].color, ctx);
+                drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 4, pathNodes[i].color, ctx);
             }
         }
         for(var i = 0; i < this.userDelNodes.length; i++){
@@ -66,19 +64,23 @@ class Deliveries{
 
         //affichage warehouse
         let node = coord[this.warehouse.id];
-        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.warehouseDisp.radius, this.warehouse.color, ctx);        
+        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, this.warehouse.color, ctx);        
 
         //afficha pin
-        if(this.nodeInfo!=null){
-            let node = this.nodeInfo;
+        if(this.selectedDel!=null){
+            let node = coord[this.selectedDel.id];
             let ratio = Ctrl.View.Canvas.ratio*0.7;
             let imgH = ratio*this.img.height;
             let imgW = ratio*this.img.width;
             ctx.globalAlpha = 0.8;
             ctx.drawImage(this.img, View.norm(node.longitude, true)-imgW/2,View.norm(node.latitude, false)-imgH, imgW, imgH);
-            showMessage(true, "Durée : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
+            //showMessage(true, "Durée : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
             ctx.beginPath();         
 
+        }
+
+        if(this.delNodes[-1] === undefined){
+            this.updatePathsInfo(time);
         }
     }
 
@@ -101,31 +103,79 @@ class Deliveries{
         }
     }
 
-    findBestNode(X,Y){
-        let bestNode;
+    findBestDelivery(X,Y){
+        let bestDel = null;
         var bestDistance = Number.MAX_VALUE;
-        let tab = this.userDelNodes.concat(this.delNodes);
-        tab.push(this.warehouse);
-        console.log(tab);
-        for (var prop in tab) {
-            let node = tab[prop];
-            let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
-            if(temp<bestDistance){
-                bestDistance = temp;
-                bestNode = node;
+        for (var i in this.delNodes) {
+            let path = this.delNodes[i];
+            for(var j in path){
+                let del = path[j];
+                let node = Ctrl.View.Map.coord[path[j].id];
+                let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
+                if(temp<bestDistance){
+                    bestDistance = temp;
+                    bestDel = del;
+                }
             }
         }
-        console.log(bestDistance);
         if(bestDistance>25){
             return null;
         }else{
-            return bestNode;
+            return bestDel;
         }
     }
 
-    nodeInfos(node){
-        this.nodeInfo = node;
-        return;
+    selectDelivery(node){
+        console.log(node);
+        if(node != null){
+            let time = node.timeArrival;
+            let sliderTime = timeToSlider(time);
+            $("#sliderInit").slider('setValue', sliderTime);
+            Ctrl.changeTime(time);
+        }else{
+
+        }
+        if(node === null){
+            $(".collapse").collapse("hide");
+            this.selectedDel = null;
+            return;
+        }
+        if(this.selectedDel != null && (node.idPath != this.selectedDel.idPath)){
+            Ctrl.pathToForeground(node.idPath);
+            $(".collapse").collapse("hide");
+            $("#cl"+node.idPath).collapse('show');
+        }else{
+            $("#cl"+node.idPath).collapse('show');
+        }
+        this.selectedDel = node;
+    }
+
+    updatePathsInfo(time){
+        for(var j in this.delNodes){
+            $("#cl"+j+"t").html(this.collapseFiller(j, time));
+        }
+    }
+
+    collapseFiller(id, time){
+        let past = true;
+        let tmp = "";
+        let pathDel = this.delNodes[id];
+        for(var j in pathDel){
+                let del = pathDel[j];
+                if(this.selectDelivery!=null && this.selectedDel === del){
+                    tmp+="<b>"+j+" - Temps livraison : "+ del.duration + "s, Livré à "+timeToString(del.timeArrival)+" (selected)<br/></b>";
+                }else{
+                    if(past && compareTime(del.timeArrival,time)>=0){
+                        past=false;
+                    }
+                    if(past){
+                        tmp+="<i>"+j+" - Temps livraison : "+ del.duration + "s, Livré à "+timeToString(del.timeArrival)+"<br/></i>";
+                    }else{
+                        tmp+=j+" - Temps livraison : "+ del.duration + "s, Sera livré à "+timeToString(del.timeArrival)+"<br/>";
+                    }
+                }
+        }
+        return tmp;
     }
 
     removeNode(node){

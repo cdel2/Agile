@@ -72,7 +72,7 @@ class Map{
 
     highlightNode(node, ctx){
         Ctrl.View.update();
-        drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 15, "yellow", ctx);
+        drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 5, "yellow", ctx);
     }
 
     findBestNode(X,Y){

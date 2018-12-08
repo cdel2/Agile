@@ -99,6 +99,9 @@ public class MapManagement{
 		}
 	}
 	
+	/*
+	 * Retrieves an delivery by its id
+	 */
 	public Delivery getDeliveryById(Long id) {
 		List<Delivery> listDelivery = MapManagement.getInstance().getListDelivery();
 		for(Delivery delivery : listDelivery) {
@@ -109,16 +112,40 @@ public class MapManagement{
 		return MapManagement.getInstance().getWarehouse();
 	}
 	
+	/*
+	 * Retrieves an intersection by its id
+	 */
+	public Intersection getIntersectionById(Long id) {
+		/*
+		 * Super annoying : we get the graph of CityMap, then we get all the segments that starts from the intersection we want to retrieve, 
+		 *and wthen we get the start point of this segment which is the Intersection we want.
+		 */
+		return MapManagement.getInstance().getMap().getGraph().get(id).get(0).getStart();
+	}
+	
 	/**
 	 * Add a round to a deliverer if the startTime of the round to add
 	 * is after the endTime of the last round of the deliverer
 	 * @param deliv
 	 * @param roundToAdd
 	 */
-	public void addRoundToADeliverer(Deliverer deliv, Round roundToAdd) {
+	public boolean addRoundToADeliverer(Deliverer deliv, Round roundToAdd) {
+		boolean res=false;
 		if(deliv != null && roundToAdd != null) {
-			this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
+			if(this.listDeliverer.containsKey(deliv.getId())) {
+				res = this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
+			}
 		}
+		return res;
+	}
+	
+	public boolean addDeliveryToListDelivery(Delivery newDelivery) {
+		boolean res = false;
+		if(!this.listDelivery.contains(newDelivery)) {
+			this.listDelivery.add(newDelivery);
+			res=true;
+		}
+		return res;
 	}
 	
 	public static void main(String[] args) {

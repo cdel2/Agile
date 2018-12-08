@@ -39,3 +39,13 @@
 #timelineIn .tooltip-inner{
     background-color: #343a40;
 }
+
+#timelineIn .slider-tick{
+    background-image: none;
+    background-color: #343a40;
+}
+
+#timelineIn .in-selection{
+    background-image: none;
+    background-color: #ffc107;
+}
