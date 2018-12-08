@@ -1,3 +1,7 @@
+/**
+ * Coordinates the delivery data
+ * It load, diaplay and toggle the interface
+ */
 class Deliveries{
     constructor(){
         this.userNodeDisp = {radius: 4, color: "green"};
@@ -10,6 +14,11 @@ class Deliveries{
         this.img.src = 'img/pin.png';
     }
 
+    /**
+     * @desc load the deliveries from the backend
+     * @param string $msg - file to load
+     * @return nothing
+    */
     load(delFile1){
         let object = this;
         let delFile = delFile1;
@@ -49,7 +58,16 @@ class Deliveries{
         });        
     }
 
-    display(ctx, View, coord, time){
+    /**
+     * @desc display the deliveries (nodes + userNodes + wharehouse + pin + update the deliveries description)
+     * @param context $ctx - context of the canvas to write in
+     * @param context $time - current time
+     * @return nothing
+    */
+    display(ctx, time){
+        let View = Ctrl.View;
+        let coord = Ctrl.View.Map.coord;
+
         for(var del in this.delNodes){
             let pathNodes = this.delNodes[del];
             for(var i = 0; i < pathNodes.length; i++){
@@ -84,78 +102,23 @@ class Deliveries{
         }
     }
 
-    addUserNode(node){
-        /*let good = true;
-        for(var i=0; i<this.delNodes.length; i++){
-            let node1 = this.delNodes[i];
-            good=false;
-        }
-        for(var i=0; i<this.userDelNodes.length; i++){
-            let node1 = this.userDelNodes[i];         
-            if(this.comparePos(node, node1)){
-                good=false;
-            }   
-        }*/
-        if(true){
-            this.userDelNodes.push(node);
-        }else{
-            alertBox("Point already on map !");
-        }
-    }
-
-    findBestDelivery(X,Y){
-        let bestDel = null;
-        var bestDistance = Number.MAX_VALUE;
-        for (var i in this.delNodes) {
-            let path = this.delNodes[i];
-            for(var j in path){
-                let del = path[j];
-                let node = Ctrl.View.Map.coord[path[j].id];
-                let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
-                if(temp<bestDistance){
-                    bestDistance = temp;
-                    bestDel = del;
-                }
-            }
-        }
-        if(bestDistance>25){
-            return null;
-        }else{
-            return bestDel;
-        }
-    }
-
-    selectDelivery(node){
-        console.log(node);
-        if(node != null){
-            let time = node.timeArrival;
-            let sliderTime = timeToSlider(time);
-            $("#sliderInit").slider('setValue', sliderTime);
-            Ctrl.changeTime(time);
-        }else{
-
-        }
-        if(node === null){
-            $(".collapse").collapse("hide");
-            this.selectedDel = null;
-            return;
-        }
-        if(this.selectedDel != null && (node.idPath != this.selectedDel.idPath)){
-            Ctrl.pathToForeground(node.idPath);
-            $(".collapse").collapse("hide");
-            $("#cl"+node.idPath).collapse('show');
-        }else{
-            $("#cl"+node.idPath).collapse('show');
-        }
-        this.selectedDel = node;
-    }
-
+    /**
+     * @desc updates the path delivery infos in the right panel
+     * @param time $time - current time
+     * @return nothing
+    */
     updatePathsInfo(time){
         for(var j in this.delNodes){
             $("#cl"+j+"t").html(this.collapseFiller(j, time));
         }
     }
 
+    /**
+     * @desc Create a description of the path deliveries corresponding to the id according to the time given
+     * @param int $id - id of the path deliveries to describe
+     * @param time $time - current time
+     * @return the description of the path in html
+    */
     collapseFiller(id, time){
         let past = true;
         let tmp = "";
@@ -178,6 +141,95 @@ class Deliveries{
         return tmp;
     }
 
+    /**
+     * @desc find the closest delivery node to the coordinates in param
+     * @param int $X - X coordinate
+     * @param int $Y - Y coordinate
+     * @return returns null if no close del node was found, return the node otherwise
+    */
+    findBestDelivery(X,Y){
+        let bestDel = null;
+        var bestDistance = Number.MAX_VALUE;
+        for (var i in this.delNodes) {
+            let path = this.delNodes[i];
+            for(var j in path){
+                let del = path[j];
+                let node = Ctrl.View.Map.coord[path[j].id];
+                let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
+                if(temp<bestDistance){
+                    bestDistance = temp;
+                    bestDel = del;
+                }
+            }
+        }
+        if(bestDistance>25){
+            return null;
+        }else{
+            return bestDel;
+        }
+    }
+
+    /**
+     * @desc toggles the right infos in the right section according to the node in param
+     * @param context $node - node to wich we need to display the infos
+     * @return nothing
+    */
+    selectDelivery(node){
+        if(node != null){
+            let time = node.timeArrival;
+            let sliderTime = timeToSlider(time);
+            $("#sliderInit").slider('setValue', sliderTime);
+            Ctrl.changeTime(time);
+        }
+
+        if(node === null){
+            $(".collapse").collapse("hide");
+            this.selectedDel = null;
+            return;
+        }
+
+        if(this.selectedDel != null && (node.idPath != this.selectedDel.idPath)){
+            Ctrl.pathToForeground(node.idPath);
+            $(".collapse").collapse("hide");
+            $("#cl"+node.idPath).collapse('show');
+        }else{
+            $("#cl"+node.idPath).collapse('show');
+        }
+
+        this.selectedDel = node;
+    }
+
+    /**
+     * @desc add a delivery
+     * @param node $node - node to add
+     * @return true if the node was added succesfully, false otherwise
+    */
+   addUserNode(node){
+        /*let good = true;
+        for(var i=0; i<this.delNodes.length; i++){
+            let node1 = this.delNodes[i];
+            good=false;
+        }
+        for(var i=0; i<this.userDelNodes.length; i++){
+            let node1 = this.userDelNodes[i];         
+            if(this.comparePos(node, node1)){
+                good=false;
+            }   
+        }*/
+        if(true){
+            this.userDelNodes.push(node);
+            return true;
+        }else{
+            alertBox("Point already on map !");
+            return false;
+        }
+    }
+
+    /**
+     * @desc remove a delivery 
+     * @param node $node - node to remove
+     * @return true if the node was removed succesfully, null otherwise
+    */
     removeNode(node){
         for(var i=0; i<this.delNodes.length; i++){
             let node1 = this.delNodes[i];
