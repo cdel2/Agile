@@ -53,9 +53,9 @@ class Viewer{
         let width = $("#mapCol").width();
         let height = $("#mapCol").height();
     
-        let ratio = this.getRetinaRatio()
-        let scaledWidth = width * ratio
-        let scaledHeight = height * ratio
+        let ratio = getRetinaRatio();
+        let scaledWidth = width * ratio;
+        let scaledHeight = height * ratio;
         this.Canvas.ratio = ratio;
 
         d3.select('#map')
@@ -63,7 +63,7 @@ class Viewer{
             .attr('id', "map")
             .attr('height', scaledHeight)
             .style('width', width + 'px')
-            .style('height', height + 'px')
+            .style('height', height + 'px');
     
         var canvas = $("#map").get(0);
         this.Canvas.ctx = canvas.getContext("2d");
@@ -78,21 +78,6 @@ class Viewer{
         this.deltaX = 0;
         this.deltaY = 0;
         this.update();
-    }
-
-    getRetinaRatio() {
-        var devicePixelRatio = window.devicePixelRatio || 1
-        var c = document.createElement('canvas').getContext('2d')
-        var backingStoreRatio = [
-            c.webkitBackingStorePixelRatio,
-            c.mozBackingStorePixelRatio,
-            c.msBackingStorePixelRatio,
-            c.oBackingStorePixelRatio,
-            c.backingStorePixelRatio,
-            1
-        ].reduce(function(a, b) { return a || b })
-    
-        return devicePixelRatio / backingStoreRatio
     }
 
     norm(value, state){
