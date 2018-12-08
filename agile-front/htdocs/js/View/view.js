@@ -1,8 +1,8 @@
 class Viewer{
     constructor(){
-        this.Map = null;
-        this.Deliveries = null;
-        this.Round = null;
+        this.Map;
+        this.Deliveries;
+        this.Round;
         this.Canvas = {
             ratio:null,
             html:null,
@@ -18,19 +18,33 @@ class Viewer{
         this.deltaY=0;
     }
 
+    /**
+     * @desc Create a new map and load the data
+     * @param string $mapFile - file to load
+    */
     loadMap(mapFile){
-        //this.panSetup();
-        //this.zoomSetup();
+        delete this.Deliveries;
+        delete this.Round;
+
         this.Map = new Map();
         this.Map.load(mapFile);
     }
 
+    /**
+     * @desc Create a new Delivery object and load the data
+     * @param string $mapFile - file to load
+    */
     loadDeliveries(delFile){
+        delete this.Round;
+
         this.Deliveries = new Deliveries();
-        this.Round = null;
         this.Deliveries.load(delFile);
     }
 
+    /**
+     * @desc Create and new Round object and load the data
+     * @param string $mapFile - file to load
+    */
     loadRound(num){
         this.Round = new Round();
         this.Round.load(num);
@@ -38,7 +52,9 @@ class Viewer{
 
     update(){
         this.Canvas.ctx.clearRect(0, 0, this.Canvas.width, this.Canvas.height);
-        this.Map.display(this.Canvas.ctx);
+        if(this.Map != null){
+            this.Map.display(this.Canvas.ctx);
+        }
 
         if(this.Round != null){
             this.Round.display(this.Canvas.ctx, this.Map.coord, this.time);
@@ -73,6 +89,9 @@ class Viewer{
         this.Canvas.html = canvas;   
     }
 
+    /**
+     * @desc reset the zoom and pan back to their original values
+    */
     reset(){
         this.zoomLevel = 1;
         this.deltaX = 0;
