@@ -89,10 +89,10 @@ public class CalculatedState extends LoadedDeliveriesState{
 		newDel.add(MapManagement.getInstance().getWarehouse().getId());
 		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), newDel);
 		Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
-		for(Path path : round.getListPath()) {
-			System.out.println("Departure : " + path.getDepartureTime() + " Duration : " + path.getDuration() + 
-					", " + path.getArrival().getDuration() + " Arrival : " + path.getArrival().getTimeArrival());
-		}
+//		for(Path path : round.getListPath()) {
+//			System.out.println("Departure : " + path.getDepartureTime() + " Duration : " + path.getDuration() + 
+//					", " + path.getArrival().getDuration() + " Arrival : " + path.getArrival().getTimeArrival());
+//		}
 		return round;
 	}
 }

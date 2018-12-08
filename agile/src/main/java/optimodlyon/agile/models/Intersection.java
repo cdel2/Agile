@@ -70,7 +70,12 @@ public class Intersection {
         this.id = id;
     }
 
-
+    /*
+     * retrieves the distance between 2 intersections
+     */
+    public static double distance(Intersection i1, Intersection i2) {
+    	return Math.sqrt(Math.pow(i1.latitude-i2.latitude, 2)+Math.pow(i1.longitude-i2.longitude, 2));
+    }
 
     public List<Intersection> findSuccessorSegments()
     {
