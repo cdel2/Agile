@@ -46,14 +46,15 @@ public class EndPoints {
         return MapManagement.getInstance().getWarehouse();
     }
     
-    @PostMapping("/add/delivery/{idDelivery}")
-    public void addDelivery(@PathVariable Long idDelivery) {
+    @GetMapping("/add/delivery/{idDelivery}")
+    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery) {
     	try {
-            controller.newDelivery(idDelivery);    		
+            controller.newDelivery(idDelivery);   		
     	} catch (Exception e)
     	{
             throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
     	}
+    	return MapManagement.getInstance().getListDeliverer();
     }
     
     @GetMapping("/deliveries")
