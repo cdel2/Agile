@@ -6,8 +6,8 @@ class Controller{
         this.state = new InitState();
 
         //undo-redo
-        this.userNodes = [];
-        this.formerUserNodes = [];
+        this.userActions = [];
+        this.formerUserActions = [];
 
         //Interaction
         this.lastX; this.lastY;
@@ -128,6 +128,6 @@ class Controller{
     }
 
     redo(){
-        
+
     }
 }

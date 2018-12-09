@@ -210,7 +210,7 @@ class Deliveries{
         }
 
         if(good){
-            Ctrl.userNodes.push({action:"add", id:nodeId});
+            Ctrl.userActions.push({action:"add", id:nodeId});
             return true;
         }else{
             alertBox("Point already on map !");
@@ -235,7 +235,7 @@ class Deliveries{
         }
 
         if(good){
-            Ctrl.userNodes.push({action:"remove", id:nodeId});
+            Ctrl.userActions.push({action:"remove", id:nodeId});
             return true;
         }else{
             alertBox("No point found !");
