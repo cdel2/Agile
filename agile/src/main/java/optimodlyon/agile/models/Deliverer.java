@@ -44,4 +44,13 @@ public class Deliverer {
             return false;
         }
     }
+    
+    public boolean removeLastRound() {
+    	boolean isRemoved = false;
+    	if(this.listRound.size() > 0) {
+    		listRound.remove(listRound.size() -1);
+    		isRemoved = true;
+    	}
+    	return isRemoved;
+    }
 }

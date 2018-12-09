@@ -82,10 +82,10 @@ class Round{
             ctx.strokeStyle = color;
             ctx.lineWidth = Ctrl.View.Canvas.ratio*thickness*(Ctrl.View.zoomLevel +1);
             for(var j in path){
+                if(compareTime(path[j].passageTime, time) >= 0) present = false;
                 if(present){
                     ctx.globalAlpha = 1; 
                     ctx.setLineDash([]);
-                    if(compareTime(path[j].passageTime, time) >= 0) present = false;
                 }else{ 
                     ctx.globalAlpha = 0.4;
                     ctx.setLineDash([10,5]);
