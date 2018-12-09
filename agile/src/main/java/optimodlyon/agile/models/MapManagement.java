@@ -130,9 +130,23 @@ public class MapManagement{
             if(deliv != null && roundToAdd != null) {
                     if(this.listDeliverer.containsKey(deliv.getId())) {
                             res = this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
+                            if(res) {
+                            	System.out.println("Round added to deliverer " + deliv.getId());
+                            } else {
+                            	System.out.println("Round couldn't be added to deliverer " + deliv.getId());
+                            	System.out.println("Details of the round :" + roundToAdd.toString());
+                            }
                     }
             }
             return res;
+    }
+    
+    public boolean removeLastRoundFromADeliverer(Deliverer deliv) {
+    	boolean isRemoved=false;;
+    	if(deliv != null && listDeliverer.containsValue(deliv)) {
+    		isRemoved = listDeliverer.get(deliv.getId()).removeLastRound();
+    	}
+    	return isRemoved;
     }
 
     public boolean addDeliveryToListDelivery(Delivery newDelivery) {

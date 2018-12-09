@@ -30,6 +30,7 @@ public class Deliverer {
     public boolean addRoundToList(Round roundToAdd) {
         if(roundToAdd != null) {
             if(listRound.size() - 1 >= 0) {
+            	System.out.println();
                 if(listRound.get(listRound.size() - 1).getEndTime().isBefore(roundToAdd.getEndTime())) {
                     this.listRound.add(roundToAdd);
                     return true;
@@ -43,5 +44,14 @@ public class Deliverer {
         } else {
             return false;
         }
+    }
+    
+    public boolean removeLastRound() {
+    	boolean isRemoved = false;
+    	if(this.listRound.size() > 0) {
+    		listRound.remove(listRound.size() -1);
+    		isRemoved = true;
+    	}
+    	return isRemoved;
     }
 }

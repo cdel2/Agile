@@ -1,6 +1,7 @@
 package optimodlyon.agile.algorithmic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -190,6 +191,7 @@ public class Clustering {
 //        return clusters;
 //    }
     
+    //Tout a revoir ! : faire plutot avec les angles
     public List<Delivery> changeStartingPoint(List<Delivery> sortedDeliveries, int deliverers){
     	int nbDel=sortedDeliveries.size();
 		int clusterSize = (int) Math.floor(nbDel/deliverers);
@@ -204,18 +206,18 @@ public class Clustering {
     			clusters.add(clusterSize);
     		}
     	}
-    	List<Double> distances = new ArrayList<Double>();
-    	distances.add(Delivery.distance(sortedDeliveries.get(nbDel-1), sortedDeliveries.get(0)));
+    	List<Double> angles = new ArrayList<Double>();
+    	angles.add(Intersection.angle(MapManagement.getInstance().getWarehouse(), sortedDeliveries.get(nbDel-1), sortedDeliveries.get(0)));
     	for(int i=0; i<nbDel-1; i++) {
-    		distances.add(Delivery.distance(sortedDeliveries.get(i), sortedDeliveries.get(i+1)));
-    	}
+    		angles.add(Intersection.angle(MapManagement.getInstance().getWarehouse(), sortedDeliveries.get(i), sortedDeliveries.get(i+1)));
+        }
     	int bestIndex=0;
     	double bestValue=0;
     	int currentIndex=0;
     	while(currentIndex<nbDel) {
         	double currentValue=0;
     		for(int h=0; h<deliverers; h++) {
-    			currentValue+=(distances.get((currentIndex+clusters.get(h))%nbDel));
+    			currentValue+=(angles.get((currentIndex+clusters.get(h))%nbDel));
     		}
     		if(currentValue>bestValue) {
     			bestIndex=currentIndex;
@@ -227,14 +229,10 @@ public class Clustering {
     }
     
     public List<Delivery> changeStart(List<Delivery> deliveries, int newStart){
-    	System.out.println(deliveries);
-    	System.out.println(deliveries.size());
     	List<Delivery> sortedDeliveries = new ArrayList<Delivery>();
     	for(int i=newStart; i<deliveries.size()+newStart; i++) {
-    		System.out.println(deliveries.get(i%deliveries.size()));
     		sortedDeliveries.add(deliveries.get(i%deliveries.size()));
     	}
-    	System.out.println(sortedDeliveries);
     	return sortedDeliveries;
     }
     

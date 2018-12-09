@@ -76,6 +76,19 @@ public class Intersection {
     public static double distance(Intersection i1, Intersection i2) {
     	return Math.sqrt(Math.pow(i1.latitude-i2.latitude, 2)+Math.pow(i1.longitude-i2.longitude, 2));
     }
+    
+
+    public static double angle(Intersection origin, Intersection firstPoint, Intersection secondPoint) {
+    	System.out.println(firstPoint + " " + secondPoint);
+    	double firstPointX=firstPoint.longitude-origin.longitude;
+    	double firstPointY=firstPoint.latitude-origin.latitude;
+    	double secondPointX=secondPoint.longitude-origin.longitude;
+    	double secondPointY=secondPoint.latitude-origin.latitude;
+    	System.out.println(firstPointX + " " + firstPointY + " " + secondPointX + " " + secondPointY);
+    	double cosAngle=((firstPointX*secondPointX)+(firstPointY*secondPointY))/
+    			(Math.sqrt(Math.pow(firstPointX, 2)+Math.pow(firstPointY, 2))*Math.sqrt(Math.pow(secondPointX, 2)+Math.pow(secondPointY, 2)));
+    	return Math.acos(cosAngle);
+    }
 
     public List<Intersection> findSuccessorSegments()
     {
