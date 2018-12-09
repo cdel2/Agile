@@ -141,7 +141,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 		return round;
 	}
 	
-	public static Time getCurrentTimeUsingCalendar() {
+	public Time getCurrentTimeUsingCalendar() {
 	    Calendar cal = Calendar.getInstance();
 	    Date date=cal.getTime();
 	    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
