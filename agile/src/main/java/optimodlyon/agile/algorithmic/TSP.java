@@ -65,14 +65,24 @@ public class TSP {
 		// tsp.doTSP(graph, map);
 		System.out.println(graph);
 		Map<Long,Float> ri = tsp.generateRi(graph);
-		System.out.println(ri);
+		System.out.println("ri : "+ri);
 		Map<Long,Float> ci = tsp.generateCi(graph, ri);
-		System.out.println(ci);
+		System.out.println("ci : " +ci);
 		
 		Map<Long, Map<Long, Float>> graphique = graph;
-		Map<Long, Map<Long, Float>> map = tsp.generateNewGraph(graphique,ri,ci);
+		Map<Long, Map<Long, Float>> map = tsp.generateReducedGraph(graphique,ri,ci);
 
 		System.out.println(map);
+		float b = tsp.computeB(ri, ci);
+		System.out.println(b);
+		float piij = tsp.computePiij(map,(long)2, (long)1);
+		System.out.println(piij);
+		Map<Long, Pair> pi = tsp.computePi(map);
+		System.out.println(pi);
+		System.out.println("map: "+map);
+		Map<Long, Map<Long, Float>> newGraph = tsp.generateNewGraph(map, (long)2, (long)1);
+		System.out.println("newGraph : " + newGraph);
+		
 		
 
 	}
@@ -96,19 +106,31 @@ public class TSP {
 		return shortestRound;
 	}
 	
-	/*public Round startBrandBoundTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra, Time startTime)
+	public Round startBrandBoundTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra, Time startTime)
 	{
+		Round round = new Round(MapManagement.getInstance().getWarehouse(), startTime);
 		Map<Long,Float> ri = generateRi(graph);
 		Map<Long, Float> ci = generateCi(graph,ri);//result after locating the minimal element in the map
-		Map<Long, Map<Long, Float>> newGraph = 		
+		Map<Long, Map<Long, Float>> reducedGraph = 	generateReducedGraph(graph, ri, ci);
+		float b = computeB(ri, ci);
+		Map<Long, Pair> pi = computeFirstPi(reducedGraph);
+		
+		Iterator it = pi.entrySet().iterator();
+		long row = (long) (((Entry) it.next()).getKey());
+		long col = (pi.get(row)).getIdPredecessor();
+		Map<Long, Map<Long, Float>> newGraph = generateNewGraph(reducedGraph, row, col);
+		Map<Long,Float> newRi = generateRi(newGraph);
+		Map<Long, Float> newCi = generateCi(newGraph,ri);
+		float sigma = computeB(newRi, newCi);
+		
 		return round;
-	}*/
+	}
 	
 	public Map<Long, Map<Long, Float>> branchBoundTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra)
 	{
 		Map<Long,Float> ri = generateRi(graph);
 		Map<Long, Float> ci = generateCi(graph,ri);
-		Map<Long, Map<Long, Float>> newGraph = generateNewGraph(graph, ri, ci);
+		Map<Long, Map<Long, Float>> newGraph = generateReducedGraph(graph, ri, ci);
 		System.out.println(newGraph);
 		return newGraph;
 	}
@@ -134,11 +156,43 @@ public class TSP {
 		Iterator it = graph.entrySet().iterator();
 		float c;
 		long key;
+		Iterator itCol;
+		long keyCol;
+		Map<Long, Float> successorsRow = new HashMap<Long, Float>();
+		Map<Long, Float> successorsCol = new HashMap<Long, Float>();
+		Iterator itRow;
+		long keyRow;
+		float val;
 		while (it.hasNext()) {
 			key = (long) (((Entry) it.next()).getKey());
-			Map<Long, Float> currentSuccessors = new HashMap<Long, Float>(graph.get(key));
-			c = computeCi(currentSuccessors, ri);
-			ci.put(key, c);
+			Map<Long, Float> currentSuccessors = graph.get(key);
+			itCol = currentSuccessors.entrySet().iterator();
+			while(itCol.hasNext())
+			{
+				keyCol = (long) (((Entry) itCol.next()).getKey());
+				successorsCol.clear();
+				if(!ci.containsKey(keyCol))
+				{
+					itRow = graph.entrySet().iterator();
+					while(itRow.hasNext())
+					{
+						keyRow = (long) (((Entry) itRow.next()).getKey());
+						successorsRow = graph.get(keyRow);
+						if(successorsRow.containsKey(keyCol))
+						{
+							successorsCol.put(keyRow,successorsRow.get(keyCol));
+						}
+						
+						
+					}
+					
+					c = computeCi(successorsCol, ri);
+					ci.put(keyCol, c);
+				}
+			}
+			
+			
+			
 		}
 		return ci;
 
@@ -181,10 +235,10 @@ public class TSP {
 		return min;
 	}
 	
-	public Map<Long, Map<Long, Float>> generateNewGraph(Map<Long, Map<Long, Float>> graph,Map<Long,Float> ri, Map<Long,Float> ci)
+	public Map<Long, Map<Long, Float>> generateReducedGraph(Map<Long, Map<Long, Float>> graph,Map<Long,Float> ri, Map<Long,Float> ci)
 	{
-		Map<Long, Map<Long, Float>> newGraph = new HashMap<Long, Map<Long, Float>>(graph);
-		Iterator it = newGraph.entrySet().iterator();
+		Map<Long, Map<Long, Float>> newGraph = new HashMap<Long, Map<Long, Float>>();
+		Iterator it = graph.entrySet().iterator();
 		long key;
 		while (it.hasNext()) {
 			key = (long) (((Entry) it.next()).getKey());
@@ -193,6 +247,34 @@ public class TSP {
 			newGraph.put(key, newSuccessors);
 		}
 		
+		return newGraph;
+	}
+	
+	public Map<Long, Map<Long, Float>> generateNewGraph(Map<Long, Map<Long, Float>> graph, long row, long col)
+	{
+		Map<Long, Map<Long, Float>> suppGraph = new HashMap<Long, Map<Long, Float>>(graph);
+		suppGraph.remove(row);
+		(suppGraph.get(col)).remove(row);
+		suppGraph = removeColumn(col, suppGraph);
+		Map<Long, Float> ri = generateRi(suppGraph);
+		Map<Long, Float> ci = generateCi(suppGraph, ri);
+
+		//Map<Long, Map<Long, Float>> newGraph= generateReducedGraph(suppGraph, ri, ci);
+		return suppGraph;
+	}
+	
+	public Map<Long, Map<Long, Float>> removeColumn(long id, Map<Long, Map<Long, Float>> graph)
+	{
+		Iterator it = graph.entrySet().iterator();
+		Map<Long, Map<Long, Float>> newGraph = new HashMap<Long, Map<Long, Float>>();
+		long key;
+		while (it.hasNext()) {
+			key = (long) (((Entry) it.next()).getKey());
+			Map<Long, Float> currentSuccessors = new HashMap<Long, Float>(graph.get(key));
+			currentSuccessors.remove(id);
+			Map<Long, Float> newSuccessors = currentSuccessors;
+			newGraph.put(key, newSuccessors);
+		}
 		return newGraph;
 	}
 	
@@ -208,14 +290,167 @@ public class TSP {
 		{
 			key = (long) (((Entry) it.next()).getKey());			
 			oldD = successors.get(key);
-			newD = oldD - ri.get(keySource) - ci.get(keySource);
+			newD = oldD - ri.get(keySource) - ci.get(key);
 			newMap.put(key, newD);
 			
 		}
 		return newMap;
 	}
-
 	
+	//Compute Lower Bound
+	public float computeB(Map<Long,Float> ri, Map<Long,Float> ci)
+	{
+		Iterator it = ri.entrySet().iterator();
+		long key;
+		float b = 0;
+		while(it.hasNext())
+		{
+			key = (long) (((Entry) it.next()).getKey());
+			b = b + ri.get(key) + ci.get(key);
+			
+		}
+		return b;
+	}
+	
+	public Map<Long, Pair> computePi(Map<Long, Map<Long, Float>> graph)
+	{
+		List<Float> listPiij = new ArrayList<Float>();
+		Iterator it1 = graph.entrySet().iterator();
+		Iterator it2 = graph.entrySet().iterator();
+		float pi = 0;
+		float current;
+		long key1;
+		long key2;
+		Map<Long, Pair> result = new HashMap<Long,Pair>();
+		while(it1.hasNext())
+		{
+			key1 = (long) (((Entry) it1.next()).getKey());
+			it2 = graph.entrySet().iterator();
+			while(it2.hasNext())
+			{
+				key2 = (long) (((Entry) it2.next()).getKey());
+				current = computePiij(graph, key1, key2);
+				if(current > pi)
+				{
+					pi = current;
+					Pair pair = new Pair(key2,pi);
+					result.clear();;
+					result.put(key1, pair);
+				}
+			}
+		}
+		return result;
+	}
+	
+	public Map<Long, Pair> computeFirstPi(Map<Long, Map<Long, Float>> graph)
+	{
+		List<Float> listPiij = new ArrayList<Float>();
+		Iterator it = graph.entrySet().iterator();
+		float pi = 0;
+		float current;
+		long key1 = MapManagement.getInstance().getWarehouse().getId();
+		long key2;
+		Map<Long, Pair> result = new HashMap<Long,Pair>();
+		it = graph.entrySet().iterator();
+		while(it.hasNext())
+		{
+			key2 = (long) (((Entry) it.next()).getKey());
+			current = computePiij(graph, key1, key2);
+			if(current > pi)
+			{
+				pi = current;
+				Pair pair = new Pair(key2,pi);
+				result.clear();;
+				result.put(key1, pair);
+			}
+		}
+		
+		return result;
+	}
+	
+	public float computePiij(Map<Long, Map<Long, Float>> graph, long i, long j)
+	{
+		Iterator itI = graph.entrySet().iterator();
+		float piij = 0;
+		Map<Long, Float> successors = new HashMap<Long, Float>();
+		float di;
+		float dj;
+		float current;
+		long keyJ;
+		successors = graph.get(i);
+		Iterator itJ = successors.entrySet().iterator();
+		keyJ = (long) (((Entry) itJ.next()).getKey());
+		if(keyJ != j)
+		{
+			di = successors.get(keyJ);
+		} else {
+			keyJ = (long) (((Entry) itJ.next()).getKey());
+			di = successors.get(keyJ);
+		}
+		
+		while(itJ.hasNext())
+		{
+			keyJ = (long) (((Entry) itJ.next()).getKey());
+			if((keyJ != j))
+			{
+				current = successors.get(keyJ);
+				if(current < di)
+				{
+					di = current;
+				}
+				
+			}
+
+			
+		}
+		long keyI;
+		keyI = (long) (((Entry) itI.next()).getKey());
+		if(i != keyI)
+		{
+			successors = graph.get(keyI);
+			if(successors.containsKey(j))
+			{
+				dj = successors.get(j);
+			} else {
+				keyI = (long) (((Entry) itI.next()).getKey());
+				successors = graph.get(keyI);
+				dj = successors.get(j);
+			}
+		} else {
+			keyI = (long) (((Entry) itI.next()).getKey());
+			successors = graph.get(keyI);
+			if(successors.containsKey(j))
+			{
+				dj = successors.get(j);
+			} else {
+				keyI = (long) (((Entry) itI.next()).getKey());
+				successors = graph.get(keyI);
+				dj = successors.get(j);
+			}
+			
+		}
+		while(itI.hasNext())
+		{
+			keyI = (long) (((Entry) itI.next()).getKey());
+			if(i != keyI)
+			{
+				successors = graph.get(keyI);
+				if(successors.containsKey(j))
+				{
+					current = successors.get(j);
+					if(current < dj)
+					{
+						dj = current;
+					}
+				}
+			}
+			
+		}
+		
+		piij = di + dj;
+			
+		return piij;
+	}
 
 	/**
 	 * startTSP gets all possible paths to travell through all points and their
