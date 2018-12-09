@@ -134,7 +134,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 				
 			}
 			if(!MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
-					removeDelivery(idDelivery);
+				rmvDelivery(idDelivery);
 			}
 			System.out.println("Delivery " + idDelivery + " added to deliverer " + keyBestDeliv );
 		} else {
@@ -189,8 +189,11 @@ public class CalculatedState extends LoadedDeliveriesState{
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
 	}
 	
-	public void removeDelivery(Long idDelivery) {
-		MapManagement.getInstance().removeDelivery(idDelivery);
+	/*
+	 * From here we start all methods to remove a delivery from our deliveries
+	 */
+	public void rmvDelivery(Long idDelivery) {
+		MapManagement.getInstance().rmvDelivery(idDelivery);
 	}
 	
 }

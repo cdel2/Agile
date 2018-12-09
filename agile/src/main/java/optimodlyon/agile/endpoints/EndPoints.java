@@ -57,6 +57,18 @@ public class EndPoints {
     	return MapManagement.getInstance().getListDeliverer();
     }
     
+    @GetMapping("/rmv/delivery/{idDelivery}")
+    public Map<Long,Deliverer> rmvDelivery(@PathVariable Long idDelivery) {
+    	try {
+            controller.rmvDelivery(idDelivery);   		
+    	} catch (Exception e)
+    	{
+            throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
+    	}
+    	System.out.println(MapManagement.getInstance().getListDeliverer());
+    	return MapManagement.getInstance().getListDeliverer();
+    }
+    
     @GetMapping("/deliveries")
     public List<Delivery> getDeliveries() {
     	System.out.println("service getDeliveries");

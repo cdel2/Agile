@@ -31,4 +31,8 @@ public class DefaultState implements State {
 	public void addDelivery(Long idDelivery)throws Exception {
 		throw new Exception("Impossible d'ajouter une livraison");
 	}
+
+	public void rmvDelivery(Long idDelivery) throws Exception {
+		throw new Exception("Impossible de supprimer une livraison");
+	}
 }

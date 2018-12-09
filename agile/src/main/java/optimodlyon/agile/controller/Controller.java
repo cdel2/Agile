@@ -84,4 +84,12 @@ public class Controller {
 	public void newDelivery(Long idDelivery) throws Exception {
             currentState.addDelivery(idDelivery);
 	}
+	
+	/**
+	 * method used to remove a Delivery 
+	 * @param idDelivery
+	 */
+	public void rmvDelivery(Long idDelivery) throws Exception {
+            currentState.rmvDelivery(idDelivery);
+	}
 }

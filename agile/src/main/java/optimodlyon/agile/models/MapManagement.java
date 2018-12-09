@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import java.util.Iterator;
+
 import optimodlyon.agile.models.*;
 
 
@@ -160,16 +162,45 @@ public class MapManagement{
             }
             return res;
     }
+    
+    public boolean rmvDelivery(Long idDelivery) {
+    	boolean res = false;
+        Delivery toRemove = this.getDeliveryById(idDelivery);
+        if(this.listDelivery.contains(toRemove)) {
+	    	Iterator it = listDeliverer.entrySet().iterator();
+	        while (it.hasNext()) {
+	            Map.Entry <Long, Deliverer> pair = (Map.Entry) it.next();
+	            List<Round> rounds = pair.getValue().getListRound();
+	            for (Round round : rounds) {
+	            	int i=0;
+	            	List<Path> newListPath = new ArrayList();
+	            	for(Path path : round.getListPath()) {
+	            		if((long)path.getArrival().getId()==(long)toRemove.getId()) {
+	            			rounds.remove(round);
+	            			//TODO : UPDATE ALL ROUNDS TIME (si le round supprimé n'était pas le dernier round)
+	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
+	            		}
+	            	}
+	            }
+	            System.out.println(pair.getKey() + " = " + pair.getValue());
+	            it.remove(); // avoids a ConcurrentModificationException
+	        }
+	        if(!res) System.out.println("Problem when trying to remove delivery !!");
+            this.listDelivery.remove(toRemove);
+            res=true;
+        }
+    	return res;
+    }
 
     public boolean removeDelivery(Long deliveryId) {
-            System.out.println("removeDelivery appelé ");
-            Delivery toRemove = this.getDeliveryById(deliveryId);            
-            if(this.listDelivery.contains(toRemove)) {
-            		System.out.println("La delivery n'existe pas ???");
-                    this.listDelivery.remove(toRemove);
-                    return true;
-            }
-            return false;
+        System.out.println("removeDelivery appelé ");
+        Delivery toRemove = this.getDeliveryById(deliveryId);            
+        if(this.listDelivery.contains(toRemove)) {
+        		System.out.println("La delivery n'existe pas ???");
+                this.listDelivery.remove(toRemove);
+                return true;
+        }
+        return false;
     }
 
     public static void main(String[] args) {
