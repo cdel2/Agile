@@ -153,11 +153,11 @@ class Controller{
             switch(lastUndoAction.action){
                 case "add":
                     console.log("readd");
-                    this.View.Deliveries.addDelivery(lastUndoAction.id);
+                    this.View.Round.addDelivery(lastUndoAction.id);
                     break;
                 case "remove":
                     console.log("rermv");
-                    this.View.Deliveries.rmvDelivery(lastUndoAction.id);
+                    this.View.Round.rmvDelivery(lastUndoAction.id);
                     break;
             }
         }

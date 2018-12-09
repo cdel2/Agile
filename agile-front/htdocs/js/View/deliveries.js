@@ -7,7 +7,7 @@ class Deliveries{
         this.userNodeDisp = {radius: 4, color: "green"};
         this.warehouse = null;
         this.delNodes = new Object();
-        this.userDelNodes = [];
+        this.userDelNodes = new Object();
         this.selectedDel = null;
 
         this.img = new Image();
@@ -73,6 +73,14 @@ class Deliveries{
             for(var i = 0; i < pathNodes.length; i++){
                 let node = coord[pathNodes[i].id];
                 drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 4, pathNodes[i].color, ctx);
+            }
+        }
+
+        for(var del in this.userDelNodes){
+            let pathNodes = this.userDelNodes[del];
+            for(var i = 0; i < pathNodes.length; i++){
+                let node = coord[pathNodes[i].id];
+                drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 4, "green", ctx);
             }
         }
 
@@ -195,27 +203,6 @@ class Deliveries{
         this.selectedDel = node;
     }
 
-    addDelivery(nodeId){
-        $("#loaderEl").show();
-        $.ajax({
-            url: "http://localhost:8080/add/delivery/"+nodeId,
-            type:"GET"
-        }).done(function( del ) {
-            console.log(del);
-        }).fail(function(){
-            console.log("Issue !");
-            alertBox("Something wrong happened !");
-            Ctrl.View.update();
-            Ctrl.state = new MapState();
-        }).always(function(){    
-            $("#loaderEl").hide();
-        });        
-    }
-
-    rmvDelivery(nodeId){
-        
-    }
-
     /**
      * @desc add a delivery
      * @param nodeId $node - node' id to remove
@@ -232,7 +219,7 @@ class Deliveries{
 
         if(good){
             Ctrl.userActions.push({action:"add", id:nodeId});
-            this.addDelivery(nodeId);
+            Ctrl.View.Round.addDelivery(nodeId);
             return true;
         }else{
             alertBox("Point already on map !");
@@ -257,7 +244,7 @@ class Deliveries{
         }
 
         if(good){
-            Ctrl.userActions.push({action:"remove", id:nodeId});
+            Ctrl.View.Round.push({action:"remove", id:nodeId});
             return true;
         }else{
             alertBox("No point found !");
