@@ -30,6 +30,15 @@ public class IntersectionTest {
 		assertNotNull(myInter);
 		assertSame(myInter.getId(),id);
 	}
+	
+	@Test
+	public void testIntersectionIntersection() {
+		Intersection i0 = new Intersection((long)0,(float)5.0,(float)3.0);
+		Intersection myInter=new Intersection(i0);
+		assertSame(myInter.getId(),i0.getId());
+		assertEquals(myInter.getLatitude(),i0.getLatitude(),0);
+		assertEquals(myInter.getLongitude(),i0.getLongitude(),0);
+	}
 
 	@Test
 	public void testGetLatitude() {
@@ -82,6 +91,15 @@ public class IntersectionTest {
 		origin.setId((long)-100);
 		assertEquals(origin.getId(),-100,0);
 	}
+	
+	@Test
+	public void testDistance() {
+		Intersection i0 = new Intersection((long)0,(float)0,(float)0);
+		Intersection i1 = new Intersection((long)0,(float)0,(float)3.0);
+		double distance=3;
+		double test=Intersection.distance(i0,i1);
+		assertEquals(test,distance,0);
+    }
 
 	@Test
 	public void testFindSuccessorSegments() {
