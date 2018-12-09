@@ -73,7 +73,7 @@ public class Path {
         return arrival;
     }
 
-    public ArrayList<Segment> getPath() {
+    public ArrayList<Segment> getListSegment() {
         return this.listSegment;
     }
 
