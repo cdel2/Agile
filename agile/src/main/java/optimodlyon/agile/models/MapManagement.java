@@ -134,6 +134,14 @@ public class MapManagement{
             }
             return res;
     }
+    
+    public boolean removeLastRoundFromADeliverer(Deliverer deliv) {
+    	boolean isRemoved=false;;
+    	if(deliv != null && listDeliverer.containsValue(deliv)) {
+    		isRemoved = listDeliverer.get(deliv.getId()).removeLastRound();
+    	}
+    	return isRemoved;
+    }
 
     public boolean addDeliveryToListDelivery(Delivery newDelivery) {
             boolean res = false;

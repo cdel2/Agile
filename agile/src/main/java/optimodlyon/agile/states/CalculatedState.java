@@ -1,6 +1,10 @@
 package optimodlyon.agile.states;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +29,11 @@ public class CalculatedState extends LoadedDeliveriesState{
 		 * The startTime of the round is 00:00.00 hence its EndTime is the duration
 		 * Both StartTime and Endtime will be set once the deliverer is found
 		 */
-		Time t0 = new Time(0,0,0);
+		Time t0 = new Time(0,0,0); Time endOfDay = new Time(18,0,0);
 		Round newRound = calculateRoundForOneNode(idDelivery,MapManagement.getInstance().getMap(), t0);
 		Round newPossibleRound = newRound; //created if we need to create another round 
 		Time roundTime = newRound.getEndTime();
 		Map<Long,Deliverer> delivererMap = MapManagement.getInstance().getListDeliverer();
-		/*
-		 * Initialize the minimum finishing Time to 23:59.59 and the idDeliverer to -1
-		 */
 		Time minTime = new Time(23,59,59); Time tmpTime = new Time(24,00,00); Long keyBestDeliv = (long)-1;
 		/*
 		 * We look at each deliverer and :
@@ -50,31 +51,33 @@ public class CalculatedState extends LoadedDeliveriesState{
 			 * The deliverer has at least 1 round assigned
 			 */
 			if(listRoundSize > 0) {
-				for(Round round : delivererMap.get(key).getListRound()) {
-					/*
-					 * The deliverer has only 1 round assigned
-					 */
-					if(listRoundSize<2) {
-						if(round != null) {
-							tmpTime = round.getEndTime();
-							tmpTime.addTime(roundTime);
-							if(tmpTime.isBefore(minTime)) {
-								minTime = tmpTime;
-								keyBestDeliv = key;
-							}
+				Round round = delivererMap.get(key).getListRound().get(listRoundSize-1);
+				/*
+				 * The deliverer has only 1 round assigned
+				 */
+				if(listRoundSize<2) {
+					if(round != null) {
+						tmpTime = round.getEndTime();
+						tmpTime.addTime(roundTime);
+						if(tmpTime.isBefore(minTime)) {
+							minTime = tmpTime;
+							keyBestDeliv = key;
 						}
 					}
-					/*
-					 * The deliverer has more than 1 round assigned
-					 */
-					else {
-						// TODO checker si le livreur n'est pas encore parti
+				}
+				/*
+				 * The deliverer has more than 1 round assigned
+				 */
+				else {
+					// check if the deliverer is not gone doing its additionnal round yet
+					Time currentTime = getCurrentTimeUsingCalendar();
+					if(currentTime.isBefore(delivererMap.get(key).getListRound().get(listRoundSize-1).getStartTime())) {
 						/*
 						 * We create a new round from the last round of the deliverer and we check if 
 						 * this new round finishes before the current min Time 
 						 */
 						Round newPossibleRoundTmp = calculateRoundByAddingNodeToExisting(delivererMap.get(key).getListRound().get(listRoundSize-1), MapManagement.getInstance().getMap(),idDelivery);
-						if(newPossibleRound.getEndTime().isBefore(minTime)) {
+						if(newPossibleRoundTmp.getEndTime().isBefore(minTime)) {
 							//TODO créer constructeur de copie de round
 							//newPossibleRound = new Round(newPossibleRoundTmp);
 							minTime = newPossibleRound.getEndTime();
@@ -84,13 +87,12 @@ public class CalculatedState extends LoadedDeliveriesState{
 				}
 			} else {
 				/*
-				 * If the deliverer has no rounds yet
+				 * The deliverer has no rounds yet
 				 */
 				minTime = new Time(0,0,0);
 				keyBestDeliv = key;
 			}
 		}
-		Time endOfDay = new Time(18,0,0);
 		/*
 		 * If we have found a corresponding deliverer and adding a new delivery doesn't make 
 		 * the deliverer finish after the end of the working day
@@ -102,23 +104,11 @@ public class CalculatedState extends LoadedDeliveriesState{
 			 * We also create a delivery Point and add it to the MapManagement instance
 			 */
 			if(minTime == newPossibleRound.getEndTime()) {
-				//TODO créer a fonction pour retirer un round d'un livreur
-				//MapManagement.getInstance().removeLastRoundFromADeliverer(delivererMap.get(keyBestDeliv));
-				if(MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newPossibleRound)) {
-					Intersection i = MapManagement.getInstance().getIntersectionById(idDelivery);
-					Delivery newDelivery = new Delivery(i,(float)0);
-					MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
-				}
-				/*
-				 * If we didn't have to create a new round, we simply add the round to the deliverer's list
-				 * and we reate a new delivery point that we add to the mapmanagement instance
-				 */
-			} else {
-				if(MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
-					Intersection i = MapManagement.getInstance().getIntersectionById(idDelivery);
-					Delivery newDelivery = new Delivery(i,(float)0);
-					MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
-				}
+				newRound = newPossibleRound;
+				MapManagement.getInstance().removeLastRoundFromADeliverer(delivererMap.get(keyBestDeliv));
+			}
+			if(MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
+					createDelivery(idDelivery);
 			}
 		}
 	}
@@ -131,10 +121,6 @@ public class CalculatedState extends LoadedDeliveriesState{
 		newDel.add(MapManagement.getInstance().getWarehouse().getId());
 		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), newDel);
 		Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
-//		for(Path path : round.getListPath()) {
-//			System.out.println("Departure : " + path.getDepartureTime() + " Duration : " + path.getDuration() + 
-//					", " + path.getArrival().getDuration() + " Arrival : " + path.getArrival().getTimeArrival());
-//		}
 		return round;
 	}
 	
@@ -154,4 +140,20 @@ public class CalculatedState extends LoadedDeliveriesState{
 		Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
 		return round;
 	}
+	
+	public static Time getCurrentTimeUsingCalendar() {
+	    Calendar cal = Calendar.getInstance();
+	    Date date=cal.getTime();
+	    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	    String formattedDate=dateFormat.format(date);
+	    Time currentTime = new Time(formattedDate);
+	    return currentTime;
+	}
+	
+	public void createDelivery(Long idDelivery) {
+		Intersection i = MapManagement.getInstance().getIntersectionById(idDelivery);
+		Delivery newDelivery = new Delivery(i,(float)0);
+		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
+	}
+	
 }
