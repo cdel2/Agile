@@ -54,7 +54,7 @@ public class DeserializerXML {
         Document doc = dBuilder.parse(fXmlFile);
         doc.getDocumentElement().normalize();
         
-        File fXsdFile = new File("src/main/java/optimodlyon/agile/files/planValidator.xsd");
+        File fXsdFile = new File("src/main/java/optimodlyon/agile/files/validator/planValidator.xsd");
         
         if(validateSchema(fXmlFile, fXsdFile)) {
             //System.out.println("c'est bon !");
@@ -129,7 +129,7 @@ public class DeserializerXML {
 	        doc.getDocumentElement().normalize();
 	        NodeList dList = doc.getElementsByTagName("livraison");   
 	        
-	        File fXsdFile = new File("src/main/java/optimodlyon/agile/files/dlValidator.xsd");	       
+	        File fXsdFile = new File("src/main/java/optimodlyon/agile/files/validator/dlValidator.xsd");	       
 	        
 	        if(validateSchema(fXmlFile, fXsdFile)) {
 		        
