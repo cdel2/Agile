@@ -21,20 +21,8 @@ public class EndPointsTest {
     private MockMvc mvc;
     
     @Test
-    public void givenMapFile_whenGetMapFile_thenReturnJsonArray()
-      throws Exception {
-         
-        Employee alex = new Employee("alex");
-     
-        List<Employee> allEmployees = Arrays.asList(alex);
-     
-        given(service.getAllEmployees()).willReturn(allEmployees);
-     
-        mvc.perform(get("/map/petit")
-          .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(status().isOk())
-          .andExpect(jsonPath("$", hasSize(1)))
-          .andExpect(jsonPath("$[0].name", is(alex.getName())));
+    public void givenMapFile_whenGetMapFile_thenReturnJsonArray() {
+    	
     }
 
 }
