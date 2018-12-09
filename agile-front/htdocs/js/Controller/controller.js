@@ -4,8 +4,10 @@ class Controller{
         this.selectedDel = "grand-12";
         this.View;
         this.state = new InitState();
-        
-        this.time = null;
+
+        //undo-redo
+        this.userNodes = [];
+        this.formerUserNodes = [];
 
         //Interaction
         this.lastX; this.lastY;
@@ -119,5 +121,13 @@ class Controller{
         $("#timeDisp").text(pad(time.hours,2)+":"+pad(time.minutes,2));
         this.View.time = time;
         this.View.update();
+    }
+
+    undo(){
+
+    }
+
+    redo(){
+        
     }
 }

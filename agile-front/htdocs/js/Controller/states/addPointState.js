@@ -30,8 +30,8 @@ class AddPointState extends State{
         if(!Ctrl.dragged && evt.srcElement.tagName==="CANVAS"){
             console.log("CANVAS");
             let ratio = View.Canvas.ratio;
-            var node = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
-            View.Deliveries.addUserNode(node);
+            var nodeId = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
+            View.Deliveries.addUserDelivery(parseInt(nodeId));
             View.update();
             a = true;
         }
