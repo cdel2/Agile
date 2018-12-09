@@ -79,8 +79,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 						 */
 						Round newPossibleRoundTmp = calculateRoundByAddingNodeToExisting(delivererMap.get(key).getListRound().get(listRoundSize-1), MapManagement.getInstance().getMap(),idDelivery);
 						if(newPossibleRoundTmp.getEndTime().isBefore(minTime)) {
-							//TODO créer constructeur de copie de round
-							//newPossibleRound = new Round(newPossibleRoundTmp);
+							newPossibleRound = new Round(newPossibleRoundTmp);
 							minTime = newPossibleRound.getEndTime();
 							keyBestDeliv = key;
 						}
