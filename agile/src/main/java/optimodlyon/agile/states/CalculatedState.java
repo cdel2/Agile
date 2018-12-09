@@ -22,13 +22,12 @@ import optimodlyon.agile.util.Time;
 
 public class CalculatedState extends LoadedDeliveriesState{
 	@Override
-
 	public void addDelivery(Long idDelivery) {
 		System.out.println("hey");
 		/*
 		 * Create a new round between the warehouse and the new point to deliver
 		 * The startTime of the round is 00:00.00 hence its EndTime is the duration
-		 * Both StartTime and Endtime will be set once the deliverer is found
+		 * Both StartTime and Endtime will be set 	 the deliverer is found
 		 */
 		Time t0 = new Time(0,0,0); Time endOfDay = new Time(18,0,0);
 		System.out.println("Calculating new round from warehouse (single point)");
@@ -103,7 +102,8 @@ public class CalculatedState extends LoadedDeliveriesState{
 				 * The deliverer has no rounds yet
 				 */
 				System.out.println("The deliverer has no round yet");
-				minTime = new Time(0,0,0);
+				minTime = new Time(8,0,0);
+				minTime.addTime(roundTime);
 				keyBestDeliv = key;
 			}
 		}
@@ -112,6 +112,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 		 * the deliverer finish after the end of the working day
 		 */
 		if(keyBestDeliv != -1 && minTime.isBefore(endOfDay)) {
+			Deliverer bestDeliv = MapManagement.getInstance().getListDeliverer().get(keyBestDeliv);
 			System.out.println("We found a deliverer and we finish before 18h");
 			/*
 			 * If we had to create a new Round, we remove the last round of the chosen deliverer 
@@ -121,6 +122,15 @@ public class CalculatedState extends LoadedDeliveriesState{
 			if(minTime == newPossibleRound.getEndTime()) {
 				newRound = newPossibleRound;
 				MapManagement.getInstance().removeLastRoundFromADeliverer(delivererMap.get(keyBestDeliv));
+			} else {
+				Time tstart = new Time(8,0,0);
+				if(bestDeliv.getListRound().size()>0) {
+					tstart = bestDeliv.getListRound().get(bestDeliv.getListRound().size()-1).getEndTime();
+				}
+				Time tend = minTime;
+				newRound.setStartTime(tstart);
+				newRound.setEndTime(tend);
+				
 			}
 			if(MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
 					createDelivery(idDelivery);
