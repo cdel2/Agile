@@ -195,6 +195,27 @@ class Deliveries{
         this.selectedDel = node;
     }
 
+    addDelivery(nodeId){
+        $("#loaderEl").show();
+        $.ajax({
+            url: "http://localhost:8080/add/delivery/"+nodeId,
+            type:"GET"
+        }).done(function( del ) {
+            console.log(del);
+        }).fail(function(){
+            console.log("Issue !");
+            alertBox("Something wrong happened !");
+            Ctrl.View.update();
+            Ctrl.state = new MapState();
+        }).always(function(){    
+            $("#loaderEl").hide();
+        });        
+    }
+
+    rmvDelivery(nodeId){
+        
+    }
+
     /**
      * @desc add a delivery
      * @param nodeId $node - node' id to remove
@@ -211,6 +232,7 @@ class Deliveries{
 
         if(good){
             Ctrl.userActions.push({action:"add", id:nodeId});
+            this.addDelivery(nodeId);
             return true;
         }else{
             alertBox("Point already on map !");
