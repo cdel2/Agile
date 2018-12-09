@@ -1,6 +1,9 @@
 package optimodlyon.agile.models;
 
 import java.util.List;
+
+import optimodlyon.agile.util.Time;
+
 import java.util.ArrayList;
 
 public class Deliverer {
@@ -30,10 +33,16 @@ public class Deliverer {
     public boolean addRoundToList(Round roundToAdd) {
         if(roundToAdd != null) {
             if(listRound.size() - 1 >= 0) {
-                if(listRound.get(listRound.size() - 1).getEndTime().isBefore(roundToAdd.getEndTime())) {
-                    this.listRound.add(roundToAdd);
+            	System.out.println("When we want to add, deliverer has a delivery");
+            	//Shifted time to avoid equality
+            	Time shiftedTime = new Time(0,0,1);
+            	shiftedTime.addTime(roundToAdd.getEndTime());
+                if(listRound.get(listRound.size() - 1).getEndTime().isBefore(shiftedTime)) {
+                    System.out.println("The last round of the deliverer finishes before the startTime of the round to add");
+                	this.listRound.add(roundToAdd);
                     return true;
                 } else {
+                	System.out.println("last round of the deliverer finishes at :" + listRound.get(listRound.size() - 1).getEndTime().toString() + " and the delivery to add : " + roundToAdd.getStartTime().toString());
                     return false;
                 }
             } else {

@@ -6,8 +6,8 @@ class Controller{
         this.state = new InitState();
 
         //undo-redo
-        this.userNodes = [];
-        this.formerUserNodes = [];
+        this.userActions = [];
+        this.formerUserActions = [];
 
         //Interaction
         this.lastX; this.lastY;
@@ -124,10 +124,42 @@ class Controller{
     }
 
     undo(){
-
+        var lastAction = this.userActions.pop();
+        if(lastAction === undefined){
+            alertBox("Nothing to undo");
+        }else{  
+            this.formerUserActions.push(lastAction);
+            console.log(lastAction);
+            switch(lastAction.action){
+                case "add":
+                    console.log("unadd");
+                    this.View.Deliveries.rmvDelivery(lastAction.id);
+                    break;
+                case "remove":
+                    console.log("unrmv");
+                    this.View.Deliveries.addDelivery(lastAction.id);
+                    break;
+            }
+        }
     }
 
     redo(){
-        
+        var lastUndoAction = this.formerUserActions.pop();
+        if(lastUndoAction === undefined){
+            alertBox("Nothing to redo");
+        }else{  
+            this.userActions.push(lastUndoAction);
+            console.log(lastUndoAction);
+            switch(lastUndoAction.action){
+                case "add":
+                    console.log("readd");
+                    this.View.Deliveries.addDelivery(lastUndoAction.id);
+                    break;
+                case "remove":
+                    console.log("rermv");
+                    this.View.Deliveries.rmvDelivery(lastUndoAction.id);
+                    break;
+            }
+        }
     }
 }
