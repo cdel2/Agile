@@ -62,4 +62,7 @@ public class Deliverer {
     	}
     	return isRemoved;
     }
+    public String toString() {
+    	return listRound.toString();
+    }
 }

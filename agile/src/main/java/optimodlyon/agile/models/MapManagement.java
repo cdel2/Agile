@@ -161,6 +161,17 @@ public class MapManagement{
             return res;
     }
 
+    public boolean removeDelivery(Long deliveryId) {
+            System.out.println("removeDelivery appelé ");
+            Delivery toRemove = this.getDeliveryById(deliveryId);            
+            if(this.listDelivery.contains(toRemove)) {
+            		System.out.println("La delivery n'existe pas ???");
+                    this.listDelivery.remove(toRemove);
+                    return true;
+            }
+            return false;
+    }
+
     public static void main(String[] args) {
             Intersection origin = new Intersection((long)1, (float)-50, (float)50);
             System.out.println(origin);

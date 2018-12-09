@@ -100,7 +100,7 @@ public class Path {
 
     public String toString()
     {
-        String path = "start : " + this.findStart().toString() + " end : " + this.findEnd().toString() + "\n" + listSegment.toString();
+        String path = "start : " + this.findStart().toString() + " end : " + this.findEnd().toString() +  " arrival : " + this.arrival.toString() + "\n";// + listSegment.toString();
         return path;
     }
 

@@ -31,6 +31,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 		 */
 		Time t0 = new Time(0,0,0); Time endOfDay = new Time(18,0,0);
 		System.out.println("Calculating new round from warehouse (single point)");
+		createDelivery(idDelivery);
 		Round newRound = calculateRoundForOneNode(idDelivery,MapManagement.getInstance().getMap(), t0);
 		Round newPossibleRound = newRound; //created if we need to create another round 
 		Time roundTime = newRound.getEndTime();
@@ -132,8 +133,8 @@ public class CalculatedState extends LoadedDeliveriesState{
 				newRound.setEndTime(tend);
 				
 			}
-			if(MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
-					createDelivery(idDelivery);
+			if(!MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
+					removeDelivery(idDelivery);
 			}
 			System.out.println("Delivery " + idDelivery + " added to deliverer " + keyBestDeliv );
 		} else {
@@ -186,6 +187,10 @@ public class CalculatedState extends LoadedDeliveriesState{
 		Intersection i = MapManagement.getInstance().getIntersectionById(idDelivery);
 		Delivery newDelivery = new Delivery(i,(float)0);
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
+	}
+	
+	public void removeDelivery(Long idDelivery) {
+		MapManagement.getInstance().removeDelivery(idDelivery);
 	}
 	
 }
