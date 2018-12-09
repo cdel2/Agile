@@ -75,10 +75,6 @@ class Deliveries{
                 drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 4, pathNodes[i].color, ctx);
             }
         }
-        for(var i = 0; i < this.userDelNodes.length; i++){
-            let node = this.userDelNodes[i];
-            drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), this.userNodeDisp.radius, pathNodes[i].color, ctx);
-        }
 
         //affichage warehouse
         let node = coord[this.warehouse.id];
@@ -199,25 +195,44 @@ class Deliveries{
         this.selectedDel = node;
     }
 
+    addDelivery(nodeId){
+        $("#loaderEl").show();
+        $.ajax({
+            url: "http://localhost:8080/add/delivery/"+nodeId,
+            type:"GET"
+        }).done(function( del ) {
+            console.log(del);
+        }).fail(function(){
+            console.log("Issue !");
+            alertBox("Something wrong happened !");
+            Ctrl.View.update();
+            Ctrl.state = new MapState();
+        }).always(function(){    
+            $("#loaderEl").hide();
+        });        
+    }
+
+    rmvDelivery(nodeId){
+        
+    }
+
     /**
      * @desc add a delivery
-     * @param node $node - node to add
+     * @param nodeId $node - node' id to remove
      * @return true if the node was added succesfully, false otherwise
     */
-   addUserNode(node){
-        /*let good = true;
-        for(var i=0; i<this.delNodes.length; i++){
-            let node1 = this.delNodes[i];
-            good=false;
+   addUserDelivery(nodeId){
+        let good = true;
+        for(var i in this.delNodes){
+            let path = this.delNodes[i];
+            for(var j in path){
+                if(nodeId === path[j].id) good=false;
+            }
         }
-        for(var i=0; i<this.userDelNodes.length; i++){
-            let node1 = this.userDelNodes[i];         
-            if(this.comparePos(node, node1)){
-                good=false;
-            }   
-        }*/
-        if(true){
-            this.userDelNodes.push(node);
+
+        if(good){
+            Ctrl.userActions.push({action:"add", id:nodeId});
+            this.addDelivery(nodeId);
             return true;
         }else{
             alertBox("Point already on map !");
@@ -227,24 +242,26 @@ class Deliveries{
 
     /**
      * @desc remove a delivery 
-     * @param node $node - node to remove
+     * @param nodeId $node - node' id to remove
      * @return true if the node was removed succesfully, null otherwise
     */
-    removeNode(node){
-        for(var i=0; i<this.delNodes.length; i++){
-            let node1 = this.delNodes[i];
-            if(node.lat === node1.lat && node.long === node1.long){
-                this.delNodes.splice(i,1);
-                return;
+    rmvUserDelivery(nodeId){
+        let good = false;
+        for(var i in this.delNodes){
+            let path = this.delNodes[i];
+            for(var j in path){
+                if(nodeId === path[j].id){
+                    good=true;
+                } 
             }
         }
-        for(var i=0; i<this.userDelNodes.length; i++){
-            let node1 = this.userDelNodes[i];         
-            if(node.lat === node1.lat && node.long === node1.long){
-                this.userDelNodes.splice(i,1);
-                return;
-            }   
+
+        if(good){
+            Ctrl.userActions.push({action:"remove", id:nodeId});
+            return true;
+        }else{
+            alertBox("No point found !");
+            return false;
         }
-        alertBox("No point found !");
     }
 };

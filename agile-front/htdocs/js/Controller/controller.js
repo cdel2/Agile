@@ -4,8 +4,10 @@ class Controller{
         this.selectedDel = "grand-12";
         this.View;
         this.state = new InitState();
-        
-        this.time = null;
+
+        //undo-redo
+        this.userActions = [];
+        this.formerUserActions = [];
 
         //Interaction
         this.lastX; this.lastY;
@@ -119,5 +121,45 @@ class Controller{
         $("#timeDisp").text(pad(time.hours,2)+":"+pad(time.minutes,2));
         this.View.time = time;
         this.View.update();
+    }
+
+    undo(){
+        var lastAction = this.userActions.pop();
+        if(lastAction === undefined){
+            alertBox("Nothing to undo");
+        }else{  
+            this.formerUserActions.push(lastAction);
+            console.log(lastAction);
+            switch(lastAction.action){
+                case "add":
+                    console.log("unadd");
+                    this.View.Deliveries.rmvDelivery(lastAction.id);
+                    break;
+                case "remove":
+                    console.log("unrmv");
+                    this.View.Deliveries.addDelivery(lastAction.id);
+                    break;
+            }
+        }
+    }
+
+    redo(){
+        var lastUndoAction = this.formerUserActions.pop();
+        if(lastUndoAction === undefined){
+            alertBox("Nothing to redo");
+        }else{  
+            this.userActions.push(lastUndoAction);
+            console.log(lastUndoAction);
+            switch(lastUndoAction.action){
+                case "add":
+                    console.log("readd");
+                    this.View.Deliveries.addDelivery(lastUndoAction.id);
+                    break;
+                case "remove":
+                    console.log("rermv");
+                    this.View.Deliveries.rmvDelivery(lastUndoAction.id);
+                    break;
+            }
+        }
     }
 }

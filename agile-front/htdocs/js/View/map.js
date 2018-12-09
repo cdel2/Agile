@@ -39,7 +39,6 @@ class Map{
 
             object.latRange = latRange;
             object.longRange = longRange;
-            console.log(this.coord);
 
             Ctrl.View.update();
             Ctrl.state = new MapState();
@@ -70,8 +69,9 @@ class Map{
         ctx.stroke();
     }
 
-    highlightNode(node, ctx){
+    highlightNode(nodeId, ctx){
         Ctrl.View.update();
+        let node = this.coord[nodeId];
         drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 5, "yellow", ctx);
     }
 
@@ -83,7 +83,7 @@ class Map{
             let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
             if(temp<bestDistance){
                 bestDistance = temp;
-                bestNode = this.coord[prop];
+                bestNode = prop;
             }
         }
         return bestNode;

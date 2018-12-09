@@ -46,14 +46,27 @@ public class EndPoints {
         return MapManagement.getInstance().getWarehouse();
     }
     
-    @PostMapping("/add/delivery/{idDelivery}")
-    public void addDelivery(@PathVariable Long idDelivery) {
+    @GetMapping("/add/delivery/{idDelivery}")
+    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery) {
     	try {
-            controller.newDelivery(idDelivery);    		
+            controller.newDelivery(idDelivery);   		
     	} catch (Exception e)
     	{
             throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
     	}
+    	return MapManagement.getInstance().getListDeliverer();
+    }
+    
+    @GetMapping("/deliveries")
+    public List<Delivery> getDeliveries() {
+    	System.out.println("service getDeliveries");
+    	return MapManagement.getInstance().getListDelivery();
+    }
+    
+    @GetMapping("/deliverers/deliveries")
+    public Map<Long, Deliverer> getDeliverersDeliveries() {
+    	System.out.println("service getDeliverersDeliveries");
+    	return MapManagement.getInstance().getListDeliverer();
     }
     
     @GetMapping("/calc/{nb}")
