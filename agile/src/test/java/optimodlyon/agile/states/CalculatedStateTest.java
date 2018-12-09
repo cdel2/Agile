@@ -24,7 +24,6 @@ public class CalculatedStateTest {
 	@Test
 	public void testAddDelivery() {
 		CalculatedState cs = new CalculatedState();
-		cs.addDelivery((long)0);
 		/*
 		 * We initialize a pseudo map
 		 */
@@ -78,7 +77,7 @@ public class CalculatedStateTest {
          */
         cs.addDelivery((long)5);
 
-		Time t1 = new Time(12,0,0);
+		Time t1 = new Time(16,0,0);
 		Time t2 = new Time(18,0,0);
 		Round r1 = new Round(i0, t );
 		r1.setStartTime(t);
@@ -103,18 +102,18 @@ public class CalculatedStateTest {
 		MapManagement.getInstance().assignRounds(l1);
 		
 		cs.addDelivery((long)5);
-		assertEquals(MapManagement.getInstance().getListDeliverer().get((long)0).getListRound().size(),2,0);
-		
-		Round rnull = null;
-		l1.add(rnull);
+		assertEquals(MapManagement.getInstance().getListDeliverer().get((long)2).getListRound().size(),1,0);
+		cs.addDelivery((long)4);
+		Round r3 = new Round(i0, t );
+		r3.setStartTime(t);
+		r3.setEndTime(t1);
+		l1.add(r3);
 		ldel = new HashMap<Long, Deliverer>();
 		ldel.put(del1.getId(), del1);
 		ldel.put(del2.getId(), del2);
 		ldel.put(del3.getId(), del3);
 		MapManagement.getInstance().setListDeliverer(ldel);
 		MapManagement.getInstance().assignRounds(l1);
-		
-		cs.addDelivery((long)5);
 	}
 
 
@@ -280,8 +279,6 @@ public class CalculatedStateTest {
         MapManagement.getInstance().setWarehouse(i0);
         CalculatedState cs = new CalculatedState();
         cs.createDelivery((long)4);
-        assertEquals(MapManagement.getInstance().getListDelivery().size(),1,0);
-        System.out.println(MapManagement.getInstance().getListDelivery().toString());
         
 	}
 }
