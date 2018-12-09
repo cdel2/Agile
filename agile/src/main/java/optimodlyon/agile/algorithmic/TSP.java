@@ -518,8 +518,6 @@ public class TSP {
 			Delivery firstArrival = MapManagement.getInstance().getDeliveryById(firstArrivalId);
 			Path pathFound = new Path(IntersectionIds, firstArrival, currentTime);
 			Round currentRound = new Round(MapManagement.getInstance().getWarehouse(), startTime);
-			System.out.println("Departure : " + pathFound.getDepartureTime() + " Duration : " + pathFound.getDuration() + 
-					", " + pathFound.getArrival().getDuration() + " Arrival : " + pathFound.getArrival().getTimeArrival());
 			pathFound.setSegmentsPassageTimes();
 			currentRound.addPath(pathFound);
 			for (int i = 1; i < currentPath.size() - 1; i++) {
@@ -527,12 +525,9 @@ public class TSP {
 				Long arrivalId = currentPath.get(i+1);
 				Delivery arrival = MapManagement.getInstance().getDeliveryById(arrivalId);
 				pathFound = new Path(IntersectionIds, arrival, currentTime);
-				System.out.println("Departure : " + pathFound.getDepartureTime() + " Duration : " + pathFound.getDuration() + 
-						", " + pathFound.getArrival().getDuration() + " Arrival : " + pathFound.getArrival().getTimeArrival());
 				pathFound.setSegmentsPassageTimes();
 				currentRound.addPath(pathFound);
 			}
-			System.out.println();
 			possibleRounds.add(currentRound);
 			return possibleRounds;
 		} else {
