@@ -56,6 +56,18 @@ public class EndPoints {
     	}
     }
     
+    @GetMapping("/deliveries")
+    public List<Delivery> getDeliveries() {
+    	System.out.println("service getDeliveries");
+    	return MapManagement.getInstance().getListDelivery();
+    }
+    
+    @GetMapping("/deliverers/deliveries")
+    public Map<Long, Deliverer> getDeliverersDeliveries() {
+    	System.out.println("service getDeliverersDeliveries");
+    	return MapManagement.getInstance().getListDeliverer();
+    }
+    
     @GetMapping("/calc/{nb}")
     public Map<Long,Deliverer> get(@PathVariable int nb) {
     	try {
