@@ -23,12 +23,6 @@ import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.Segment;
 
 public class DeserializerXML {
-	public static void main (String [] args) {
-		deserializeMap("petit");
-		System.out.println(MapManagement.getInstance().getMap().getHeight());
-		deserializeDeliveries("dl-petit-3");
-	}
-	
 	public static boolean validateSchema(File  fXmlFile, File fXsdFile) {
 	        try {
 	            SchemaFactory factory = 
@@ -176,7 +170,7 @@ public class DeserializerXML {
   	        Document doc = dBuilder.parse(fXmlFile);
   	        doc.getDocumentElement().normalize();
   	      
-        	File fXsdFile = new File("src/main/java/optimodlyon/agile/files/dlValidator.xsd");	       
+        	File fXsdFile = new File("src/main/java/optimodlyon/agile/files/validator/dlValidator.xsd");	       
 	        
   	        if(validateSchema(fXmlFile, fXsdFile)) { 
 	  	        NodeList entrepot = doc.getElementsByTagName("entrepot"); 
