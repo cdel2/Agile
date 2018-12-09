@@ -191,7 +191,6 @@ public class Clustering {
 //        return clusters;
 //    }
     
-    //Tout a revoir ! : faire plutot avec les angles
     public List<Delivery> changeStartingPoint(List<Delivery> sortedDeliveries, int deliverers){
     	int nbDel=sortedDeliveries.size();
 		int clusterSize = (int) Math.floor(nbDel/deliverers);
@@ -199,11 +198,15 @@ public class Clustering {
     	List<Integer> clusters= new ArrayList<Integer>();
     	for(int i=0; i<deliverers; i++) {
     		if(rest>0) {
-    			clusters.add(clusterSize+1);
+    			int currentClusterSize=clusterSize+1;
+    			if(i>0) currentClusterSize+=clusters.get(i-1);
+    			clusters.add(currentClusterSize);
     			rest--;
     		}
     		else {
-    			clusters.add(clusterSize);
+    			int currentClusterSize=clusterSize;
+    			if(i>0) currentClusterSize+=clusters.get(i-1);
+    			clusters.add(currentClusterSize);
     		}
     	}
     	List<Double> angles = new ArrayList<Double>();
