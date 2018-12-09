@@ -3,17 +3,8 @@ package optimodlyon.agile.algorithmic;
 import optimodlyon.agile.models.*;
 import optimodlyon.agile.util.Time;
 
-import java.awt.Paint;
-import java.awt.font.GraphicAttribute;
-import java.io.Console;
 import java.util.*;
 import java.util.Map.Entry;
-
-import javafx.util.*;
-
-import org.apache.logging.log4j.Marker;
-import org.springframework.context.support.StaticApplicationContext;
-
 
 public class TSP {
 	/**
