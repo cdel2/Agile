@@ -39,7 +39,6 @@ class Map{
 
             object.latRange = latRange;
             object.longRange = longRange;
-            console.log(this.coord);
 
             Ctrl.View.update();
             Ctrl.state = new MapState();

@@ -39,16 +39,19 @@ function timeToString(time){
 }
 
 function initSlider(ticks1){
+    if($("#timelineIn").length != 0){
+        $("#sliderInit").slider('destroy');
+    }
+
     let ticks = "[80,";
     for(var j in ticks1){
         ticks += timeToSlider(ticks1[j]) + ",";
     }
     ticks += "180]";
+
     $("#sliderInit").attr('data-slider-ticks', ticks);
     $("#sliderInit").attr('data-slider-ticks-snap-bounds', 1);
     $("#sliderInit").slider({
-        //ticks:[112, 130],
-        //tooltip: 'always',
         formatter: function(value) {
             var time = timeFormat(value);
             return pad(time[0],2)+":"+pad(time[1],2);

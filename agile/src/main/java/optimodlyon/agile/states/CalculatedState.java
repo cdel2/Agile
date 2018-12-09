@@ -142,7 +142,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 		List<Long> listIds = new ArrayList<Long>();
 		listIds.add(idNode);
 		for(Path path : previousRound.getListPath()) {
-			for(Segment segment : path.getPath()) {
+			for(Segment segment : path.getListSegment()) {
 				if(!listIds.contains(segment.getStart().getId())) {
 					listIds.add(segment.getStart().getId());
 				}
