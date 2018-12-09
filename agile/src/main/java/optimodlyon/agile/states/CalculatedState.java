@@ -18,13 +18,12 @@ import optimodlyon.agile.util.Time;
 
 public class CalculatedState extends LoadedDeliveriesState{
 	@Override
-
 	public void addDelivery(Long idDelivery) {
 		System.out.println("hey");
 		/*
 		 * Create a new round between the warehouse and the new point to deliver
 		 * The startTime of the round is 00:00.00 hence its EndTime is the duration
-		 * Both StartTime and Endtime will be set once the deliverer is found
+		 * Both StartTime and Endtime will be set 	 the deliverer is found
 		 */
 		Time t0 = new Time(0,0,0);
 		Round newRound = calculateRoundForOneNode(idDelivery,MapManagement.getInstance().getMap(), t0);
