@@ -3,17 +3,8 @@ package optimodlyon.agile.algorithmic;
 import optimodlyon.agile.models.*;
 import optimodlyon.agile.util.Time;
 
-import java.awt.Paint;
-import java.awt.font.GraphicAttribute;
-import java.io.Console;
 import java.util.*;
 import java.util.Map.Entry;
-
-import javafx.util.*;
-
-import org.apache.logging.log4j.Marker;
-import org.springframework.context.support.StaticApplicationContext;
-
 
 public class TSP {
 	/**
@@ -106,14 +97,15 @@ public class TSP {
 		return shortestRound;
 	}
 	
-	public Round startBrandBoundTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra, Time startTime)
+	public Round startBranchBoundTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra, Time startTime)
 	{
 		Round round = new Round(MapManagement.getInstance().getWarehouse(), startTime);
+		List<Long> currentRound = new ArrayList<Long>();
 		Map<Long,Float> ri = generateRi(graph);
 		Map<Long, Float> ci = generateCi(graph,ri);//result after locating the minimal element in the map
 		Map<Long, Map<Long, Float>> reducedGraph = 	generateReducedGraph(graph, ri, ci);
 		float b = computeB(ri, ci);
-		Map<Long, Pair> pi = computeFirstPi(reducedGraph);
+		Map<Long, Pair> pi = computePi(reducedGraph); //To change to firstPi
 		
 		Iterator it = pi.entrySet().iterator();
 		long row = (long) (((Entry) it.next()).getKey());
@@ -122,17 +114,31 @@ public class TSP {
 		Map<Long,Float> newRi = generateRi(newGraph);
 		Map<Long, Float> newCi = generateCi(newGraph,ri);
 		float sigma = computeB(newRi, newCi);
+		float labelSeg = b + sigma;
+		float labelNonSeg = b + (pi.get(row)).getDistFromSource();
+		if(labelSeg < labelNonSeg)
+		{
+			currentRound.add(row);
+			currentRound.add(col);
+			currentRound = branchBoundTSP(newGraph, newRi, newCi, labelSeg, currentRound, dijkstra, startTime);
+		} else {
+			branchBoundTSP(newGraph, newRi, newCi, labelNonSeg, currentRound, dijkstra, startTime);
+		}
 		
 		return round;
 	}
 	
-	public Map<Long, Map<Long, Float>> branchBoundTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra)
+	public List<Long> branchBoundTSP(Map<Long, Map<Long, Float>> graph, Map<Long, Float> ri, Map<Long, Float> ci, float label, List<Long> round, Dijkstra dijkstra, Time startTime)
 	{
-		Map<Long,Float> ri = generateRi(graph);
-		Map<Long, Float> ci = generateCi(graph,ri);
-		Map<Long, Map<Long, Float>> newGraph = generateReducedGraph(graph, ri, ci);
-		System.out.println(newGraph);
-		return newGraph;
+		if(graph.isEmpty())
+		{
+			return round;
+		} else {
+			float b = label;
+			Map<Long, Map<Long, Float>> reducedGraph = generateReducedGraph(graph, ri, ci);
+			return round;
+		}
+		
 	}
 	
 	public Map<Long,Float> generateRi(Map<Long, Map<Long, Float>> graph)
@@ -256,10 +262,6 @@ public class TSP {
 		suppGraph.remove(row);
 		(suppGraph.get(col)).remove(row);
 		suppGraph = removeColumn(col, suppGraph);
-		Map<Long, Float> ri = generateRi(suppGraph);
-		Map<Long, Float> ci = generateCi(suppGraph, ri);
-
-		//Map<Long, Map<Long, Float>> newGraph= generateReducedGraph(suppGraph, ri, ci);
 		return suppGraph;
 	}
 	

@@ -145,7 +145,10 @@ public class MapManagement{
 
     public boolean addDeliveryToListDelivery(Delivery newDelivery) {
             boolean res = false;
+            System.out.println("addDeliveryToListDelivery appelé ");
+            
             if(!this.listDelivery.contains(newDelivery)) {
+            		System.out.println("j'ajoute une delivery car celle-ci n'hexiste pas déjà");
                     this.listDelivery.add(newDelivery);
                     res=true;
             }

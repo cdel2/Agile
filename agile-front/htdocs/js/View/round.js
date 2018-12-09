@@ -30,14 +30,14 @@ class Round{
                 $("#pathMenu").append(object.createPathHtml(color1, data[i].listRound[0].startTime, data[i].listRound[0].endTime, cmpt));
                 endTimes.push(data[i].listRound[0].endTime);
                 for(var j in round){
-                   let path = round[j].path;
-                   let roudPart = [];
+                   let path = round[j].listSegment;
+                   let roundPart = [];
                    for(var k in path){
                        var el = path[k];
-                       roudPart.push({start:el.start.id, end:el.end.id, passageTime:el.passageTime});
+                       roundPart.push({start:el.start.id, end:el.end.id, passageTime:el.passageTime});
                    }
                    let arrival = round[j].arrival;
-                   temp.data.push({roundSeg : roudPart, arrival:{id:arrival.id, timeArrival:arrival.timeArrival}}); //REVOIR
+                   temp.data.push(roundPart); //REVOIR
                    deliveryTemp.push({id:arrival.id, timeArrival:arrival.timeArrival, duration:arrival.duration, color: color1, idPath: cmpt});
                 }
                 object.paths[cmpt] = temp;
@@ -81,18 +81,18 @@ class Round{
             let path = totalPath[j];
             ctx.strokeStyle = color;
             ctx.lineWidth = Ctrl.View.Canvas.ratio*thickness*(Ctrl.View.zoomLevel +1);
-            for(var j in path.roundSeg){
+            for(var j in path){
                 if(present){
                     ctx.globalAlpha = 1; 
                     ctx.setLineDash([]);
-                    if(compareTime(path.roundSeg[j].passageTime, time) >= 0) present = false;
+                    if(compareTime(path[j].passageTime, time) >= 0) present = false;
                 }else{ 
                     ctx.globalAlpha = 0.4;
                     ctx.setLineDash([10,5]);
                 }
                 ctx.beginPath();
-                let start = coord[path.roundSeg[j].start];
-                let end = coord[path.roundSeg[j].end];
+                let start = coord[path[j].start];
+                let end = coord[path[j].end];
                 ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
                 ctx.stroke();
