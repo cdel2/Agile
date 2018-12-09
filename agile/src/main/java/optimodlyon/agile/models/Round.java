@@ -1,7 +1,7 @@
 package optimodlyon.agile.models;
 
 import optimodlyon.agile.util.Time;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 
 public class Round {
     private Time startTime;
@@ -14,6 +14,16 @@ public class Round {
         startTime = new Time(st);
         endTime = new Time(st);
         start = w;
+    }
+
+    public Round(Round r) {
+    	if(r==null) {
+        	throw new IllegalArgumentException("null value");
+    	}
+        listPath = r.listPath;
+        startTime = r.startTime;
+        endTime = r.endTime;
+        start =r.start;
     }
 
     public Round(ArrayList<Path> listPath, Warehouse start, Time st)
