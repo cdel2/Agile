@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Iterator;
 
 import optimodlyon.agile.models.*;
+import optimodlyon.agile.util.Time;
 
 
 public class MapManagement{
@@ -128,19 +129,30 @@ public class MapManagement{
      * @param roundToAdd
      */
     public boolean addRoundToADeliverer(Deliverer deliv, Round roundToAdd) {
-            boolean res=false;
-            if(deliv != null && roundToAdd != null) {
-                    if(this.listDeliverer.containsKey(deliv.getId())) {
-                            res = this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
-                            if(res) {
-                            	System.out.println("Round added to deliverer " + deliv.getId());
-                            } else {
-                            	System.out.println("Round couldn't be added to deliverer " + deliv.getId());
-                            	System.out.println("Details of the round :" + roundToAdd.toString());
-                            }
-                    }
+        boolean res=false;
+        if(deliv != null && roundToAdd != null) {
+            if(this.listDeliverer.containsKey(deliv.getId())) {
+            	Time currentTime=new Time(deliv.getListRound().get(0).getStartTime());
+            	currentTime.addTime(deliv.getListRound().get(0).getTotalDuration());
+    			Round finalRound = new Round(MapManagement.getInstance().getWarehouse(), currentTime);
+    			for(Path path : roundToAdd.getListPath()) {
+    				Path aPath = new Path(path);
+    				aPath.setDepartureTime(currentTime);
+    				aPath.setSegmentsPassageTimes();
+    				currentTime=new Time(aPath.getDepartureTime());
+    				currentTime.addTime(aPath.getDuration());
+    				finalRound.addPath(aPath);
+    			}
+                res = this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
+                if(res) {
+                	System.out.println("Round added to deliverer " + deliv.getId());
+                } else {
+                	System.out.println("Round couldn't be added to deliverer " + deliv.getId());
+                	System.out.println("Details of the round :" + roundToAdd.toString());
+                }
             }
-            return res;
+        }
+        return res;
     }
     
     public boolean removeLastRoundFromADeliverer(Deliverer deliv) {

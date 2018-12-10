@@ -132,18 +132,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 				newRound.setStartTime(tstart);
 				newRound.setEndTime(tend);
 			}
-			//NOT SURE ABOUT WHAT IM DOING, TO CHECK PLZ
-			Time currentTime=new Time(newRound.getStartTime());
-			Round finalRound = new Round(MapManagement.getInstance().getWarehouse(), currentTime);
-			for(Path path : newRound.getListPath()) {
-				Path aPath = new Path(path);
-				aPath.setDepartureTime(currentTime);
-				aPath.setSegmentsPassageTimes();
-				currentTime=new Time(aPath.getDepartureTime());
-				currentTime.addTime(aPath.getDuration());
-				finalRound.addPath(aPath);
-			}
-			if(!MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), finalRound)) {
+			if(!MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
 				rmvDelivery(idDelivery);
 			}
 			System.out.println("Delivery " + idDelivery + " added to deliverer " + keyBestDeliv );
