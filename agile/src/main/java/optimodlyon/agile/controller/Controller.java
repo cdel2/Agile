@@ -46,7 +46,7 @@ public class Controller {
 	 * @param idNewNode
 	 */
 	public void newDelivery(Long idDelivery) throws Exception {
-            currentState.addDelivery(idDelivery);
+        currentState.addDelivery(idDelivery);
 	}
 	
 	/**
@@ -54,6 +54,6 @@ public class Controller {
 	 * @param idDelivery
 	 */
 	public void rmvDelivery(Long idDelivery) throws Exception {
-            currentState.rmvDelivery(idDelivery);
+        currentState.rmvDelivery(idDelivery);
 	}
 }
