@@ -43,6 +43,9 @@ class Controller{
     }
 
     loadMap(){
+        if(this.View != undefined){
+            delete this.View;
+        }
         this.View = new Viewer();
         this.View.setupCanvas();
         this.View.loadMap(this.selectedMap);
@@ -123,6 +126,12 @@ class Controller{
         this.View.update();
     }
 
+    reset(){
+        delete this.View.Map;
+        this.View.update();
+        this.state = new InitState();
+    }
+
     undo(){
         var lastAction = this.userActions.pop();
         if(lastAction === undefined){
@@ -133,11 +142,11 @@ class Controller{
             switch(lastAction.action){
                 case "add":
                     console.log("unadd");
-                    this.View.Deliveries.rmvDelivery(lastAction.id);
+                    this.View.Deliveries.updateDelivery(lastAction.id, false);
                     break;
                 case "remove":
                     console.log("unrmv");
-                    this.View.Deliveries.addDelivery(lastAction.id);
+                    this.View.Deliveries.updateDelivery(lastAction.id, true);
                     break;
             }
         }
@@ -153,11 +162,11 @@ class Controller{
             switch(lastUndoAction.action){
                 case "add":
                     console.log("readd");
-                    this.View.Round.addDelivery(lastUndoAction.id);
+                    this.View.Round.updateDelivery(lastUndoAction.id, true);
                     break;
                 case "remove":
                     console.log("rermv");
-                    this.View.Round.rmvDelivery(lastUndoAction.id);
+                    this.View.Round.updateDelivery(lastUndoAction.id, false);
                     break;
             }
         }

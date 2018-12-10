@@ -51,25 +51,34 @@ class Round{
             Ctrl.View.update();
             Ctrl.state = new CalcState();
         }).fail(function(textStatus){
-            alertBox("Something wrong happened !");
-            console.log("Round file not loaded !");
-            console.log(textStatus);
-            Ctrl.state = new DelState();
+            let status = textStatus.status;
+            if(status === 422){
+                alertBox("Erreur critique, resynchronisation des serveurs...");
+                Ctrl.reset();
+            }else{
+                alertBox("Erreur : Le serveur n'est pas joignable !");
+                Ctrl.state = new DelState();
+            }
         }).always(function(){
             $("#loaderEl").hide();
         });
     }
 
-    addDelivery(nodeId){
+    //true pour add, false pour remove
+    updateDelivery(nodeId, actionBool){
         delete this.userPaths;
         this.userPaths = new Object();
         let object = this;
 
+        let action;
+        if(actionBool) action = "add";
+        else action = "rmv";
+
         $("#loaderEl").show();
         $.ajax({
-            url: "http://localhost:8080/add/delivery/"+nodeId,
+            url: "http://localhost:8080/"+action+"/delivery/"+nodeId,
             type:"GET"
-        }).done(function( data ) {
+        }).done(function(data) {
             console.log(data);
             var cmpt = 0;
             for(var i in data){
@@ -98,8 +107,8 @@ class Round{
                 cmpt++;
             }
             Ctrl.View.update();
-        }).fail(function(){
-            console.log("Issue !");
+        }).fail(function(jqXHR){
+            console.log(jqXHR);
             alertBox("Something wrong happened !");
             Ctrl.View.update();
             Ctrl.state = new MapState();
@@ -107,11 +116,7 @@ class Round{
             $("#loaderEl").hide();
         });        
     }
-
-    rmvDelivery(nodeId){
-        
-    }
-
+    
     display(ctx, coord, time){
         ctx.globalAlpha = 1;
         for(var i in this.paths){

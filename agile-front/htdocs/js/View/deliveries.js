@@ -26,7 +26,7 @@ class Deliveries{
         $.ajax({
             url: "http://localhost:8080/deliveries/dl-"+delFile,
             type:"GET"
-        }).done(function( del ) {
+        }).done(function(del) {
             console.log(del);
             var tmp = [];
             for(var el in del){
@@ -50,7 +50,7 @@ class Deliveries{
             });
         }).fail(function(){
             console.log("Delivery file not loaded !");
-            alertBox("Something wrong happened !");
+            alertBox("Erreur : Le serveur n'est pas joignable !");
             Ctrl.View.update();
             Ctrl.state = new MapState();
         }).always(function(){    
@@ -156,6 +156,10 @@ class Deliveries{
         var bestDistance = Number.MAX_VALUE;
         for (var i in this.delNodes) {
             let path = this.delNodes[i];
+            console.log(this.userDelNodes[i]);
+            if(this.userDelNodes[i] != undefined){
+                path = path.concat(this.userDelNodes[i]);
+            }
             for(var j in path){
                 let del = path[j];
                 let node = Ctrl.View.Map.coord[path[j].id];
@@ -212,6 +216,9 @@ class Deliveries{
         let good = true;
         for(var i in this.delNodes){
             let path = this.delNodes[i];
+            if(this.userDelNodes[i] != undefined){
+                path = path.concat(this.userDelNodes[i]);
+            }
             for(var j in path){
                 if(nodeId === path[j].id) good=false;
             }
@@ -219,7 +226,7 @@ class Deliveries{
 
         if(good){
             Ctrl.userActions.push({action:"add", id:nodeId});
-            Ctrl.View.Round.addDelivery(nodeId);
+            Ctrl.View.Round.updateDelivery(nodeId, true);
             return true;
         }else{
             alertBox("Point already on map !");
@@ -236,6 +243,9 @@ class Deliveries{
         let good = false;
         for(var i in this.delNodes){
             let path = this.delNodes[i];
+            if(this.userDelNodes[i] != undefined){
+                path = path.concat(this.userDelNodes[i]);
+            }
             for(var j in path){
                 if(nodeId === path[j].id){
                     good=true;
@@ -244,7 +254,8 @@ class Deliveries{
         }
 
         if(good){
-            Ctrl.View.Round.push({action:"remove", id:nodeId});
+            Ctrl.userActions.push({action:"remove", id:nodeId});
+            Ctrl.View.Round.updateDelivery(nodeId, false);
             return true;
         }else{
             alertBox("No point found !");
