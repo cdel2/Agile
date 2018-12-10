@@ -25,17 +25,16 @@ class State{
     MouseMove(evt){
         let View = Ctrl.View;
         let ratio = View.Canvas.ratio;
-    
-        if(Ctrl.clicked){
+        let newX = ratio*evt.offsetX;
+        let newY = ratio*evt.offsetY;
+
+        if(Ctrl.dragged || (Ctrl.clicked && newX-Ctrl.lastX!=0 && newY-Ctrl.lastY!=0)){
             Ctrl.dragged=true;
         }else{
             Ctrl.dragged=false;
         }
-    
         
         if (Ctrl.dragged){
-            let newX = ratio*evt.offsetX;
-            let newY = ratio*evt.offsetY;
             View.deltaX += newX-Ctrl.lastX;
             View.deltaY += newY-Ctrl.lastY;
             View.update();
