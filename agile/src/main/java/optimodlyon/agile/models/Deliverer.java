@@ -18,8 +18,35 @@ public class Deliverer {
     public List<Round> getListRound() {
         return listRound;
     }
+    
     public void setListRound(List<Round> listRound) {
         this.listRound = listRound;
+    }
+    
+    /*
+     * USELESS
+     */
+    public void updateListRound(int i) {
+    	if(listRound.size()<=i) return;
+    	else if (i==0) {
+    		int j=0;
+    		for(Round round : listRound) {
+    			if(j==0) round.setStartTime(new Time("8:00:00"));
+    			else round.setStartTime(new Time(listRound.get(j-1).getEndTime()));
+    			round.updatePathTime();
+    		}
+    	}
+    }
+    
+    public void updateRounds(int i) {
+    	if(i==0) {
+    		listRound.get(0).setStartTime(new Time("8:00:00"));
+    		listRound.get(0).updatePathTime();
+    	}
+    	while(i<listRound.size()) {
+    		listRound.get(i).setStartTime(listRound.get(i-1).getEndTime());
+    		listRound.get(i).updatePathTime();
+    	}
     }
 
     public Long getId() {

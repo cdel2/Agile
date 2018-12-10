@@ -177,10 +177,11 @@ public class MapManagement{
 	            	for(Path path : round.getListPath()) {
 	            		if((long)path.getArrival().getId()==(long)toRemove.getId()) {
 	            			rounds.remove(round);
-	            			//TODO : UPDATE ALL ROUNDS TIME (si le round supprimé n'était pas le dernier round)
+	            			pair.getValue().updateRounds(i);
 	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
 	            		}
 	            	}
+	            	i++;
 	            }
 	            System.out.println(pair.getKey() + " = " + pair.getValue());
 	            it.remove(); // avoids a ConcurrentModificationException
