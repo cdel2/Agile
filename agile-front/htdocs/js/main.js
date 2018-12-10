@@ -8,7 +8,7 @@ $( document ).ready(function() {
 });
 
 function init(){
-    window.onresize = function(event) {
+    window.onresize = function() {
         Ctrl.View.setupCanvas();
         Ctrl.View.update();
     };
@@ -28,7 +28,6 @@ function init(){
     map.addEventListener('mouseup', function(evt){
         Ctrl.state.handleMouseUp(evt);
     },false);
-
 
     map.addEventListener('DOMMouseScroll',function(evt){
         Ctrl.state.handleScroll(evt);
