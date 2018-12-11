@@ -310,6 +310,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 				newDuration+=path.getDuration();
 				newDuration+=path.getArrival().getDuration();
 				Path newPath = new Path(newListSeg, path.getArrival(), newDuration, newDepartureTime);
+				newListPath.add(newPath);
 				lastPathWasModified = false;
 			}
 			else newListPath.add(path);
