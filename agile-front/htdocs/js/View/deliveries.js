@@ -239,7 +239,6 @@ class Deliveries{
         }
 
         if(good){
-            Ctrl.userActions.push({action:"add", id:nodeId});
             Ctrl.View.Round.load("add",nodeId, 200);
             return true;
         }else{
