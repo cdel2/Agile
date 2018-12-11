@@ -13,9 +13,8 @@ class Round{
         $("#loaderEl").show();
         var ajaxTime= new Date().getTime();
         $.ajax({
-            url: "http://localhost:8080/calc/"+num,
-            data: 200,
-            type:"POST"
+            url: "http://localhost:8080/calculation/start/"+num,
+            type:"GET"
         }).done(function( data ) {
             console.log("coucou");
             console.log(data);
@@ -74,12 +73,18 @@ class Round{
         let object = this;
 
         let action;
-        if(actionBool) action = "add";
-        else action = "rmv";
+        let duration;
+        if(actionBool){
+            action = "add";
+            duration="/200"
+        }else{
+            action = "rmv";
+            duration = "";
+        } 
 
         $("#loaderEl").show();
         $.ajax({
-            url: "http://localhost:8080/"+action+"/delivery/"+nodeId,
+            url: "http://localhost:8080/delivery/"+action+"/"+nodeId+duration,
             type:"GET"
         }).done(function(data) {
             console.log(data);
