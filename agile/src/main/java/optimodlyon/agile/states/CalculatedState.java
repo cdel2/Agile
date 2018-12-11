@@ -355,16 +355,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 		Delivery newDelivery = new Delivery(i,(float)duration);
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
 	}
-<<<<<<< HEAD
-	
-	/*
-	 * From here we start all methods to remove a delivery from our deliveries
-	 */
-	public void rmvDelivery(Long idDelivery) {
-		MapManagement.getInstance().rmvDelivery(idDelivery);
-        MapManagement.getInstance().pushToHistory();
-	}
-	
+
 	public void undo(int counter) {
 		List<Pair<List<Delivery>, Map<Long,Deliverer>>>  history = MapManagement.getInstance().getHistory();
 		System.out.println("<<<<<<<<<<<<<< history size "+history.size());
@@ -390,6 +381,4 @@ public class CalculatedState extends LoadedDeliveriesState{
 		
 	}
 	
-=======
->>>>>>> branch 'master' of https://github.com/cdel2/Agile.git
 }

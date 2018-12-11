@@ -110,7 +110,13 @@ public class EndPoints {
     public boolean stopCalculation() {
 
             System.out.println("trying to stop calculation");
-            return controller.stopCalculation();
+            try {
+				return controller.stopCalculation();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return false;
     } 
     
     @GetMapping("/undo")

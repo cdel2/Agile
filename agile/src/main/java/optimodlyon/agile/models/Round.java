@@ -43,7 +43,6 @@ public class Round {
         endTime.addTime(totalDuration);
     }
     
-<<<<<<< HEAD
     public Round() {
 		// TODO Auto-generated constructor stub
 	}
@@ -53,8 +52,6 @@ public class Round {
     	updateRoundTimes();
     }
     
-=======
->>>>>>> branch 'master' of https://github.com/cdel2/Agile.git
     public void updateRoundTimes() {
     	Time currentTime = new Time(startTime.toString());
     	for(Path path : listPath) {

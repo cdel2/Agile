@@ -1,11 +1,4 @@
 package optimodlyon.agile.controller;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.lang.InterruptedException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import optimodlyon.agile.states.CalculatedState;
 import optimodlyon.agile.states.CalculatingState;
 import optimodlyon.agile.states.DefaultState;
@@ -59,9 +52,7 @@ public class Controller {
         currentState.rmvDelivery(idDelivery);
     }
 
-<<<<<<< HEAD
-    public boolean stopCalculation() {
-=======
+
     /**
      * method used to remove a Delivery 
      * @param idDelivery
@@ -76,7 +67,6 @@ public class Controller {
     }
 
     public boolean stopCalculation() throws Exception {
->>>>>>> branch 'master' of https://github.com/cdel2/Agile.git
         System.out.println("in controller");
         boolean result = currentState.stopCalculation();
         System.out.println("je suis"+result);
