@@ -65,9 +65,10 @@ public class CalculatedState extends LoadedDeliveriesState{
 				if(listRoundSize<2) {
 					System.out.print("He has only one round...");
 					if(round != null) {
-						tmpTime = round.getEndTime();
-						tmpTime.addTime(roundTime);
+						tmpTime = new Time(round.getEndTime().toString());
 						System.out.println("Which finishes at : "+tmpTime.toString());
+						tmpTime.addTime(roundTime);
+						System.out.println("His new finishing time is then : "+tmpTime.toString());
 						if(tmpTime.isBefore(minTime)) {
 							minTime = tmpTime;
 							keyBestDeliv = key;
@@ -128,8 +129,9 @@ public class CalculatedState extends LoadedDeliveriesState{
 				if(bestDeliv.getListRound().size()>0) {
 					tstart = bestDeliv.getListRound().get(bestDeliv.getListRound().size()-1).getEndTime();
 				}
-				Time tend = minTime;
+				Time tend = new Time(minTime.toString());
 				newRound.setStartTime(tstart);
+				System.out.println("   " + tstart.toString() + " // " + tend.toString());
 				newRound.setEndTime(tend);
 			}
 			if(!MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
@@ -157,19 +159,21 @@ public class CalculatedState extends LoadedDeliveriesState{
 	}
 	
 	public Round calculateRoundByAddingNodeToExisting(Round previousRound, CityMap map, Long idNode) {
+		System.out.println("calculateRoundByAddingNodeToExisting");
 		List<Long> listIds = new ArrayList<Long>();
+		System.out.println("We add "+ idNode + "to the list");
 		listIds.add(idNode);
 		for(Path path : previousRound.getListPath()) {
-			for(Segment segment : path.getListSegment()) {
-				if(!listIds.contains(segment.getStart().getId())) {
-					listIds.add(segment.getStart().getId());
-				}
-			}
+			System.out.println("	We add "+ path.getArrival().getId() + "to the list");
+			listIds.add(path.getArrival().getId());
 		}
+		System.out.println("Warehouse is : " + MapManagement.getInstance().getWarehouse().getId());
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
 		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), listIds);
+		System.out.println("Dijkstra calcultaed");
 		Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
+		System.out.println("TSP calcuated");
 		return round;
 	}
 	

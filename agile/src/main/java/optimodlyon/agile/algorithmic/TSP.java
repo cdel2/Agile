@@ -148,10 +148,21 @@ public class TSP {
 		float labelNonSeg = b + (pi.get(row)).getDistFromSource();
 		if(labelSeg <= labelNonSeg)
 		{
+			if(newGraph.containsKey(col))
+			{
+				if(newGraph.get(col).size()> 1)
+				{
+					(newGraph.get(col)).remove(row);
+
+				}
+
+			}
+			System.out.println("choose seg");
 			currentRound.add(row);
 			currentRound.add(col);
 			currentRound = branchBoundTSP(newGraph, newRi, newCi, labelSeg, currentRound, dijkstra, startTime);
 		} else {
+			System.out.println("choose NOT seg");
 			currentRound = branchBoundTSP(newGraph, newRi, newCi, labelNonSeg, currentRound, dijkstra, startTime);
 		}
 		System.out.println("final : "+currentRound);
@@ -227,10 +238,21 @@ public class TSP {
 			float labelNonSeg = b + (pi.get(row)).getDistFromSource();
 			if(labelSeg <= labelNonSeg)
 			{
+				System.out.println("choose seg");
+				if(newGraph.containsKey(col))
+				{
+					if(newGraph.get(col).size()> 1)
+					{
+						(newGraph.get(col)).remove(row);
+
+					}
+
+				}
 				round.add(row);
 				round.add(col);
 				round = branchBoundTSP(newGraph, newRi, newCi, labelSeg, round, dijkstra, startTime);
 			} else {
+				System.out.println("choose NOT seg");
 				round = branchBoundTSP(newGraph, newRi, newCi, labelNonSeg, round, dijkstra, startTime);
 			}
 			return round;
@@ -355,11 +377,6 @@ public class TSP {
 	public Map<Long, Map<Long, Float>> generateNewGraph(Map<Long, Map<Long, Float>> graph, long row, long col)
 	{
 		Map<Long, Map<Long, Float>> suppGraph = new HashMap<Long, Map<Long, Float>>(graph);
-		if(suppGraph.containsKey(col))
-		{
-			(suppGraph.get(col)).remove(row);
-
-		}
 		suppGraph.remove(row);
 		suppGraph = removeColumn(col, suppGraph);
 		return suppGraph;

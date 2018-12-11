@@ -63,3 +63,9 @@ function initSlider(ticks1){
         Ctrl.changeTime({hours:hour, minutes:minutes, seconds:0});
     });
 }
+
+function secondsToMS(seconds1){
+    let minutes = Math.floor(seconds1/60);
+    let seconds = seconds1 - minutes*60;
+    return minutes+"\'"+seconds+"\'\'";
+}

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-@CrossOrigin(origins = "http://localhost:8000")
+@CrossOrigin
 @RestController
 public class EndPoints {
     Controller controller = new Controller();
@@ -65,7 +65,7 @@ public class EndPoints {
     	{
             //throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
     	}
-    	System.out.println(MapManagement.getInstance().getListDeliverer());
+    	//System.out.println(MapManagement.getInstance().getListDeliverer());
     	return MapManagement.getInstance().getListDeliverer();
     }
     

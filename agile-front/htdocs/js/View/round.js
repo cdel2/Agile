@@ -2,7 +2,7 @@ class Round{
     constructor(){
         this.paths = new Object();
         this.userPaths;
-        this.colors = ["green", "red", "purple", "blue", "lime", "aqua", "fuschia", "yellow", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
+        this.colors = ["green", "red", "purple", "blue", "lime", "aqua", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
         this.firstPath = -1;
         this.stop=null;
     }
@@ -67,7 +67,9 @@ class Round{
     //true pour add, false pour remove
     updateDelivery(nodeId, actionBool){
         delete this.userPaths;
+        delete Ctrl.View.Deliveries.userDelNodes;
         this.userPaths = new Object();
+        Ctrl.View.Deliveries.userDelNodes = new Object();
         let object = this;
 
         let action;
@@ -97,7 +99,7 @@ class Round{
                             roundPart.push({start:el.start.id, end:el.end.id, passageTime:el.passageTime});
                         }
                         let arrival = round[j].arrival;
-                        temp.data.push(roundPart); //REVOIR
+                        temp.data.push(roundPart);
                         deliveryTemp.push({id:arrival.id, timeArrival:arrival.timeArrival, duration:arrival.duration, color: color1, idPath: cmpt});
                     }
                     object.userPaths[cmpt] = temp;
