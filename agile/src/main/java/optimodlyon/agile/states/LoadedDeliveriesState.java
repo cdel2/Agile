@@ -42,7 +42,6 @@ public class LoadedDeliveriesState extends DefaultState{
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
 			Time startTime=new Time("8:00:00");
 			Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
-			//Round round = tsp.startBranchBoundTSP(graph, dijkstra, startTime);
 			//Round round = tsp.startTSPClosestDelivery(100000, graph.size(), graph, startTime, dijkstra);
 			System.out.println("heeeey");
 			finalRound.add(round);
