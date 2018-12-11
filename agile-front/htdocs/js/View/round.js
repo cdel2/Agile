@@ -17,10 +17,10 @@ class Round{
                 apiUrl+="delivery/add/"+num1+"/"+num2;
                 break;
             case "remove1":
-                apiUrl+="delivery/rmv/"+num1;
+                apiUrl+="delivery/rmv/"+num1+"/true";
                 break;
             case "remove2":
-                apiUrl+="delivery/rmv/"+num1;
+                apiUrl+="delivery/rmv/"+num1+"/false";
                 break;
             case "undo":
                 apiUrl+="undo";
