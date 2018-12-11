@@ -3,8 +3,7 @@ class RmvPointState extends State{
         super();
         $("#rmvDel").html("<i class='fas fa-ban'></i>").addClass("btn-danger").removeClass("btn-warning");
         disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#addDel", "#mapSelector", "#delSelector"]);
-        console.log("Etat rmvPointState"); 
-        $("#pathMenu").hide();
+        console.log("Etat rmvPointState");
     }
     
     handleScroll(evt){

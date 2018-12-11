@@ -15,6 +15,7 @@ function init(){
     
     window.addEventListener('mouseup', function(evt){
         Ctrl.clicked = false;
+        Ctrl.dragged = false; //DANGEREUX
     },false);
 
     let map = $("#map").get(0);
