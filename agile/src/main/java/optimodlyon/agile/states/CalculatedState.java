@@ -82,7 +82,8 @@ public class CalculatedState extends LoadedDeliveriesState{
 				else {
 					System.out.println("He has more than 1 round...");
 					// check if the deliverer is not gone doing its additionnal round yet
-					Time currentTime = getCurrentTimeUsingCalendar();
+					//Time currentTime = getCurrentTimeUsingCalendar();
+					Time currentTime = new Time(8,0,0); // we simulate a current time at 8:00.00
 					if(currentTime.isBefore(delivererMap.get(key).getListRound().get(listRoundSize-1).getStartTime())) {
 						System.out.println("And he's not gone to do his last round yet");
 						/*

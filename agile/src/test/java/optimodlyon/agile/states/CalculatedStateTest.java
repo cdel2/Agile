@@ -75,7 +75,7 @@ public class CalculatedStateTest {
         /*
          * Test: addDelivery when no deliverer is instanciated
          */
-        cs.addDelivery((long)5);
+        cs.addDelivery((long)5, 50);
 
 		Time t1 = new Time(16,0,0);
 		Time t2 = new Time(18,0,0);
@@ -101,9 +101,9 @@ public class CalculatedStateTest {
 		
 		MapManagement.getInstance().assignRounds(l1);
 		
-		cs.addDelivery((long)5);
+		cs.addDelivery((long)5, 120);
 		assertEquals(MapManagement.getInstance().getListDeliverer().get((long)2).getListRound().size(),1,0);
-		cs.addDelivery((long)4);
+		cs.addDelivery((long)4, 100);
 		Round r3 = new Round(i0, t );
 		r3.setStartTime(t);
 		r3.setEndTime(t1);
@@ -278,7 +278,7 @@ public class CalculatedStateTest {
         MapManagement.getInstance().setMap(citymap);
         MapManagement.getInstance().setWarehouse(i0);
         CalculatedState cs = new CalculatedState();
-        cs.createDelivery((long)4);
+        cs.createDelivery((long)4, 15);
         
 	}
 }
