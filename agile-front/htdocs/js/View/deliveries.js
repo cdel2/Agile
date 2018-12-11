@@ -127,18 +127,22 @@ class Deliveries{
         let past = true;
         let tmp = "";
         let pathDel = this.delNodes[id];
-        for(var j in pathDel){
+        for(var j = 0; j<pathDel.length; j++){
                 let del = pathDel[j];
                 if(this.selectDelivery!=null && this.selectedDel === del){
-                    tmp+="<b>"+j+" - Temps livraison : "+ del.duration + "s, Livré à "+timeToString(del.timeArrival)+" (selected)<br/></b>";
+                    tmp+="<b>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+" (sélectioné)<br/></b>";
                 }else{
+                    if(j === (pathDel.length-1)){
+                        tmp+="<i>"+j+" - Entrepot, Arrivée à "+timeToString(del.timeArrival)+"<br/></i>";
+                        break;
+                    }
                     if(past && compareTime(del.timeArrival,time)>=0){
                         past=false;
                     }
                     if(past){
-                        tmp+="<i>"+j+" - Temps livraison : "+ del.duration + "s, Livré à "+timeToString(del.timeArrival)+"<br/></i>";
+                        tmp+="<i>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+"<br/></i>";
                     }else{
-                        tmp+=j+" - Temps livraison : "+ del.duration + "s, Sera livré à "+timeToString(del.timeArrival)+"<br/>";
+                        tmp+=j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Sera livré à "+timeToString(del.timeArrival)+"<br/>";
                     }
                 }
         }
