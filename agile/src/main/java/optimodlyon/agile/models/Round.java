@@ -2,6 +2,7 @@ package optimodlyon.agile.models;
 
 import optimodlyon.agile.util.Time;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Round {
     private Time startTime;
@@ -42,6 +43,7 @@ public class Round {
         endTime.addTime(totalDuration);
     }
     
+<<<<<<< HEAD
     public Round() {
 		// TODO Auto-generated constructor stub
 	}
@@ -51,13 +53,15 @@ public class Round {
     	updateRoundTimes();
     }
     
+=======
+>>>>>>> branch 'master' of https://github.com/cdel2/Agile.git
     public void updateRoundTimes() {
     	Time currentTime = new Time(startTime.toString());
     	for(Path path : listPath) {
 			path.setDepartureTime(currentTime);
 			path.setSegmentsPassageTimes();
-			path.getArrival().setTimeArrival(currentTime);;
 			currentTime.addTime(path.getDuration());
+			path.getArrival().setTimeArrival(currentTime);
 		}
     	endTime=currentTime;
     }

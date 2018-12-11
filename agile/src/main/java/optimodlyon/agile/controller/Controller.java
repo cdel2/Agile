@@ -59,7 +59,24 @@ public class Controller {
         currentState.rmvDelivery(idDelivery);
     }
 
+<<<<<<< HEAD
     public boolean stopCalculation() {
+=======
+    /**
+     * method used to remove a Delivery 
+     * @param idDelivery
+     */
+    public void removeDelivery(Long idDelivery, boolean calc) throws Exception {
+    	if(calc) {
+            currentState.removeDeliveryAndCalc(idDelivery);
+    	}
+    	else {
+            currentState.removeDeliveryWithoutCalc(idDelivery);
+    	}
+    }
+
+    public boolean stopCalculation() throws Exception {
+>>>>>>> branch 'master' of https://github.com/cdel2/Agile.git
         System.out.println("in controller");
         boolean result = currentState.stopCalculation();
         System.out.println("je suis"+result);

@@ -25,6 +25,13 @@ public class Path {
         departureTime = p.departureTime;
     }
 
+    public Path(ArrayList<Segment> listSegments, Delivery arrival, float duration, Time departureTime) {
+        this.duration = duration;
+        this.arrival = arrival;
+        this.departureTime = new Time(departureTime);
+        this.listSegment = listSegments;
+    }
+
     public Path(List<Long> idIntersections, Delivery arrival, Time currentTime) {
         departureTime=new Time(currentTime);
         listSegment = new ArrayList<Segment>();

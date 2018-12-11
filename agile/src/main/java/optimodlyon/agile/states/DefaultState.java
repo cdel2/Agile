@@ -34,6 +34,7 @@ public class DefaultState implements State {
 		
 	}
 
+<<<<<<< HEAD
 	@Override
 	public void rmvDelivery(Long idDelivery) throws Exception {
 		// TODO Auto-generated method stub
@@ -50,4 +51,17 @@ public class DefaultState implements State {
 		throw new Exception("Impossible de undo");
 	}
 	
+=======
+	public void removeDeliveryAndCalc(Long idDelivery) throws Exception {
+		throw new Exception("Impossible de supprimer une livraison");
+	}
+
+	public void removeDeliveryWithoutCalc(Long idDelivery) throws Exception {
+		throw new Exception("Impossible de supprimer une livraison");
+	}
+        
+        public boolean stopCalculation() throws Exception {
+            throw new Exception("Impossible d'arrêter le calcul");
+        }
+>>>>>>> branch 'master' of https://github.com/cdel2/Agile.git
 }

@@ -73,7 +73,19 @@ public class EndPoints {
     @GetMapping("/delivery/rmv/{idDelivery}")
     public Map<Long,Deliverer> rmvDelivery(@PathVariable Long idDelivery) {
     	try {
-            controller.rmvDelivery(idDelivery);   		
+            controller.rmvDelivery(idDelivery);
+    	} catch (Exception e)
+    	{
+            //throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
+    	}
+    	//System.out.println(MapManagement.getInstance().getListDeliverer());
+    	return MapManagement.getInstance().getListDeliverer();
+    }
+    
+    @GetMapping("/delivery/rmv/{idDelivery}/{calc}")
+    public Map<Long,Deliverer> removeDelivery(@PathVariable Long idDelivery, @PathVariable boolean calc) {
+    	try {
+            controller.removeDelivery(idDelivery, calc);
     	} catch (Exception e)
     	{
             //throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
