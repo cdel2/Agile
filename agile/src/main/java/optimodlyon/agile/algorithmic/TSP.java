@@ -129,7 +129,7 @@ public class TSP {
 		System.out.println("not the end, reducedGraph : " + reducedGraph);
 		float b = computeB(ri, ci);
 		System.out.println("not the end, b : " + b);
-		Map<Long, Pair> pi = computePi(reducedGraph); //To change to firstPi
+		Map<Long, Pair> pi = computeFirstPi(reducedGraph, MapManagement.getInstance().getWarehouse().getId()); //To change to firstPi
 		
 		Iterator it = pi.entrySet().iterator();
 		long row = (long) (((Entry) it.next()).getKey());
@@ -160,12 +160,41 @@ public class TSP {
 			System.out.println("choose seg");
 			currentRound.add(row);
 			currentRound.add(col);
-			currentRound = branchBoundTSP(newGraph, newRi, newCi, labelSeg, currentRound, dijkstra, startTime);
+			System.out.println("graph avant : "+ graph);
+			currentRound = branchBoundTSP(newGraph, newRi, newCi, labelSeg, currentRound, dijkstra, startTime, col);
 		} else {
 			System.out.println("choose NOT seg");
-			currentRound = branchBoundTSP(newGraph, newRi, newCi, labelNonSeg, currentRound, dijkstra, startTime);
+			if(reducedGraph.containsKey(row))
+			{
+				if(reducedGraph.get(row).size()> 1)
+				{
+					(reducedGraph.get(row)).remove(col);
+
+				}
+
+			}
+			newRi = generateRi(reducedGraph);
+			newCi = generateCi(reducedGraph, newRi);
+			System.out.println("graph avant : "+ graph);
+			currentRound = branchBoundTSP(reducedGraph, newRi, newCi, labelNonSeg, currentRound, dijkstra, startTime, MapManagement.getInstance().getWarehouse().getId());
 		}
 		System.out.println("final : "+currentRound);
+		System.out.println(col);
+		if(currentRound.size() != 2*graph.size())
+		{
+			long beforeLastRow = currentRound.get(currentRound.size()-4);
+			long beforeLastCol = currentRound.get(currentRound.size()-3);
+			if(reducedGraph.containsKey(beforeLastRow))
+			{
+				if(graph.get(beforeLastRow).size()> 1)
+				{
+					(graph.get(beforeLastRow)).remove(beforeLastCol);
+
+				}
+
+			}
+			
+		}
 		Time currentTime = new Time(startTime);
 		Path pathFound;
 		List<Long> intersectionIds;
@@ -210,12 +239,16 @@ public class TSP {
 		return round;
 	}
 	
-	public List<Long> branchBoundTSP(Map<Long, Map<Long, Float>> graph, Map<Long, Float> ri, Map<Long, Float> ci, float label, List<Long> round, Dijkstra dijkstra, Time startTime)
+	public List<Long> branchBoundTSP(Map<Long, Map<Long, Float>> graph, Map<Long, Float> ri, Map<Long, Float> ci, float label, List<Long> round, Dijkstra dijkstra, Time startTime, long start)
 	{
 		if(graph.isEmpty())
 		{
 			System.out.println("the end");
 			return round;
+		} else if((start == MapManagement.getInstance().getWarehouse().getId()) && (graph.size()>2)) {
+			System.out.println("the end bis");
+			return round;
+			
 		} else {
 			System.out.println("not the end, graph : " + graph);
 			System.out.println("not the end, round : " + round);
@@ -224,7 +257,7 @@ public class TSP {
 			System.out.println("not the end, ri: " + ri);
 			System.out.println("not the end, ci : " + ci);
 			System.out.println("not the end, reducedGraph : " + reducedGraph);
-			Map<Long, Pair> pi = computePi(reducedGraph); //To change to firstPi
+			Map<Long, Pair> pi = computeFirstPi(reducedGraph, start); //To change to firstPi
 			Iterator it = pi.entrySet().iterator();
 			long row = (long) (((Entry) it.next()).getKey());
 			long col = (pi.get(row)).getIdPredecessor();
@@ -250,10 +283,23 @@ public class TSP {
 				}
 				round.add(row);
 				round.add(col);
-				round = branchBoundTSP(newGraph, newRi, newCi, labelSeg, round, dijkstra, startTime);
+				System.out.println("graph avant : "+ graph);
+				round = branchBoundTSP(newGraph, newRi, newCi, labelSeg, round, dijkstra, startTime, col);
 			} else {
 				System.out.println("choose NOT seg");
-				round = branchBoundTSP(newGraph, newRi, newCi, labelNonSeg, round, dijkstra, startTime);
+				if(reducedGraph.containsKey(row))
+				{
+					if(reducedGraph.get(row).size()> 1)
+					{
+						(reducedGraph.get(row)).remove(col);
+
+					}
+
+				}
+				newRi = generateRi(reducedGraph);
+				newCi = generateCi(reducedGraph, newRi);
+				System.out.println("graph avant : "+ graph);
+				round = branchBoundTSP(reducedGraph, newRi, newCi, labelNonSeg, round, dijkstra, startTime, start);
 			}
 			return round;
 		}
@@ -456,6 +502,7 @@ public class TSP {
 			{
 				key2 = (long) (((Entry) it2.next()).getKey());
 				current = computePiij(graph, key1, key2);
+				System.out.println("key1 : " + key1 + " key2 : "+ key2+ " : current : " + current);
 				if(current > pi)
 				{
 					pi = current;
@@ -468,28 +515,40 @@ public class TSP {
 		return result;
 	}
 	
-	public Map<Long, Pair> computeFirstPi(Map<Long, Map<Long, Float>> graph)
+	public Map<Long, Pair> computeFirstPi(Map<Long, Map<Long, Float>> graph, long start)
 	{
 		List<Float> listPiij = new ArrayList<Float>();
 		Iterator it;
 		float pi = 0;
 		float current;
-		long key1 = MapManagement.getInstance().getWarehouse().getId();
-		System.out.println(key1);
+		long key1 = start;//MapManagement.getInstance().getWarehouse().getId();
+		System.out.println("key1: " + key1);
+		System.out.println("hey1");
+
 		long key2;
+		System.out.println("hey2");
+
 		Map<Long, Pair> result = new HashMap<Long,Pair>();
+		System.out.println("hey3");
+
 		it = (graph.get(key1)).entrySet().iterator();
+		System.out.println("hey4");
 		while(it.hasNext())
 		{
 			key2 = (long) (((Entry) it.next()).getKey());
+			System.out.println("key2: " + key2);
+
 			current = computePiij(graph, key1, key2);
-			if(current > pi)
+			System.out.println("pij : " + current);
+
+			if(current >= pi )
 			{
 				pi = current;
 				Pair pair = new Pair(key2,pi);
-				result.clear();;
+				result.clear();
 				result.put(key1, pair);
 			}
+			System.out.println("result :" + result);
 		}
 		
 		return result;
@@ -500,8 +559,8 @@ public class TSP {
 		Iterator itI = graph.entrySet().iterator();
 		float piij = 0;
 		Map<Long, Float> successors = new HashMap<Long, Float>();
-		float di = 10000;
-		float dj = 10000;
+		float di = 100000;
+		float dj = 100000;
 		float current;
 		long keyJ;
 		successors = graph.get(i);
@@ -521,8 +580,8 @@ public class TSP {
 
 			
 		}
+		System.out.println("min I pi :" + di);
 		long keyI;
-		keyI = (long) (((Entry) itI.next()).getKey());
 		while(itI.hasNext())
 		{
 			keyI = (long) (((Entry) itI.next()).getKey());
@@ -540,6 +599,8 @@ public class TSP {
 			}
 			
 		}
+		System.out.println("min J pi :" + dj);
+
 		
 		piij = di + dj;
 			
