@@ -57,6 +57,19 @@ public class Controller {
         currentState.rmvDelivery(idDelivery);
     }
 
+    /**
+     * method used to remove a Delivery 
+     * @param idDelivery
+     */
+    public void removeDelivery(Long idDelivery, boolean calc) throws Exception {
+    	if(calc) {
+            currentState.removeDeliveryAndCalc(idDelivery);
+    	}
+    	else {
+            currentState.removeDeliveryWithoutCalc(idDelivery);
+    	}
+    }
+
     public boolean stopCalculation() throws Exception {
         System.out.println("in controller");
         boolean result = currentState.stopCalculation();
