@@ -54,14 +54,13 @@ class Viewer{
         this.Canvas.ctx.clearRect(0, 0, this.Canvas.width, this.Canvas.height);
         if(this.Map != null){
             this.Map.display(this.Canvas.ctx);
-        }
-
-        if(this.Round != null){
-            this.Round.display(this.Canvas.ctx, this.Map.coord, this.time);
-        }
-
-        if(this.Deliveries != null){
-            this.Deliveries.display(this.Canvas.ctx, this, this.Map.coord, this.time);
+            if(this.Round != null){
+                this.Round.display(this.Canvas.ctx, this.Map.coord, this.time);
+            }
+    
+            if(this.Deliveries != null){
+                this.Deliveries.display(this.Canvas.ctx, this, this.Map.coord, this.time);
+            }
         }
     }
 

@@ -12,7 +12,7 @@ class Map{
         $.ajax({
             url: "http://localhost:8080/map/"+mapFile,
             type:"GET"
-        }).done(function( map ) {
+        }).done(function(map) {
             let latRange = [Number.MAX_VALUE, Number.MIN_VALUE];
             let longRange = [Number.MAX_VALUE, Number.MIN_VALUE];
 
@@ -43,8 +43,7 @@ class Map{
             Ctrl.View.update();
             Ctrl.state = new MapState();
         }).fail(function(){
-            console.log("Map file not loaded !");
-            alertBox("Something wrong happened !");
+            alertBox("Erreur : Le serveur n'est pas joignable !");
             Ctrl.state = new InitState();
             Ctrl.View.update();
         }).always(function(){  

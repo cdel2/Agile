@@ -10,4 +10,6 @@ public interface State {
 	public void startCalculation(int nb) throws Exception;
 	
 	public void addDelivery(Long idDelivery) throws Exception;
+	
+	public void rmvDelivery(Long idDelivery) throws Exception;
 }

@@ -18,6 +18,13 @@ public class Path {
         listSegment.clear();
     }
 
+    public Path(Path p) {
+        duration = p.duration;
+        listSegment = p.listSegment;
+        arrival = p.arrival;
+        departureTime = p.departureTime;
+    }
+
     public Path(List<Long> idIntersections, Delivery arrival, Time currentTime) {
         departureTime=new Time(currentTime);
         listSegment = new ArrayList<Segment>();
@@ -90,7 +97,10 @@ public class Path {
     public void setArrival(Delivery a) {
         this.arrival = a;
     }
-
+    
+    public void setDepartureTime(Time departureTime) {
+		this.departureTime = new Time(departureTime);
+	}
 
     public Intersection findEnd()
     {
@@ -100,7 +110,7 @@ public class Path {
 
     public String toString()
     {
-        String path = "start : " + this.findStart().toString() + " end : " + this.findEnd().toString() + "\n" + listSegment.toString();
+        String path = "start : " + this.findStart().toString() + " end : " + this.findEnd().toString() +  " arrival : " + this.arrival.toString() + "\n";// + listSegment.toString();
         return path;
     }
 

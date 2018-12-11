@@ -42,15 +42,13 @@
   <div class="container-fluid">
     <div class="row" style="height:100%;">
       <div class="col-8" id="mapCol">
-        <div id="snoInfoBox" class="alert alert-dark" data-alert="alert"></div>
         <div id="snoAlertBox" class="alert alert-danger" data-alert="alert"></div>
         <div id="timeline">
-          <!--<h3 id="timeDisp">14:00</h3>-->
           <input type="text" id="sliderInit" data-slider-id="timelineIn" data-slider-min="80" data-slider-tooltip="always" data-slider-max="180" data-slider-step="1" data-slider-value="120"/>
         </div>
         <div id="mapCtrl">
           <div id="loaderEl" class='loader'></div>
-          <button type="button" class="btn btn-dark" id="resetZoom" onclick="Ctrl.View.reset();"><i class="fas fa-times"></i></button>
+          <button type="button" class="btn btn-dark" id="resetZoom" onclick="Ctrl.View.reset();"><i class="fas fa-compress"></i></button>
           <button type="button" class="btn btn-dark" id="zoom+" onclick="Ctrl.View.zoom(0.2);"><i class="fas fa-search-plus"></i></button>
           <button type="button" class="btn btn-dark" id="zoom-" onclick="Ctrl.View.zoom(-0.2);"><i class="fas fa-search-minus"></i></button>
         </div>

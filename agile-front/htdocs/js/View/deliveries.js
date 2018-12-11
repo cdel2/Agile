@@ -7,7 +7,7 @@ class Deliveries{
         this.userNodeDisp = {radius: 4, color: "green"};
         this.warehouse = null;
         this.delNodes = new Object();
-        this.userDelNodes = [];
+        this.userDelNodes = new Object();
         this.selectedDel = null;
 
         this.img = new Image();
@@ -26,7 +26,7 @@ class Deliveries{
         $.ajax({
             url: "http://localhost:8080/deliveries/dl-"+delFile,
             type:"GET"
-        }).done(function( del ) {
+        }).done(function(del) {
             console.log(del);
             var tmp = [];
             for(var el in del){
@@ -50,7 +50,7 @@ class Deliveries{
             });
         }).fail(function(){
             console.log("Delivery file not loaded !");
-            alertBox("Something wrong happened !");
+            alertBox("Erreur : Le serveur n'est pas joignable !");
             Ctrl.View.update();
             Ctrl.state = new MapState();
         }).always(function(){    
@@ -73,6 +73,14 @@ class Deliveries{
             for(var i = 0; i < pathNodes.length; i++){
                 let node = coord[pathNodes[i].id];
                 drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 4, pathNodes[i].color, ctx);
+            }
+        }
+
+        for(var del in this.userDelNodes){
+            let pathNodes = this.userDelNodes[del];
+            for(var i = 0; i < pathNodes.length; i++){
+                let node = coord[pathNodes[i].id];
+                drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 4, "green", ctx);
             }
         }
 
@@ -119,18 +127,22 @@ class Deliveries{
         let past = true;
         let tmp = "";
         let pathDel = this.delNodes[id];
-        for(var j in pathDel){
+        for(var j = 0; j<pathDel.length; j++){
                 let del = pathDel[j];
                 if(this.selectDelivery!=null && this.selectedDel === del){
-                    tmp+="<b>"+j+" - Temps livraison : "+ del.duration + "s, Livré à "+timeToString(del.timeArrival)+" (selected)<br/></b>";
+                    tmp+="<b>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+" (sélectioné)<br/></b>";
                 }else{
+                    if(j === (pathDel.length-1)){
+                        tmp+="<i>"+j+" - Entrepot, Arrivée à "+timeToString(del.timeArrival)+"<br/></i>";
+                        break;
+                    }
                     if(past && compareTime(del.timeArrival,time)>=0){
                         past=false;
                     }
                     if(past){
-                        tmp+="<i>"+j+" - Temps livraison : "+ del.duration + "s, Livré à "+timeToString(del.timeArrival)+"<br/></i>";
+                        tmp+="<i>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+"<br/></i>";
                     }else{
-                        tmp+=j+" - Temps livraison : "+ del.duration + "s, Sera livré à "+timeToString(del.timeArrival)+"<br/>";
+                        tmp+=j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Sera livré à "+timeToString(del.timeArrival)+"<br/>";
                     }
                 }
         }
@@ -148,6 +160,10 @@ class Deliveries{
         var bestDistance = Number.MAX_VALUE;
         for (var i in this.delNodes) {
             let path = this.delNodes[i];
+            console.log(this.userDelNodes[i]);
+            if(this.userDelNodes[i] != undefined){
+                path = path.concat(this.userDelNodes[i]);
+            }
             for(var j in path){
                 let del = path[j];
                 let node = Ctrl.View.Map.coord[path[j].id];
@@ -195,27 +211,6 @@ class Deliveries{
         this.selectedDel = node;
     }
 
-    addDelivery(nodeId){
-        $("#loaderEl").show();
-        $.ajax({
-            url: "http://localhost:8080/add/delivery/"+nodeId,
-            type:"GET"
-        }).done(function( del ) {
-            console.log(del);
-        }).fail(function(){
-            console.log("Issue !");
-            alertBox("Something wrong happened !");
-            Ctrl.View.update();
-            Ctrl.state = new MapState();
-        }).always(function(){    
-            $("#loaderEl").hide();
-        });        
-    }
-
-    rmvDelivery(nodeId){
-        
-    }
-
     /**
      * @desc add a delivery
      * @param nodeId $node - node' id to remove
@@ -225,6 +220,9 @@ class Deliveries{
         let good = true;
         for(var i in this.delNodes){
             let path = this.delNodes[i];
+            if(this.userDelNodes[i] != undefined){
+                path = path.concat(this.userDelNodes[i]);
+            }
             for(var j in path){
                 if(nodeId === path[j].id) good=false;
             }
@@ -232,7 +230,7 @@ class Deliveries{
 
         if(good){
             Ctrl.userActions.push({action:"add", id:nodeId});
-            this.addDelivery(nodeId);
+            Ctrl.View.Round.updateDelivery(nodeId, true);
             return true;
         }else{
             alertBox("Point already on map !");
@@ -249,6 +247,9 @@ class Deliveries{
         let good = false;
         for(var i in this.delNodes){
             let path = this.delNodes[i];
+            if(this.userDelNodes[i] != undefined){
+                path = path.concat(this.userDelNodes[i]);
+            }
             for(var j in path){
                 if(nodeId === path[j].id){
                     good=true;
@@ -258,6 +259,7 @@ class Deliveries{
 
         if(good){
             Ctrl.userActions.push({action:"remove", id:nodeId});
+            Ctrl.View.Round.updateDelivery(nodeId, false);
             return true;
         }else{
             alertBox("No point found !");

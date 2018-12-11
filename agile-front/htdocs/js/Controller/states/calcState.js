@@ -15,7 +15,7 @@ class CalcState extends State{
     }
     
     handleScroll(evt){
-        super.scroll(event);
+        super.scroll(evt);
     };
     
     
@@ -32,11 +32,9 @@ class CalcState extends State{
         if(!Ctrl.dragged && evt.srcElement.tagName==="CANVAS"){
             let ratio = View.Canvas.ratio;
             let delivery = View.Deliveries.findBestDelivery(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
-            console.log(delivery);
             View.Deliveries.selectDelivery(delivery);
             View.update();
         }
-        
         super.MouseUp(evt);
     }
 }
