@@ -183,7 +183,11 @@ public class MapManagement{
     }
     
     public void pushToHistory() {
-        Pair<List<Delivery>, Map<Long,Deliverer>> p = new StatePair(listDelivery, listDeliverer);
+    	//create pair from new lists so that each pair in history is different
+    	List<Delivery> newListDelivery = new ArrayList<Delivery>(listDelivery);
+    	Map<Long, Deliverer> newListDeliverer = new HashMap<Long, Deliverer>(listDeliverer);
+    	
+        Pair<List<Delivery>, Map<Long,Deliverer>> p = new StatePair(newListDelivery, newListDeliverer);
     	history.add(p);
     	
     	System.out.println("pushToHistory");
