@@ -9,6 +9,7 @@ import java.util.Map;
 import optimodlyon.agile.algorithmic.Clustering;
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
+import optimodlyon.agile.algorithmic.TSPClosestDelivery;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
@@ -27,7 +28,6 @@ public class LoadedDeliveriesState extends DefaultState{
 		Clustering clustering = new Clustering();
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
-		
 		MapManagement.getInstance().getMap();
 		MapManagement.getInstance().initializeListDeliverer(nb);
 		List<List<Delivery>> clusters = clustering.dispatchCluster(MapManagement.getInstance().getMap(), nb); 
@@ -43,6 +43,8 @@ public class LoadedDeliveriesState extends DefaultState{
 			Time startTime=new Time("8:00:00");
 			Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
 			//Round round = tsp.startBranchBoundTSP(graph, dijkstra, startTime);
+			//Round round = tsp.startTSPClosestDelivery(100000, graph.size(), graph, startTime, dijkstra);
+			System.out.println("heeeey");
 			finalRound.add(round);
 		}
 		

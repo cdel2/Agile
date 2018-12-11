@@ -31,4 +31,15 @@ public class IteratorSeq implements Iterator<Long>{
 
 	@Override
 	public void remove() {}
+	
+	public String toString()
+	{
+		String s ="nb : "+ nbElement + "\n";
+		for(int i=0; i<collection.length; i++)
+		{
+			s = s + " - " + collection[i];
+		}
+		
+		return s;
+	}
 }
