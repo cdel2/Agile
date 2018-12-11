@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @CrossOrigin
@@ -46,8 +47,8 @@ public class EndPoints {
         return MapManagement.getInstance().getWarehouse();
     }
     
-    @GetMapping("/delivery/add/{idDelivery}")
-    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery) {
+    @PostMapping("/delivery/add/{idDelivery}")
+    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery, @RequestParam int duration) {
     	try {
             controller.newDelivery(idDelivery);   		
     	} catch (Exception e)
@@ -57,7 +58,7 @@ public class EndPoints {
     	return MapManagement.getInstance().getListDeliverer();
     }
     
-    @GetMapping("/delivery/rmv/{idDelivery}")
+    @PostMapping("/delivery/rmv/{idDelivery}")
     public Map<Long,Deliverer> rmvDelivery(@PathVariable Long idDelivery) {
     	try {
             controller.rmvDelivery(idDelivery);   		
