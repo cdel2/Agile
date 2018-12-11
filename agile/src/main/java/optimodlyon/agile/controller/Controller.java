@@ -45,8 +45,8 @@ public class Controller {
      * to deliver this point 
      * @param idNewNode
      */
-    public void newDelivery(Long idDelivery) throws Exception {
-        currentState.addDelivery(idDelivery);
+    public void newDelivery(Long idDelivery, int duration) throws Exception {
+        currentState.addDelivery(idDelivery, duration);
     }
 
     /**

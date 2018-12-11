@@ -52,7 +52,7 @@ public class EndPoints {
     public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery, @PathVariable int duration) {
     	try {
     		System.out.println(duration);
-            controller.newDelivery(idDelivery);   		
+            controller.newDelivery(idDelivery, duration);   		
     	} catch (Exception e)
     	{
             throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");

@@ -22,7 +22,7 @@ import optimodlyon.agile.util.Time;
 
 public class CalculatedState extends LoadedDeliveriesState{
 	@Override
-	public void addDelivery(Long idDelivery) {
+	public void addDelivery(Long idDelivery, int duration) {
 		System.out.println("hey");
 		/*
 		 * Create a new round between the warehouse and the new point to deliver
@@ -31,7 +31,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 		 */
 		Time t0 = new Time(0,0,0); Time endOfDay = new Time(18,0,0);
 		System.out.println("Calculating new round from warehouse (single point)");
-		createDelivery(idDelivery);
+		createDelivery(idDelivery, duration);
 		Round newRound = calculateRoundForOneNode(idDelivery,MapManagement.getInstance().getMap(), t0);
 		Round newPossibleRound = newRound; //created if we need to create another round 
 		Time roundTime = newRound.getEndTime();
@@ -186,9 +186,9 @@ public class CalculatedState extends LoadedDeliveriesState{
 	    return currentTime;
 	}
 	
-	public void createDelivery(Long idDelivery) {
+	public void createDelivery(Long idDelivery, int duration) {
 		Intersection i = MapManagement.getInstance().getIntersectionById(idDelivery);
-		Delivery newDelivery = new Delivery(i,(float)0);
+		Delivery newDelivery = new Delivery(i,(float)duration);
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
 	}
 	
