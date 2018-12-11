@@ -10,8 +10,10 @@ class Deliveries{
         this.userDelNodes = new Object();
         this.selectedDel = null;
 
-        this.img = new Image();
-        this.img.src = 'img/pin.png';
+        this.imgPin = new Image();
+        this.imgPin.src = 'img/pin.png';
+        this.imgHome = new Image();
+        this.imgHome.src = 'img/home.png';
     }
 
     /**
@@ -70,7 +72,7 @@ class Deliveries{
 
         for(var del in this.delNodes){
             let pathNodes = this.delNodes[del];
-            for(var i = 0; i < pathNodes.length; i++){
+            for(var i = 0; i < pathNodes.length-1; i++){
                 let node = coord[pathNodes[i].id];
                 drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 4, pathNodes[i].color, ctx);
             }
@@ -78,7 +80,7 @@ class Deliveries{
 
         for(var del in this.userDelNodes){
             let pathNodes = this.userDelNodes[del];
-            for(var i = 0; i < pathNodes.length; i++){
+            for(var i = 0; i < pathNodes.length-1; i++){
                 let node = coord[pathNodes[i].id];
                 drawSquare(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, pathNodes[i].color, ctx);
             }
@@ -86,17 +88,22 @@ class Deliveries{
 
         //affichage warehouse
         let node = coord[this.warehouse.id];
-        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, "red", ctx);        
+        ctx.globalAlpha = 1;
+        let ratio = Ctrl.View.Canvas.ratio;
+        //drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, "red", ctx);      
+        let imgH = ratio*this.imgHome.height;
+        let imgW = ratio*this.imgHome.width;  
+        ctx.drawImage(this.imgHome, View.norm(node.longitude, true)-imgW/2,View.norm(node.latitude, false)-imgH/2, imgW, imgH);
+        ctx.beginPath(); 
 
         //afficha pin
         if(this.selectedDel!=null){
             let node = coord[this.selectedDel.id];
             let ratio = Ctrl.View.Canvas.ratio*0.7;
-            let imgH = ratio*this.img.height;
-            let imgW = ratio*this.img.width;
+            let imgH = ratio*this.imgPin.height;
+            let imgW = ratio*this.imgPin.width;
             ctx.globalAlpha = 0.8;
-            ctx.drawImage(this.img, View.norm(node.longitude, true)-imgW/2,View.norm(node.latitude, false)-imgH, imgW, imgH);
-            //showMessage(true, "Durée : "+node.duration+"<br />Latitude : "+node.latitude+"<br />Longitude : "+node.longitude);
+            ctx.drawImage(this.imgPin, View.norm(node.longitude, true)-imgW/2,View.norm(node.latitude, false)-imgH, imgW, imgH);
             ctx.beginPath();         
 
         }
@@ -170,7 +177,7 @@ class Deliveries{
                 let del = path[j];
                 let node = Ctrl.View.Map.coord[path[j].id];
                 let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
-                if(temp<bestDistance){
+                if(node.id != this.warehouse.id && temp<bestDistance){
                     bestDistance = temp;
                     bestDel = del;
                 }

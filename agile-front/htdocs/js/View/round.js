@@ -19,7 +19,7 @@ class Round{
             console.log("coucou");
             console.log(data);
             var totalTime = new Date().getTime()-ajaxTime;
-            $("#execTime").text("  "+totalTime/1000+"s");
+            alertBox("  "+totalTime/1000+"s");
 
             var endTimes = [];
             var cmpt = 0;
@@ -68,6 +68,7 @@ class Round{
     //true pour add, false pour remove
     updateDelivery(nodeId, actionBool){
         delete this.userPaths;
+        this.userPaths;
         delete Ctrl.View.Deliveries.userDelNodes;
         this.userPaths = new Object();
         Ctrl.View.Deliveries.userDelNodes = new Object();
@@ -146,7 +147,7 @@ class Round{
         if(this.firstPath!=-1 && path.display){
             let totalPath = path.data;
             this.drawSegment(totalPath, coord, ctx, path.color, 2, time);
-            if(this.userPaths[this.firstPath] != undefined){
+            if(this.userPaths != undefined && this.userPaths[this.firstPath] != undefined){
                 let totalPath2 = this.userPaths[this.firstPath].data;
                 this.drawSegment(totalPath2, coord, ctx, path.color, 2, time);
             }
