@@ -5,11 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
@@ -85,8 +82,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 				else {
 					System.out.println("He has more than 1 round...");
 					// check if the deliverer is not gone doing its additionnal round yet
-					//Time currentTime = getCurrentTimeUsingCalendar();
-					Time currentTime = new Time("9:00:00");
+					Time currentTime = getCurrentTimeUsingCalendar();
 					if(currentTime.isBefore(delivererMap.get(key).getListRound().get(listRoundSize-1).getStartTime())) {
 						System.out.println("And he's not gone to do his last round yet");
 						/*
@@ -147,50 +143,6 @@ public class CalculatedState extends LoadedDeliveriesState{
 		}
 	}
 	
-	/*
-	 * From here we start all methods to remove a delivery from our deliveries
-	 */
-	public void rmvDelivery(Long idDelivery) {
-		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
-		System.out.println(toRemove);
-        if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
-	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
-	        while (it.hasNext()) {
-	            Map.Entry <Long, Deliverer> pair = (Map.Entry) it.next();
-	            List<Round> rounds = pair.getValue().getListRound();
-	            int i=0;
-	            outerloop:
-	            for (Round round : rounds) {
-	            	List<Path> newListPath = new ArrayList();
-	            	for(Path path : round.getListPath()) {
-	            		if((long)path.getArrival().getId()==(long)toRemove.getId()) {
-	            			if(round.getListPath().size()==2) {
-	            				System.out.println("Je remove la boloss");
-	            				rounds.remove(round);
-	            			}
-	            			else {
-	            				System.out.println("wola c'est la merde0");
-	            				System.out.println(i);
-		            			Round newRound = calculateRoundByRemovingNodeToExisting(pair.getValue().getListRound().get(i), MapManagement.getInstance().getMap(), path.getArrival().getId());
-	            				System.out.println("wola c'est la merde1");
-	            				System.out.println(newRound);
-		            			pair.getValue().changeRound(i, newRound);
-	            				System.out.println("wola c'est la merde2");
-	            			}
-	            			pair.getValue().updateRounds(i);
-	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
-	            			break outerloop;
-	            		}
-	            	}
-	            	i++;
-	            }
-	            //it.remove(); // avoids a ConcurrentModificationException
-	        }
-			System.out.println("bah MDR");
-            MapManagement.getInstance().getListDelivery().remove(toRemove);
-        }
-	}
-	
 	public Round calculateRoundForOneNode(Long idIntersection, CityMap map, Time startTime ) {
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
@@ -225,24 +177,6 @@ public class CalculatedState extends LoadedDeliveriesState{
 		return round;
 	}
 	
-	public Round calculateRoundByRemovingNodeToExisting(Round previousRound, CityMap map, Long idNode) {
-		System.out.println("calculateRoundByRemovingNodeToExisting");
-		List<Long> listIds = new ArrayList<Long>();
-		for(Path path : previousRound.getListPath()) {
-			System.out.println("	We add "+ path.getArrival().getId() + "to the list");
-			listIds.add(path.getArrival().getId());
-		}
-		listIds.remove(idNode);
-		System.out.println("Warehouse is : " + MapManagement.getInstance().getWarehouse().getId());
-		Dijkstra dijkstra = new Dijkstra();
-		TSP tsp = new TSP();
-		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), listIds);
-		System.out.println("Dijkstra calcultaed");
-		Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
-		System.out.println("TSP calcuated");
-		return round;
-	}
-	
 	public Time getCurrentTimeUsingCalendar() {
 	    Calendar cal = Calendar.getInstance();
 	    Date date=cal.getTime();
@@ -257,4 +191,12 @@ public class CalculatedState extends LoadedDeliveriesState{
 		Delivery newDelivery = new Delivery(i,(float)0);
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
 	}
+	
+	/*
+	 * From here we start all methods to remove a delivery from our deliveries
+	 */
+	public void rmvDelivery(Long idDelivery) {
+		MapManagement.getInstance().rmvDelivery(idDelivery);
+	}
+	
 }

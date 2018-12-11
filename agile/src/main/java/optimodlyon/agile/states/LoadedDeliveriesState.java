@@ -22,7 +22,7 @@ import optimodlyon.agile.xml.DeserializerXML;
 public class LoadedDeliveriesState extends DefaultState{
 	
 	@Override
-	public void startCalculation(int nb) {
+	public void startCalculation(int nb) {	
 		System.out.println("calculating...");
 		Clustering clustering = new Clustering();
 		Dijkstra dijkstra = new Dijkstra();
@@ -41,7 +41,7 @@ public class LoadedDeliveriesState extends DefaultState{
 			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
 			Time startTime=new Time("8:00:00");
-			Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
+			Round round = tsp.startBranchBoundTSP(graph, dijkstra, startTime);
 			finalRound.add(round);
 		}
 		
