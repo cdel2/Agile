@@ -47,7 +47,7 @@ class Viewer{
     */
     loadRound(num){
         this.Round = new Round();
-        this.Round.load(num);
+        this.Round.load("init",num);
     }
 
     update(){

@@ -7,16 +7,35 @@ class Round{
         this.stop=null;
     }
 
-    load(num1){
+    load(action, num1, num2){
+        let apiUrl = "http://localhost:8080/";
+        switch(action){
+            case "init":
+                apiUrl+="calculation/start/"+num1;
+                break;
+            case "add":
+                apiUrl+="delivery/add/"+num1+"/"+num2;
+                break;
+            case "remove1":
+                apiUrl+="delivery/rmv/"+num1;
+                break;
+        }
+
+        
+        delete this.userPaths;
+        this.userPaths;
+        delete Ctrl.View.Deliveries.userDelNodes;
+        this.userPaths = new Object();
+        Ctrl.View.Deliveries.userDelNodes = new Object();
         let object = this;
-        let num = num1;
+
+        $("#pathMenu").html("");
         $("#loaderEl").show();
-        var ajaxTime= new Date().getTime();
+        let ajaxTime= new Date().getTime();
         $.ajax({
-            url: "http://localhost:8080/calculation/start/"+num,
+            url: apiUrl,
             type:"GET"
         }).done(function( data ) {
-            console.log("coucou");
             console.log(data);
             var totalTime = new Date().getTime()-ajaxTime;
             alertBox("  "+totalTime/1000+"s");
@@ -24,25 +43,35 @@ class Round{
             var endTimes = [];
             var cmpt = 0;
             for(var i in data){
-                let round = data[i].listRound[0].listPath;
                 let color1 = object.colors[cmpt];
-                let deliveryTemp = [];
-                let temp = {display:true, color:color1, data:[], departureTime:{hours:8, minutes:0, seconds:0}, arrivalTime:data[i].listRound[0].endTime};
-                $("#pathMenu").append(object.createPathHtml(color1, data[i].listRound[0].startTime, data[i].listRound[0].endTime, cmpt));
-                endTimes.push(data[i].listRound[0].endTime);
-                for(var j in round){
-                   let path = round[j].listSegment;
-                   let roundPart = [];
-                   for(var k in path){
-                       var el = path[k];
-                       roundPart.push({start:el.start.id, end:el.end.id, passageTime:el.passageTime});
-                   }
-                   let arrival = round[j].arrival;
-                   temp.data.push(roundPart); //REVOIR
-                   deliveryTemp.push({id:arrival.id, timeArrival:arrival.timeArrival, duration:arrival.duration, color: color1, idPath: cmpt});
+                for(var z = 0; z<data[i].listRound.length; z++){
+                    let round = data[i].listRound[z].listPath;
+                    let deliveryTemp = [];
+                    let temp = {display:true, color:color1, data:[], departureTime:{hours:8, minutes:0, seconds:0}, arrivalTime:data[i].listRound[0].endTime};
+
+                    for(var j in round){
+                        let path = round[j].listSegment;
+                        let roundPart = [];
+                        for(var k in path){
+                            var el = path[k];
+                            roundPart.push({start:el.start.id, end:el.end.id, passageTime:el.passageTime});
+                        }
+                        let arrival = round[j].arrival;
+                        temp.data.push(roundPart); //REVOIR
+                        deliveryTemp.push({id:arrival.id, timeArrival:arrival.timeArrival, duration:arrival.duration, color: color1, idPath: cmpt});
+                    }
+
+                    if(z === 0){
+                        $("#pathMenu").append(object.createPathHtml(color1, data[i].listRound[0].startTime, data[i].listRound[0].endTime, cmpt));
+                        endTimes.push(data[i].listRound[0].endTime);
+                        
+                        object.paths[cmpt] = temp;
+                        Ctrl.View.Deliveries.delNodes[cmpt] = deliveryTemp;
+                    }else{
+                        object.userPaths[cmpt] = temp;
+                        Ctrl.View.Deliveries.userDelNodes[cmpt] = deliveryTemp;
+                    }
                 }
-                object.paths[cmpt] = temp;
-                Ctrl.View.Deliveries.delNodes[cmpt] = deliveryTemp;
                 cmpt++;
             }
 
@@ -63,68 +92,6 @@ class Round{
         }).always(function(){
             $("#loaderEl").hide();
         });
-    }
-
-    //true pour add, false pour remove
-    updateDelivery(nodeId, actionBool){
-        delete this.userPaths;
-        this.userPaths;
-        delete Ctrl.View.Deliveries.userDelNodes;
-        this.userPaths = new Object();
-        Ctrl.View.Deliveries.userDelNodes = new Object();
-        let object = this;
-
-        let action;
-        let duration;
-        if(actionBool){
-            action = "add";
-            duration="/200"
-        }else{
-            action = "rmv";
-            duration = "";
-        } 
-
-        $("#loaderEl").show();
-        $.ajax({
-            url: "http://localhost:8080/delivery/"+action+"/"+nodeId+duration,
-            type:"GET"
-        }).done(function(data) {
-            console.log(data);
-            var cmpt = 0;
-            for(var i in data){
-                for(var j=1; j<data[i].listRound.length; j++){
-                    let round = data[i].listRound[j].listPath;
-                    console.log(round);
-                    let color1 = object.colors[cmpt];
-                    let deliveryTemp = [];
-                    let temp = {display:true, color:color1, data:[], departureTime:{hours:8, minutes:0, seconds:0}, arrivalTime:data[i].listRound[0].endTime};
-                    //$("#pathMenu").append(object.createPathHtml(color1, data[i].listRound[0].startTime, data[i].listRound[0].endTime, cmpt));
-                    for(var j in round){
-                        let path = round[j].listSegment;
-                        let roundPart = [];
-                        for(var k in path){
-                            var el = path[k];
-                            roundPart.push({start:el.start.id, end:el.end.id, passageTime:el.passageTime});
-                        }
-                        let arrival = round[j].arrival;
-                        temp.data.push(roundPart);
-                        deliveryTemp.push({id:arrival.id, timeArrival:arrival.timeArrival, duration:arrival.duration, color: color1, idPath: cmpt});
-                    }
-                    object.userPaths[cmpt] = temp;
-                    Ctrl.View.Deliveries.userDelNodes[cmpt] = deliveryTemp;
-                    
-                }
-                cmpt++;
-            }
-            Ctrl.View.update();
-        }).fail(function(jqXHR){
-            console.log(jqXHR);
-            alertBox("Something wrong happened !");
-            Ctrl.View.update();
-            Ctrl.state = new MapState();
-        }).always(function(){    
-            $("#loaderEl").hide();
-        });        
     }
     
     display(ctx, coord, time){

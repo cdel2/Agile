@@ -240,7 +240,7 @@ class Deliveries{
 
         if(good){
             Ctrl.userActions.push({action:"add", id:nodeId});
-            Ctrl.View.Round.updateDelivery(nodeId, true);
+            Ctrl.View.Round.load("add",nodeId, 200);
             return true;
         }else{
             alertBox("Point already on map !");
@@ -269,7 +269,7 @@ class Deliveries{
 
         if(good){
             Ctrl.userActions.push({action:"remove", id:nodeId});
-            Ctrl.View.Round.updateDelivery(nodeId, false);
+            Ctrl.View.Round.load("remove1", nodeId);
             return true;
         }else{
             alertBox("No point found !");

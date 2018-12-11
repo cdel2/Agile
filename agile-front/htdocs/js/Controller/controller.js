@@ -20,7 +20,6 @@ class Controller{
     }
 
     loadRound(){
-        $("#pathMenu").html("");
         let value = $("#numInput").val();
         $("#loadRounds").html("Cancel").addClass("btn-danger").removeClass("btn-warning");
         if(value === ""){
