@@ -80,7 +80,7 @@ class Deliveries{
             let pathNodes = this.userDelNodes[del];
             for(var i = 0; i < pathNodes.length; i++){
                 let node = coord[pathNodes[i].id];
-                drawSquare(View.norm(node.longitude, true), View.norm(node.latitude, false), 20, pathNodes[i].color, ctx);
+                drawSquare(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, pathNodes[i].color, ctx);
             }
         }
 

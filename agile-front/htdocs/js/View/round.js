@@ -14,7 +14,8 @@ class Round{
         var ajaxTime= new Date().getTime();
         $.ajax({
             url: "http://localhost:8080/calc/"+num,
-            type:"GET"
+            data: 200,
+            type:"POST"
         }).done(function( data ) {
             console.log("coucou");
             console.log(data);
