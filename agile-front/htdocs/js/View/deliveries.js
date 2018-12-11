@@ -80,7 +80,7 @@ class Deliveries{
             let pathNodes = this.userDelNodes[del];
             for(var i = 0; i < pathNodes.length; i++){
                 let node = coord[pathNodes[i].id];
-                drawSquare(View.norm(node.longitude, true), View.norm(node.latitude, false), 20, pathNodes[i].color, ctx);
+                drawSquare(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, pathNodes[i].color, ctx);
             }
         }
 
@@ -135,7 +135,7 @@ class Deliveries{
                     tmp+="<b>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+" (sélectioné)<br/></b>";
                 }else{
                     if(del.id === this.warehouse.id){
-                        tmp+="<i>"+j+" - Entrepot, Arrivée à "+timeToString(del.timeArrival)+"<br/></i>";
+                        tmp+="<span><i class='fas fa-home'></i> - Entrepot, Arrivée à "+timeToString(del.timeArrival)+"<br/></span>";
                         break;
                     }
                     if(past && compareTime(del.timeArrival,time)>=0){
@@ -189,6 +189,7 @@ class Deliveries{
      * @return nothing
     */
     selectDelivery(node){
+        console.log(node);
         if(node != null){
             let time = node.timeArrival;
             let sliderTime = timeToSlider(time);

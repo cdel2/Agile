@@ -13,7 +13,7 @@ class Round{
         $("#loaderEl").show();
         var ajaxTime= new Date().getTime();
         $.ajax({
-            url: "http://localhost:8080/calc/"+num,
+            url: "http://localhost:8080/calculation/start/"+num,
             type:"GET"
         }).done(function( data ) {
             console.log("coucou");
@@ -49,6 +49,7 @@ class Round{
             delete Ctrl.View.Deliveries.delNodes[-1];
             initSlider(endTimes);
             Ctrl.View.update();
+            $("#loadRounds").html("Calculer itinéraires").addClass("btn-warning").removeClass("btn-danger");
             Ctrl.state = new CalcState();
         }).fail(function(textStatus){
             let status = textStatus.status;
@@ -73,12 +74,18 @@ class Round{
         let object = this;
 
         let action;
-        if(actionBool) action = "add";
-        else action = "rmv";
+        let duration;
+        if(actionBool){
+            action = "add";
+            duration="/200"
+        }else{
+            action = "rmv";
+            duration = "";
+        } 
 
         $("#loaderEl").show();
         $.ajax({
-            url: "http://localhost:8080/"+action+"/delivery/"+nodeId,
+            url: "http://localhost:8080/delivery/"+action+"/"+nodeId+duration,
             type:"GET"
         }).done(function(data) {
             console.log(data);
@@ -139,6 +146,10 @@ class Round{
         if(this.firstPath!=-1 && path.display){
             let totalPath = path.data;
             this.drawSegment(totalPath, coord, ctx, path.color, 2, time);
+            if(this.userPaths[this.firstPath] != undefined){
+                let totalPath2 = this.userPaths[this.firstPath].data;
+                this.drawSegment(totalPath2, coord, ctx, path.color, 2, time);
+            }
         }
     }
     //[10,5]

@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ import optimodlyon.agile.util.Time;
 
 public class CalculatedState extends LoadedDeliveriesState{
 	@Override
-	public void addDelivery(Long idDelivery) {
+	public void addDelivery(Long idDelivery, int duration) {
 		System.out.println("hey");
 		/*
 		 * Create a new round between the warehouse and the new point to deliver
@@ -34,7 +33,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 		 */
 		Time t0 = new Time(0,0,0); Time endOfDay = new Time(18,0,0);
 		System.out.println("Calculating new round from warehouse (single point)");
-		createDelivery(idDelivery);
+		createDelivery(idDelivery, duration);
 		Round newRound = calculateRoundForOneNode(idDelivery,MapManagement.getInstance().getMap(), t0);
 		Round newPossibleRound = newRound; //created if we need to create another round 
 		Time roundTime = newRound.getEndTime();
@@ -86,7 +85,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 					System.out.println("He has more than 1 round...");
 					// check if the deliverer is not gone doing its additionnal round yet
 					//Time currentTime = getCurrentTimeUsingCalendar();
-					Time currentTime = new Time("9:00:00");
+					Time currentTime = new Time(8,0,0); // we simulate a current time at 8:00.00
 					if(currentTime.isBefore(delivererMap.get(key).getListRound().get(listRoundSize-1).getStartTime())) {
 						System.out.println("And he's not gone to do his last round yet");
 						/*
@@ -252,9 +251,9 @@ public class CalculatedState extends LoadedDeliveriesState{
 	    return currentTime;
 	}
 	
-	public void createDelivery(Long idDelivery) {
+	public void createDelivery(Long idDelivery, int duration) {
 		Intersection i = MapManagement.getInstance().getIntersectionById(idDelivery);
-		Delivery newDelivery = new Delivery(i,(float)0);
+		Delivery newDelivery = new Delivery(i,(float)duration);
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
 	}
 }
