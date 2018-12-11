@@ -271,8 +271,6 @@ class Deliveries{
             $('#changePath').attr("onclick", "Ctrl.View.Round.load('remove1',"+nodeId+");");
             $('#keepPath').attr("onclick", "Ctrl.View.Round.load('remove2',"+nodeId+");");
             $('#modalRemove').modal('show');
-            //Ctrl.userActions.push({action:"remove", id:nodeId});
-            //Ctrl.View.Round.load("remove1", nodeId);
             return true;
         }else{
             alertBox("No point found !");
