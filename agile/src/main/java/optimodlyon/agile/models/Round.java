@@ -48,8 +48,8 @@ public class Round {
     	for(Path path : listPath) {
 			path.setDepartureTime(currentTime);
 			path.setSegmentsPassageTimes();
-			path.getArrival().setTimeArrival(currentTime);;
 			currentTime.addTime(path.getDuration());
+			path.getArrival().setTimeArrival(currentTime);
 		}
     	endTime=currentTime;
     }
