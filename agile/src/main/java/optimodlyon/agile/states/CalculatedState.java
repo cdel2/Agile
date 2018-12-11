@@ -18,12 +18,13 @@ import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Path;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Segment;
+import optimodlyon.agile.util.Pair;
+import optimodlyon.agile.util.StatePair;
 import optimodlyon.agile.util.Time;
 
 public class CalculatedState extends LoadedDeliveriesState{
 	@Override
 	public void addDelivery(Long idDelivery, int duration) {
-		System.out.println("hey");
 		/*
 		 * Create a new round between the warehouse and the new point to deliver
 		 * The startTime of the round is 00:00.00 hence its EndTime is the duration
@@ -141,6 +142,8 @@ public class CalculatedState extends LoadedDeliveriesState{
 		} else {
 			System.out.println("We didn't find a deliverer or we don't finish before 18h");
 		}
+		
+        MapManagement.getInstance().pushToHistory();
 	}
 	
 	public Round calculateRoundForOneNode(Long idIntersection, CityMap map, Time startTime ) {
@@ -197,6 +200,32 @@ public class CalculatedState extends LoadedDeliveriesState{
 	 */
 	public void rmvDelivery(Long idDelivery) {
 		MapManagement.getInstance().rmvDelivery(idDelivery);
+        MapManagement.getInstance().pushToHistory();
+	}
+	
+	public void undo(int counter) {
+		List<Pair<List<Delivery>, Map<Long,Deliverer>>>  history = MapManagement.getInstance().getHistory();
+		System.out.println("<<<<<<<<<<<<<< history size "+history.size());
+		int j = history.size()-1-counter;
+		System.out.println("index <<<<<<<<<<<< " + j);
+		Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
+		
+		System.out.println("history : ");
+		for (int k = 0; k < history.size(); k++) {
+			System.out.println(k);
+			for (int i = 0; i < history.get(k).getKey().size(); i++) {
+				System.out.println(history.get(k).getKey().get(i));
+			}
+		}
+
+		System.out.println("pair : ");
+		for (int i = 0; i < pair.getKey().size(); i++) {
+			System.out.println(pair.getKey().get(i));
+		}
+		
+		MapManagement.getInstance().setListDelivery(pair.getKey());
+		MapManagement.getInstance().setListDeliverer(pair.getValue());
+		
 	}
 	
 }

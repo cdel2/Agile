@@ -9,6 +9,8 @@ import java.util.Random;
 import java.util.Iterator;
 
 import optimodlyon.agile.models.*;
+import optimodlyon.agile.util.Pair;
+import optimodlyon.agile.util.StatePair;
 import optimodlyon.agile.util.Time;
 
 
@@ -16,6 +18,7 @@ public class MapManagement{
     private CityMap map = new CityMap();
     private List<Delivery> listDelivery = new ArrayList<Delivery>();
     private Map<Long,Deliverer> listDeliverer = new HashMap<Long,Deliverer>();
+	private List<Pair<List<Delivery>, Map<Long,Deliverer>>> history = new ArrayList<Pair<List<Delivery>, Map<Long,Deliverer>>>() ;
     private Warehouse warehouse;
 
     private static MapManagement instance = null;
@@ -66,8 +69,9 @@ public class MapManagement{
      * If we have more deliverers than the number of rounds (N),
      * the N first deliverers will be assigned a round
      * @param listRound
+     * @return TODO
      */
-    public void assignRounds(List<Round> listRound)
+    public Map<Long, Deliverer> assignRounds(List<Round> listRound)
     {
         int i =0;
         for(Long it : listDeliverer.keySet())
@@ -77,6 +81,8 @@ public class MapManagement{
                 i++;
             }
         }
+        
+        return listDeliverer;
     }
 
     public void initializeListDeliverer(int nb)
@@ -206,7 +212,31 @@ public class MapManagement{
         }
         return false;
     }
+    
+    public void pushToHistory() {
+        Pair<List<Delivery>, Map<Long,Deliverer>> p = new StatePair(listDelivery, listDeliverer);
+    	history.add(p);
+    	
+    	System.out.println("pushToHistory");
+		System.out.println("ééééééééééé history");
+		for (int k = 0; k < history.size(); k++) {
+			System.out.println(k);
+			for (int i = 0; i < history.get(k).getKey().size(); i++) {
+				System.out.println(history.get(k).getKey().get(i));
+			}
+		}
 
+		System.out.println("éééééééé pair ");
+		for (int i = 0; i < p.getKey().size(); i++) {
+			System.out.println(p.getKey().get(i));
+		}
+
+    	System.out.println("\n");
+    }
+
+    public List<Pair<List<Delivery>, Map<Long,Deliverer>>> getHistory() {
+    	return history;
+    }
     public static void main(String[] args) {
             Intersection origin = new Intersection((long)1, (float)-50, (float)50);
             System.out.println(origin);

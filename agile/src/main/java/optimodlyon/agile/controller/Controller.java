@@ -15,9 +15,11 @@ import optimodlyon.agile.states.State;
 
 public class Controller {
     public State currentState;
-
+    public static int counter;
+    
     public Controller() {
         currentState = new DefaultState();
+        counter = 0;
     }
 
     public void initializeGraph(String file) {
@@ -57,10 +59,22 @@ public class Controller {
         currentState.rmvDelivery(idDelivery);
     }
 
-    public boolean stopCalculation() throws Exception {
+    public boolean stopCalculation() {
         System.out.println("in controller");
         boolean result = currentState.stopCalculation();
+        System.out.println("je suis"+result);
         currentState = new CalculatedState();
         return result;
+    }
+    
+    public void undo() {
+    	try {
+	    	counter++;
+	    	System.out.println("counter : " + counter);
+			currentState.undo(counter);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }

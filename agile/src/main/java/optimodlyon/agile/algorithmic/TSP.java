@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TSP {
-    private AtomicBoolean stop;
+    private volatile AtomicBoolean stop;
 	/**
 	 * Main class (used for tests) To remove
 	 * @throws Exception 
@@ -587,6 +587,11 @@ public class TSP {
 			possibleRounds = nextNode(newUnordoredMap, currentSuccessors, currentPath, currentLength, possibleRounds,
 					dijkstra, startTime);
 		}
+		if (stop.get()) {
+			Round r = new Round();
+			possibleRounds.add(r);
+		}
+		
 		return (possibleRounds);
 	}
 

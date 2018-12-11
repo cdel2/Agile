@@ -43,6 +43,16 @@ public class EndPoints {
         return MapManagement.getInstance().getListDelivery();
     }
     
+    @GetMapping("/deliveries")
+    public List<Delivery> getLoadedDeliveries() {
+    	try {
+            return MapManagement.getInstance().getListDelivery();
+    	} catch (Exception e)
+    	{
+            throw new UnprocessableEntityException("Le fichier du plan de la ville n'a pas été chargé.");
+    	}
+    }
+    
     @GetMapping("/warehouse")
     public Warehouse getWarehouse() {
         return MapManagement.getInstance().getWarehouse();
@@ -55,7 +65,7 @@ public class EndPoints {
             controller.newDelivery(idDelivery, duration);   		
     	} catch (Exception e)
     	{
-            throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
+            //throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
     	}
     	return MapManagement.getInstance().getListDeliverer();
     }
@@ -86,11 +96,17 @@ public class EndPoints {
     
     @GetMapping("/calculation/stop")
     public boolean stopCalculation() {
-    	try {
+
             System.out.println("trying to stop calculation");
             return controller.stopCalculation();
-    	} catch (Exception e) {
-            throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
-    	}
+    } 
+    
+    @GetMapping("/undo")
+    public Map<Long,Deliverer> undo() {
+
+            System.out.println("trying to undo");
+            controller.undo();
+            
+            return  MapManagement.getInstance().getListDeliverer();
     } 
 }

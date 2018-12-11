@@ -7,11 +7,14 @@ import java.util.Map;
 import optimodlyon.agile.algorithmic.Clustering;
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
+import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Warehouse;
 import optimodlyon.agile.states.State;
+import optimodlyon.agile.util.Pair;
+import optimodlyon.agile.util.StatePair;
 import optimodlyon.agile.xml.DeserializerXML;
 
 public class CalculatingState extends DefaultState {
@@ -47,7 +50,11 @@ public class CalculatingState extends DefaultState {
             finalRound.add(round);
         }
 
-        MapManagement.getInstance().assignRounds(finalRound); //A TESTER SI CA MARCHE!
+        MapManagement.getInstance().assignRounds(finalRound); 
+        
+        System.out.println("before push");
+        MapManagement.getInstance().pushToHistory();
+        System.out.println("after push");
     }
     
     @Override

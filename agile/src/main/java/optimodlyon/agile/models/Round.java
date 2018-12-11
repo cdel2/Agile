@@ -42,7 +42,11 @@ public class Round {
         endTime.addTime(totalDuration);
     }
     
-    public void remove(Path path) {
+    public Round() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void remove(Path path) {
     	listPath.remove(path);
     	updateRoundTimes();
     }
