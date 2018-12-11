@@ -103,7 +103,7 @@ public class TSP {
 	 * @param idWarehouse
 	 * @return PathLength
 	 */
-	public Round brutForceTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra, Time startTime) throws Exception {
+	public Round brutForceTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra, Time startTime) {
                 stop = new AtomicBoolean(false);
 		// Get all possible paths in the graph
 		List<Round> possibleRounds = startTSP(graph, dijkstra, startTime);
@@ -559,7 +559,7 @@ public class TSP {
 	 * @param idWarehouse
 	 * @return List<PathLength>
 	 */
-	List<Round> startTSP(Map<Long, Map<Long, Float>> unorderedMap, Dijkstra dijkstra, Time startTime) throws Exception {
+	List<Round> startTSP(Map<Long, Map<Long, Float>> unorderedMap, Dijkstra dijkstra, Time startTime) {
                 
 		Long idWarehouse = MapManagement.getInstance().getWarehouse().getId();
 		// This list will contain all the resulting pair of (path, length) possible.
