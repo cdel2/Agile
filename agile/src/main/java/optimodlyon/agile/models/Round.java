@@ -2,6 +2,7 @@ package optimodlyon.agile.models;
 
 import optimodlyon.agile.util.Time;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Round {
     private Time startTime;
@@ -40,11 +41,6 @@ public class Round {
         
         endTime = new Time(startTime);
         endTime.addTime(totalDuration);
-    }
-    
-    public void remove(Path path) {
-    	listPath.remove(path);
-    	updateRoundTimes();
     }
     
     public void updateRoundTimes() {
