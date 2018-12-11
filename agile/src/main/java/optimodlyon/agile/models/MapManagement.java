@@ -189,7 +189,7 @@ public class MapManagement{
 	            	List<Path> newListPath = new ArrayList();
 	            	for(Path path : round.getListPath()) {
 	            		if((long)path.getArrival().getId()==(long)toRemove.getId()) {
-	            			rounds.remove(round);
+	            			round.remove(path);
 	            			pair.getValue().updateRounds(i);
 	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
 	            			break outerloop;

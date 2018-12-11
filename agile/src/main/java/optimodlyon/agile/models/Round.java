@@ -42,6 +42,10 @@ public class Round {
         endTime.addTime(totalDuration);
     }
     
+    public void remove(Path path) {
+    	listPath.remove(path);
+    }
+    
     /*
      * When only the start time is up to date, update every paths of the round.
      */
