@@ -26,12 +26,12 @@ public class Deliverer {
     public void updateRounds(int i) {
     	if(i==0) {
     		listRound.get(0).setStartTime(new Time("8:00:00"));
-    		listRound.get(0).updatePathTime();
+    		listRound.get(0).updateRoundTimes();
     		i++;
     	}
     	while(i<listRound.size()) {
     		listRound.get(i).setStartTime(listRound.get(i-1).getEndTime());
-    		listRound.get(i).updatePathTime();
+    		listRound.get(i).updateRoundTimes();
     	}
     }
 
