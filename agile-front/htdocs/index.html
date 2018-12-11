@@ -39,6 +39,27 @@
 </head>
 
 <body>
+  <div class="modal fade" id="modalRemove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Remove options</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Si vous avez le temps de revoir le trajet de la journée avec vos livreurs, choisissez de changer les trajets.<br />
+            Si cette modification est arrivée en urgence, choisissez de garder les trajets tel quel.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal" id="changePath">Changer les trajets</button>
+            <button type="button" class="btn btn-warning" id="keepPath" >Garder les trajets</button>
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- MAIN APP -->
   <div class="container-fluid">
     <div class="row" style="height:100%;">
       <div id="loaderEl" class='loader'></div>

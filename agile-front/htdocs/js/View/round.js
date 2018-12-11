@@ -19,6 +19,9 @@ class Round{
             case "remove1":
                 apiUrl+="delivery/rmv/"+num1;
                 break;
+            case "remove2":
+            apiUrl+="delivery/rmv/"+num1;
+            break;
         }
 
         
