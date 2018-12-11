@@ -16,39 +16,47 @@ import optimodlyon.agile.xml.DeserializerXML;
 
 public class CalculatingState extends DefaultState {
 
-	@Override
-	public void loadDeliveries(String file) {
-		System.out.println("loading deliveries...");
-		List<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
-		Warehouse whs = DeserializerXML.deserializeWarehouse(file);
-		MapManagement.getInstance().setListDelivery(listDelivery);
-		MapManagement.getInstance().setWarehouse(whs);
-	}
+    @Override
+    public void loadDeliveries(String file) {
+        System.out.println("loading deliveries...");
+        List<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
+        Warehouse whs = DeserializerXML.deserializeWarehouse(file);
+        MapManagement.getInstance().setListDelivery(listDelivery);
+        MapManagement.getInstance().setWarehouse(whs);
+    }
 
-	@Override
-	public void startCalculation(int nb) {	
-		System.out.println("calculating...");
-		Clustering clustering = new Clustering();
-		Dijkstra dijkstra = new Dijkstra();
-		TSP tsp = new TSP();
-		
-		MapManagement.getInstance().getMap();
-		MapManagement.getInstance().initializeListDeliverer(nb);
-		List<List<Delivery>> clusters = clustering.dispatchCluster(MapManagement.getInstance().getMap(), nb); 
-		
-		int i =0;
-		List<Round> finalRound = new ArrayList<Round>();
-		for(List<Delivery> cluster : clusters) {
-			i++;
-			List<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
-			MapManagement.getInstance().getWarehouse();
-			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
-			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
-			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
-			Round round = tsp.brutForceTSP(graph, dijkstra, MapManagement.getInstance().getWarehouse().getTimeStart());
-			finalRound.add(round);
-		}
-		
-		MapManagement.getInstance().assignRounds(finalRound); //A TESTER SI CA MARCHE!
-	}
+    @Override
+    public void startCalculation(int nb) throws Exception {	
+        System.out.println("calculating...");
+        Clustering clustering = new Clustering();
+        Dijkstra dijkstra = new Dijkstra();
+        TSP tsp = new TSP();
+
+        MapManagement.getInstance().getMap();
+        MapManagement.getInstance().initializeListDeliverer(nb);
+        List<List<Delivery>> clusters = clustering.dispatchCluster(MapManagement.getInstance().getMap(), nb); 
+
+        List<Round> finalRound = new ArrayList<Round>();
+        for(List<Delivery> cluster : clusters) {
+            List<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
+            MapManagement.getInstance().getWarehouse();
+            arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
+            //Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
+            Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
+            Round round = tsp.brutForceTSP(graph, dijkstra, MapManagement.getInstance().getWarehouse().getTimeStart());
+            finalRound.add(round);
+        }
+
+        MapManagement.getInstance().assignRounds(finalRound); //A TESTER SI CA MARCHE!
+    }
+    
+    @Override
+    public boolean stopCalculation() {
+        boolean result;
+        System.out.println("in state");
+        TSP tsp = new TSP();
+        tsp.stopAlgorithm();
+        result = true;
+        return result;
+    }
 }

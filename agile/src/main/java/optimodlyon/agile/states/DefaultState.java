@@ -35,4 +35,8 @@ public class DefaultState implements State {
 	public void rmvDelivery(Long idDelivery) throws Exception {
 		throw new Exception("Impossible de supprimer une livraison");
 	}
+        
+        public boolean stopCalculation() throws Exception {
+            throw new Exception("Impossible d'arrêter le calcul");
+        }
 }

@@ -46,7 +46,7 @@ public class EndPoints {
         return MapManagement.getInstance().getWarehouse();
     }
     
-    @GetMapping("/add/delivery/{idDelivery}")
+    @GetMapping("/delivery/add/{idDelivery}")
     public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery) {
     	try {
             controller.newDelivery(idDelivery);   		
@@ -57,7 +57,7 @@ public class EndPoints {
     	return MapManagement.getInstance().getListDeliverer();
     }
     
-    @GetMapping("/rmv/delivery/{idDelivery}")
+    @GetMapping("/delivery/rmv/{idDelivery}")
     public Map<Long,Deliverer> rmvDelivery(@PathVariable Long idDelivery) {
     	try {
             controller.rmvDelivery(idDelivery);   		
@@ -69,19 +69,7 @@ public class EndPoints {
     	return MapManagement.getInstance().getListDeliverer();
     }
     
-    @GetMapping("/deliveries")
-    public List<Delivery> getDeliveries() {
-    	System.out.println("service getDeliveries");
-    	return MapManagement.getInstance().getListDelivery();
-    }
-    
-    @GetMapping("/deliverers/deliveries")
-    public Map<Long, Deliverer> getDeliverersDeliveries() {
-    	System.out.println("service getDeliverersDeliveries");
-    	return MapManagement.getInstance().getListDeliverer();
-    }
-    
-    @GetMapping("/calc/{nb}")
+    @GetMapping("/calculation/start/{nb}")
     public Map<Long,Deliverer> get(@PathVariable int nb) {
     	try {
             System.out.println("endpointDebut");
@@ -91,5 +79,15 @@ public class EndPoints {
             throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
     	}
         return MapManagement.getInstance().getListDeliverer();
+    } 
+    
+    @GetMapping("/calculation/stop")
+    public boolean stopCalculation() {
+    	try {
+            System.out.println("trying to stop calculation");
+            return controller.stopCalculation();
+    	} catch (Exception e) {
+            throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
+    	}
     } 
 }
