@@ -183,6 +183,7 @@ public class MapManagement{
 	        while (it.hasNext()) {
 	            Map.Entry <Long, Deliverer> pair = (Map.Entry) it.next();
 	            List<Round> rounds = pair.getValue().getListRound();
+	            outerloop:
 	            for (Round round : rounds) {
 	            	int i=0;
 	            	List<Path> newListPath = new ArrayList();
@@ -191,11 +192,11 @@ public class MapManagement{
 	            			rounds.remove(round);
 	            			pair.getValue().updateRounds(i);
 	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
+	            			break outerloop;
 	            		}
 	            	}
 	            	i++;
 	            }
-	            System.out.println(pair.getKey() + " = " + pair.getValue());
 	            it.remove(); // avoids a ConcurrentModificationException
 	        }
 	        if(!res) System.out.println("Problem when trying to remove delivery !!");
