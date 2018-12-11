@@ -49,6 +49,7 @@ class Round{
             delete Ctrl.View.Deliveries.delNodes[-1];
             initSlider(endTimes);
             Ctrl.View.update();
+            $("#loadRounds").html("Calculer itinéraires").addClass("btn-warning").removeClass("btn-danger");
             Ctrl.state = new CalcState();
         }).fail(function(textStatus){
             let status = textStatus.status;
@@ -145,6 +146,10 @@ class Round{
         if(this.firstPath!=-1 && path.display){
             let totalPath = path.data;
             this.drawSegment(totalPath, coord, ctx, path.color, 2, time);
+            if(this.userPaths[this.firstPath] != undefined){
+                let totalPath2 = this.userPaths[this.firstPath].data;
+                this.drawSegment(totalPath2, coord, ctx, path.color, 2, time);
+            }
         }
     }
     //[10,5]
