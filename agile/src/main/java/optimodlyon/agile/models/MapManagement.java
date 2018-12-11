@@ -132,17 +132,7 @@ public class MapManagement{
         boolean res=false;
         if(deliv != null && roundToAdd != null) {
             if(this.listDeliverer.containsKey(deliv.getId())) {
-            	Time currentTime=new Time(deliv.getListRound().get(0).getStartTime());
-            	currentTime.addTime(deliv.getListRound().get(0).getTotalDuration());
-    			Round finalRound = new Round(MapManagement.getInstance().getWarehouse(), currentTime);
-    			for(Path path : roundToAdd.getListPath()) {
-    				Path aPath = new Path(path);
-    				aPath.setDepartureTime(currentTime);
-    				aPath.setSegmentsPassageTimes();
-    				currentTime=new Time(aPath.getDepartureTime());
-    				currentTime.addTime(aPath.getDuration());
-    				finalRound.addPath(aPath);
-    			}
+    			roundToAdd.updateRoundTimes();
                 res = this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
                 if(res) {
                 	System.out.println("Round added to deliverer " + deliv.getId());
