@@ -39,15 +39,36 @@
 </head>
 
 <body>
+  <div class="modal fade" id="modalRemove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Remove options</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Si vous avez le temps de revoir le trajet de la journée avec vos livreurs, choisissez de changer les trajets.<br />
+            Si cette modification est arrivée en urgence, choisissez de garder les trajets tel quel.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal" id="changePath">Changer les trajets</button>
+            <button type="button" class="btn btn-warning" id="keepPath" >Garder les trajets</button>
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- MAIN APP -->
   <div class="container-fluid">
     <div class="row" style="height:100%;">
+      <div id="loaderEl" class='loader'></div>
       <div class="col-8" id="mapCol">
         <div id="snoAlertBox" class="alert alert-danger" data-alert="alert"></div>
         <div id="timeline">
           <input type="text" id="sliderInit" data-slider-id="timelineIn" data-slider-min="80" data-slider-tooltip="always" data-slider-max="180" data-slider-step="1" data-slider-value="120"/>
         </div>
         <div id="mapCtrl">
-          <div id="loaderEl" class='loader'></div>
           <button type="button" class="btn btn-dark" id="resetZoom" onclick="Ctrl.View.reset();"><i class="fas fa-compress"></i></button>
           <button type="button" class="btn btn-dark" id="zoom+" onclick="Ctrl.View.zoom(0.2);"><i class="fas fa-search-plus"></i></button>
           <button type="button" class="btn btn-dark" id="zoom-" onclick="Ctrl.View.zoom(-0.2);"><i class="fas fa-search-minus"></i></button>
@@ -86,8 +107,7 @@
             <label for="numInput">Nombre de livreurs</label>
             <input id="numInput" class="form-control" placeholder="Défaut : 3">
           </div>
-          <button type="submit" id="loadRounds" class="btn btn-warning" onclick="Ctrl.loadRound();" disabled>Calculer itinéraires</button>
-          <span id="execTime"></span>
+          <button type="submit" id="loadRounds" class="btn btn-warning" style="width:60%" onclick="Ctrl.loadRound();" disabled>Calculer itinéraires</button>
         </div>
         <hr />
 

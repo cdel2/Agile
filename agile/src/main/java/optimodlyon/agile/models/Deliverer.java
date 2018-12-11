@@ -23,30 +23,23 @@ public class Deliverer {
         this.listRound = listRound;
     }
     
-    /*
-     * USELESS
-     */
-    public void updateListRound(int i) {
-    	if(listRound.size()<=i) return;
-    	else if (i==0) {
-    		int j=0;
-    		for(Round round : listRound) {
-    			if(j==0) round.setStartTime(new Time("8:00:00"));
-    			else round.setStartTime(new Time(listRound.get(j-1).getEndTime()));
-    			round.updatePathTime();
-    		}
-    	}
-    }
-    
     public void updateRounds(int i) {
     	if(i==0) {
     		listRound.get(0).setStartTime(new Time("8:00:00"));
-    		listRound.get(0).updatePathTime();
+    		listRound.get(0).updateRoundTimes();
+    		i++;
     	}
     	while(i<listRound.size()) {
     		listRound.get(i).setStartTime(listRound.get(i-1).getEndTime());
-    		listRound.get(i).updatePathTime();
+    		listRound.get(i).updateRoundTimes();
+            i++;
     	}
+    }
+    
+    public void changeRound(int i, Round newRound) {
+    	System.out.println("            i : " + i + listRound);
+    	if(i<listRound.size()) listRound.set(i, newRound);
+    	else System.out.println("problem in changeRound : the list is too small");
     }
 
     public Long getId() {

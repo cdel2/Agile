@@ -14,46 +14,53 @@ import optimodlyon.agile.states.LoadedDeliveriesState;
 import optimodlyon.agile.states.State;
 
 public class Controller {
-	public State currentState;
-	
-	public Controller() {
-            currentState = new DefaultState();
-	}
-	
-	public void initializeGraph(String file) {
-            try {
-                currentState.loadMap(file);
-                currentState = new LoadedMapState();
-            } catch(Exception e) {
-                System.out.println("Erreur lors de InitializeGraph : " + e);
-            }				
-	}
+    public State currentState;
 
-	public void getDeliveries(String file) throws Exception{
-            currentState.loadDeliveries(file);
-            currentState = new LoadedDeliveriesState();	
-	}
-	
-	public void doAlgorithm(int nb) throws Exception {
+    public Controller() {
+        currentState = new DefaultState();
+    }
 
-            currentState.startCalculation(nb);
-            currentState = new CalculatedState();	
-	}
-	
-	/**
-	 * method used to add a Delivery and calculate the best path (and best deliverer) 
-	 * to deliver this point 
-	 * @param idNewNode
-	 */
-	public void newDelivery(Long idDelivery) throws Exception {
-        currentState.addDelivery(idDelivery);
-	}
-	
-	/**
-	 * method used to remove a Delivery 
-	 * @param idDelivery
-	 */
-	public void rmvDelivery(Long idDelivery) throws Exception {
+    public void initializeGraph(String file) {
+        try {
+            currentState.loadMap(file);
+            currentState = new LoadedMapState();
+        } catch(Exception e) {
+            System.out.println("Erreur lors de InitializeGraph : " + e);
+        }				
+    }
+
+    public void getDeliveries(String file) throws Exception{
+        currentState.loadDeliveries(file);
+        currentState = new LoadedDeliveriesState();	
+    }
+
+    public void doAlgorithm(int nb) throws Exception {
+        currentState = new CalculatingState();	
+        currentState.startCalculation(nb);
+        currentState = new CalculatedState();	
+    }
+
+    /**
+     * method used to add a Delivery and calculate the best path (and best deliverer) 
+     * to deliver this point 
+     * @param idNewNode
+     */
+    public void newDelivery(Long idDelivery, int duration) throws Exception {
+        currentState.addDelivery(idDelivery, duration);
+    }
+
+    /**
+     * method used to remove a Delivery 
+     * @param idDelivery
+     */
+    public void rmvDelivery(Long idDelivery) throws Exception {
         currentState.rmvDelivery(idDelivery);
-	}
+    }
+
+    public boolean stopCalculation() throws Exception {
+        System.out.println("in controller");
+        boolean result = currentState.stopCalculation();
+        currentState = new CalculatedState();
+        return result;
+    }
 }

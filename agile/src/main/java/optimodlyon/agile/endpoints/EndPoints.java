@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @CrossOrigin
@@ -46,10 +48,11 @@ public class EndPoints {
         return MapManagement.getInstance().getWarehouse();
     }
     
-    @GetMapping("/add/delivery/{idDelivery}")
-    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery) {
+    @GetMapping("/delivery/add/{idDelivery}/{duration}")
+    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery, @PathVariable int duration) {
     	try {
-            controller.newDelivery(idDelivery);   		
+    		System.out.println(duration);
+            controller.newDelivery(idDelivery, duration);   		
     	} catch (Exception e)
     	{
             throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
@@ -57,31 +60,19 @@ public class EndPoints {
     	return MapManagement.getInstance().getListDeliverer();
     }
     
-    @GetMapping("/rmv/delivery/{idDelivery}")
+    @GetMapping("/delivery/rmv/{idDelivery}")
     public Map<Long,Deliverer> rmvDelivery(@PathVariable Long idDelivery) {
     	try {
-            controller.rmvDelivery(idDelivery);   		
+            controller.rmvDelivery(idDelivery);
     	} catch (Exception e)
     	{
             //throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
     	}
-    	System.out.println(MapManagement.getInstance().getListDeliverer());
+    	//System.out.println(MapManagement.getInstance().getListDeliverer());
     	return MapManagement.getInstance().getListDeliverer();
     }
     
-    @GetMapping("/deliveries")
-    public List<Delivery> getDeliveries() {
-    	System.out.println("service getDeliveries");
-    	return MapManagement.getInstance().getListDelivery();
-    }
-    
-    @GetMapping("/deliverers/deliveries")
-    public Map<Long, Deliverer> getDeliverersDeliveries() {
-    	System.out.println("service getDeliverersDeliveries");
-    	return MapManagement.getInstance().getListDeliverer();
-    }
-    
-    @GetMapping("/calc/{nb}")
+    @GetMapping("/calculation/start/{nb}")
     public Map<Long,Deliverer> get(@PathVariable int nb) {
     	try {
             System.out.println("endpointDebut");
@@ -91,5 +82,15 @@ public class EndPoints {
             throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
     	}
         return MapManagement.getInstance().getListDeliverer();
+    } 
+    
+    @GetMapping("/calculation/stop")
+    public boolean stopCalculation() {
+    	try {
+            System.out.println("trying to stop calculation");
+            return controller.stopCalculation();
+    	} catch (Exception e) {
+            throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
+    	}
     } 
 }

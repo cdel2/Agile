@@ -22,3 +22,11 @@ function drawCircle(X, Y, R, color, ctx){
     ctx.globalAlpha = 0.7;
     ctx.fill();
 }
+
+function drawSquare(X, Y, L, color, ctx){
+    ctx.beginPath();
+    let L1 = Ctrl.View.Canvas.ratio*L*(Ctrl.View.zoomLevel/2 +1);
+    ctx.fillStyle = color;
+    ctx.globalAlpha = 0.7;
+    ctx.fillRect(X-L1/2,Y-L1/2,L1,L1);
+}

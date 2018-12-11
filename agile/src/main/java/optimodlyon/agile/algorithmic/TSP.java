@@ -6,8 +6,10 @@ import optimodlyon.agile.util.Time;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TSP {
+    private AtomicBoolean stop;
 	/**
 	 * Main class (used for tests) To remove
 	 * @throws Exception 
@@ -102,6 +104,7 @@ public class TSP {
 	 * @return PathLength
 	 */
 	public Round brutForceTSP(Map<Long, Map<Long, Float>> graph, Dijkstra dijkstra, Time startTime) {
+                stop = new AtomicBoolean(false);
 		// Get all possible paths in the graph
 		List<Round> possibleRounds = startTSP(graph, dijkstra, startTime);
 		//System.out.println("Liste des chemins possibles : " + possiblePaths);
@@ -604,6 +607,11 @@ public class TSP {
 		return piij;
 	}
 
+        public void stopAlgorithm(){
+            System.out.println("stop algo");
+            stop.set(true);
+        }
+
 	/**
 	 * startTSP gets all possible paths to travell through all points and their
 	 * length from an ordered graph (map)
@@ -613,6 +621,7 @@ public class TSP {
 	 * @return List<PathLength>
 	 */
 	List<Round> startTSP(Map<Long, Map<Long, Float>> unorderedMap, Dijkstra dijkstra, Time startTime) {
+                
 		Long idWarehouse = MapManagement.getInstance().getWarehouse().getId();
 		// This list will contain all the resulting pair of (path, length) possible.
 		List<Round> possibleRounds = new ArrayList<Round>();
@@ -623,7 +632,7 @@ public class TSP {
 		Float currentLength;
 		// We iterate on all possible first node
 		Iterator it = successors.entrySet().iterator();
-		while (it.hasNext()) {
+		while (it.hasNext() && !stop.get()) {
 			currentPath.clear();
 			currentPath.add(idWarehouse);
 			currentLength = (float) 0;

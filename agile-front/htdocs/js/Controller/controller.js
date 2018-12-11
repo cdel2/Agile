@@ -20,17 +20,12 @@ class Controller{
     }
 
     loadRound(){
-        if(this.state.constructor.name === "AddPointState"){
-            this.state = new CalcState();
-            this.View.update();
-        }else{
-            $("#pathMenu").html("");
-            let value = $("#numInput").val();
-            if(value === ""){
-                value = 3;
-            }
-            this.View.loadRound(value);
+        let value = $("#numInput").val();
+        $("#loadRounds").html("Cancel").addClass("btn-danger").removeClass("btn-warning");
+        if(value === ""){
+            value = 3;
         }
+        this.View.loadRound(value);
         return false;
     }
 

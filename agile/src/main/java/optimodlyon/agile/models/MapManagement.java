@@ -132,17 +132,7 @@ public class MapManagement{
         boolean res=false;
         if(deliv != null && roundToAdd != null) {
             if(this.listDeliverer.containsKey(deliv.getId())) {
-            	Time currentTime=new Time(deliv.getListRound().get(0).getStartTime());
-            	currentTime.addTime(deliv.getListRound().get(0).getTotalDuration());
-    			Round finalRound = new Round(MapManagement.getInstance().getWarehouse(), currentTime);
-    			for(Path path : roundToAdd.getListPath()) {
-    				Path aPath = new Path(path);
-    				aPath.setDepartureTime(currentTime);
-    				aPath.setSegmentsPassageTimes();
-    				currentTime=new Time(aPath.getDepartureTime());
-    				currentTime.addTime(aPath.getDuration());
-    				finalRound.addPath(aPath);
-    			}
+    			roundToAdd.updateRoundTimes();
                 res = this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
                 if(res) {
                 	System.out.println("Round added to deliverer " + deliv.getId());
@@ -173,36 +163,6 @@ public class MapManagement{
                     res=true;
             }
             return res;
-    }
-    
-    public boolean rmvDelivery(Long idDelivery) {
-    	boolean res = false;
-        Delivery toRemove = this.getDeliveryById(idDelivery);
-        if(this.listDelivery.contains(toRemove)) {
-	    	Iterator it = listDeliverer.entrySet().iterator();
-	        while (it.hasNext()) {
-	            Map.Entry <Long, Deliverer> pair = (Map.Entry) it.next();
-	            List<Round> rounds = pair.getValue().getListRound();
-	            for (Round round : rounds) {
-	            	int i=0;
-	            	List<Path> newListPath = new ArrayList();
-	            	for(Path path : round.getListPath()) {
-	            		if((long)path.getArrival().getId()==(long)toRemove.getId()) {
-	            			rounds.remove(round);
-	            			pair.getValue().updateRounds(i);
-	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
-	            		}
-	            	}
-	            	i++;
-	            }
-	            System.out.println(pair.getKey() + " = " + pair.getValue());
-	            it.remove(); // avoids a ConcurrentModificationException
-	        }
-	        if(!res) System.out.println("Problem when trying to remove delivery !!");
-            this.listDelivery.remove(toRemove);
-            res=true;
-        }
-    	return res;
     }
 
     public boolean removeDelivery(Long deliveryId) {

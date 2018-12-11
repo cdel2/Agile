@@ -2,6 +2,7 @@ package optimodlyon.agile.models;
 
 import optimodlyon.agile.util.Time;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Round {
     private Time startTime;
@@ -42,20 +43,14 @@ public class Round {
         endTime.addTime(totalDuration);
     }
     
-    /*
-     * When only the start time is up to date, update every paths of the round.
-     */
-    public void updatePathTime() {
-    	Time currentTime = new Time(startTime);
-    	listPath.get(0).setDepartureTime(new Time(currentTime));
-    	listPath.get(0).setSegmentsPassageTimes();
-    	currentTime.addTime(listPath.get(0).getDuration());
-    	int i=1;
-    	while(i<listPath.size()) {
-        	listPath.get(i).setDepartureTime(new Time(currentTime));
-        	listPath.get(i).setSegmentsPassageTimes();
-    		i++;
-    	}
+    public void updateRoundTimes() {
+    	Time currentTime = new Time(startTime.toString());
+    	for(Path path : listPath) {
+			path.setDepartureTime(currentTime);
+			path.setSegmentsPassageTimes();
+			currentTime.addTime(path.getDuration());
+			path.getArrival().setTimeArrival(currentTime);
+		}
     	endTime=currentTime;
     }
 
