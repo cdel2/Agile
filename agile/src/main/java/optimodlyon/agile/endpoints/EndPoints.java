@@ -60,7 +60,7 @@ public class EndPoints {
     @GetMapping("/rmv/delivery/{idDelivery}")
     public Map<Long,Deliverer> rmvDelivery(@PathVariable Long idDelivery) {
     	try {
-            controller.rmvDelivery(idDelivery);   		
+            controller.rmvDelivery(idDelivery);
     	} catch (Exception e)
     	{
             //throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");

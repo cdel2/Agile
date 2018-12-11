@@ -32,7 +32,14 @@ public class Deliverer {
     	while(i<listRound.size()) {
     		listRound.get(i).setStartTime(listRound.get(i-1).getEndTime());
     		listRound.get(i).updateRoundTimes();
+            i++;
     	}
+    }
+    
+    public void changeRound(int i, Round newRound) {
+    	System.out.println("            i : " + i + listRound);
+    	if(i<listRound.size()) listRound.set(i, newRound);
+    	else System.out.println("problem in changeRound : the list is too small");
     }
 
     public Long getId() {
