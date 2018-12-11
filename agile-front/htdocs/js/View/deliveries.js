@@ -80,13 +80,13 @@ class Deliveries{
             let pathNodes = this.userDelNodes[del];
             for(var i = 0; i < pathNodes.length; i++){
                 let node = coord[pathNodes[i].id];
-                drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 4, "green", ctx);
+                drawSquare(View.norm(node.longitude, true), View.norm(node.latitude, false), 20, pathNodes[i].color, ctx);
             }
         }
 
         //affichage warehouse
         let node = coord[this.warehouse.id];
-        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, this.warehouse.color, ctx);        
+        drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, "red", ctx);        
 
         //afficha pin
         if(this.selectedDel!=null){
@@ -113,7 +113,10 @@ class Deliveries{
     */
     updatePathsInfo(time){
         for(var j in this.delNodes){
-            $("#cl"+j+"t").html(this.collapseFiller(j, time));
+            $("#cl"+j+"t").html(this.collapseFiller(this.delNodes[j], time));
+        }
+        for(var j in this.userDelNodes){
+            $("#cl"+j+"t").append(this.collapseFiller(this.userDelNodes[j], time));
         }
     }
 
@@ -123,16 +126,15 @@ class Deliveries{
      * @param time $time - current time
      * @return the description of the path in html
     */
-    collapseFiller(id, time){
+    collapseFiller(pathDel, time){
         let past = true;
         let tmp = "";
-        let pathDel = this.delNodes[id];
         for(var j = 0; j<pathDel.length; j++){
                 let del = pathDel[j];
                 if(this.selectDelivery!=null && this.selectedDel === del){
                     tmp+="<b>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+" (sélectioné)<br/></b>";
                 }else{
-                    if(j === (pathDel.length-1)){
+                    if(del.id === this.warehouse.id){
                         tmp+="<i>"+j+" - Entrepot, Arrivée à "+timeToString(del.timeArrival)+"<br/></i>";
                         break;
                     }
