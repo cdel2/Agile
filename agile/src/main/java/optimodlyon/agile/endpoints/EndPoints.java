@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-@CrossOrigin(origins = "http://localhost:8000")
+@CrossOrigin
 @RestController
 public class EndPoints {
     Controller controller = new Controller();

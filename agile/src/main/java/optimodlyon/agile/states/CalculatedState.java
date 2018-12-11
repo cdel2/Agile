@@ -129,8 +129,9 @@ public class CalculatedState extends LoadedDeliveriesState{
 				if(bestDeliv.getListRound().size()>0) {
 					tstart = bestDeliv.getListRound().get(bestDeliv.getListRound().size()-1).getEndTime();
 				}
-				Time tend = minTime;
+				Time tend = new Time(minTime.toString());
 				newRound.setStartTime(tstart);
+				System.out.println("   " + tstart.toString() + " // " + tend.toString());
 				newRound.setEndTime(tend);
 			}
 			if(!MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {

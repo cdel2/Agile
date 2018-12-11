@@ -58,6 +58,15 @@ public class Round {
     	}
     	endTime=currentTime;
     }
+    
+    public void updateRoundTimes() {
+    	Time currentTime = new Time(startTime.toString());
+    	for(Path path : listPath) {
+			path.setDepartureTime(currentTime);
+			path.setSegmentsPassageTimes();
+			currentTime.addTime(path.getDuration());
+		}
+    }
 
     public Time getStartTime() {
         return startTime;
