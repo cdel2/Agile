@@ -15,7 +15,7 @@ public class MapManagement{
     private CityMap map = new CityMap();
     private List<Delivery> listDelivery = new ArrayList<Delivery>();
     private Map<Long,Deliverer> listDeliverer = new HashMap<Long,Deliverer>();
-	private List<Pair<List<Delivery>, Map<Long,Deliverer>>> history = new ArrayList<Pair<List<Delivery>, Map<Long,Deliverer>>>() ;
+    private List<Pair<List<Delivery>, Map<Long,Deliverer>>> history = new ArrayList<Pair<List<Delivery>, Map<Long,Deliverer>>>() ;
     private Warehouse warehouse;
 
     private static MapManagement instance = null;
@@ -211,6 +211,10 @@ public class MapManagement{
 
     public List<Pair<List<Delivery>, Map<Long,Deliverer>>> getHistory() {
     	return history;
+    }
+    
+    public void setHistory(List<Pair<List<Delivery>, Map<Long,Deliverer>>> history) {
+    	this.history = history;
     }
 }
 
