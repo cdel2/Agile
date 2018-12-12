@@ -146,7 +146,6 @@ public class CalculatedState extends LoadedDeliveriesState{
 		} else {
 			System.out.println("We didn't find a deliverer or we don't finish before 18h");
 		}
-		
         MapManagement.getInstance().pushToHistory();
 	}
 	
@@ -189,12 +188,12 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            }
 	            //it.remove(); // avoids a ConcurrentModificationException
 	        }
+			System.out.println("bah MDR");
             MapManagement.getInstance().getListDelivery().remove(toRemove);
-            MapManagement.getInstance().pushToHistory();
         }
 	}
 	
-	public void removeDeliveryAndCalc(Long idDelivery) {
+	public void removeDelivery(Long idDelivery, boolean calc) {
 		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
         if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
 	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
@@ -211,42 +210,14 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            				rounds.remove(round);
 	            			}
 	            			else {
-		            			Round newRound = calculateRoundByRemovingNodeToExisting(pair.getValue().getListRound().get(i), MapManagement.getInstance().getMap(), path.getArrival().getId());
-		            			pair.getValue().changeRound(i, newRound);
-	            			}
-	            			pair.getValue().updateRounds(i);
-	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
-	            			break outerloop;
-	            		}
-	            	}
-	            	i++;
-	            }
-	            //it.remove(); // avoids a ConcurrentModificationException
-	        }
-            MapManagement.getInstance().getListDelivery().remove(toRemove);
-            MapManagement.getInstance().pushToHistory();
-        }
-	}
-	
-	public void removeDeliveryWithoutCalc(Long idDelivery) {
-		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
-        if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
-	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
-	        while (it.hasNext()) {
-	            Map.Entry <Long, Deliverer> pair = (Map.Entry) it.next();
-	            List<Round> rounds = pair.getValue().getListRound();
-	            int i=0;
-	            outerloop:
-	            for (Round round : rounds) {
-	            	List<Path> newListPath = new ArrayList();
-	            	for(Path path : round.getListPath()) {
-	            		if((long)path.getArrival().getId()==(long)toRemove.getId()) {
-	            			if(round.getListPath().size()==2) {
-	            				rounds.remove(round);
-	            			}
-	            			else {
-		            			Round newRound = MergePathsInRound(pair.getValue().getListRound().get(i), path.getArrival().getId());
-		            			pair.getValue().changeRound(i, newRound);
+	            		    	if(calc) {
+			            			Round newRound = calculateRoundByRemovingNodeToExisting(pair.getValue().getListRound().get(i), MapManagement.getInstance().getMap(), path.getArrival().getId());
+			            			pair.getValue().changeRound(i, newRound);
+	            		    	}
+	            		    	else {
+			            			Round newRound = MergePathsInRound(pair.getValue().getListRound().get(i), path.getArrival().getId());
+			            			pair.getValue().changeRound(i, newRound);
+	            		    	}
 	            			}
 	            			pair.getValue().updateRounds(i);
 	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
@@ -357,36 +328,30 @@ public class CalculatedState extends LoadedDeliveriesState{
 		Delivery newDelivery = new Delivery(i,(float)duration);
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
 	}
-	
-	/**
-	 * Undo an action
-	 * Get MapManagement's history list and set new delivery and deliverer list to MapManagement
-	 */
+
 	public void undo(int counter) {
 		List<Pair<List<Delivery>, Map<Long,Deliverer>>>  history = MapManagement.getInstance().getHistory();
+		System.out.println("<<<<<<<<<<<<<< history size "+history.size());
 		int j = history.size()-1-counter;
-		System.out.println("index : " + history.size() + " - 1 " + " - " + counter + " = " + j);
+		System.out.println("index <<<<<<<<<<<< " + j);
+		Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
 		
-		if (j >= 0 ) {
-			Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
-			MapManagement.getInstance().setListDelivery(pair.getKey());
-			MapManagement.getInstance().setListDeliverer(pair.getValue());
-		}		
-	}
-	
-	/**
-	 * Redo an action
-	 */
-	public void redo(int counter) {
-		List<Pair<List<Delivery>, Map<Long,Deliverer>>>  history = MapManagement.getInstance().getHistory();
-		int j = history.size()-1-counter;
-		System.out.println("index : " + history.size() + " - 1 " + " - " + counter + " = " + j);
+		System.out.println("history : ");
+		for (int k = 0; k < history.size(); k++) {
+			System.out.println(k);
+			for (int i = 0; i < history.get(k).getKey().size(); i++) {
+				System.out.println(history.get(k).getKey().get(i));
+			}
+		}
+
+		System.out.println("pair : ");
+		for (int i = 0; i < pair.getKey().size(); i++) {
+			System.out.println(pair.getKey().get(i));
+		}
 		
-		if (j < history.size() ) {
-			Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
-			MapManagement.getInstance().setListDelivery(pair.getKey());
-			MapManagement.getInstance().setListDeliverer(pair.getValue());
-		}		
+		MapManagement.getInstance().setListDelivery(pair.getKey());
+		MapManagement.getInstance().setListDeliverer(pair.getValue());
+		
 	}
 	
 }

@@ -55,7 +55,9 @@ public class CalculatingState extends DefaultState {
 
         MapManagement.getInstance().assignRounds(finalRound); 
         
-        System.out.println("before push");
+        System.out.println("before push");	
+        List<Pair<List<Delivery>, Map<Long,Deliverer>>> history = MapManagement.getInstance().getHistory();
+        history.clear();
         MapManagement.getInstance().pushToHistory();
         System.out.println("after push");
     }

@@ -18,8 +18,8 @@ public class WarehouseTest {
 		assertNotNull(myWHS);
 		assertSame(myWHS.getId(),id);
 		assertSame(myWHS.getTimeStart(),t);
-		assertSame(myWHS.getLatitude(),latitude);
-		assertSame(myWHS.getLongitude(),longitude);
+		assertEquals(myWHS.getLatitude(),latitude,0);
+		assertEquals(myWHS.getLongitude(),longitude,0);
 	}
 
 	@Test
@@ -47,9 +47,9 @@ public class WarehouseTest {
 		Time t = new Time(1,1,1);		
 		Time t2 = new Time(2,2,2);		
 		Warehouse myWHS = new Warehouse((long)1, (float)-50, (float)50, new Time(1,1,1));
-		assertEquals(myWHS.getTimeStart(),t);
+		assertEquals(myWHS.getTimeStart().toString(),t.toString());
 		myWHS.setTimeStart(new Time(2,2,2));
-		assertEquals(myWHS.getTimeStart(),t2);
+		assertEquals(myWHS.getTimeStart().toString(),t2.toString());
 	}
 
 }

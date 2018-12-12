@@ -18,9 +18,9 @@ public class DelivererTest {
 		Time t1 = new Time(12,0,0);
 		Time t2 = new Time(18,0,0);
 		Warehouse wh = new Warehouse((long)0, t);
-		Round r1 = new Round(wh, t );
-		Round r2 = new Round(wh, t1);
-		Round r3 = new Round(wh, t2);
+		Round r1 = new Round(wh );
+		Round r2 = new Round(wh);
+		Round r3 = new Round(wh);
 		/*
 		 * Test: empty Round list
 		 */
@@ -42,9 +42,9 @@ public class DelivererTest {
 		Time t1 = new Time(12,0,0);
 		Time t2 = new Time(18,0,0);
 		Warehouse wh = new Warehouse((long)0, t);
-		Round r1 = new Round(wh, t );
-		Round r2 = new Round(wh, t1);
-		Round r3 = new Round(wh, t2);
+		Round r1 = new Round(wh);
+		Round r2 = new Round(wh);
+		Round r3 = new Round(wh);
 		/*
 		 * Test: empty Round list
 		 */
@@ -89,10 +89,10 @@ public class DelivererTest {
 		Time t1 = new Time(12,0,0);
 		Time t2 = new Time(18,0,0);
 		Warehouse wh = new Warehouse((long)0, t);
-		Round r1 = new Round(wh, t );
+		Round r1 = new Round(wh );
 		r1.setStartTime(t);
 		r1.setEndTime(t1);
-		Round r2 = new Round(wh, t1);
+		Round r2 = new Round(wh);
 		r2.setStartTime(t1);
 		r2.setEndTime(t2);
 		
@@ -125,5 +125,40 @@ public class DelivererTest {
 		boolean b4 = del.addRoundToList(null);
 		assertEquals(b4,false);
 	}
-
+	
+	@Test
+	public void testUpdateRounds() {
+		fail("Not Implemented yet");
+	}
+	
+	@Test
+	public void TestToString() {
+		Deliverer del = new Deliverer((long)1);
+		assertEquals("id : 1 rounds : []",del.toString());
+	}
+	
+	@Test
+	public void TestremoveLastRound() {
+		Time t = new Time(8,0,0);
+		Time t1 = new Time(12,0,0);
+		Time t2 = new Time(18,0,0);
+		Warehouse wh = new Warehouse((long)0, t);
+		Round r1 = new Round(wh);
+		Round r2 = new Round(wh);
+		Round r3 = new Round(wh);
+		
+		Deliverer del = new Deliverer((long)1);
+		Assertions.assertThat(del.getListRound()).isEmpty();
+		del.removeLastRound();
+		Assertions.assertThat(del.getListRound()).isEmpty();
+		List<Round> l1 = new ArrayList<Round>();
+		l1.add(r1);
+		l1.add(r2);
+		del.setListRound(l1);
+		Assertions.assertThat(del.getListRound()).containsAll(l1);
+		del.removeLastRound();
+		List<Round> lTest = new ArrayList<Round>();
+		lTest.add(r1);
+		Assertions.assertThat(del.getListRound()).containsAll(lTest);	
+		}
 }
