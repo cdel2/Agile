@@ -15,6 +15,7 @@ import optimodlyon.agile.models.Warehouse;
 import optimodlyon.agile.states.State;
 import optimodlyon.agile.util.Pair;
 import optimodlyon.agile.util.StatePair;
+import optimodlyon.agile.util.Time;
 import optimodlyon.agile.xml.DeserializerXML;
 
 public class CalculatingState extends DefaultState {
@@ -46,7 +47,11 @@ public class CalculatingState extends DefaultState {
             arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
             //Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
             Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
+			Time startTime=new Time("8:00:00");
+
             Round round = tsp.brutForceTSP(graph, dijkstra, MapManagement.getInstance().getWarehouse().getTimeStart());
+            //Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
+            System.out.println(round);
             finalRound.add(round);
         }
 

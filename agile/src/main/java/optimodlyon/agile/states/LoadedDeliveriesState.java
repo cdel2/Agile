@@ -25,6 +25,7 @@ public class LoadedDeliveriesState extends DefaultState{
 	@Override
 	public void startCalculation(int nb) {	
 		System.out.println("calculating...!");
+		System.out.println("cheeeyyyyyy");
 		Clustering clustering = new Clustering();
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();

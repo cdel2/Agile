@@ -198,7 +198,7 @@ public class TSP {
 	
 	public Round startTSPMatrix(int timeLimit, int nbIntersections, Map<Long, Map<Long, Float>> graph, Time startTime, Dijkstra dijkstra)
 	{
-		System.out.println("tsp matrix");
+		System.out.println("warehiuse : " + MapManagement.getInstance().getWarehouse().getId());
 		TSPMatrix tsp = new TSPMatrix();
 		Map<Long, TreeMap<Long, Float>> newGraph = mapToTreeMap(graph);
 		tsp.startTSP(timeLimit, nbIntersections, newGraph);
