@@ -94,6 +94,8 @@ class Round{
             if(status === 422){
                 alertBox("Erreur critique, resynchronisation des serveurs...");
                 Ctrl.reset();
+            }else if(status === 400){
+                alertBox("Un problème est survenu, vous tentez peut-être de livrer dans une impasse ?");
             }else{
                 alertBox("Erreur : Le serveur n'est pas joignable !");
                 Ctrl.state = new DelState();

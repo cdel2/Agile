@@ -50,14 +50,19 @@ class Deliveries{
             }).always(function(){    
                 $("#loaderEl").hide();
             });
-        }).fail(function(){
-            console.log("Delivery file not loaded !");
-            alertBox("Erreur : Le serveur n'est pas joignable !");
-            Ctrl.View.update();
-            Ctrl.state = new MapState();
+        }).fail(function(textStatus){
+            let status = textStatus.status;
+            if(status === 422){
+                alertBox("Erreur critique, resynchronisation des serveurs...");
+                Ctrl.reset();
+            }else{
+                alertBox("Erreur : Le serveur n'est pas joignable !");
+                Ctrl.View.update();
+                Ctrl.state = new MapState();
+            }
         }).always(function(){    
             $("#loaderEl").hide();
-        });        
+        });  
     }
 
     /**
