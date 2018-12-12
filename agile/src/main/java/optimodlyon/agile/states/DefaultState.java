@@ -37,6 +37,10 @@ public class DefaultState implements State {
 	public void undo(int counter) throws Exception {
 		throw new Exception("Impossible de undo");
 	}
+	
+	public void redo(int counter) throws Exception {
+		throw new Exception("Impossible de redo");
+	}
 
 	public void removeDelivery(Long idDelivery, boolean calc) throws Exception{
 		throw new Exception("Impossible de supprimer une livraison");

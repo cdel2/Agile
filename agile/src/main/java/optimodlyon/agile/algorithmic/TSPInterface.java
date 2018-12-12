@@ -1,11 +1,11 @@
 package optimodlyon.agile.algorithmic;
 
-import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public interface TSPInterface {
 
 	
-	public void startTSP(int timeLimit, int nbIntersections, Map<Long, Map<Long, Float>> graph);
+	public void startTSP(int timeLimit, int nbIntersections, Map<Long, TreeMap<Long, Float>> graph);
 	
 }

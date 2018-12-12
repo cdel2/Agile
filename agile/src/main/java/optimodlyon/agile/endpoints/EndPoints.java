@@ -7,6 +7,8 @@ import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Warehouse;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -107,12 +109,16 @@ public class EndPoints {
 			return false;
     } 
     
+    
     @GetMapping("/undo")
     public Map<Long,Deliverer> undo() {
-
-            System.out.println("trying to undo");
             controller.undo();
-            
-            return  MapManagement.getInstance().getListDeliverer();
-    } 
+            return MapManagement.getInstance().getListDeliverer() ;
+    }
+    
+    @GetMapping("/redo")
+    public Map<Long,Deliverer> redo() {
+            controller.redo();
+            return MapManagement.getInstance().getListDeliverer() ;
+    }
 }

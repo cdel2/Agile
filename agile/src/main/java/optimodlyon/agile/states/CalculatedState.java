@@ -230,6 +230,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            //it.remove(); // avoids a ConcurrentModificationException
 	        }
             MapManagement.getInstance().getListDelivery().remove(toRemove);
+            MapManagement.getInstance().pushToHistory();
         }
 	}
 	

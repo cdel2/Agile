@@ -71,4 +71,15 @@ public class Controller {
 			e.printStackTrace();
 		}
     }
+    
+    public void redo() {
+    	try {
+	    	counter--;
+	    	System.out.println("counter : " + counter);
+			currentState.redo(counter);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }

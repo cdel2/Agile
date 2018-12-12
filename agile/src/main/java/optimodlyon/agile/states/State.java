@@ -1,7 +1,5 @@
 package optimodlyon.agile.states;
 
-import optimodlyon.agile.models.Delivery;
-
 public interface State {
 	public void loadMap(String file);
 	
@@ -12,6 +10,8 @@ public interface State {
 	public void addDelivery(Long idDelivery, int duration) throws Exception;
 
 	public void undo(int counter) throws Exception;
+    
+    public void redo(int counter) throws Exception;
 	
     public boolean stopCalculation() throws Exception;
 

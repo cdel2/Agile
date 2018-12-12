@@ -2,16 +2,13 @@ package optimodlyon.agile.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import java.util.Iterator;
-
-import optimodlyon.agile.models.*;
 import optimodlyon.agile.util.Pair;
 import optimodlyon.agile.util.StatePair;
-import optimodlyon.agile.util.Time;
+
 
 
 public class MapManagement{
@@ -62,6 +59,8 @@ public class MapManagement{
 
     public void setListDeliverer(Map<Long,Deliverer> listDeliverer) {
         this.listDeliverer = listDeliverer;
+        
+
     }
 
     /**
@@ -185,49 +184,33 @@ public class MapManagement{
     public void pushToHistory() {
     	//create pair from new lists so that each pair in history is different
     	List<Delivery> newListDelivery = new ArrayList<Delivery>(listDelivery);
-    	Map<Long, Deliverer> newListDeliverer = new HashMap<Long, Deliverer>(listDeliverer);
     	
+    	Map<Long, Deliverer> newListDeliverer = new HashMap<Long, Deliverer>();
+		Deliverer newDeliverer;
+		List<Round> newListRound;	
+		
+		for (Map.Entry<Long, Deliverer> entry : listDeliverer.entrySet())
+		{
+			//create new deliverer with the id of current deliverer
+			newDeliverer = new Deliverer(entry.getKey());
+			
+			//create new list round with current deliverer's round list
+			newListRound = new ArrayList<Round>(entry.getValue().getListRound());
+			
+			//assign round list to new deliverer
+			newDeliverer.setListRound(newListRound);
+			
+			newListDeliverer.put(entry.getKey(), newDeliverer);
+		}
+	
         Pair<List<Delivery>, Map<Long,Deliverer>> p = new StatePair(newListDelivery, newListDeliverer);
     	history.add(p);
-    	
-    	System.out.println("pushToHistory");
-		System.out.println("ééééééééééé history");
-		for (int k = 0; k < history.size(); k++) {
-			System.out.println(k);
-			for (int i = 0; i < history.get(k).getKey().size(); i++) {
-				System.out.println(history.get(k).getKey().get(i));
-			}
-		}
 
-		System.out.println("éééééééé pair ");
-		for (int i = 0; i < p.getKey().size(); i++) {
-			System.out.println(p.getKey().get(i));
-		}
 
-    	System.out.println("\n");
     }
 
     public List<Pair<List<Delivery>, Map<Long,Deliverer>>> getHistory() {
     	return history;
-    }
-    public static void main(String[] args) {
-            Intersection origin = new Intersection((long)1, (float)-50, (float)50);
-            System.out.println(origin);
-            /*Map<Long,String> listDeliverer = new HashMap<Long,String>();
-            listDeliverer.put((long) 1, "a");
-            listDeliverer.put((long) 2, "b");
-            listDeliverer.put((long) 1, "c");
-            List<String> listRound = new ArrayList<String>();
-            listRound.add("aa");
-            listRound.add("bb");
-            listRound.add("cc");
-            int i = 0;
-            for(Long it : listDeliverer.keySet())
-            {
-                    System.out.println("round : " +listRound.get(i));	
-                    System.out.println("deli : " +it);	
-                    i++;
-            }*/
     }
 }
 
