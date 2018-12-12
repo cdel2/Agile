@@ -32,6 +32,7 @@ public class Controller {
     public void doAlgorithm(int nb) throws Exception {
         currentState = new CalculatingState();	
         currentState.startCalculation(nb);
+        counter=0;
         currentState = new CalculatedState();	
     }
 
