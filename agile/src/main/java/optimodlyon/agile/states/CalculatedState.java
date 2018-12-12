@@ -189,8 +189,8 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            }
 	            //it.remove(); // avoids a ConcurrentModificationException
 	        }
-			System.out.println("bah MDR");
             MapManagement.getInstance().getListDelivery().remove(toRemove);
+            MapManagement.getInstance().pushToHistory();
         }
 	}
 	
@@ -224,6 +224,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            //it.remove(); // avoids a ConcurrentModificationException
 	        }
             MapManagement.getInstance().getListDelivery().remove(toRemove);
+            MapManagement.getInstance().pushToHistory();
         }
 	}
 	
@@ -257,6 +258,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            //it.remove(); // avoids a ConcurrentModificationException
 	        }
             MapManagement.getInstance().getListDelivery().remove(toRemove);
+            MapManagement.getInstance().pushToHistory();
         }
 	}
 	
@@ -355,52 +357,36 @@ public class CalculatedState extends LoadedDeliveriesState{
 		Delivery newDelivery = new Delivery(i,(float)duration);
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
 	}
-
+	
+	/**
+	 * Undo an action
+	 * Get MapManagement's history list and set new delivery and deliverer list to MapManagement
+	 */
 	public void undo(int counter) {
 		List<Pair<List<Delivery>, Map<Long,Deliverer>>>  history = MapManagement.getInstance().getHistory();
-		//System.out.println("<<<<<<<<<<<<<< history size "+history.size());
 		int j = history.size()-1-counter;
-		System.out.println("index <<<<<<<<<<<< " + j);
-		Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
+		System.out.println("index : " + history.size() + " - 1 " + " - " + counter + " = " + j);
 		
-		/*
-		System.out.println("history : ");
-		for (int k = 0; k < history.size(); k++) {
-			System.out.println(k);
-			for (int i = 0; i < history.get(k).getKey().size(); i++) {
-				System.out.println(history.get(k).getKey().get(i));
-			}
-		}*/
+		if (j >= 0 ) {
+			Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
+			MapManagement.getInstance().setListDelivery(pair.getKey());
+			MapManagement.getInstance().setListDeliverer(pair.getValue());
+		}		
+	}
+	
+	/**
+	 * Redo an action
+	 */
+	public void redo(int counter) {
+		List<Pair<List<Delivery>, Map<Long,Deliverer>>>  history = MapManagement.getInstance().getHistory();
+		int j = history.size()-1-counter;
+		System.out.println("index : " + history.size() + " - 1 " + " - " + counter + " = " + j);
 		
-		/*
-		System.out.println("pair : ");
-		for (int i = 0; i < pair.getKey().size(); i++) {
-			System.out.println(pair.getKey().get(i));
-		}*/
-
-		/*
-		for (int k = 0; k < history.size(); k++) {
-			System.out.println(k);
-			Iterator it = history.get(k).getValue().entrySet().iterator();
-		    while (it.hasNext()) {
-		        Map.Entry p = (Map.Entry)it.next();
-		        System.out.println(p.getKey() + " = " + p.getValue());
-		        //it.remove(); // avoids a ConcurrentModificationException
-		    }
-		}*/
-		System.out.println("i m in undo ");
-		Iterator it = pair.getValue().entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry p2 = (Map.Entry)it.next();
-	        System.out.println(p2.getKey() + " = " + p2.getValue());
-	        //it.remove(); // avoids a ConcurrentModificationException
-	    }
-		
-		MapManagement.getInstance().setListDelivery(pair.getKey());
-		
-		//INCHANGEE ?
-		MapManagement.getInstance().setListDeliverer(pair.getValue());
-		
+		if (j < history.size() ) {
+			Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
+			MapManagement.getInstance().setListDelivery(pair.getKey());
+			MapManagement.getInstance().setListDeliverer(pair.getValue());
+		}		
 	}
 	
 }

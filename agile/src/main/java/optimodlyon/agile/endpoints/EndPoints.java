@@ -124,23 +124,13 @@ public class EndPoints {
     
     @GetMapping("/undo")
     public Map<Long,Deliverer> undo() {
-
-            System.out.println("trying to undo");
             controller.undo();
-            //Map<Long,Deliverer> result = new HashMap<Long,Deliverer>(MapManagement.getInstance().getListDeliverer());
-            //LA MAP RENVOYEE NE CHANGE PAS :'( POURTANT CA MACHE AVEC LIST DELIVERY
             return MapManagement.getInstance().getListDeliverer() ;
     }
-    /*
-    @GetMapping("/undo")
-    public List<Delivery> undo() {
-
-            System.out.println("trying to undo");
-            controller.undo();
-            //Map<Long,Deliverer> result = new HashMap<Long,Deliverer>(MapManagement.getInstance().getListDeliverer());
-            //LA MAP RENVOYEE NE CHANGE PAS :'( POURTANT CA MACHE AVEC LIST DELIVERY
-            return MapManagement.getInstance().getListDelivery() ;
-    } */
     
-    
+    @GetMapping("/redo")
+    public Map<Long,Deliverer> redo() {
+            controller.redo();
+            return MapManagement.getInstance().getListDeliverer() ;
+    }
 }
