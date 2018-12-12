@@ -47,23 +47,10 @@ public class Controller {
     /**
      * method used to remove a Delivery 
      * @param idDelivery
-     */
-    public void rmvDelivery(Long idDelivery) throws Exception {
-        currentState.rmvDelivery(idDelivery);
-    }
-
-
-    /**
-     * method used to remove a Delivery 
-     * @param idDelivery
+     * @param calc if the user want to calc the new best path
      */
     public void removeDelivery(Long idDelivery, boolean calc) throws Exception {
-    	if(calc) {
-            currentState.removeDeliveryAndCalc(idDelivery);
-    	}
-    	else {
-            currentState.removeDeliveryWithoutCalc(idDelivery);
-    	}
+    	currentState.removeDelivery(idDelivery, calc);
     }
 
     public boolean stopCalculation() throws Exception {

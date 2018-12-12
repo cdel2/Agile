@@ -34,26 +34,15 @@ public class DefaultState implements State {
 		
 	}
 	
-	@Override
-	public void rmvDelivery(Long idDelivery) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
 	public void undo(int counter) throws Exception {
 		throw new Exception("Impossible de undo");
 	}
-	
-	public void removeDeliveryAndCalc(Long idDelivery) throws Exception {
-		throw new Exception("Impossible de supprimer une livraison");
-	}
 
-	public void removeDeliveryWithoutCalc(Long idDelivery) throws Exception {
+	public void removeDelivery(Long idDelivery, boolean calc) throws Exception{
 		throw new Exception("Impossible de supprimer une livraison");
 	}
         
-        public boolean stopCalculation() throws Exception {
-            throw new Exception("Impossible d'arrêter le calcul");
-        }
+    public boolean stopCalculation() throws Exception {
+        throw new Exception("Impossible d'arrêter le calcul");
+    }
 }

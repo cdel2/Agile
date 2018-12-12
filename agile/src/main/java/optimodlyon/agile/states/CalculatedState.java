@@ -194,7 +194,7 @@ public class CalculatedState extends LoadedDeliveriesState{
         }
 	}
 	
-	public void removeDeliveryAndCalc(Long idDelivery) {
+	public void removeDelivery(Long idDelivery, boolean calc) {
 		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
         if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
 	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
@@ -211,41 +211,14 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            				rounds.remove(round);
 	            			}
 	            			else {
-		            			Round newRound = calculateRoundByRemovingNodeToExisting(pair.getValue().getListRound().get(i), MapManagement.getInstance().getMap(), path.getArrival().getId());
-		            			pair.getValue().changeRound(i, newRound);
-	            			}
-	            			pair.getValue().updateRounds(i);
-	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
-	            			break outerloop;
-	            		}
-	            	}
-	            	i++;
-	            }
-	            //it.remove(); // avoids a ConcurrentModificationException
-	        }
-            MapManagement.getInstance().getListDelivery().remove(toRemove);
-        }
-	}
-	
-	public void removeDeliveryWithoutCalc(Long idDelivery) {
-		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
-        if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
-	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
-	        while (it.hasNext()) {
-	            Map.Entry <Long, Deliverer> pair = (Map.Entry) it.next();
-	            List<Round> rounds = pair.getValue().getListRound();
-	            int i=0;
-	            outerloop:
-	            for (Round round : rounds) {
-	            	List<Path> newListPath = new ArrayList();
-	            	for(Path path : round.getListPath()) {
-	            		if((long)path.getArrival().getId()==(long)toRemove.getId()) {
-	            			if(round.getListPath().size()==2) {
-	            				rounds.remove(round);
-	            			}
-	            			else {
-		            			Round newRound = MergePathsInRound(pair.getValue().getListRound().get(i), path.getArrival().getId());
-		            			pair.getValue().changeRound(i, newRound);
+	            		    	if(calc) {
+			            			Round newRound = calculateRoundByRemovingNodeToExisting(pair.getValue().getListRound().get(i), MapManagement.getInstance().getMap(), path.getArrival().getId());
+			            			pair.getValue().changeRound(i, newRound);
+	            		    	}
+	            		    	else {
+			            			Round newRound = MergePathsInRound(pair.getValue().getListRound().get(i), path.getArrival().getId());
+			            			pair.getValue().changeRound(i, newRound);
+	            		    	}
 	            			}
 	            			pair.getValue().updateRounds(i);
 	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
