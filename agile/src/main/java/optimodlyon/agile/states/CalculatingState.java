@@ -49,9 +49,10 @@ public class CalculatingState extends DefaultState {
             Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
 			Time startTime=new Time("8:00:00");
 
-            Round round = tsp.brutForceTSP(graph, dijkstra, MapManagement.getInstance().getWarehouse().getTimeStart());
-            //Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
-            System.out.println(round);
+            //Round round = tsp.brutForceTSP(graph, dijkstra, MapManagement.getInstance().getWarehouse().getTimeStart());
+            Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
+            //Round round = tsp.startTSPMinDistance(10000, graph.size(), graph, startTime, dijkstra);
+			System.out.println(round);
             finalRound.add(round);
         }
 

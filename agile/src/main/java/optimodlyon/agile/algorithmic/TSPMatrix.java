@@ -28,7 +28,7 @@ public class TSPMatrix extends TSPTemplate{
 			
 		}
 		float b = computeB(ri, ci);
-		return value + b;
+		return b;
 	}
 	
 	@Override

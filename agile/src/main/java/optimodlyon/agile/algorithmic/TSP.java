@@ -183,7 +183,32 @@ public class TSP {
 		Path pathFound;
 		List<Long> intersectionIds;
 		Round round = new Round(MapManagement.getInstance().getWarehouse(), startTime);
-		for (int i = 1; i < listPath.size() - 1; i++) {
+		for (int i = 0; i < listPath.size()-1; i++) {
+			intersectionIds = dijkstra.createPathIds(listPath.get(i), listPath.get(i + 1));
+			Long arrivalId = listPath.get(i+1);
+			Delivery arrival = MapManagement.getInstance().getDeliveryById(arrivalId);
+			pathFound = new Path(intersectionIds, arrival, currentTime);
+			pathFound.setSegmentsPassageTimes();
+			round.addPath(pathFound);
+		}
+		return round;
+		
+		
+	}
+	
+	public Round startTSPMinDistance(int timeLimit, int nbIntersections, Map<Long, Map<Long, Float>> graph, Time startTime, Dijkstra dijkstra)
+	{
+		TSPMinDistance tsp = new TSPMinDistance();
+		Map<Long, TreeMap<Long, Float>> newGraph = mapToTreeMap(graph);
+		tsp.startTSP(timeLimit, nbIntersections, newGraph);
+		List<Long>listPath =tsp.getBestSolution();
+		listPath.add(MapManagement.getInstance().getWarehouse().getId());
+		System.out.println("list  :" + listPath);
+		Time currentTime = new Time(startTime);
+		Path pathFound;
+		List<Long> intersectionIds;
+		Round round = new Round(MapManagement.getInstance().getWarehouse(), startTime);
+		for (int i = 0; i < listPath.size()-1; i++) {
 			intersectionIds = dijkstra.createPathIds(listPath.get(i), listPath.get(i + 1));
 			Long arrivalId = listPath.get(i+1);
 			Delivery arrival = MapManagement.getInstance().getDeliveryById(arrivalId);
@@ -204,12 +229,12 @@ public class TSP {
 		tsp.startTSP(timeLimit, nbIntersections, newGraph);
 		List<Long>listPath =tsp.getBestSolution();
 		listPath.add(MapManagement.getInstance().getWarehouse().getId());
-		System.out.println("list  :" + listPath);
+		//System.out.println("list  :" + listPath);
 		Time currentTime = new Time(startTime);
 		Path pathFound;
 		List<Long> intersectionIds;
 		Round round = new Round(MapManagement.getInstance().getWarehouse(), startTime);
-		for (int i = 1; i < listPath.size() - 1; i++) {
+		for (int i = 0; i < listPath.size() - 1; i++) {
 			intersectionIds = dijkstra.createPathIds(listPath.get(i), listPath.get(i + 1));
 			Long arrivalId = listPath.get(i+1);
 			Delivery arrival = MapManagement.getInstance().getDeliveryById(arrivalId);
@@ -789,6 +814,7 @@ public class TSP {
 			//System.out.println(currentPath + ">>>>>>>>>>>>>>>" + map);
 			Time currentTime = new Time(startTime);
 			currentPath.add(MapManagement.getInstance().getWarehouse().getId());
+			//System.out.println(currentPath);
 			currentLength+=(currentSuccessors.get(MapManagement.getInstance().getWarehouse().getId()));
 			List<Long> IntersectionIds = dijkstra.createPathIds(currentPath.get(0), currentPath.get(1));
 			Long firstArrivalId = currentPath.get(1);
