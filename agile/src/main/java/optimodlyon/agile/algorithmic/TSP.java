@@ -82,13 +82,13 @@ public class TSP {
 		tsp.startBranchBoundTSP(graph,dij, start);*/
 		Controller controller = new Controller();
 		MapManagement instance = MapManagement.getInstance();
-		controller.initializeGraph("petit");
-		controller.getDeliveries("dl-petit-3");
+		controller.initializeGraph("grand");
+		controller.getDeliveries("dl-grand-20");
 		Clustering clustering = new Clustering();
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
 		MapManagement.getInstance().getMap();
-		int nb =1;
+		int nb =2;
 		MapManagement.getInstance().initializeListDeliverer(nb);
 		List<List<Delivery>> clusters = clustering.dispatchCluster(MapManagement.getInstance().getMap(), nb); 
 		int i =0;
@@ -104,7 +104,7 @@ public class TSP {
 			//Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
 			//Round round = tsp.startBranchBoundTSP(graph, dijkstra, startTime);
 			System.out.println(graph);
-			Round round = tsp.startTSPClosestDelivery(100000, graph.size(), graph, startTime, dijkstra);
+			Round round = tsp.startTSPMatrix(100000000, graph.size(), graph, startTime, dijkstra);
 			System.out.println("heeeey");
 			finalRound.add(round);
 		}
@@ -174,6 +174,31 @@ public class TSP {
 	public Round startTSPClosestDelivery(int timeLimit, int nbIntersections, Map<Long, Map<Long, Float>> graph, Time startTime, Dijkstra dijkstra)
 	{
 		TSPClosestDelivery tsp = new TSPClosestDelivery();
+		Map<Long, TreeMap<Long, Float>> newGraph = mapToTreeMap(graph);
+		tsp.startTSP(timeLimit, nbIntersections, newGraph);
+		List<Long>listPath =tsp.getBestSolution();
+		listPath.add(MapManagement.getInstance().getWarehouse().getId());
+		System.out.println("list  :" + listPath);
+		Time currentTime = new Time(startTime);
+		Path pathFound;
+		List<Long> intersectionIds;
+		Round round = new Round(MapManagement.getInstance().getWarehouse(), startTime);
+		for (int i = 1; i < listPath.size() - 1; i++) {
+			intersectionIds = dijkstra.createPathIds(listPath.get(i), listPath.get(i + 1));
+			Long arrivalId = listPath.get(i+1);
+			Delivery arrival = MapManagement.getInstance().getDeliveryById(arrivalId);
+			pathFound = new Path(intersectionIds, arrival, currentTime);
+			pathFound.setSegmentsPassageTimes();
+			round.addPath(pathFound);
+		}
+		return round;
+		
+		
+	}
+	
+	public Round startTSPMatrix(int timeLimit, int nbIntersections, Map<Long, Map<Long, Float>> graph, Time startTime, Dijkstra dijkstra)
+	{
+		TSPMatrix tsp = new TSPMatrix();
 		Map<Long, TreeMap<Long, Float>> newGraph = mapToTreeMap(graph);
 		tsp.startTSP(timeLimit, nbIntersections, newGraph);
 		List<Long>listPath =tsp.getBestSolution();
@@ -615,24 +640,17 @@ public class TSP {
 		float pi = 0;
 		float current;
 		long key1 = start;//MapManagement.getInstance().getWarehouse().getId();
-		System.out.println("key1: " + key1);
-		System.out.println("hey1");
 
 		long key2;
-		System.out.println("hey2");
 
 		Map<Long, Pair> result = new HashMap<Long,Pair>();
-		System.out.println("hey3");
 
 		it = (graph.get(key1)).entrySet().iterator();
-		System.out.println("hey4");
 		while(it.hasNext())
 		{
 			key2 = (long) (((Entry) it.next()).getKey());
-			System.out.println("key2: " + key2);
 
 			current = computePiij(graph, key1, key2);
-			System.out.println("pij : " + current);
 
 			if(current >= pi )
 			{
@@ -641,7 +659,6 @@ public class TSP {
 				result.clear();
 				result.put(key1, pair);
 			}
-			System.out.println("result :" + result);
 		}
 		
 		return result;

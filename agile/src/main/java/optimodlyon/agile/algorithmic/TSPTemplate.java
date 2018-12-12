@@ -56,13 +56,11 @@ public abstract class  TSPTemplate implements TSPInterface {
 	    		setBestSolution(new ArrayList<Long>(visited));
 	    		setBestDuration(currentDuration);
 	    	}
-	    } else if (currentDuration + bound(id, notVisited, listDeliveries, graph) < getBestDuration()){
+	    } else if (currentDuration + bound(id, notVisited, visited, listDeliveries, graph) < getBestDuration()){
 	        Iterator it = iterator(id, notVisited, listDeliveries, graph );
 	        while (it.hasNext()){
 	        	Long next = (Long) it.next();
 
-	        	System.out.println("id : "+ id + " - next : "+ next);
-	        	System.out.println(it);
 	        	visited.add(next);
 	        	notVisited.remove(next);
 	        	branchAndBound(next, notVisited, visited, currentDuration + (graph.get(id)).get(next), listDeliveries, graph,  timeStart, timeLimit);
@@ -75,7 +73,7 @@ public abstract class  TSPTemplate implements TSPInterface {
 	}
 	
 	
-	protected abstract float bound(long current, List<Long> notVisited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph);
+	protected abstract float bound(long current, List<Long> notVisited, List<Long> visited,List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph);
 	
 	protected abstract Iterator<Long> iterator(Long current,List<Long> notVisited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph);
 
