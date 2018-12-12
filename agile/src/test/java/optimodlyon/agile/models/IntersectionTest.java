@@ -10,7 +10,7 @@ import java.util.Map;
 import org.junit.Test;
 
 public class IntersectionTest {
-
+	
 	@Test
 	public void testIntersectionLongFloatFloat() {
 		long id=1;
@@ -147,6 +147,17 @@ public class IntersectionTest {
 		for(int i=0;i<answer.size();i++) {
 			assertSame(i0.findSuccessorSegments().get(i),answer.get(i));
 		}
+	}
+	
+	@Test
+	public void testAngle() {
+		Intersection i0 = new Intersection((long)0,(float)0,(float)0);
+        Intersection i1 = new Intersection((long)1,(float)0,(float)1.0);
+        Intersection i2 = new Intersection((long)2,(float)1.0,(float)0.0);
+        Intersection i3 = new Intersection((long)3,(float)1.0,(float)1.0);
+        Intersection i4 = new Intersection((long)4,(float)3.0,(float)3.0);
+        assertEquals(Intersection.angle(i0,i1,i2),Math.PI/2.0,0.0001);
+        assertEquals(Intersection.angle(i0,i3,i4),0,0.0001);
 	}
 
 	@Test
