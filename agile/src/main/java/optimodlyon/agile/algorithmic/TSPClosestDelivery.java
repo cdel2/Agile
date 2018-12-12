@@ -9,7 +9,7 @@ import java.util.TreeMap;
 public class TSPClosestDelivery extends TSPTemplate{
 	
 	@Override
-	protected float bound(long current, List<Long> notVisited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph)
+	protected float bound(long current, List<Long> notVisited, List<Long> visited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph)
 	{
 		return 0;
 	}
