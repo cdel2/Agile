@@ -43,7 +43,7 @@ public class Controller {
     public void newDelivery(Long idDelivery, int duration) throws Exception {
         currentState.addDelivery(idDelivery, duration);
     }
-
+    
     /**
      * method used to remove a Delivery 
      * @param idDelivery
