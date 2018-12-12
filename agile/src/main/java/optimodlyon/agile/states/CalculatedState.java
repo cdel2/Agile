@@ -146,7 +146,6 @@ public class CalculatedState extends LoadedDeliveriesState{
 		} else {
 			System.out.println("We didn't find a deliverer or we don't finish before 18h");
 		}
-		
         MapManagement.getInstance().pushToHistory();
 	}
 	
