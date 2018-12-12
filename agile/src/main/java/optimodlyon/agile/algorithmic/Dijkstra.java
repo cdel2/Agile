@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import optimodlyon.agile.exceptions.DijkstraException;
 import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Segment;
@@ -138,7 +140,7 @@ public class Dijkstra {
     }*/
 
 	
-	public Map<Long, Float> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source){
+	public Map<Long, Float> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source) throws RuntimeException {
             // Map containing the delivery points and the distance between the two
             Map<Long,Float> tspSubGraph = new HashMap<Long, Float>();
             int nbOfDeliveryPointsFound =0;
@@ -252,6 +254,9 @@ public class Dijkstra {
                 }
             }
 
+        }
+        if(nbOfDeliveryPointsFound != listDeliveryPoints.size()) {
+        	throw new DijkstraException("One way road");
         }
         return tspSubGraph;
     }
