@@ -30,10 +30,15 @@ public class Controller {
     }
 
     public void doAlgorithm(int nb) throws Exception {
-        currentState = new CalculatingState();	
-        currentState.startCalculation(nb);
-        counter=0;
-        currentState = new CalculatedState();	
+        try {
+			currentState = new CalculatingState();	
+			currentState.startCalculation(nb);
+			counter=0;
+			currentState = new CalculatedState();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}	
     }
 
     /**
@@ -42,7 +47,11 @@ public class Controller {
      * @param idNewNode
      */
     public void newDelivery(Long idDelivery, int duration) throws Exception {
-        currentState.addDelivery(idDelivery, duration);
+        try {
+			currentState.addDelivery(idDelivery, duration);
+		} catch (Exception e) {
+			throw e;
+		}
     }
     
     /**

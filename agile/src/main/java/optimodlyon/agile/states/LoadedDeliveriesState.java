@@ -23,7 +23,7 @@ import optimodlyon.agile.xml.DeserializerXML;
 public class LoadedDeliveriesState extends DefaultState{
 	
 	@Override
-	public void startCalculation(int nb) {	
+	public void startCalculation(int nb) throws Exception {	
 		System.out.println("calculating...!");
 		System.out.println("cheeeyyyyyy");
 		Clustering clustering = new Clustering();

@@ -1,6 +1,7 @@
 package optimodlyon.agile.endpoints;
 
 import optimodlyon.agile.controller.Controller;
+import optimodlyon.agile.exceptions.DijkstraException;
 import optimodlyon.agile.exceptions.UnprocessableEntityException;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Deliverer;
@@ -61,12 +62,14 @@ public class EndPoints {
     }
     
     @GetMapping("/delivery/add/{idDelivery}/{duration}")
-    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery, @PathVariable int duration) {
+    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery, @PathVariable int duration) throws Exception {
     	try {
     		System.out.println(duration);
             controller.newDelivery(idDelivery, duration);   		
     	} catch (Exception e)
     	{
+    		throw e; 
+    		//new DijkstraException("pb");
             //throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
     	}
     	return MapManagement.getInstance().getListDeliverer();
@@ -103,7 +106,6 @@ public class EndPoints {
             try {
 				return controller.stopCalculation();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return false;
