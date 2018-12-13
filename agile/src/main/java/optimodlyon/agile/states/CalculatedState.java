@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
+import optimodlyon.agile.exceptions.FunctionalException;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
@@ -27,7 +28,7 @@ import optimodlyon.agile.util.Time;
 
 public class CalculatedState extends LoadedDeliveriesState{
 	@Override
-	public void addDelivery(Long idDelivery, int duration) {
+	public void addDelivery(Long idDelivery, int duration) throws Exception{
 		/*
 		 * Create a new round between the warehouse and the new point to deliver
 		 * The startTime of the round is 00:00.00 hence its EndTime is the duration
@@ -140,60 +141,16 @@ public class CalculatedState extends LoadedDeliveriesState{
 				newRound.setEndTime(tend);
 			}
 			if(!MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
-				rmvDelivery(idDelivery);
+				removeDelivery(idDelivery, true);
 			}
 			System.out.println("Delivery " + idDelivery + " added to deliverer " + keyBestDeliv );
 		} else {
-			System.out.println("We didn't find a deliverer or we don't finish before 18h");
+			throw new FunctionalException("The added round exceed the end of working day time");
 		}
         MapManagement.getInstance().pushToHistory();
 	}
 	
-	/*
-	 * From here we start all methods to remove a delivery from our deliveries
-	 */
-	public void rmvDelivery(Long idDelivery) {
-		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
-		System.out.println(toRemove);
-        if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
-	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
-	        while (it.hasNext()) {
-	            Map.Entry <Long, Deliverer> pair = (Map.Entry) it.next();
-	            List<Round> rounds = pair.getValue().getListRound();
-	            int i=0;
-	            outerloop:
-	            for (Round round : rounds) {
-	            	List<Path> newListPath = new ArrayList();
-	            	for(Path path : round.getListPath()) {
-	            		if((long)path.getArrival().getId()==(long)toRemove.getId()) {
-	            			if(round.getListPath().size()==2) {
-	            				System.out.println("Je remove la boloss");
-	            				rounds.remove(round);
-	            			}
-	            			else {
-	            				System.out.println("wola c'est la merde0");
-	            				System.out.println(i);
-		            			Round newRound = calculateRoundByRemovingNodeToExisting(pair.getValue().getListRound().get(i), MapManagement.getInstance().getMap(), path.getArrival().getId());
-	            				System.out.println("wola c'est la merde1");
-	            				System.out.println(newRound);
-		            			pair.getValue().changeRound(i, newRound);
-	            				System.out.println("wola c'est la merde2");
-	            			}
-	            			pair.getValue().updateRounds(i);
-	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
-	            			break outerloop;
-	            		}
-	            	}
-	            	i++;
-	            }
-	            //it.remove(); // avoids a ConcurrentModificationException
-	        }
-			System.out.println("bah MDR");
-            MapManagement.getInstance().getListDelivery().remove(toRemove);
-        }
-	}
-	
-	public void removeDelivery(Long idDelivery, boolean calc) {
+	public void removeDelivery(Long idDelivery, boolean calc) throws Exception {
 		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
         if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
 	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
@@ -233,7 +190,7 @@ public class CalculatedState extends LoadedDeliveriesState{
         }
 	}
 	
-	public Round calculateRoundForOneNode(Long idIntersection, CityMap map, Time startTime ) {
+	public Round calculateRoundForOneNode(Long idIntersection, CityMap map, Time startTime ) throws Exception {
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
 		List<Long> newDel = new ArrayList<Long>();
@@ -241,7 +198,8 @@ public class CalculatedState extends LoadedDeliveriesState{
 		newDel.add(idIntersection);
 		newDel.add(MapManagement.getInstance().getWarehouse().getId());
 		System.out.println("Seemed to work, now we calculate dijkstra");
-		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), newDel);
+		Map<Long, Map<Long, Float>> graph;
+		graph = dijkstra.doDijkstra(map.getGraph(), newDel);
 		System.out.println("Dijkstra seemed to work ! Now TSP");
 		Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
 		//Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
@@ -249,7 +207,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 		return round;
 	}
 	
-	public Round calculateRoundByAddingNodeToExisting(Round previousRound, CityMap map, Long idNode) {
+	public Round calculateRoundByAddingNodeToExisting(Round previousRound, CityMap map, Long idNode) throws Exception {
 		System.out.println("calculateRoundByAddingNodeToExisting");
 		List<Long> listIds = new ArrayList<Long>();
 		System.out.println("We add "+ idNode + "to the list");
@@ -261,7 +219,13 @@ public class CalculatedState extends LoadedDeliveriesState{
 		System.out.println("Warehouse is : " + MapManagement.getInstance().getWarehouse().getId());
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
-		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), listIds);
+		Map<Long, Map<Long, Float>> graph;
+		try {
+			graph = dijkstra.doDijkstra(map.getGraph(), listIds);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		System.out.println("Dijkstra calcultaed");
 		Round round = tsp.startTSPMatrix(10000, graph.size(), graph,  previousRound.getStartTime(), dijkstra);
 		//Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
@@ -298,7 +262,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 	}
 	
 	
-	public Round calculateRoundByRemovingNodeToExisting(Round previousRound, CityMap map, Long idNode) {
+	public Round calculateRoundByRemovingNodeToExisting(Round previousRound, CityMap map, Long idNode) throws Exception{
 		System.out.println("calculateRoundByRemovingNodeToExisting");
 		List<Long> listIds = new ArrayList<Long>();
 		for(Path path : previousRound.getListPath()) {
@@ -309,11 +273,11 @@ public class CalculatedState extends LoadedDeliveriesState{
 		System.out.println("Warehouse is : " + MapManagement.getInstance().getWarehouse().getId());
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
-		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), listIds);
+		Map<Long, Map<Long, Float>> graph;
+		graph = dijkstra.doDijkstra(map.getGraph(), listIds);
 		System.out.println("Dijkstra calcultaed");
 		Time startTime = MapManagement.getInstance().getWarehouse().getTimeStart();
 
-		//Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
 		Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
         //Round round = tsp.startTSPMinDistance(10000, graph.size(), graph, startTime, dijkstra);
 		System.out.println("TSP calcuated");

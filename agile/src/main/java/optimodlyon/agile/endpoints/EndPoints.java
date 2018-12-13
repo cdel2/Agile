@@ -1,6 +1,8 @@
 package optimodlyon.agile.endpoints;
 
 import optimodlyon.agile.controller.Controller;
+import optimodlyon.agile.exceptions.DijkstraException;
+import optimodlyon.agile.exceptions.FunctionalException;
 import optimodlyon.agile.exceptions.UnprocessableEntityException;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Deliverer;
@@ -61,13 +63,19 @@ public class EndPoints {
     }
     
     @GetMapping("/delivery/add/{idDelivery}/{duration}")
-    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery, @PathVariable int duration) {
+    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery, @PathVariable int duration) throws Exception {
     	try {
     		System.out.println(duration);
             controller.newDelivery(idDelivery, duration);   		
-    	} catch (Exception e)
+    	} catch (DijkstraException e)
     	{
-            //throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
+    		throw e; 
+    	} catch( FunctionalException e)
+    	{
+    		throw e;
+    	} catch( Exception e) 
+    	{
+            throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
     	}
     	return MapManagement.getInstance().getListDeliverer();
     }
@@ -85,14 +93,16 @@ public class EndPoints {
     }
     
     @GetMapping("/calculation/start/{nb}")
-    public Map<Long,Deliverer> get(@PathVariable int nb) {
-    	try {
-            System.out.println("endpointDebut");
-            controller.doAlgorithm(nb);
-            System.out.println("endpointFin");
-    	} catch (Exception e) {
-            throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
-    	}
+    public Map<Long,Deliverer> get(@PathVariable int nb) throws Exception {
+        try {
+			System.out.println("endpointDebut");
+			controller.doAlgorithm(nb);
+			System.out.println("endpointFin");
+		} catch (FunctionalException e) {
+			throw e;
+		} catch (Exception e) {
+			 throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
+		}
         return MapManagement.getInstance().getListDeliverer();
     } 
     
@@ -103,7 +113,6 @@ public class EndPoints {
             try {
 				return controller.stopCalculation();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return false;

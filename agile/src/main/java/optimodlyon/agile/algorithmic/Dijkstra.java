@@ -105,7 +105,7 @@ public class Dijkstra {
      * @param listDeliveryPoints
      * @return Map<idDelivery, Map<idDelivery, lengthBetweenTheTwoDeliveries>>
      */
-    public Map<Long, Map<Long, Float>> doDijkstra (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints){
+    public Map<Long, Map<Long, Float>> doDijkstra (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints) throws Exception{
         Map<Long, Map<Long, Float>> tspGraph = new HashMap<Long, Map<Long,Float>>();
 
         // Initialize the fullGraph
@@ -115,11 +115,11 @@ public class Dijkstra {
         }
 
         for(Long idDeliveryNode : listDeliveryPoints) {
-            Map<Long,Float> tspSubGraph = new HashMap<Long, Float>();
-            dijkstraGraph.clear();
-            tspSubGraph.clear();
-            tspSubGraph = findShortestPathsFromSource(completeMap, listDeliveryPoints, idDeliveryNode);
-            tspGraph.put(idDeliveryNode,tspSubGraph);
+			Map<Long,Float> tspSubGraph = new HashMap<Long, Float>();
+			dijkstraGraph.clear();
+			tspSubGraph.clear();
+			tspSubGraph = findShortestPathsFromSource(completeMap, listDeliveryPoints, idDeliveryNode);
+			tspGraph.put(idDeliveryNode,tspSubGraph);
         }
         
         return tspGraph;

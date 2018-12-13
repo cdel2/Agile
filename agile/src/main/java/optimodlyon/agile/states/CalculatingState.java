@@ -46,8 +46,15 @@ public class CalculatingState extends DefaultState {
             MapManagement.getInstance().getWarehouse();
             arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
             //Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
-            Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
-			Time startTime = MapManagement.getInstance().getWarehouse().getTimeStart();
+            Map<Long, Map<Long, Float>> graph;
+			try {
+				graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
+			} catch (Exception e) {
+				System.out.println("Test error ");
+				e.printStackTrace();
+				throw e;
+			}
+			Time startTime=MapManagement.getInstance().getWarehouse().getTimeStart();
 
             Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
             //Round round = tsp.startTSPMinDistance(10000, graph.size(), graph, startTime, dijkstra);
