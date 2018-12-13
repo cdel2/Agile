@@ -221,9 +221,7 @@ class Deliveries{
         //lets toggle the menus
         if(node != null){
             let time = node.timeArrival;
-            let sliderTime = timeToSlider(time);
-            $("#sliderInit").slider('setValue', sliderTime);
-            Ctrl.changeTime(time);
+            Ctrl.changeTime(timeToSlider(time), true);
         }
 
         if(node === null){

@@ -1,21 +1,24 @@
+var maxSliderValue = 1800;
+var minsliderValue = 800;
+var sliderHour = 100;
+
 function pad(n, width, z) {
     z = z || '0';
     n = n + '';
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-//Format value between 80 to t 180 in [8,11 to 18h format
-function timeFormat(time){
-    var hour = Math.floor(time/10);
-    var rawMinutes = time-hour*10;
-    var minutes = (rawMinutes/10)*60;
-    return [hour, minutes];
+function timeToSlider(time){
+    let minutes = time.minutes/60*sliderHour;
+    let hours = time.hours*sliderHour;
+    return hours + minutes;
 }
 
-function timeToSlider(time){
-    let minutes = time.minutes/60*10;
-    let hours = time.hours*10;
-    return hours + minutes;
+function sliderToTime(value){
+    var hour = Math.floor(value/sliderHour);
+    var rawMinutes = value-hour*sliderHour;
+    var minutes = Math.floor((rawMinutes/sliderHour)*60);
+    return {hours:hour, minutes:minutes, seconds:0};
 }
 
 function compareTime(time1, time2){
@@ -43,24 +46,21 @@ function initSlider(ticks1){
         $("#sliderInit").slider('destroy');
     }
 
-    let ticks = "[80,";
+    let ticks = "["+minsliderValue+",";
     for(var j in ticks1){
         ticks += timeToSlider(ticks1[j]) + ",";
     }
-    ticks += "180]";
+    ticks += maxSliderValue+"]";
 
     $("#sliderInit").attr('data-slider-ticks', ticks);
     $("#sliderInit").attr('data-slider-ticks-snap-bounds', 1);
     $("#sliderInit").slider({
         formatter: function(value) {
-            var time = timeFormat(value);
-            return pad(time[0],2)+":"+pad(time[1],2);
+            var time = sliderToTime(value);
+            return pad(time.hours,2)+":"+pad(time.minutes,2);
         }
     }).on('slide', function(val){
-        var hour = Math.floor(val.value/10);
-        var rawMinutes = val.value-hour*10;
-        var minutes = (rawMinutes/10)*60;
-        Ctrl.changeTime({hours:hour, minutes:minutes, seconds:0});
+        Ctrl.changeTime(val.value, true);
     });
 }
 

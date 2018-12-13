@@ -33,7 +33,7 @@ class CalcState extends State{
             let ratio = View.Canvas.ratio;
             let deliveryId = View.Deliveries.findBestDelivery(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
             View.Deliveries.selectDelivery(deliveryId);
-            View.update();
+            //View.update();
         }
         super.MouseUp(evt);
     }
@@ -41,13 +41,22 @@ class CalcState extends State{
     handleKeyPress(evt){
         var evtobj = window.event? event : evt
         console.log(evtobj);
-        if(evt.ctrlKey){
+        if(evtobj.ctrlKey){
             switch(evt.key){
                 case 'z':
                     Ctrl.undo();
                     break;
                 case 'y':
                     Ctrl.redo();
+                    break;
+            }
+        }else{
+            switch(evt.key){
+                case "ArrowRight":
+                    Ctrl.changeTime(1, false);
+                    break;
+                case "ArrowLeft":
+                    Ctrl.changeTime(-1, false);
                     break;
             }
         }

@@ -32,7 +32,7 @@ class AddPointState extends State{
             if(value === ""){
                 value = 200;
             }
-            if(isNaN(value) || value<=0){
+            if(isNaN(value) || value<=0 || value%1!=0){
                 $("#delDuration").removeClass("is-valid");
                 $("#delDuration").addClass("is-invalid");
                 return false;

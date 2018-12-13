@@ -143,7 +143,6 @@ class Round{
             ctx.strokeStyle = color;
             ctx.lineWidth = Ctrl.View.Canvas.ratio*thickness*(Ctrl.View.zoomLevel +1);
             for(var j in path){
-                if(compareTime(path[j].passageTime, time) >= 0) present = false;
                 if(present){
                     ctx.globalAlpha = 1; 
                     ctx.setLineDash([]);
@@ -157,6 +156,7 @@ class Round{
                 ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
                 ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
                 ctx.stroke();
+                if(compareTime(path[j].passageTime, time) > 0) present = false;
             }
         }
     }

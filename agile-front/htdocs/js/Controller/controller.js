@@ -20,7 +20,7 @@ class Controller{
         if(value === ""){
             value = 3;
         }
-        if(isNaN(value) || value<=0){
+        if(isNaN(value) || value<=0 || value%1!=0){
             $("#numInput").removeClass("is-valid");
             $("#numInput").addClass("is-invalid");
             return false;
@@ -28,7 +28,7 @@ class Controller{
             $("#numInput").removeClass("is-invalid");
             $("#numInput").addClass("is-valid");
         }
-        $("#loadRounds").html("Cancel").addClass("btn-danger").removeClass("btn-warning");
+        //$("#loadRounds").html("Cancel").addClass("btn-danger").removeClass("btn-warning");
 
         this.View.loadRound(value);
         return false;
@@ -119,9 +119,15 @@ class Controller{
         }
     }
 
-    changeTime(time){        
-        $("#timeDisp").text(pad(time.hours,2)+":"+pad(time.minutes,2));
-        this.View.time = time;
+    changeTime(value, bool){
+        this.View.time = sliderToTime(value);
+        if(bool){
+            $("#sliderInit").slider('setValue', value);
+        }else{
+            $("#sliderInit").slider('setValue', parseInt($("#sliderInit").val())+value);
+        }
+        //$("#timeDisp").text(pad(time.hours,2)+":"+pad(time.minutes,2));
+        
         this.View.update();
     }
 
