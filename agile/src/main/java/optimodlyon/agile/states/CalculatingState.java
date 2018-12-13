@@ -22,7 +22,6 @@ public class CalculatingState extends DefaultState {
 
     @Override
     public void loadDeliveries(String file) {
-        //System.out.println("loading deliveries...");
         List<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
         Warehouse whs = DeserializerXML.deserializeWarehouse(file);
         MapManagement.getInstance().setListDelivery(listDelivery);
@@ -31,7 +30,6 @@ public class CalculatingState extends DefaultState {
 
     @Override
     public void startCalculation(int nb) throws Exception {	
-        //System.out.println("calculating...");
         Clustering clustering = new Clustering();
         Dijkstra dijkstra = new Dijkstra();
         TSP tsp = new TSP();
@@ -45,22 +43,13 @@ public class CalculatingState extends DefaultState {
             List<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
             MapManagement.getInstance().getWarehouse();
             arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
-            //Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
             Map<Long, Map<Long, Float>> graph;
-			try {
-				graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
-			} catch (Exception e) {
-				System.out.println("Test error ");
-				e.printStackTrace();
-				throw e;
-			}
+			graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
 			Time startTime=MapManagement.getInstance().getWarehouse().getTimeStart();
 
 			//If there are more deliverers than deliveries AND the we already find all deliveries, we stop searching.
 			if(graph.size()==1&&MapManagement.getInstance().getListDeliverer().size()>MapManagement.getInstance().getListDelivery().size()) break;
             Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
-            //Round round = tsp.startTSPMinDistance(10000, graph.size(), graph, startTime, dijkstra);
-			System.out.println(round);
             finalRound.add(round);
         }
 

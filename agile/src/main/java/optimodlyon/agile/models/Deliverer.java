@@ -37,9 +37,7 @@ public class Deliverer {
     }
     
     public void changeRound(int i, Round newRound) {
-    	System.out.println("            i : " + i + listRound);
     	if(i<listRound.size()) listRound.set(i, newRound);
-    	else System.out.println("problem in changeRound : the list is too small");
     }
 
     public Long getId() {
@@ -53,16 +51,13 @@ public class Deliverer {
     public boolean addRoundToList(Round roundToAdd) {
         if(roundToAdd != null) {
             if(listRound.size() - 1 >= 0) {
-            	System.out.println("When we want to add, deliverer has a delivery");
             	//Shifted time to avoid equality
             	Time shiftedTime = new Time(0,0,1);
             	shiftedTime.addTime(roundToAdd.getEndTime());
                 if(listRound.get(listRound.size() - 1).getEndTime().isBefore(shiftedTime)) {
-                    System.out.println("The last round of the deliverer finishes before the startTime of the round to add");
                 	this.listRound.add(roundToAdd);
                     return true;
                 } else {
-                	System.out.println("last round of the deliverer finishes at :" + listRound.get(listRound.size() - 1).getEndTime().toString() + " and the delivery to add : " + roundToAdd.getStartTime().toString());
                     return false;
                 }
             } else {

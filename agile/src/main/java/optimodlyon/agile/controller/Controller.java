@@ -60,9 +60,7 @@ public class Controller {
     }
 
     public boolean stopCalculation() throws Exception {
-        System.out.println("in controller");
         boolean result = currentState.stopCalculation();
-        System.out.println("je suis"+result);
         currentState = new CalculatedState();
         return result;
     }
