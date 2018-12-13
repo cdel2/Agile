@@ -29,7 +29,7 @@ public class DefaultState implements State {
 	}
 
 	@Override
-	public void addDelivery(Long idDelivery, int duration) throws Exception {
+	public void addDelivery(Long idDelivery, int duration, int counter) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
