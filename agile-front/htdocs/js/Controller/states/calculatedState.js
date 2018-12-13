@@ -13,6 +13,8 @@ class CalcState extends State{
         $("#addDel").html("<i class='fas fa-plus'></i>").addClass("btn-warning").removeClass("btn-danger");
         $("#rmvDel").html("<i class='fas fa-minus'></i>").addClass("btn-warning").removeClass("btn-danger");
         
+        $("#loadRounds").html("Calculer itinéraires").addClass("btn-warning").removeClass("btn-danger");
+        
     }
     
     handleScroll(evt){

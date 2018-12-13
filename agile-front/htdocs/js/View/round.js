@@ -30,6 +30,8 @@ class Round{
                 break;
         }
         
+        Ctrl.state = new CalculatingState();
+        
         let object = this;
         $("#loaderEl").show();
         let ajaxTime= new Date().getTime();
@@ -89,7 +91,6 @@ class Round{
             delete Ctrl.View.Deliveries.delNodes[-1];
             initSlider(endTimes);
             Ctrl.View.update();
-            $("#loadRounds").html("Calculer itinéraires").addClass("btn-warning").removeClass("btn-danger");
             Ctrl.state = new CalcState();
         }).fail(function(textStatus){
             let status = textStatus.status;
