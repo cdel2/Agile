@@ -8,6 +8,7 @@ class DelState extends State{
         $("#snoInfoBox").hide();
         $("#pathMenu").hide();
         $("#timeline").hide();
+        $("#delCollapse").collapse('hide');
         
         $("#addDel").html("<i class='fas fa-plus'></i>").addClass("btn-warning").removeClass("btn-success");
         $("#rmvDel").html("<i class='fas fa-minus'></i>").addClass("btn-warning").removeClass("btn-success");

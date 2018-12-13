@@ -120,7 +120,6 @@ class Controller{
     }
 
     changeTime(value, bool){
-        this.View.time = sliderToTime(value);
         if(bool){
             $("#sliderInit").slider('setValue', value);
         }else{
@@ -128,6 +127,7 @@ class Controller{
         }
         //$("#timeDisp").text(pad(time.hours,2)+":"+pad(time.minutes,2));
         
+        this.View.time = sliderToTime($("#sliderInit").val());
         this.View.update();
     }
 

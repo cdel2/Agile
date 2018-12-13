@@ -8,6 +8,7 @@ class CalcState extends State{
         $("#snoInfoBox").hide();
         $("#pathMenu").show();
         $("#timeline").show();
+        $("#delCollapse").collapse('hide');
         
         $("#addDel").html("<i class='fas fa-plus'></i>").addClass("btn-warning").removeClass("btn-danger");
         $("#rmvDel").html("<i class='fas fa-minus'></i>").addClass("btn-warning").removeClass("btn-danger");
@@ -40,7 +41,7 @@ class CalcState extends State{
 
     handleKeyPress(evt){
         var evtobj = window.event? event : evt
-        console.log(evtobj);
+        ///console.log(evtobj);
         if(evtobj.ctrlKey){
             switch(evt.key){
                 case 'z':
@@ -49,14 +50,20 @@ class CalcState extends State{
                 case 'y':
                     Ctrl.redo();
                     break;
+                case "ArrowRight":
+                    Ctrl.changeTime(7, false);
+                    break;
+                case "ArrowLeft":
+                    Ctrl.changeTime(-7, false);
+                    break;
             }
         }else{
             switch(evt.key){
                 case "ArrowRight":
-                    Ctrl.changeTime(1, false);
+                    Ctrl.changeTime(2, false);
                     break;
                 case "ArrowLeft":
-                    Ctrl.changeTime(-1, false);
+                    Ctrl.changeTime(-2, false);
                     break;
             }
         }

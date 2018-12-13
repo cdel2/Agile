@@ -116,14 +116,21 @@
         <hr />
 
         <div id="addPointSection">
-          <button type="button" class="btn btn-warning" id="addDel" onclick="Ctrl.addPoint();" disabled><i class="fas fa-plus"></i></button>
+          <button type="button" class="btn btn-warning" id="addDel" onclick="Ctrl.addPoint();" ><i class="fas fa-plus"></i></button>
           <button type="button" class="btn btn-warning" id="rmvDel" onclick="Ctrl.rmvPoint();" disabled><i class="fas fa-minus"></i></button>
-          <input type="text" class="form-control" id="delDuration" placeholder="200">
+          
           <div id="stateChange">
             <button type="button" class="btn btn-warning" id="undo" onclick="Ctrl.undo();"><i class="fas fa-undo"></i></button>
             <button type="button" class="btn btn-warning" id="redo" onclick="Ctrl.redo();"><i class="fas fa-redo"></i></button>
           </div>
         </div>
+        <div class="collapse" id="delCollapse">
+            <div class="card card-body">
+                <label for="delDuration">Durée livraison</label> 
+                <input type="text" class="form-control" id="delDuration" placeholder="200">
+            </div>
+        </div>
+
         <hr />
 
         <div id="pathMenu"></div>

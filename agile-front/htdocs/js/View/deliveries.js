@@ -145,7 +145,7 @@ class Deliveries{
                 let del = pathDel[j];
                 tmp+="<span class='selectable' onclick='Ctrl.View.Deliveries.selectDelivery("+del.id+")'>";
                 if(this.selectedDel!=null && this.selectedDel === del){
-                    tmp+="<b>"+j+" - Livraison à : "+timeToString(del.timeArrival)+ ", durée : "+ secondsToMS(del.duration) + " (sélectionnée)</b>";
+                    tmp+="<b>"+(j+1)+" - Livraison à : "+timeToString(del.timeArrival)+ ", durée : "+ secondsToMS(del.duration) + " (sélectionnée)</b>";
                 }else{
                     if(del.id === this.warehouse.id){
                         tmp+="<i class='fas fa-home'></i> - Entrepot, Arrivée à "+timeToString(del.timeArrival)+"<br/>";
@@ -155,9 +155,9 @@ class Deliveries{
                         past=false;
                     }
                     if(past){
-                        tmp+="<i>"+j+" - Livraison à : "+timeToString(del.timeArrival)+ ", durée : "+ secondsToMS(del.duration) + "</i>";
+                        tmp+="<i>"+(j+1)+" - Livraison à : "+timeToString(del.timeArrival)+ ", durée : "+ secondsToMS(del.duration) + "</i>";
                     }else{
-                        tmp+=j+" - Livraison à : "+timeToString(del.timeArrival)+ ", durée : "+ secondsToMS(del.duration);
+                        tmp+=(j+1)+" - Livraison à : "+timeToString(del.timeArrival)+ ", durée : "+ secondsToMS(del.duration);
                     }
                 }
                 tmp+="</span>"
@@ -203,7 +203,7 @@ class Deliveries{
     */
     selectDelivery(nodeId){
         //lets check if it is really a delivery
-        var node = undefined;
+        var node = null;
         for(var k in this.delNodes){
             let delPath = this.delNodes[k];
             for(var i = 0; i<delPath.length-1; i++){
@@ -216,7 +216,6 @@ class Deliveries{
                 if(delPath[i].id === nodeId) node = delPath[i];
             }
         }
-        if(node === undefined) return;
 
         //lets toggle the menus
         if(node != null){
@@ -227,6 +226,7 @@ class Deliveries{
         if(node === null){
             $(".collapse").collapse("hide");
             this.selectedDel = null;
+            Ctrl.View.update();
             return;
         }
 

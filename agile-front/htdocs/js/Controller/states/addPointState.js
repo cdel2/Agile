@@ -4,6 +4,7 @@ class AddPointState extends State{
         $("#addDel").html("<i class='fas fa-ban'></i>").addClass("btn-danger").removeClass("btn-warning");
         disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#rmvDel", "#mapSelector", "#delSelector"]);
         console.log("Etat addPointState");
+        $("#delCollapse").collapse('show');
     }
     
     handleScroll(evt){
