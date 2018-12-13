@@ -243,7 +243,8 @@ public class CalculatedState extends LoadedDeliveriesState{
 		System.out.println("Seemed to work, now we calculate dijkstra");
 		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), newDel);
 		System.out.println("Dijkstra seemed to work ! Now TSP");
-		Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
+		Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
+		//Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
 		System.out.println("TSP seemed to work !");
 		return round;
 	}
@@ -262,7 +263,8 @@ public class CalculatedState extends LoadedDeliveriesState{
 		TSP tsp = new TSP();
 		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), listIds);
 		System.out.println("Dijkstra calcultaed");
-		Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
+		Round round = tsp.startTSPMatrix(10000, graph.size(), graph,  previousRound.getStartTime(), dijkstra);
+		//Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
 		System.out.println("TSP calcuated");
 		return round;
 	}
