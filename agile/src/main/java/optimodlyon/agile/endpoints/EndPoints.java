@@ -70,6 +70,9 @@ public class EndPoints {
     	} catch (DijkstraException e)
     	{
     		throw e; 
+    	} catch( FunctionalException e)
+    	{
+    		throw e;
     	} catch( Exception e) 
     	{
             throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
