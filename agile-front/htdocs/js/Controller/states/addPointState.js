@@ -42,7 +42,7 @@ class AddPointState extends State{
             }
             let ratio = View.Canvas.ratio;
             var nodeId = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
-            View.Deliveries.addUserDelivery(parseInt(nodeId));
+            View.Deliveries.addUserDelivery(parseInt(nodeId), value);
             View.update();
             a = true;
         }

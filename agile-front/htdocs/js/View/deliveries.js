@@ -231,7 +231,7 @@ class Deliveries{
      * @param nodeId $node - node' id to remove
      * @return true if the node was added succesfully, false otherwise
     */
-   addUserDelivery(nodeId){
+   addUserDelivery(nodeId, duration){
         let good = true;
         for(var i in this.delNodes){
             let path = this.delNodes[i];
@@ -244,7 +244,7 @@ class Deliveries{
         }
 
         if(good){
-            Ctrl.View.Round.load("add",nodeId, 200);
+            Ctrl.View.Round.load("add",nodeId, duration);
             return true;
         }else{
             alertBox("Point already on map !");
