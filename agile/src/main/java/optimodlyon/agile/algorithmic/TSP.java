@@ -1,6 +1,7 @@
 package optimodlyon.agile.algorithmic;
 
 import optimodlyon.agile.controller.Controller;
+import optimodlyon.agile.exceptions.FunctionalException;
 import optimodlyon.agile.models.*;
 import optimodlyon.agile.util.Time;
 
@@ -221,7 +222,7 @@ public class TSP {
 		
 	}
 	
-	public Round startTSPMatrix(int timeLimit, int nbIntersections, Map<Long, Map<Long, Float>> graph, Time startTime, Dijkstra dijkstra)
+	public Round startTSPMatrix(int timeLimit, int nbIntersections, Map<Long, Map<Long, Float>> graph, Time startTime, Dijkstra dijkstra) throws Exception
 	{
 		System.out.println("warehouse : " + MapManagement.getInstance().getWarehouse().getId());
 		TSPMatrix tsp = new TSPMatrix();
@@ -242,6 +243,11 @@ public class TSP {
 			pathFound.setSegmentsPassageTimes();
 			round.addPath(pathFound);
 		}
+		Time endOfDay = new Time (18,0,1);
+		if(!round.getEndTime().isBefore(MapManagement.getInstance().getEndOfDay()) || round.getTotalDuration()>36000) {
+			throw new FunctionalException("The round finishes after the end of the working day");
+		}
+		System.out.println(round.getEndTime() +" / " + round.getTotalDuration());
 		return round;
 		
 		
