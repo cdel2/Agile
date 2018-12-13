@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 import optimodlyon.agile.util.Pair;
 import optimodlyon.agile.util.StatePair;
+import optimodlyon.agile.util.Time;
 
 
 
@@ -17,6 +18,7 @@ public class MapManagement{
     private Map<Long,Deliverer> listDeliverer = new HashMap<Long,Deliverer>();
     private List<Pair<List<Delivery>, Map<Long,Deliverer>>> history = new ArrayList<Pair<List<Delivery>, Map<Long,Deliverer>>>() ;
     private Warehouse warehouse;
+    private Time endOfDay = new Time(18,0,1);
 
     private static MapManagement instance = null;
 
@@ -61,6 +63,14 @@ public class MapManagement{
         this.listDeliverer = listDeliverer;
         
 
+    }
+    
+    public Time getEndOfDay () {
+    	return endOfDay;
+    }
+    
+    public void setEndOfDay (Time t) {
+    	this.endOfDay = t;
     }
 
     /**

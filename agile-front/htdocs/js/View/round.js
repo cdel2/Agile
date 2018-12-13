@@ -29,16 +29,8 @@ class Round{
                 apiUrl+="redo";
                 break;
         }
-
         
-        delete this.userPaths;
-        this.userPaths;
-        delete Ctrl.View.Deliveries.userDelNodes;
-        this.userPaths = new Object();
-        Ctrl.View.Deliveries.userDelNodes = new Object();
         let object = this;
-
-        $("#pathMenu").html("");
         $("#loaderEl").show();
         let ajaxTime= new Date().getTime();
         $.ajax({
@@ -48,6 +40,16 @@ class Round{
             console.log(data);
             var totalTime = new Date().getTime()-ajaxTime;
             alertBox("  "+totalTime/1000+"s");
+  
+            $("#pathMenu").html("");
+            delete object.paths;
+            delete object.userPaths;
+            delete Ctrl.View.Deliveries.delNodes;
+            delete Ctrl.View.Deliveries.userDelNodes;
+            object.userPaths = new Object();
+            object.paths = new Object();
+            Ctrl.View.Deliveries.userDelNodes = new Object();
+            Ctrl.View.Deliveries.delNodes = new Object();
 
             var endTimes = [];
             var cmpt = 0;
@@ -96,6 +98,8 @@ class Round{
                 Ctrl.reset();
             }else if(status === 400){
                 alertBox("Un problème est survenu, vous tentez peut-être de livrer dans une impasse ?");
+            }else if(status === 406){
+                alertBox("La requête oblige les livraisons à finir après 18h, veuillez réduire le nombre de livraisons ou augmenter le nombre de livreurs");
             }else{
                 alertBox("Erreur : Le serveur n'est pas joignable !");
                 Ctrl.state = new DelState();

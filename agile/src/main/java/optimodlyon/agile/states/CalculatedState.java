@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
+import optimodlyon.agile.exceptions.FunctionalException;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
@@ -144,7 +145,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 			}
 			System.out.println("Delivery " + idDelivery + " added to deliverer " + keyBestDeliv );
 		} else {
-			System.out.println("We didn't find a deliverer or we don't finish before 18h");
+			throw new FunctionalException("The added round exceed the end of working day time");
 		}
         MapManagement.getInstance().pushToHistory();
 	}
@@ -275,7 +276,10 @@ public class CalculatedState extends LoadedDeliveriesState{
 		Map<Long, Map<Long, Float>> graph;
 		graph = dijkstra.doDijkstra(map.getGraph(), listIds);
 		System.out.println("Dijkstra calcultaed");
-		Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
+		Time startTime = MapManagement.getInstance().getWarehouse().getTimeStart();
+
+		Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
+        //Round round = tsp.startTSPMinDistance(10000, graph.size(), graph, startTime, dijkstra);
 		System.out.println("TSP calcuated");
 		return round;
 	}

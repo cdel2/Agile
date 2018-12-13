@@ -82,7 +82,8 @@ public class DeserializerXML {
 		    	final Element node = (Element) nList.item(i);
 		    	idOrigin = Long.valueOf(node.getAttribute("origine"));
 		        idDestination = Long.valueOf(node.getAttribute("destination"));
-		        duration = Float.parseFloat(node.getAttribute("longueur"));
+		        float speed = 150/36;
+		        duration = (Float.parseFloat(node.getAttribute("longueur")))/(speed);
 		        
 		        originInter = intersections.get(idOrigin);
 		        destInter = intersections.get(idDestination);

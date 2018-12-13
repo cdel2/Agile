@@ -54,11 +54,10 @@ public class CalculatingState extends DefaultState {
 				e.printStackTrace();
 				throw e;
 			}
-			Time startTime=new Time("8:00:00");
+			Time startTime=MapManagement.getInstance().getWarehouse().getTimeStart();
 
 			//If there are more deliverers than deliveries AND the we already find all deliveries, we stop searching.
 			if(graph.size()==1&&MapManagement.getInstance().getListDeliverer().size()>MapManagement.getInstance().getListDelivery().size()) break;
-            //Round round = tsp.brutForceTSP(graph, dijkstra, MapManagement.getInstance().getWarehouse().getTimeStart());
             Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
             //Round round = tsp.startTSPMinDistance(10000, graph.size(), graph, startTime, dijkstra);
 			System.out.println(round);
