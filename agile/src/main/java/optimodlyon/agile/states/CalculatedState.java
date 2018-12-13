@@ -311,7 +311,11 @@ public class CalculatedState extends LoadedDeliveriesState{
 		TSP tsp = new TSP();
 		Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(map.getGraph(), listIds);
 		System.out.println("Dijkstra calcultaed");
-		Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
+		Time startTime = MapManagement.getInstance().getWarehouse().getTimeStart();
+
+		//Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
+		Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
+        //Round round = tsp.startTSPMinDistance(10000, graph.size(), graph, startTime, dijkstra);
 		System.out.println("TSP calcuated");
 		return round;
 	}
