@@ -36,6 +36,14 @@ function init(){
     map.addEventListener('mousewheel',function(evt){
         Ctrl.state.handleScroll(evt);
     },false);
+
+    window.addEventListener("keypress", function(evt){
+        console.log(evt);
+    }, false);
+    /*function KeyPress(e) {
+        var evtobj = window.event? event : e
+        if (evtobj.keyCode == 90 && evtobj.ctrlKey) alert("Ctrl+z");
+    }*/
 }
 
 

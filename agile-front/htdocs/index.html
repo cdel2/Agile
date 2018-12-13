@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/timeline.css">
+  <link rel="stylesheet" href="css/loader.css">
   <link rel="stylesheet" href="lib/bootstrap-slider/bootstrap-slider.min.css">
 </head>
 
@@ -102,13 +103,13 @@
         <br />
         <hr />
 
-        <div onsubmit="Ctrl.loadRound(); return false;">
+        <form onsubmit="Ctrl.loadRound(); return false;">
           <div class="form-group">
             <label for="numInput">Nombre de livreurs</label>
             <input id="numInput" class="form-control" placeholder="Défaut : 3">
           </div>
           <button type="submit" id="loadRounds" class="btn btn-warning" style="width:60%" onclick="Ctrl.loadRound();" disabled>Calculer itinéraires</button>
-        </div>
+        </form>
         <hr />
 
         <div id="addPointSection">
