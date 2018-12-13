@@ -148,6 +148,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 			throw new FunctionalException("The added round exceed the end of working day time");
 		}
         MapManagement.getInstance().pushToHistory();
+    	MapManagement.getInstance().setIsRunning(true);
 	}
 	
 	public void removeDelivery(Long idDelivery, boolean calc) throws Exception {
@@ -323,5 +324,16 @@ public class CalculatedState extends LoadedDeliveriesState{
 		MapManagement.getInstance().setListDeliverer(pair.getValue());
 		
 	}
-	
+    
+    @Override
+    public boolean stopCalculation() {
+    	MapManagement.getInstance().setIsRunning(false);
+    	try {
+    	    Thread.sleep(200);
+    	} catch(InterruptedException ex) {
+    	    Thread.currentThread().interrupt();
+    	}
+    	MapManagement.getInstance().setIsRunning(true);
+        return true;
+    }
 }

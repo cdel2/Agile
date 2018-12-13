@@ -19,6 +19,7 @@ public class MapManagement{
     private List<Pair<List<Delivery>, Map<Long,Deliverer>>> history = new ArrayList<Pair<List<Delivery>, Map<Long,Deliverer>>>() ;
     private Warehouse warehouse;
     private Time endOfDay = new Time(18,0,1);
+    private volatile boolean isRunning = true;
 
     private static MapManagement instance = null;
 
@@ -72,6 +73,15 @@ public class MapManagement{
     public void setEndOfDay (Time t) {
     	this.endOfDay = t;
     }
+    
+    public void setIsRunning(boolean b) {
+		isRunning = b;
+
+	}
+    
+    public boolean getIsRunning() {
+		return isRunning;
+	}
 
     /**
      * Gives each deliverer a round

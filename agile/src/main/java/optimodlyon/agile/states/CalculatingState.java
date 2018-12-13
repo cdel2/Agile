@@ -71,15 +71,18 @@ public class CalculatingState extends DefaultState {
         history.clear();
         MapManagement.getInstance().pushToHistory();
         System.out.println("after push");
+    	MapManagement.getInstance().setIsRunning(true);
     }
     
     @Override
     public boolean stopCalculation() {
-        boolean result;
-        System.out.println("in state");
-        TSP tsp = new TSP();
-        tsp.stopAlgorithm();
-        result = true;
-        return result;
+    	MapManagement.getInstance().setIsRunning(false);
+    	try {
+    	    Thread.sleep(200);
+    	} catch(InterruptedException ex) {
+    	    Thread.currentThread().interrupt();
+    	}
+    	MapManagement.getInstance().setIsRunning(true);
+        return true;
     }
 }
