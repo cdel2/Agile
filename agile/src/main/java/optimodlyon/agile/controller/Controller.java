@@ -43,7 +43,8 @@ public class Controller {
      */
     public void newDelivery(Long idDelivery, int duration) throws Exception {
         try {
-			currentState.addDelivery(idDelivery, duration);
+			currentState.addDelivery(idDelivery, duration, counter);
+			counter = 0;
 		} catch (Exception e) {
 			throw e;
 		}

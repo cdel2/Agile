@@ -226,6 +226,13 @@ public class MapManagement{
         Pair<List<Delivery>, Map<Long,Deliverer>> p = new StatePair(newListDelivery, newListDeliverer);
     	history.add(p);
 
+        System.out.println("into add");
+        for (int k = 0; k < history.size(); k++) {
+                System.out.println(k);
+                for (int i = 0; i < history.get(k).getKey().size(); i++) {
+                        System.out.println(history.get(k).getKey().get(i));
+                }
+        }
 
     }
 
@@ -235,6 +242,28 @@ public class MapManagement{
     
     public void setHistory(List<Pair<List<Delivery>, Map<Long,Deliverer>>> history) {
     	this.history = history;
+    }
+    
+    public void clearHistory(int counter) {
+        
+        int index = history.size()-counter;
+        System.out.println("clearhistory index = " +  history.size() + "-" + counter);
+        
+        for(int i = index; i < history.size(); i++) {
+            history.remove(i);
+            System.out.println("removed elements of history at index " + i);
+        }
+        
+		Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
+		
+        System.out.println("into clear");
+        for (int k = 0; k < history.size(); k++) {
+                System.out.println(k);
+                for (int i = 0; i < history.get(k).getKey().size(); i++) {
+                        System.out.println(history.get(k).getKey().get(i));
+                }
+        }
+        System.out.println("removed right elements");
     }
 }
 

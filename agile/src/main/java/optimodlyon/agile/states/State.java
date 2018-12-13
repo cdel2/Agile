@@ -7,7 +7,7 @@ public interface State {
 	
 	public void startCalculation(int nb) throws Exception;
 	
-	public void addDelivery(Long idDelivery, int duration) throws Exception;
+	public void addDelivery(Long idDelivery, int duration, int counter) throws Exception;
 
 	public void undo(int counter) throws Exception;
     

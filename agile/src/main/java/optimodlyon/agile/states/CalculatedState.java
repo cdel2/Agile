@@ -28,7 +28,7 @@ import optimodlyon.agile.util.Time;
 
 public class CalculatedState extends LoadedDeliveriesState{
 	@Override
-	public void addDelivery(Long idDelivery, int duration) throws Exception{
+	public void addDelivery(Long idDelivery, int duration, int counter) throws Exception{
 		/*
 		 * Create a new round between the warehouse and the new point to deliver
 		 * The startTime of the round is 00:00.00 hence its EndTime is the duration
@@ -147,6 +147,8 @@ public class CalculatedState extends LoadedDeliveriesState{
 		} else {
 			throw new FunctionalException("The added round exceed the end of working day time");
 		}
+		
+        MapManagement.getInstance().clearHistory(counter);
         MapManagement.getInstance().pushToHistory();
     	MapManagement.getInstance().setIsRunning(true);
 	}
@@ -187,6 +189,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            //it.remove(); // avoids a ConcurrentModificationException
 	        }
             MapManagement.getInstance().getListDelivery().remove(toRemove);
+            
             MapManagement.getInstance().pushToHistory();
         }
 	}
