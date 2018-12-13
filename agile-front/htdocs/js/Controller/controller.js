@@ -17,10 +17,19 @@ class Controller{
 
     loadRound(){
         let value = $("#numInput").val();
-        $("#loadRounds").html("Cancel").addClass("btn-danger").removeClass("btn-warning");
         if(value === ""){
             value = 3;
         }
+        if(isNaN(value) || value<=0){
+            $("#numInput").removeClass("is-valid");
+            $("#numInput").addClass("is-invalid");
+            return false;
+        }else{
+            $("#numInput").removeClass("is-invalid");
+            $("#numInput").addClass("is-valid");
+        }
+        $("#loadRounds").html("Cancel").addClass("btn-danger").removeClass("btn-warning");
+
         this.View.loadRound(value);
         return false;
     }
@@ -57,7 +66,6 @@ class Controller{
     }
 
     addPoint(){
-        console.log()
         if(this.state.constructor.name === "AddPointState"){
             this.state = new CalcState();
             this.View.update();

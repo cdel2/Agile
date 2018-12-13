@@ -1,7 +1,7 @@
 class Round{
     constructor(){
         this.paths = new Object();
-        this.userPaths;
+        this.userPaths = new Object();
         this.colors = ["green", "red", "purple", "blue", "lime", "aqua", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
         this.firstPath = -1;
         this.stop=null;
@@ -172,7 +172,7 @@ class Round{
     createPathHtml(color, startTime, endTime, id){
         var temp =  "<div class='pathLine' id='pl"+id+"'>";
         temp += "<div id='colorSample' style='background-color:"+color+";'></div>";
-        temp += "<p id='roundDes'>Depart : "+timeToString(startTime)+"<br>Arrivée : "+timeToString(endTime)+"</p>";
+        temp += "<p id='roundDes'>Départ : "+timeToString(startTime)+"<br>Arrivée : "+timeToString(endTime)+"</p>";
         temp += "<div class='delLineButtons'>";
         temp += "<button class='btn btn-warning viewButton' data-toggle='collapse' href='#cl"+id+"'><i class='fas fa-info-circle'></i></button>";
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.pathToForeground("+id+");'><i class='fas fa-arrow-up'></i></button>";

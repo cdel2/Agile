@@ -106,9 +106,12 @@
         <form onsubmit="Ctrl.loadRound(); return false;">
           <div class="form-group">
             <label for="numInput">Nombre de livreurs</label>
-            <input id="numInput" class="form-control" placeholder="Défaut : 3">
+            <input id="numInput" class="form-control" placeholder="Défaut : 3" autocomplete="off">
+            <div class="invalid-feedback">
+              Veuillez rentrer un nombre valide.
+            </div>
           </div>
-          <button type="submit" id="loadRounds" class="btn btn-warning" style="width:60%" onclick="Ctrl.loadRound();" disabled>Calculer itinéraires</button>
+          <button type="submit" id="loadRounds" class="btn btn-warning" style="width:60%" disabled>Calculer itinéraires</button>
         </form>
         <hr />
 

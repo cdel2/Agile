@@ -144,7 +144,7 @@ class Deliveries{
         for(var j = 0; j<pathDel.length; j++){
                 let del = pathDel[j];
                 if(this.selectDelivery!=null && this.selectedDel === del){
-                    tmp+="<b>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+" (sélectioné)<br/></b>";
+                    tmp+="<b>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+" (sélectionné)<br/></b>";
                 }else{
                     if(del.id === this.warehouse.id){
                         tmp+="<span><i class='fas fa-home'></i> - Entrepot, Arrivée à "+timeToString(del.timeArrival)+"<br/></span>";
@@ -154,9 +154,9 @@ class Deliveries{
                         past=false;
                     }
                     if(past){
-                        tmp+="<i>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+"<br/></i>";
+                        tmp+="<i>"+j+" - Livraison à : "+timeToString(del.timeArrival)+ ", temps de livraison : "+ secondsToMS(del.duration) + "<br/></i>";
                     }else{
-                        tmp+=j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Sera livré à "+timeToString(del.timeArrival)+"<br/>";
+                        tmp+=j+" - Livraison à : "+timeToString(del.timeArrival)+ ", temps de livraison : "+ secondsToMS(del.duration) + "<br/>";
                     }
                 }
         }

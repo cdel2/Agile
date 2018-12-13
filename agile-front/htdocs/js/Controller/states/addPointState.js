@@ -28,7 +28,18 @@ class AddPointState extends State{
         let View = Ctrl.View;
         let a = false;
         if(!Ctrl.dragged && evt.srcElement.tagName==="CANVAS"){
-            console.log("CANVAS");
+            let value = $("#delDuration").val();
+            if(value === ""){
+                value = 200;
+            }
+            if(isNaN(value) || value<=0){
+                $("#delDuration").removeClass("is-valid");
+                $("#delDuration").addClass("is-invalid");
+                return false;
+            }else{
+                $("#delDuration").removeClass("is-invalid");
+                $("#delDuration").addClass("is-valid");
+            }
             let ratio = View.Canvas.ratio;
             var nodeId = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
             View.Deliveries.addUserDelivery(parseInt(nodeId));
