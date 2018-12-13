@@ -37,4 +37,8 @@ class DelState extends State{
         
         super.MouseUp(evt);
     }
+
+    handleKeyPress(evt){
+        
+    }
 }

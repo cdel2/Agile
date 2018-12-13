@@ -37,4 +37,16 @@ class CalcState extends State{
         }
         super.MouseUp(evt);
     }
+
+    handleKeyPress(evt){
+        console.log(evt);
+        switch(evt.charCode){
+            case 26:
+                Ctrl.undo();
+                break;
+            case 25:
+                Ctrl.redo();
+                break;
+        }
+    }
 }

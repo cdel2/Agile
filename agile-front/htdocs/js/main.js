@@ -38,12 +38,8 @@ function init(){
     },false);
 
     window.addEventListener("keypress", function(evt){
-        console.log(evt);
+        Ctrl.state.handleKeyPress(evt);
     }, false);
-    /*function KeyPress(e) {
-        var evtobj = window.event? event : e
-        if (evtobj.keyCode == 90 && evtobj.ctrlKey) alert("Ctrl+z");
-    }*/
 }
 
 

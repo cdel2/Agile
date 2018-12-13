@@ -38,4 +38,8 @@ class RmvPointState extends State{
         super.MouseUp(evt);
         if(a) Ctrl.state = new CalcState();
     }
+
+    handleKeyPress(evt){
+        
+    }
 }
