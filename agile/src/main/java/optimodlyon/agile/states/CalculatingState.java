@@ -31,7 +31,7 @@ public class CalculatingState extends DefaultState {
 
     @Override
     public void startCalculation(int nb) throws Exception {	
-        System.out.println("calculating...");
+        System.out.println("calculating.....");
         Clustering clustering = new Clustering();
         Dijkstra dijkstra = new Dijkstra();
         TSP tsp = new TSP();
@@ -56,8 +56,9 @@ public class CalculatingState extends DefaultState {
 			}
 			Time startTime=MapManagement.getInstance().getWarehouse().getTimeStart();
 
-            Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
+            //Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
             //Round round = tsp.startTSPMinDistance(10000, graph.size(), graph, startTime, dijkstra);
+            Round round = tsp.startTSPClosestDelivery(10000, graph.size(), graph, startTime, dijkstra);
 			System.out.println(round);
             finalRound.add(round);
         }
