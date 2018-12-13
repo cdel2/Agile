@@ -16,17 +16,6 @@ public class TSPMatrix extends TSPTemplate{
 		Map<Long, Map<Long, Float>> updatedGraph= generateGraph(current, visited, graph);
 		Map<Long, Float> ri = generateRi(updatedGraph);
 		Map<Long, Float> ci = generateCi(updatedGraph, ri);
-		Map<Long, Float> reduced = computeDij(current, updatedGraph.get(current), ri, ci);
-		float value =0;
-		Iterator it = reduced.entrySet().iterator();
-		
-		long key;
-		while(it.hasNext())
-		{
-			key = (long) (((Entry) it.next()).getKey());
-			value = value + reduced.get(key);
-			
-		}
 		float b = computeB(ri, ci);
 		return b;
 	}

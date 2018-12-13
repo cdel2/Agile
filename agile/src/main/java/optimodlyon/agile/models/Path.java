@@ -14,10 +14,9 @@ public class Path {
 
 
     public Path() {
-		duration = 0;
-		listSegment=new ArrayList<Segment>();
-		arrival=null;
-	}
+        duration = 0;
+        listSegment.clear();
+    }
 
     public Path(Path p) {
         duration = p.duration;

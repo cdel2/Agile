@@ -23,7 +23,6 @@ public class PathTest {
 	Intersection i3;
 	Path myPath;
 	Segment s3, s4,s6;
-	List<Segment> a0;
 	
 	
 	@Before
@@ -43,7 +42,7 @@ public class PathTest {
         Segment s5 = new Segment(i2,i4,3);
          s6 = new Segment(i3,i4,20);
         Segment s7 = new Segment(i3,i5,15);
-        a0 = new ArrayList<Segment>();
+        List<Segment> a0 = new ArrayList<Segment>();
         List<Segment> a1 = new ArrayList<Segment>();
         List<Segment> a2 = new ArrayList<Segment>();
         List<Segment> a3 = new ArrayList<Segment>();
@@ -91,15 +90,6 @@ public class PathTest {
 		assertEquals(myPath.getListSegment().toString(),myPath2.getListSegment().toString());
 		assertEquals(myPath.getArrival(),myPath2.getArrival());
 		assertEquals(myPath.getDepartureTime(),myPath2.getDepartureTime());
-	}
-	
-	@Test
-	public void testPathListOfSegmentDeliveryFloatTime() {
-		Path myPath= new Path((ArrayList<Segment>) a0,myDelivery,(float)30.0,myDeparture);
-		assertEquals(myPath.getDuration(),30.0,0);
-		assertEquals(myPath.getListSegment().toString(),a0.toString());
-		assertEquals(myPath.getArrival(),myDelivery);
-		assertEquals(myPath.getDepartureTime().toString(),myDeparture.toString());
 	}
 
 
