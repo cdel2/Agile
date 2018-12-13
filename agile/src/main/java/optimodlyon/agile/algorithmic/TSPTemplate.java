@@ -33,8 +33,8 @@ public abstract class  TSPTemplate implements TSPInterface {
 			
 		}
 		notVisited.remove(MapManagement.getInstance().getWarehouse().getId());
-		System.out.println(MapManagement.getInstance().getWarehouse().getId());
-		System.out.println(listDeliveries);
+		//System.out.println(MapManagement.getInstance().getWarehouse().getId());
+		//System.out.println(listDeliveries);
 		List<Long> visited = new ArrayList<Long>();
 		visited.add(MapManagement.getInstance().getWarehouse().getId()); 
 		branchAndBound(MapManagement.getInstance().getWarehouse().getId(), notVisited, visited, 0, listDeliveries, graph, System.currentTimeMillis(), timeLimit);

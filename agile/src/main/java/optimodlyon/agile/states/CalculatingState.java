@@ -22,7 +22,7 @@ public class CalculatingState extends DefaultState {
 
     @Override
     public void loadDeliveries(String file) {
-        System.out.println("loading deliveries...");
+        //System.out.println("loading deliveries...");
         List<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
         Warehouse whs = DeserializerXML.deserializeWarehouse(file);
         MapManagement.getInstance().setListDelivery(listDelivery);
@@ -31,7 +31,7 @@ public class CalculatingState extends DefaultState {
 
     @Override
     public void startCalculation(int nb) throws Exception {	
-        System.out.println("calculating...");
+        //System.out.println("calculating...");
         Clustering clustering = new Clustering();
         Dijkstra dijkstra = new Dijkstra();
         TSP tsp = new TSP();
@@ -65,12 +65,9 @@ public class CalculatingState extends DefaultState {
         }
 
         MapManagement.getInstance().assignRounds(finalRound); 
-        
-        System.out.println("before push");	
-        List<Pair<List<Delivery>, Map<Long,Deliverer>>> history = MapManagement.getInstance().getHistory();
-        history.clear();
+        	
+        MapManagement.getInstance().getHistory().clear();
         MapManagement.getInstance().pushToHistory();
-        System.out.println("after push");
     }
     
     @Override

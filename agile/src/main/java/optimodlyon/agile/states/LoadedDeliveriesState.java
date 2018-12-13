@@ -24,8 +24,8 @@ public class LoadedDeliveriesState extends DefaultState{
 	
 	@Override
 	public void startCalculation(int nb) throws Exception {	
-		System.out.println("calculating...!");
-		System.out.println("cheeeyyyyyy");
+		//System.out.println("calculating...!");
+		//System.out.println("cheeeyyyyyy");
 		Clustering clustering = new Clustering();
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
@@ -45,7 +45,7 @@ public class LoadedDeliveriesState extends DefaultState{
 			//Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
 			Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
 			//Round round = tsp.startTSPClosestDelivery(100000, graph.size(), graph, startTime, dijkstra);
-			System.out.println("heeeey");
+			//System.out.println("heeeey");
 			finalRound.add(round);
 		}
 		

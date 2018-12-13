@@ -196,23 +196,23 @@ public class MapManagement{
     	List<Delivery> newListDelivery = new ArrayList<Delivery>(listDelivery);
     	
     	Map<Long, Deliverer> newListDeliverer = new HashMap<Long, Deliverer>();
-		Deliverer newDeliverer;
-		List<Round> newListRound;	
-		
-		for (Map.Entry<Long, Deliverer> entry : listDeliverer.entrySet())
-		{
-			//create new deliverer with the id of current deliverer
-			newDeliverer = new Deliverer(entry.getKey());
-			
-			//create new list round with current deliverer's round list
-			newListRound = new ArrayList<Round>(entry.getValue().getListRound());
-			
-			//assign round list to new deliverer
-			newDeliverer.setListRound(newListRound);
-			
-			newListDeliverer.put(entry.getKey(), newDeliverer);
-		}
-	
+        Deliverer newDeliverer;
+        List<Round> newListRound;	
+
+        for (Map.Entry<Long, Deliverer> entry : listDeliverer.entrySet())
+        {
+                //create new deliverer with the id of current deliverer
+                newDeliverer = new Deliverer(entry.getKey());
+
+                //create new list round with current deliverer's round list
+                newListRound = new ArrayList<Round>(entry.getValue().getListRound());
+
+                //assign round list to new deliverer
+                newDeliverer.setListRound(newListRound);
+
+                newListDeliverer.put(entry.getKey(), newDeliverer);
+        }
+
         Pair<List<Delivery>, Map<Long,Deliverer>> p = new StatePair(newListDelivery, newListDeliverer);
     	history.add(p);
 

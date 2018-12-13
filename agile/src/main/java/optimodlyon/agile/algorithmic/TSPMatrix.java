@@ -251,7 +251,7 @@ public class TSPMatrix extends TSPTemplate{
 			{
 				key2 = (long) (((Entry) it2.next()).getKey());
 				current = computePiij(graph, key1, key2);
-				System.out.println("key1 : " + key1 + " key2 : "+ key2+ " : current : " + current);
+				//System.out.println("key1 : " + key1 + " key2 : "+ key2+ " : current : " + current);
 				if(current > pi)
 				{
 					pi = current;
