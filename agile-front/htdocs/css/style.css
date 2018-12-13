@@ -12,7 +12,6 @@
 
 #map{
     background-color: beige;
-    cursor: pointer;
 }
 
 #loaderEl{
@@ -124,4 +123,8 @@
 
 .collapse{
     margin-bottom: 12px;
+}
+
+.selectable{
+    cursor: pointer;
 }

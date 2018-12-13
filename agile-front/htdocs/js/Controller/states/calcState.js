@@ -31,8 +31,8 @@ class CalcState extends State{
         let View = Ctrl.View;
         if(!Ctrl.dragged && evt.srcElement.tagName==="CANVAS"){
             let ratio = View.Canvas.ratio;
-            let delivery = View.Deliveries.findBestDelivery(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
-            View.Deliveries.selectDelivery(delivery);
+            let deliveryId = View.Deliveries.findBestDelivery(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
+            View.Deliveries.selectDelivery(deliveryId);
             View.update();
         }
         super.MouseUp(evt);
