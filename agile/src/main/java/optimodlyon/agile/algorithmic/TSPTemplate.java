@@ -21,8 +21,10 @@ public abstract class  TSPTemplate implements TSPInterface {
 		Iterator it = graph.entrySet().iterator(); 
 		long key;
 		listDeliveries.add(MapManagement.getInstance().getWarehouse().getId());
+		outerloop:
 		while(it.hasNext())
 		{
+			if(!MapManagement.getInstance().getIsRunning()) break outerloop;
 			key = (long) (((Entry) it.next()).getKey());
 			notVisited.add(key);
 			if(!listDeliveries.contains(key))
@@ -58,7 +60,9 @@ public abstract class  TSPTemplate implements TSPInterface {
 	    	}
 	    } else if (currentDuration + bound(id, notVisited, visited, listDeliveries, graph) < getBestDuration()){
 	        Iterator it = iterator(id, notVisited, listDeliveries, graph );
+	        outerloop:
 	        while (it.hasNext()){
+	        	if(!MapManagement.getInstance().getIsRunning()) break outerloop;
 	        	Long next = (Long) it.next();
 
 	        	visited.add(next);

@@ -150,6 +150,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 		
         MapManagement.getInstance().clearHistory(counter);
         MapManagement.getInstance().pushToHistory();
+    	MapManagement.getInstance().setIsRunning(true);
 	}
 	
 	public void removeDelivery(Long idDelivery, boolean calc) throws Exception {
@@ -326,5 +327,16 @@ public class CalculatedState extends LoadedDeliveriesState{
 		MapManagement.getInstance().setListDeliverer(pair.getValue());
 		
 	}
-	
+    
+    @Override
+    public boolean stopCalculation() {
+    	MapManagement.getInstance().setIsRunning(false);
+    	try {
+    	    Thread.sleep(200);
+    	} catch(InterruptedException ex) {
+    	    Thread.currentThread().interrupt();
+    	}
+    	MapManagement.getInstance().setIsRunning(true);
+        return true;
+    }
 }
