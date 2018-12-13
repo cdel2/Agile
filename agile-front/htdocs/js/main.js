@@ -37,7 +37,7 @@ function init(){
         Ctrl.state.handleScroll(evt);
     },false);
 
-    window.addEventListener("keypress", function(evt){
+    window.addEventListener("keydown", function(evt){
         Ctrl.state.handleKeyPress(evt);
     }, false);
 }

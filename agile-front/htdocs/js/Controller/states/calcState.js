@@ -39,14 +39,17 @@ class CalcState extends State{
     }
 
     handleKeyPress(evt){
-        console.log(evt);
-        switch(evt.charCode){
-            case 26:
-                Ctrl.undo();
-                break;
-            case 25:
-                Ctrl.redo();
-                break;
+        var evtobj = window.event? event : evt
+        console.log(evtobj);
+        if(evt.ctrlKey){
+            switch(evt.key){
+                case 'z':
+                    Ctrl.undo();
+                    break;
+                case 'y':
+                    Ctrl.redo();
+                    break;
+            }
         }
     }
 }
