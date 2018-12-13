@@ -30,15 +30,10 @@ public class Controller {
     }
 
     public void doAlgorithm(int nb) throws Exception {
-        try {
-			currentState = new CalculatingState();	
-			currentState.startCalculation(nb);
-			counter=0;
-			currentState = new CalculatedState();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}	
+		currentState = new CalculatingState();	
+		currentState.startCalculation(nb);
+		counter=0;
+		currentState = new CalculatedState();
     }
 
     /**

@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
+import optimodlyon.agile.exceptions.FunctionalException;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
@@ -140,57 +141,13 @@ public class CalculatedState extends LoadedDeliveriesState{
 				newRound.setEndTime(tend);
 			}
 			if(!MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
-				rmvDelivery(idDelivery);
+				removeDelivery(idDelivery, true);
 			}
 			System.out.println("Delivery " + idDelivery + " added to deliverer " + keyBestDeliv );
 		} else {
-			System.out.println("We didn't find a deliverer or we don't finish before 18h");
+			throw new FunctionalException("The added round exceed the end of working day time");
 		}
         MapManagement.getInstance().pushToHistory();
-	}
-	
-	/*
-	 * From here we start all methods to remove a delivery from our deliveries
-	 */
-	public void rmvDelivery(Long idDelivery) throws Exception{
-		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
-		System.out.println(toRemove);
-        if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
-	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
-	        while (it.hasNext()) {
-	            Map.Entry <Long, Deliverer> pair = (Map.Entry) it.next();
-	            List<Round> rounds = pair.getValue().getListRound();
-	            int i=0;
-	            outerloop:
-	            for (Round round : rounds) {
-	            	List<Path> newListPath = new ArrayList();
-	            	for(Path path : round.getListPath()) {
-	            		if((long)path.getArrival().getId()==(long)toRemove.getId()) {
-	            			if(round.getListPath().size()==2) {
-	            				System.out.println("Je remove la boloss");
-	            				rounds.remove(round);
-	            			}
-	            			else {
-	            				System.out.println("wola c'est la merde0");
-	            				System.out.println(i);
-		            			Round newRound = calculateRoundByRemovingNodeToExisting(pair.getValue().getListRound().get(i), MapManagement.getInstance().getMap(), path.getArrival().getId());
-	            				System.out.println("wola c'est la merde1");
-	            				System.out.println(newRound);
-		            			pair.getValue().changeRound(i, newRound);
-	            				System.out.println("wola c'est la merde2");
-	            			}
-	            			pair.getValue().updateRounds(i);
-	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
-	            			break outerloop;
-	            		}
-	            	}
-	            	i++;
-	            }
-	            //it.remove(); // avoids a ConcurrentModificationException
-	        }
-			System.out.println("bah MDR");
-            MapManagement.getInstance().getListDelivery().remove(toRemove);
-        }
 	}
 	
 	public void removeDelivery(Long idDelivery, boolean calc) throws Exception {
