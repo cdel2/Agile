@@ -16,62 +16,6 @@ import optimodlyon.agile.models.Segment;
  *
  */
 public class Dijkstra {
-        public static void main(String[] args) {	
-	Map<Long, List<Segment>>completeMap = new HashMap<Long, List<Segment>>();
-        Intersection i0 = new Intersection((long)0,(float)5.0,(float)3.0);
-        Intersection i1 = new Intersection((long)1,(float)3.0,(float)3.0);
-        Intersection i2 = new Intersection((long)2,(float)4.0,(float)3.0);
-        Intersection i3 = new Intersection((long)3,(float)1.0,(float)3.0);
-        Intersection i4 = new Intersection((long)4,(float)1.0,(float)3.0);
-        Intersection i5 = new Intersection((long)5,(float)1.0,(float)3.0);
-        Segment s0 = new Segment(i0,i1,2);
-        Segment s1 = new Segment(i1,i3,3);
-        Segment s2 = new Segment(i0,i3,4);
-        Segment s3 = new Segment(i0,i2,4);
-        Segment s4 = new Segment(i2,i3,1);
-        Segment s5 = new Segment(i2,i4,3);
-        Segment s6 = new Segment(i3,i4,20);
-        Segment s7 = new Segment(i3,i5,15);
-        List<Segment> a0 = new ArrayList<Segment>();
-        List<Segment> a1 = new ArrayList<Segment>();
-        List<Segment> a2 = new ArrayList<Segment>();
-        List<Segment> a3 = new ArrayList<Segment>();
-        List<Segment> a4 = new ArrayList<Segment>();
-        List<Segment> a5 = new ArrayList<Segment>();
-        a0.add(s0);
-        a0.add(s2);
-        a0.add(s3);
-        a1.add(s1);
-        a2.add(s4);
-        a2.add(s5);
-        a3.add(s6);
-        a3.add(s7);
-        completeMap.put((long)0, a0);
-        completeMap.put((long)1, a1);
-        completeMap.put((long)2, a2);
-        completeMap.put((long)3, a3);
-        completeMap.put((long)4, a4);
-        completeMap.put((long)5, a5);
-	MapManagement.getInstance().getMap().setGraph(completeMap);
-	List<Intersection> answer = new ArrayList<Intersection>();
-	answer.add(i1);
-	answer.add(i3);
-	answer.add(i2);
-	List<Intersection> test = i0.findSuccessorSegments();
-	int test2=0;
-        /*
-        List<Long> listDeliveryPoints = new ArrayList<Long>();
-        listDeliveryPoints.add((long)0);
-        listDeliveryPoints.add((long)3);
-        //System.out.println(completeMap.toString());
-        Dijkstra dij = new Dijkstra();
-        List<Long> grey = new ArrayList<Long>();
-        grey.add((long)0);
-        grey.add((long)3);
-        grey.add((long)5);
-        
-        dij.doDijkstra(completeMap, grey);*/
-    }
         
     /**
      * Contains the id of the Intersection and a Pair 
@@ -124,20 +68,6 @@ public class Dijkstra {
         
         return tspGraph;
     }
-	
-    /*
-    public void formatFullDijkstra (List<Long> listIdDeliveries) {
-            Long currentNode;
-            Map<Long,Map<Long,Long>> dijkstraForDeliveries = new HashMap<Long, Map<Long,Long>>();
-            for(Long idDelivery : listIdDeliveries) {
-                    for(Long idSource : listIdDeliveries) {
-                            currentNode = idDelivery;
-                            while(currentNode != idSource) {
-                                    dijkstraForDeliveries.
-                            }
-                    }
-            }
-    }*/
 
 	
 	public Map<Long, Float> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source) throws RuntimeException {
@@ -146,12 +76,10 @@ public class Dijkstra {
             int nbOfDeliveryPointsFound =0;
         
             // List of nodes of which the distance from source is the shortest
-
             List<Long> settledNodes = new ArrayList<Long>();
 
             // List of the Nodes already visited at least once but not yet evaluated (settled)
             // Corresponds to the "grey" color in the algorithm
-
             List<Long> visitedNodes = new ArrayList<Long>();
         
             /*for each Node sj in S do
@@ -160,20 +88,11 @@ public class Dijkstra {
             *  sj is white;
             *  d[s0] <- 0;
             */
-
-            //System.out.println("SOurce" + source);
-            if(completeMap.containsKey(source)) {
-                    //System.out.println(completeMap.get(source).toString());
-                    //System.out.println("Source present in map");
-            } else {
-                    //System.out.println("Source not present in map");
-            }
             for (Long key : completeMap.keySet()) {
                 if((long)key != (long)source){
                     Pair p = new Pair((long)-1, Float.MAX_VALUE);
                     dijkstraGraph.put(key,p);
                 } else {
-                    //System.out.println("Source initialized to zero");
                     Pair p = new Pair(key, (float)0);
                     dijkstraGraph.put(key, p);
                 }
@@ -181,7 +100,6 @@ public class Dijkstra {
 		
         // s0 is visited(grey)
         visitedNodes.add(source);
-        
         
         // While there exists a visited(grey) Node
         while(!visitedNodes.isEmpty()) {
@@ -194,15 +112,12 @@ public class Dijkstra {
             for(Long successor : successors) {
                 // if the Node sj is not already settled
                 if(!settledNodes.contains(successor)) {
-                    //System.out.println("	successor : " + successor);
                     /*
                      * if sj is unvisited(white) or visited(grey) then update distance if necessary
                      * if sj is unvisited(white), we add it to the visited(grey) list
                      */
                     if(!visitedNodes.contains(successor)) {
                         visitedNodes.add(successor);
-                        //System.out.println("	successor " + successor + " added to graph");
-                        //System.out.println("	dist of successor: " + dijkstraGraph.get(successor).getDistFromSource());
                     }
 
                     // If the node is an end point of a segment but not yet an intersection
@@ -221,7 +136,6 @@ public class Dijkstra {
                         dijkstraGraph.get(successor).setIdPredecessor(currentNode);
                         dijkstraGraph.get(successor).setDistFromSource(newDist);
                     }
-                //System.out.println("	dist of successor: " + successor +" is "+ dijkstraGraph.get(successor).getDistFromSource());
                 }
             }
             
@@ -235,9 +149,7 @@ public class Dijkstra {
                 tspSubGraph.put(currentNode,dijkstraGraph.get(currentNode).getDistFromSource());
             }
             
-            //System.out.println(currentNode + " removed from dijkstraGraph");
             fullDijkstra.get(currentNode).put(source, dijkstraGraph.get(currentNode).getIdPredecessor());
-            //System.out.println(fullDijkstra.get(currentNode).toString());
             dijkstraGraph.remove(currentNode);
             visitedNodes.remove(currentNode);
 
@@ -249,7 +161,6 @@ public class Dijkstra {
             if(listDeliveryPoints.contains(currentNode)) {
                 nbOfDeliveryPointsFound++;
                 if(nbOfDeliveryPointsFound == listDeliveryPoints.size()) {
-                    //System.out.println("Finished");
                     break;
                 }
             }
@@ -290,8 +201,6 @@ public class Dijkstra {
     	float distFromSource;
         
         for (Long key : visitedNodes) {
-            //System.out.println("Looking for closestNode for :" + key);
-            //System.out.println(dijkstraGraph.get(key).getDistFromSource());
             distFromSource = dijkstraGraph.get(key).getDistFromSource();
 
             if((float)distFromSource < (float)minDistance) {
@@ -341,7 +250,6 @@ public class Dijkstra {
                 newDist = currentDistToCurrent + distFromCurrentToGoal;
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             System.out.println("Couldn't get the current and/or goal Distances from dijkstraGraph");
             e.printStackTrace();
         }

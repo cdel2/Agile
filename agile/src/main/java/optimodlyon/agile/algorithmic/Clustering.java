@@ -140,56 +140,6 @@ public class Clustering {
 
         return sortedDeliveries;
     }
-
-//    public List<List<Delivery>> dispatchCluster(CityMap map, int deliverers){
-//        List<Delivery> sortedDeliveries = sortCluster();
-//        List<List<Delivery>> clusters = new ArrayList<List<Delivery>>();
-//
-//        int nbdeliveries=sortedDeliveries.size();
-//        if(deliverers==1)
-//        {
-//            List<Delivery> currentCluster = new ArrayList<Delivery>();
-//            for(int i=0;i<nbdeliveries;i++)
-//            {
-//                currentCluster.add(sortedDeliveries.get(i));
-//            }
-//            clusters.add(currentCluster);
-//        }
-//
-//        else {
-//            if(deliverers>nbdeliveries) {
-//                deliverers=nbdeliveries;
-//            }
-//            
-//            int modulo = nbdeliveries%deliverers;
-//            int divider=(nbdeliveries-modulo)/deliverers;
-//            int currentDiv=0;
-//            
-//            ArrayList<Integer> listIndex = new ArrayList<Integer>();
-//            
-//            for(int i=0;i<modulo;i++) {
-//                listIndex.add(divider+currentDiv);
-//                currentDiv+=divider+1;
-//            }
-//            
-//            currentDiv--;
-//            
-//            for(int j=modulo;j<deliverers;j++)
-//            {
-//                listIndex.add(currentDiv+divider);
-//                currentDiv+=divider;
-//            }
-//            
-//            List<Delivery> currentCluster=new ArrayList<Delivery>(sortedDeliveries.subList(0, listIndex.get(0)+1));
-//            clusters.add(currentCluster);
-//        
-//            for(int k=1;k<listIndex.size();k++){
-//                currentCluster = new ArrayList<Delivery>(sortedDeliveries.subList(listIndex.get(k-1)+1, listIndex.get(k)+1));
-//                clusters.add(currentCluster);
-//            }
-//        }
-//        return clusters;
-//    }
     
     public List<Delivery> changeStartingPoint(List<Delivery> sortedDeliveries, int deliverers){
     	int nbDel=sortedDeliveries.size();

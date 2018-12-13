@@ -20,7 +20,7 @@ public class Controller {
             currentState.loadMap(file);
             currentState = new LoadedMapState();
         } catch(Exception e) {
-            System.out.println("Erreur lors de InitializeGraph : " + e);
+            System.out.println("Error in InitializeGraph : " + e);
         }				
     }
 

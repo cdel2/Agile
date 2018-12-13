@@ -159,12 +159,6 @@ public class MapManagement{
             if(this.listDeliverer.containsKey(deliv.getId())) {
     			roundToAdd.updateRoundTimes();
                 res = this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
-                if(res) {
-                	System.out.println("Round added to deliverer " + deliv.getId());
-                } else {
-                	System.out.println("Round couldn't be added to deliverer " + deliv.getId());
-                	System.out.println("Details of the round :" + roundToAdd.toString());
-                }
             }
         }
         return res;
@@ -180,10 +174,7 @@ public class MapManagement{
 
     public boolean addDeliveryToListDelivery(Delivery newDelivery) {
             boolean res = false;
-            System.out.println("addDeliveryToListDelivery appelé ");
-            
             if(!this.listDelivery.contains(newDelivery)) {
-            		System.out.println("j'ajoute une delivery car celle-ci n'hexiste pas déjà");
                     this.listDelivery.add(newDelivery);
                     res=true;
             }
@@ -191,10 +182,8 @@ public class MapManagement{
     }
 
     public boolean removeDelivery(Long deliveryId) {
-        System.out.println("removeDelivery appelé ");
         Delivery toRemove = this.getDeliveryById(deliveryId);            
         if(this.listDelivery.contains(toRemove)) {
-        		System.out.println("La delivery n'existe pas ???");
                 this.listDelivery.remove(toRemove);
                 return true;
         }
@@ -225,15 +214,6 @@ public class MapManagement{
 
         Pair<List<Delivery>, Map<Long,Deliverer>> p = new StatePair(newListDelivery, newListDeliverer);
     	history.add(p);
-
-        System.out.println("into add");
-        for (int k = 0; k < history.size(); k++) {
-                System.out.println(k);
-                for (int i = 0; i < history.get(k).getKey().size(); i++) {
-                        System.out.println(history.get(k).getKey().get(i));
-                }
-        }
-
     }
 
     public List<Pair<List<Delivery>, Map<Long,Deliverer>>> getHistory() {
@@ -245,25 +225,10 @@ public class MapManagement{
     }
     
     public void clearHistory(int counter) {
-        
         int index = history.size()-counter;
-        System.out.println("clearhistory index = " +  history.size() + "-" + counter);
-        
         for(int i = index; i < history.size(); i++) {
             history.remove(i);
-            System.out.println("removed elements of history at index " + i);
         }
-        
-		Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
-		
-        System.out.println("into clear");
-        for (int k = 0; k < history.size(); k++) {
-                System.out.println(k);
-                for (int i = 0; i < history.get(k).getKey().size(); i++) {
-                        System.out.println(history.get(k).getKey().get(i));
-                }
-        }
-        System.out.println("removed right elements");
     }
 }
 
