@@ -16,62 +16,6 @@ import optimodlyon.agile.models.Segment;
  *
  */
 public class Dijkstra {
-        public static void main(String[] args) {	
-	Map<Long, List<Segment>>completeMap = new HashMap<Long, List<Segment>>();
-        Intersection i0 = new Intersection((long)0,(float)5.0,(float)3.0);
-        Intersection i1 = new Intersection((long)1,(float)3.0,(float)3.0);
-        Intersection i2 = new Intersection((long)2,(float)4.0,(float)3.0);
-        Intersection i3 = new Intersection((long)3,(float)1.0,(float)3.0);
-        Intersection i4 = new Intersection((long)4,(float)1.0,(float)3.0);
-        Intersection i5 = new Intersection((long)5,(float)1.0,(float)3.0);
-        Segment s0 = new Segment(i0,i1,2);
-        Segment s1 = new Segment(i1,i3,3);
-        Segment s2 = new Segment(i0,i3,4);
-        Segment s3 = new Segment(i0,i2,4);
-        Segment s4 = new Segment(i2,i3,1);
-        Segment s5 = new Segment(i2,i4,3);
-        Segment s6 = new Segment(i3,i4,20);
-        Segment s7 = new Segment(i3,i5,15);
-        List<Segment> a0 = new ArrayList<Segment>();
-        List<Segment> a1 = new ArrayList<Segment>();
-        List<Segment> a2 = new ArrayList<Segment>();
-        List<Segment> a3 = new ArrayList<Segment>();
-        List<Segment> a4 = new ArrayList<Segment>();
-        List<Segment> a5 = new ArrayList<Segment>();
-        a0.add(s0);
-        a0.add(s2);
-        a0.add(s3);
-        a1.add(s1);
-        a2.add(s4);
-        a2.add(s5);
-        a3.add(s6);
-        a3.add(s7);
-        completeMap.put((long)0, a0);
-        completeMap.put((long)1, a1);
-        completeMap.put((long)2, a2);
-        completeMap.put((long)3, a3);
-        completeMap.put((long)4, a4);
-        completeMap.put((long)5, a5);
-	MapManagement.getInstance().getMap().setGraph(completeMap);
-	List<Intersection> answer = new ArrayList<Intersection>();
-	answer.add(i1);
-	answer.add(i3);
-	answer.add(i2);
-	List<Intersection> test = i0.findSuccessorSegments();
-	int test2=0;
-        /*
-        List<Long> listDeliveryPoints = new ArrayList<Long>();
-        listDeliveryPoints.add((long)0);
-        listDeliveryPoints.add((long)3);
-        //System.out.println(completeMap.toString());
-        Dijkstra dij = new Dijkstra();
-        List<Long> grey = new ArrayList<Long>();
-        grey.add((long)0);
-        grey.add((long)3);
-        grey.add((long)5);
-        
-        dij.doDijkstra(completeMap, grey);*/
-    }
         
     /**
      * Contains the id of the Intersection and a Pair 
@@ -125,20 +69,7 @@ public class Dijkstra {
         return tspGraph;
     }
 	
-    /*
-    public void formatFullDijkstra (List<Long> listIdDeliveries) {
-            Long currentNode;
-            Map<Long,Map<Long,Long>> dijkstraForDeliveries = new HashMap<Long, Map<Long,Long>>();
-            for(Long idDelivery : listIdDeliveries) {
-                    for(Long idSource : listIdDeliveries) {
-                            currentNode = idDelivery;
-                            while(currentNode != idSource) {
-                                    dijkstraForDeliveries.
-                            }
-                    }
-            }
-    }*/
-
+   
 	
 	public Map<Long, Float> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source) throws RuntimeException {
             // Map containing the delivery points and the distance between the two
@@ -161,19 +92,12 @@ public class Dijkstra {
             *  d[s0] <- 0;
             */
 
-            //System.out.println("SOurce" + source);
-            if(completeMap.containsKey(source)) {
-                    //System.out.println(completeMap.get(source).toString());
-                    //System.out.println("Source present in map");
-            } else {
-                    //System.out.println("Source not present in map");
-            }
+        
             for (Long key : completeMap.keySet()) {
                 if((long)key != (long)source){
                     Pair p = new Pair((long)-1, Float.MAX_VALUE);
                     dijkstraGraph.put(key,p);
                 } else {
-                    //System.out.println("Source initialized to zero");
                     Pair p = new Pair(key, (float)0);
                     dijkstraGraph.put(key, p);
                 }
