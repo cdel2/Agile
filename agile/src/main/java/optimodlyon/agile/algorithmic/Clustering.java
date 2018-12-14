@@ -73,7 +73,6 @@ public class Clustering {
                     double O=0.0;
                     resO.add(O);
                 }else {
-                    System.out.println("Erreur point de livraison à l'entrepot");
                     break;
                 }
             }
@@ -86,7 +85,6 @@ public class Clustering {
                     double O=Math.PI*0.5;
                     resO.add(O);
                 }else {
-                    System.out.println("Erreur point de livraison à l'entrepot");
                     break;
                 }
             }
@@ -140,6 +138,8 @@ public class Clustering {
 
         return sortedDeliveries;
     }
+
+
     
     public List<Delivery> changeStartingPoint(List<Delivery> sortedDeliveries, int deliverers){
     	int nbDel=sortedDeliveries.size();
