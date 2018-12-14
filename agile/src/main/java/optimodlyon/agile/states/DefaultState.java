@@ -11,7 +11,7 @@ import optimodlyon.agile.xml.DeserializerXML;
 
 public class DefaultState implements State {
 	
-	public void loadMap(String file) {
+	public void loadMap(String file) throws Exception {
 		Map<Long, List<Segment>> graph = DeserializerXML.deserializeMap(file);
 		MapManagement.getInstance().getMap().setGraph(graph);
 	}

@@ -1,7 +1,7 @@
 package optimodlyon.agile.states;
 
 public interface State {
-    public void loadMap(String file);
+    public void loadMap(String file) throws Exception;
 
     public void loadDeliveries(String file) throws Exception;
 

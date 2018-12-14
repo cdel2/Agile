@@ -31,7 +31,7 @@ public class EndPoints {
     Controller controller = new Controller();
 	
     @GetMapping("/map/{file}")
-    public CityMap  getMap(@PathVariable String file) {
+    public CityMap  getMap(@PathVariable String file) throws Exception {
         controller.initializeGraph(file);
         return MapManagement.getInstance().getMap();
     }

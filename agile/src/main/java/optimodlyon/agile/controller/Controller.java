@@ -2,6 +2,10 @@ package optimodlyon.agile.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
 import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.states.CalculatedState;
 import optimodlyon.agile.states.CalculatingState;
@@ -18,11 +22,15 @@ public class Controller {
         
     }
 
-    public void initializeGraph(String file) {
+    public void initializeGraph(String file) throws Exception {
         try {
             currentState.loadMap(file);
             currentState = new LoadedMapState();
-        } catch(Exception e) {
+        } 
+        catch (SAXException e) {
+        	throw e;
+        }
+        catch(Exception e) {
             System.out.println("Error in InitializeGraph : " + e);
         }				
     }

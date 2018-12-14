@@ -37,7 +37,7 @@ public class DeserializerXML {
 	        return true;
 	}
 
-  public static Map<Long, List<Segment>> deserializeMap(String type) {
+  public static Map<Long, List<Segment>> deserializeMap(String type) throws Exception {
 	
     try {
 
@@ -108,7 +108,7 @@ public class DeserializerXML {
     } catch (Exception e) {
         e.printStackTrace();
         System.out.println("XML file for CityMap is wrong");
-        return null;
+        throw e;
     }
 }
   
