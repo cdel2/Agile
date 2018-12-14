@@ -1,3 +1,7 @@
+/**
+ * Primary state, nothing loaded
+ * @extends State
+ */
 class InitState{
     constructor(){
         disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#rmvDel", "#delSelector"]); 

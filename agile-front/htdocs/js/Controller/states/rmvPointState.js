@@ -1,3 +1,7 @@
+/**
+ * Removing point state
+ * @extends State
+ */
 class RmvPointState extends State{
     constructor(){
         super();

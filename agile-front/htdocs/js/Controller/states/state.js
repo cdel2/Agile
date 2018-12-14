@@ -1,3 +1,6 @@
+/**
+ * Original class state implementing common usages of the application
+ */
 class State{
     constructor(){
     }

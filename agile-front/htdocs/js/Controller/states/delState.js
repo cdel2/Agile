@@ -1,3 +1,7 @@
+/**
+ * Loaded deliveries state
+ * @extends State
+ */
 class DelState extends State{
     constructor(){
         super();

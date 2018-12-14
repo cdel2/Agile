@@ -1,3 +1,7 @@
+/**
+ * Adding point state
+ * @extends State
+ */
 class AddPointState extends State{
     constructor(){
         super();
