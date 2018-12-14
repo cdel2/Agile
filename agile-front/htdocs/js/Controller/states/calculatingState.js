@@ -1,7 +1,7 @@
 class CalculatingState extends State{
     constructor(){
         super();
-        $("#loadRounds").html("Cancel").addClass("btn-danger").removeClass("btn-warning");
+        $("#loadRounds").html("Annuler").addClass("btn-danger").removeClass("btn-warning");
     }
     
     handleScroll(evt){

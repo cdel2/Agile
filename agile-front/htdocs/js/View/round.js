@@ -74,9 +74,12 @@ class Round{
                         deliveryTemp.push({id:arrival.id, timeArrival:arrival.timeArrival, duration:arrival.duration, color: color1, idPath: cmpt});
                     }
 
+                    if(z===(data[i].listRound.length-1)){
+                        endTimes.push(data[i].listRound[z].endTime);
+                    }
+
                     if(z === 0){
                         $("#pathMenu").append(object.createPathHtml(color1, data[i].listRound[0].startTime, data[i].listRound[0].endTime, cmpt));
-                        endTimes.push(data[i].listRound[0].endTime);
                         
                         object.paths[cmpt] = temp;
                         Ctrl.View.Deliveries.delNodes[cmpt] = deliveryTemp;
@@ -87,7 +90,7 @@ class Round{
                 }
                 cmpt++;
             }
-
+            console.log(endTimes);
             delete Ctrl.View.Deliveries.delNodes[-1];
             initSlider(endTimes);
             Ctrl.View.update();
@@ -101,6 +104,10 @@ class Round{
                 alertBox("Un problème est survenu, vous tentez peut-être de livrer dans une impasse ?");
             }else if(status === 406){
                 alertBox("La requête oblige les livraisons à finir après 18h, veuillez réduire le nombre de livraisons ou augmenter le nombre de livreurs");
+            }else if(status === 410){
+                alertBox("Nothing to undo");
+            }else if(status === 411){
+                alertBox("Nothing to redo");
             }else{
                 alertBox("Erreur : Le serveur n'est pas joignable !");
                 Ctrl.state = new DelState();
