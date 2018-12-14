@@ -42,10 +42,17 @@ class Map{
 
             Ctrl.View.update();
             Ctrl.state = new MapState();
-        }).fail(function(){
-            alertBox("Erreur : Le serveur n'est pas joignable !");
-            Ctrl.state = new InitState();
-            Ctrl.View.update();
+        }).fail(function(textStatus){
+            let status = textStatus.status;
+            if(status === 422){
+                alertBox("Erreur critique, resynchronisation des serveurs...");
+                Ctrl.reset();
+            }else if(status === 500){
+                alertBox("Le fichier de plan est corrompu.");
+            }else{
+                alertBox("Erreur : Le serveur n'est pas joignable !");
+                Ctrl.state = new DelState();
+            }
         }).always(function(){  
             $("#loaderEl").hide();
         });
