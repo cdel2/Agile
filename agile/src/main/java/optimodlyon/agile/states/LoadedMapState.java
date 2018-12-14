@@ -16,7 +16,6 @@ public class LoadedMapState extends DefaultState{
 	
 	@Override
 	public void loadDeliveries(String file) {
-		System.out.println("loading deliveries...");
 		List<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
 		Warehouse whs = DeserializerXML.deserializeWarehouse(file);
 		MapManagement.getInstance().setListDelivery(listDelivery);

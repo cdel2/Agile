@@ -4,6 +4,7 @@ class RmvPointState extends State{
         $("#rmvDel").html("<i class='fas fa-ban'></i>").addClass("btn-danger").removeClass("btn-warning");
         disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#addDel", "#mapSelector", "#delSelector"]);
         console.log("Etat rmvPointState");
+        $("#delCollapse").collapse('hide');
     }
     
     handleScroll(evt){
@@ -37,5 +38,9 @@ class RmvPointState extends State{
         }
         super.MouseUp(evt);
         if(a) Ctrl.state = new CalcState();
+    }
+
+    handleKeyPress(evt){
+        
     }
 }

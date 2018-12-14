@@ -4,6 +4,7 @@ class InitState{
         console.log("Etat init"); 
         $("#pathMenu").hide();
         $("#timeline").hide();
+        $("#delCollapse").collapse('hide');
     }
     
     handleScroll(evt){

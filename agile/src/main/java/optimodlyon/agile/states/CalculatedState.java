@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -29,18 +30,17 @@ import optimodlyon.agile.util.Time;
 public class CalculatedState extends LoadedDeliveriesState{
 	@Override
 	public void addDelivery(Long idDelivery, int duration) throws Exception{
+                MapManagement.getInstance().addMapToHistory();
 		/*
 		 * Create a new round between the warehouse and the new point to deliver
 		 * The startTime of the round is 00:00.00 hence its EndTime is the duration
 		 * Both StartTime and Endtime will be set 	 the deliverer is found
 		 */
 		Time t0 = new Time(0,0,0); Time endOfDay = new Time(18,0,0);
-		System.out.println("Calculating new round from warehouse (single point)");
 		createDelivery(idDelivery, duration);
 		Round newRound = calculateRoundForOneNode(idDelivery,MapManagement.getInstance().getMap(), t0);
 		Round newPossibleRound = newRound; //created if we need to create another round 
 		Time roundTime = newRound.getEndTime();
-		System.out.println("Time of the new round : " + roundTime.toString());
 		Map<Long,Deliverer> delivererMap = MapManagement.getInstance().getListDeliverer();
 		Time minTime = new Time(23,59,59); Time tmpTime = new Time(24,00,00); Long keyBestDeliv = (long)-1;
 		/*
@@ -53,31 +53,23 @@ public class CalculatedState extends LoadedDeliveriesState{
 		 * 		then we check if the endTime of this newly created round is < minTime then 
 		 * 		minTime = endTime and we keep the id of the deliverer
 		 */
-		System.out.println("Looking for the best deliverer ....");
 		for (Long key : delivererMap.keySet()) {
-			System.out.println("Deliverer n° "+ key);
 			int listRoundSize = delivererMap.get(key).getListRound().size(); 
-			System.out.println("Its listROund size : " + listRoundSize);
 			/*
 			 * The deliverer has at least 1 round assigned
 			 */
 			if(listRoundSize > 0) {
-				System.out.println("Hence we analyse its rounds...");
 				Round round = delivererMap.get(key).getListRound().get(listRoundSize-1);
 				/*
 				 * The deliverer has only 1 round assigned
 				 */
 				if(listRoundSize<2) {
-					System.out.print("He has only one round...");
 					if(round != null) {
 						tmpTime = new Time(round.getEndTime().toString());
-						System.out.println("Which finishes at : "+tmpTime.toString());
 						tmpTime.addTime(roundTime);
-						System.out.println("His new finishing time is then : "+tmpTime.toString());
 						if(tmpTime.isBefore(minTime)) {
 							minTime = tmpTime;
 							keyBestDeliv = key;
-							System.out.println("The minTime is : " + minTime.toString());
 						}
 					}
 				}
@@ -85,20 +77,16 @@ public class CalculatedState extends LoadedDeliveriesState{
 				 * The deliverer has more than 1 round assigned
 				 */
 				else {
-					System.out.println("He has more than 1 round...");
 					// check if the deliverer is not gone doing its additionnal round yet
 					//Time currentTime = getCurrentTimeUsingCalendar();
 					Time currentTime = new Time(8,0,0); // we simulate a current time at 8:00.00
 					if(currentTime.isBefore(delivererMap.get(key).getListRound().get(listRoundSize-1).getStartTime())) {
-						System.out.println("And he's not gone to do his last round yet");
 						/*
 						 * We create a new round from the last round of the deliverer and we check if 
 						 * this new round finishes before the current min Time 
 						 */
 						Round newPossibleRoundTmp = calculateRoundByAddingNodeToExisting(delivererMap.get(key).getListRound().get(listRoundSize-1), MapManagement.getInstance().getMap(),idDelivery);
-						System.out.println("The modification of his last round finished at : " + newPossibleRoundTmp.getEndTime().toString());
 						if(newPossibleRoundTmp.getEndTime().isBefore(minTime)) {
-							System.out.println("Hence we modify the minTime");
 							newPossibleRound = new Round(newPossibleRoundTmp);
 							minTime = newPossibleRound.getEndTime();
 							keyBestDeliv = key;
@@ -109,7 +97,6 @@ public class CalculatedState extends LoadedDeliveriesState{
 				/*
 				 * The deliverer has no rounds yet
 				 */
-				System.out.println("The deliverer has no round yet");
 				minTime = new Time(8,0,0);
 				minTime.addTime(roundTime);
 				keyBestDeliv = key;
@@ -121,7 +108,6 @@ public class CalculatedState extends LoadedDeliveriesState{
 		 */
 		if(keyBestDeliv != -1 && minTime.isBefore(endOfDay)) {
 			Deliverer bestDeliv = MapManagement.getInstance().getListDeliverer().get(keyBestDeliv);
-			System.out.println("We found a deliverer and we finish before 18h");
 			/*
 			 * If we had to create a new Round, we remove the last round of the chosen deliverer 
 			 * and we add the new round to its list
@@ -137,20 +123,20 @@ public class CalculatedState extends LoadedDeliveriesState{
 				}
 				Time tend = new Time(minTime.toString());
 				newRound.setStartTime(tstart);
-				System.out.println("   " + tstart.toString() + " // " + tend.toString());
 				newRound.setEndTime(tend);
 			}
 			if(!MapManagement.getInstance().addRoundToADeliverer(delivererMap.get(keyBestDeliv), newRound)) {
 				removeDelivery(idDelivery, true);
 			}
-			System.out.println("Delivery " + idDelivery + " added to deliverer " + keyBestDeliv );
 		} else {
 			throw new FunctionalException("The added round exceed the end of working day time");
 		}
-        MapManagement.getInstance().pushToHistory();
+		
+    	MapManagement.getInstance().setIsRunning(true);
 	}
 	
 	public void removeDelivery(Long idDelivery, boolean calc) throws Exception {
+                MapManagement.getInstance().addMapToHistory();
 		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
         if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
 	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
@@ -177,7 +163,6 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            		    	}
 	            			}
 	            			pair.getValue().updateRounds(i);
-	            			//TODO : gerer currentTime, si le temps actuel>temps de fin de livraison du dernier round.
 	            			break outerloop;
 	            		}
 	            	}
@@ -186,37 +171,28 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            //it.remove(); // avoids a ConcurrentModificationException
 	        }
             MapManagement.getInstance().getListDelivery().remove(toRemove);
-            MapManagement.getInstance().pushToHistory();
-        }
+            
+            }
 	}
 	
 	public Round calculateRoundForOneNode(Long idIntersection, CityMap map, Time startTime ) throws Exception {
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
 		List<Long> newDel = new ArrayList<Long>();
-		System.out.println("We add "+idIntersection+" and "+MapManagement.getInstance().getWarehouse().getId()+" to the list" );
 		newDel.add(idIntersection);
 		newDel.add(MapManagement.getInstance().getWarehouse().getId());
-		System.out.println("Seemed to work, now we calculate dijkstra");
 		Map<Long, Map<Long, Float>> graph;
 		graph = dijkstra.doDijkstra(map.getGraph(), newDel);
-		System.out.println("Dijkstra seemed to work ! Now TSP");
 		Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
-		//Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
-		System.out.println("TSP seemed to work !");
 		return round;
 	}
 	
 	public Round calculateRoundByAddingNodeToExisting(Round previousRound, CityMap map, Long idNode) throws Exception {
-		System.out.println("calculateRoundByAddingNodeToExisting");
 		List<Long> listIds = new ArrayList<Long>();
-		System.out.println("We add "+ idNode + "to the list");
 		listIds.add(idNode);
 		for(Path path : previousRound.getListPath()) {
-			System.out.println("	We add "+ path.getArrival().getId() + "to the list");
 			listIds.add(path.getArrival().getId());
 		}
-		System.out.println("Warehouse is : " + MapManagement.getInstance().getWarehouse().getId());
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
 		Map<Long, Map<Long, Float>> graph;
@@ -226,10 +202,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 			e.printStackTrace();
 			throw e;
 		}
-		System.out.println("Dijkstra calcultaed");
 		Round round = tsp.startTSPMatrix(10000, graph.size(), graph,  previousRound.getStartTime(), dijkstra);
-		//Round round = tsp.brutForceTSP(graph, dijkstra, previousRound.getStartTime());
-		System.out.println("TSP calcuated");
 		return round;
 	}
 	
@@ -263,24 +236,17 @@ public class CalculatedState extends LoadedDeliveriesState{
 	
 	
 	public Round calculateRoundByRemovingNodeToExisting(Round previousRound, CityMap map, Long idNode) throws Exception{
-		System.out.println("calculateRoundByRemovingNodeToExisting");
 		List<Long> listIds = new ArrayList<Long>();
 		for(Path path : previousRound.getListPath()) {
-			System.out.println("	We add "+ path.getArrival().getId() + "to the list");
 			listIds.add(path.getArrival().getId());
 		}
 		listIds.remove(idNode);
-		System.out.println("Warehouse is : " + MapManagement.getInstance().getWarehouse().getId());
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
 		Map<Long, Map<Long, Float>> graph;
 		graph = dijkstra.doDijkstra(map.getGraph(), listIds);
-		System.out.println("Dijkstra calcultaed");
 		Time startTime = MapManagement.getInstance().getWarehouse().getTimeStart();
-
 		Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
-        //Round round = tsp.startTSPMinDistance(10000, graph.size(), graph, startTime, dijkstra);
-		System.out.println("TSP calcuated");
 		return round;
 	}
 	
@@ -299,29 +265,28 @@ public class CalculatedState extends LoadedDeliveriesState{
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
 	}
 
-	public void undo(int counter) {
-		List<Pair<List<Delivery>, Map<Long,Deliverer>>>  history = MapManagement.getInstance().getHistory();
-		System.out.println("<<<<<<<<<<<<<< history size "+history.size());
-		int j = history.size()-1-counter;
-		System.out.println("index <<<<<<<<<<<< " + j);
-		Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
-		
-		System.out.println("history : ");
-		for (int k = 0; k < history.size(); k++) {
-			System.out.println(k);
-			for (int i = 0; i < history.get(k).getKey().size(); i++) {
-				System.out.println(history.get(k).getKey().get(i));
-			}
-		}
-
-		System.out.println("pair : ");
-		for (int i = 0; i < pair.getKey().size(); i++) {
-			System.out.println(pair.getKey().get(i));
-		}
-		
-		MapManagement.getInstance().setListDelivery(pair.getKey());
-		MapManagement.getInstance().setListDeliverer(pair.getValue());
-		
+	public void undo() {
+            System.out.println("yooooooooo");
+            MapManagement.getInstance().undo();
 	}
-	
+        
+        public void redo() {
+            MapManagement.getInstance().redo();
+	}
+    
+    @Override
+    public boolean stopCalculation() {
+    	MapManagement.getInstance().setIsRunning(false);
+    	try {
+    	    Thread.sleep(200);
+    	} catch(InterruptedException ex) {
+    	    Thread.currentThread().interrupt();
+    	}
+    	MapManagement.getInstance().setIsRunning(true);
+        return true;
+    }
+    
+    public void clearHistory() {
+        MapManagement.getInstance().clearHistory();
+    }
 }

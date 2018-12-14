@@ -65,7 +65,6 @@ public class EndPoints {
     @GetMapping("/delivery/add/{idDelivery}/{duration}")
     public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery, @PathVariable int duration) throws Exception {
     	try {
-    		System.out.println(duration);
             controller.newDelivery(idDelivery, duration);   		
     	} catch (DijkstraException e)
     	{
@@ -88,16 +87,13 @@ public class EndPoints {
     	{
             //throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
     	}
-    	//System.out.println(MapManagement.getInstance().getListDeliverer());
     	return MapManagement.getInstance().getListDeliverer();
     }
     
     @GetMapping("/calculation/start/{nb}")
     public Map<Long,Deliverer> get(@PathVariable int nb) throws Exception {
         try {
-			System.out.println("endpointDebut");
 			controller.doAlgorithm(nb);
-			System.out.println("endpointFin");
 		} catch (FunctionalException e) {
 			throw e;
 		} catch (Exception e) {
@@ -108,8 +104,6 @@ public class EndPoints {
     
     @GetMapping("/calculation/stop")
     public boolean stopCalculation() {
-
-            System.out.println("trying to stop calculation");
             try {
 				return controller.stopCalculation();
 			} catch (Exception e) {
@@ -121,7 +115,10 @@ public class EndPoints {
     
     @GetMapping("/undo")
     public Map<Long,Deliverer> undo() {
+        System.out.println("kjk");
+              
             controller.undo();
+            
             return MapManagement.getInstance().getListDeliverer() ;
     }
     

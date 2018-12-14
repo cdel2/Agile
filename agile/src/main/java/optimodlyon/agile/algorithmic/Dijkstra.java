@@ -68,8 +68,7 @@ public class Dijkstra {
         
         return tspGraph;
     }
-	
-   
+
 	
 	public Map<Long, Float> findShortestPathsFromSource (Map<Long, List<Segment>> completeMap, List<Long> listDeliveryPoints, Long source) throws RuntimeException {
             // Map containing the delivery points and the distance between the two
@@ -77,12 +76,10 @@ public class Dijkstra {
             int nbOfDeliveryPointsFound =0;
         
             // List of nodes of which the distance from source is the shortest
-
             List<Long> settledNodes = new ArrayList<Long>();
 
             // List of the Nodes already visited at least once but not yet evaluated (settled)
             // Corresponds to the "grey" color in the algorithm
-
             List<Long> visitedNodes = new ArrayList<Long>();
         
             /*for each Node sj in S do
@@ -91,8 +88,6 @@ public class Dijkstra {
             *  sj is white;
             *  d[s0] <- 0;
             */
-
-        
             for (Long key : completeMap.keySet()) {
                 if((long)key != (long)source){
                     Pair p = new Pair((long)-1, Float.MAX_VALUE);
@@ -106,7 +101,6 @@ public class Dijkstra {
         // s0 is visited(grey)
         visitedNodes.add(source);
         
-        
         // While there exists a visited(grey) Node
         while(!visitedNodes.isEmpty()) {
             // Let si be the visited(grey) Node such that d[si] is minimal
@@ -118,15 +112,12 @@ public class Dijkstra {
             for(Long successor : successors) {
                 // if the Node sj is not already settled
                 if(!settledNodes.contains(successor)) {
-                    //System.out.println("	successor : " + successor);
                     /*
                      * if sj is unvisited(white) or visited(grey) then update distance if necessary
                      * if sj is unvisited(white), we add it to the visited(grey) list
                      */
                     if(!visitedNodes.contains(successor)) {
                         visitedNodes.add(successor);
-                        //System.out.println("	successor " + successor + " added to graph");
-                        //System.out.println("	dist of successor: " + dijkstraGraph.get(successor).getDistFromSource());
                     }
 
                     // If the node is an end point of a segment but not yet an intersection
@@ -145,7 +136,6 @@ public class Dijkstra {
                         dijkstraGraph.get(successor).setIdPredecessor(currentNode);
                         dijkstraGraph.get(successor).setDistFromSource(newDist);
                     }
-                //System.out.println("	dist of successor: " + successor +" is "+ dijkstraGraph.get(successor).getDistFromSource());
                 }
             }
             
@@ -159,9 +149,7 @@ public class Dijkstra {
                 tspSubGraph.put(currentNode,dijkstraGraph.get(currentNode).getDistFromSource());
             }
             
-            //System.out.println(currentNode + " removed from dijkstraGraph");
             fullDijkstra.get(currentNode).put(source, dijkstraGraph.get(currentNode).getIdPredecessor());
-            //System.out.println(fullDijkstra.get(currentNode).toString());
             dijkstraGraph.remove(currentNode);
             visitedNodes.remove(currentNode);
 
@@ -173,7 +161,6 @@ public class Dijkstra {
             if(listDeliveryPoints.contains(currentNode)) {
                 nbOfDeliveryPointsFound++;
                 if(nbOfDeliveryPointsFound == listDeliveryPoints.size()) {
-                    //System.out.println("Finished");
                     break;
                 }
             }
@@ -214,8 +201,6 @@ public class Dijkstra {
     	float distFromSource;
         
         for (Long key : visitedNodes) {
-            //System.out.println("Looking for closestNode for :" + key);
-            //System.out.println(dijkstraGraph.get(key).getDistFromSource());
             distFromSource = dijkstraGraph.get(key).getDistFromSource();
 
             if((float)distFromSource < (float)minDistance) {
@@ -265,7 +250,6 @@ public class Dijkstra {
                 newDist = currentDistToCurrent + distFromCurrentToGoal;
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             System.out.println("Couldn't get the current and/or goal Distances from dijkstraGraph");
             e.printStackTrace();
         }

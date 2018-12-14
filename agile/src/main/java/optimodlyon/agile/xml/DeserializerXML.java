@@ -51,7 +51,6 @@ public class DeserializerXML {
         File fXsdFile = new File("src/main/java/optimodlyon/agile/files/validator/planValidator.xsd");
         
         if(validateSchema(fXmlFile, fXsdFile)) {
-            //System.out.println("c'est bon !");
 		    NodeList nList = doc.getElementsByTagName("noeud"); 
 		    
 		    HashMap<Long, Intersection> intersections = new HashMap<Long, Intersection>(); 

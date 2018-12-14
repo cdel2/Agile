@@ -6,6 +6,7 @@ class MapState extends State{
         $("#snoInfoBox").hide();
         $("#pathMenu").hide();
         $("#timeline").hide();
+        $("#delCollapse").collapse('hide');
         console.log("Etat mapState"); 
     }
     
@@ -24,5 +25,9 @@ class MapState extends State{
     
     handleMouseUp(evt){
         super.MouseUp(evt);
+    }
+
+    handleKeyPress(evt){
+        
     }
 }

@@ -8,6 +8,9 @@ class DelState extends State{
         $("#snoInfoBox").hide();
         $("#pathMenu").hide();
         $("#timeline").hide();
+        $("#delCollapse").collapse('hide');
+        
+        $("#loadRounds").html("Calculer itinéraires").addClass("btn-warning").removeClass("btn-danger");
         
         $("#addDel").html("<i class='fas fa-plus'></i>").addClass("btn-warning").removeClass("btn-success");
         $("#rmvDel").html("<i class='fas fa-minus'></i>").addClass("btn-warning").removeClass("btn-success");
@@ -36,5 +39,9 @@ class DelState extends State{
         }*/
         
         super.MouseUp(evt);
+    }
+
+    handleKeyPress(evt){
+        
     }
 }

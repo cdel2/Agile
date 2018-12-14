@@ -16,12 +16,39 @@ class Controller{
     }
 
     loadRound(){
-        let value = $("#numInput").val();
-        $("#loadRounds").html("Cancel").addClass("btn-danger").removeClass("btn-warning");
-        if(value === ""){
-            value = 3;
+        if(this.state.constructor.name === "CalculatingState"){
+            $.ajax({
+                url: "http://localhost:8080/calculation/stop/",
+                type:"GET"
+            }).done(function(del) {
+                
+            }).fail(function(textStatus){
+                let status = textStatus.status;
+                if(status === 422){
+                    alertBox("Erreur critique, resynchronisation des serveurs...");
+                    Ctrl.reset();
+                }else{
+                    alertBox("Erreur : Le serveur n'est pas joignable !");
+                    Ctrl.reset();
+                }
+            });
+        }else{
+            let value = $("#numInput").val();
+            if(value === ""){
+                value = 3;
+            }
+            if(isNaN(value) || value<=0 || value%1!=0){
+                $("#numInput").removeClass("is-valid");
+                $("#numInput").addClass("is-invalid");
+                return false;
+            }else{
+                $("#numInput").removeClass("is-invalid");
+                $("#numInput").addClass("is-valid");
+            }
+
+            this.View.loadRound(value);
         }
-        this.View.loadRound(value);
+        
         return false;
     }
 
@@ -57,7 +84,6 @@ class Controller{
     }
 
     addPoint(){
-        console.log()
         if(this.state.constructor.name === "AddPointState"){
             this.state = new CalcState();
             this.View.update();
@@ -111,9 +137,15 @@ class Controller{
         }
     }
 
-    changeTime(time){        
-        $("#timeDisp").text(pad(time.hours,2)+":"+pad(time.minutes,2));
-        this.View.time = time;
+    changeTime(value, bool){
+        if(bool){
+            $("#sliderInit").slider('setValue', value);
+        }else{
+            $("#sliderInit").slider('setValue', parseInt($("#sliderInit").val())+value);
+        }
+        //$("#timeDisp").text(pad(time.hours,2)+":"+pad(time.minutes,2));
+        
+        this.View.time = sliderToTime($("#sliderInit").val());
         this.View.update();
     }
 

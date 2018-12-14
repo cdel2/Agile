@@ -24,8 +24,6 @@ public class LoadedDeliveriesState extends DefaultState{
 	
 	@Override
 	public void startCalculation(int nb) throws Exception {	
-		System.out.println("calculating...!");
-		System.out.println("cheeeyyyyyy");
 		Clustering clustering = new Clustering();
 		Dijkstra dijkstra = new Dijkstra();
 		TSP tsp = new TSP();
@@ -39,13 +37,9 @@ public class LoadedDeliveriesState extends DefaultState{
 			List<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
 			MapManagement.getInstance().getWarehouse();
 			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
-			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
 			Time startTime=new Time("8:00:00");
-			//Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
 			Round round = tsp.startTSPMatrix(10000, graph.size(), graph, startTime, dijkstra);
-			//Round round = tsp.startTSPClosestDelivery(100000, graph.size(), graph, startTime, dijkstra);
-			System.out.println("heeeey");
 			finalRound.add(round);
 		}
 		
@@ -55,7 +49,6 @@ public class LoadedDeliveriesState extends DefaultState{
 	
 	@Override
 	public void loadDeliveries(String file) {
-		System.out.println("loading deliveries...");
 		List<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
 		Warehouse whs = DeserializerXML.deserializeWarehouse(file);
 		MapManagement.getInstance().setListDelivery(listDelivery);

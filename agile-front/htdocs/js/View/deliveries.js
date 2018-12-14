@@ -94,7 +94,7 @@ class Deliveries{
         //affichage warehouse
         let node = coord[this.warehouse.id];
         ctx.globalAlpha = 1;
-        let ratio = Ctrl.View.Canvas.ratio;
+        let ratio = Ctrl.View.Canvas.ratio*0.8;
         //drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, "red", ctx);      
         let imgH = ratio*this.imgHome.height;
         let imgW = ratio*this.imgHome.width;  
@@ -143,22 +143,24 @@ class Deliveries{
         let tmp = "";
         for(var j = 0; j<pathDel.length; j++){
                 let del = pathDel[j];
-                if(this.selectDelivery!=null && this.selectedDel === del){
-                    tmp+="<b>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+" (sélectioné)<br/></b>";
+                tmp+="<span class='selectable' onclick='Ctrl.View.Deliveries.selectDelivery("+del.id+")'>";
+                if(this.selectedDel!=null && this.selectedDel === del){
+                    tmp+="<b>"+(j+1)+" - Livraison à : "+timeToString(del.timeArrival)+ ", durée : "+ secondsToMS(del.duration) + " (sélectionnée)</b>";
                 }else{
                     if(del.id === this.warehouse.id){
-                        tmp+="<span><i class='fas fa-home'></i> - Entrepot, Arrivée à "+timeToString(del.timeArrival)+"<br/></span>";
+                        tmp+="<i class='fas fa-home'></i> - Entrepot, Arrivée à "+timeToString(del.timeArrival)+"<br/>";
                         break;
                     }
                     if(past && compareTime(del.timeArrival,time)>=0){
                         past=false;
                     }
                     if(past){
-                        tmp+="<i>"+j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Livré à "+timeToString(del.timeArrival)+"<br/></i>";
+                        tmp+="<i>"+(j+1)+" - Livraison à : "+timeToString(del.timeArrival)+ ", durée : "+ secondsToMS(del.duration) + "</i>";
                     }else{
-                        tmp+=j+" - Temps livraison : "+ secondsToMS(del.duration) + ", Sera livré à "+timeToString(del.timeArrival)+"<br/>";
+                        tmp+=(j+1)+" - Livraison à : "+timeToString(del.timeArrival)+ ", durée : "+ secondsToMS(del.duration);
                     }
                 }
+                tmp+="</span>"
         }
         return tmp;
     }
@@ -170,60 +172,74 @@ class Deliveries{
      * @return returns null if no close del node was found, return the node otherwise
     */
     findBestDelivery(X,Y){
-        let bestDel = null;
+        let bestDelId = null;
         var bestDistance = Number.MAX_VALUE;
         for (var i in this.delNodes) {
             let path = this.delNodes[i];
-            console.log(this.userDelNodes[i]);
             if(this.userDelNodes[i] != undefined){
                 path = path.concat(this.userDelNodes[i]);
             }
             for(var j in path){
-                let del = path[j];
                 let node = Ctrl.View.Map.coord[path[j].id];
                 let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
                 if(node.id != this.warehouse.id && temp<bestDistance){
                     bestDistance = temp;
-                    bestDel = del;
+                    bestDelId = node.id;
                 }
             }
         }
+        console.log(bestDelId);
         if(bestDistance>25){
             return null;
         }else{
-            return bestDel;
+            return bestDelId;
         }
     }
 
     /**
      * @desc toggles the right infos in the right section according to the node in param
-     * @param context $node - node to wich we need to display the infos
+     * @param context $nodeId - nodeId ?delivery to wich we need to display the infos
      * @return nothing
     */
-    selectDelivery(node){
-        console.log(node);
+    selectDelivery(nodeId){
+        //lets check if it is really a delivery
+        var node = null;
+        for(var k in this.delNodes){
+            let delPath = this.delNodes[k];
+            for(var i = 0; i<delPath.length-1; i++){
+                if(delPath[i].id === nodeId) node = delPath[i];
+            }
+        }
+        for(var k in this.userDelNodes){
+            let delPath = this.userDelNodes[k];
+            for(var i = 0; i<delPath.length-1; i++){
+                if(delPath[i].id === nodeId) node = delPath[i];
+            }
+        }
+
+        //lets toggle the menus
         if(node != null){
             let time = node.timeArrival;
-            let sliderTime = timeToSlider(time);
-            $("#sliderInit").slider('setValue', sliderTime);
-            Ctrl.changeTime(time);
+            Ctrl.changeTime(timeToSlider(time), true);
         }
 
         if(node === null){
             $(".collapse").collapse("hide");
             this.selectedDel = null;
+            Ctrl.View.update();
             return;
         }
 
         if(this.selectedDel != null && (node.idPath != this.selectedDel.idPath)){
             Ctrl.pathToForeground(node.idPath);
-            $(".collapse").collapse("hide");
+            //$(".collapse").collapse("hide");
             $("#cl"+node.idPath).collapse('show');
         }else{
             $("#cl"+node.idPath).collapse('show');
         }
 
         this.selectedDel = node;
+        Ctrl.View.update();
     }
 
     /**
@@ -231,7 +247,7 @@ class Deliveries{
      * @param nodeId $node - node' id to remove
      * @return true if the node was added succesfully, false otherwise
     */
-   addUserDelivery(nodeId){
+   addUserDelivery(nodeId, duration){
         let good = true;
         for(var i in this.delNodes){
             let path = this.delNodes[i];
@@ -244,7 +260,7 @@ class Deliveries{
         }
 
         if(good){
-            Ctrl.View.Round.load("add",nodeId, 200);
+            Ctrl.View.Round.load("add",nodeId, duration);
             return true;
         }else{
             alertBox("Point already on map !");

@@ -35,14 +35,9 @@ public class TSP {
 			List<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
 			MapManagement.getInstance().getWarehouse();
 			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
-			//Map<Long, List<Segment>> mapGraph = clustering.reform(map.getGraph());
 			Map<Long, Map<Long, Float>> graph = dijkstra.doDijkstra(MapManagement.getInstance().getMap().getGraph(), arrayOfIntersectionIds);
 			Time startTime=new Time("8:00:00");
-			//Round round = tsp.brutForceTSP(graph, dijkstra, startTime);
-			//Round round = tsp.startBranchBoundTSP(graph, dijkstra, startTime);
-			System.out.println(graph);
 			Round round = tsp.startTSPMatrix(100000000, graph.size(), graph, startTime, dijkstra);
-			System.out.println("heeeey");
 			finalRound.add(round);
 		}
 
@@ -86,7 +81,6 @@ public class TSP {
 		tsp.startTSP(timeLimit, nbIntersections, newGraph);
 		List<Long>listPath =tsp.getBestSolution();
 		listPath.add(MapManagement.getInstance().getWarehouse().getId());
-		System.out.println("list  :" + listPath);
 		Time currentTime = new Time(startTime);
 		Path pathFound;
 		List<Long> intersectionIds;
@@ -111,7 +105,6 @@ public class TSP {
 		tsp.startTSP(timeLimit, nbIntersections, newGraph);
 		List<Long>listPath =tsp.getBestSolution();
 		listPath.add(MapManagement.getInstance().getWarehouse().getId());
-		System.out.println("list  :" + listPath);
 		Time currentTime = new Time(startTime);
 		Path pathFound;
 		List<Long> intersectionIds;
@@ -131,13 +124,11 @@ public class TSP {
 	
 	public Round startTSPMatrix(int timeLimit, int nbIntersections, Map<Long, Map<Long, Float>> graph, Time startTime, Dijkstra dijkstra) throws Exception
 	{
-		System.out.println("warehouse : " + MapManagement.getInstance().getWarehouse().getId());
 		TSPMatrix tsp = new TSPMatrix();
 		Map<Long, TreeMap<Long, Float>> newGraph = mapToTreeMap(graph);
 		tsp.startTSP(timeLimit, nbIntersections, newGraph);
 		List<Long>listPath =tsp.getBestSolution();
 		listPath.add(MapManagement.getInstance().getWarehouse().getId());
-		//System.out.println("list  :" + listPath);
 		Time currentTime = new Time(startTime);
 		Path pathFound;
 		List<Long> intersectionIds;
@@ -154,7 +145,6 @@ public class TSP {
 		if(!round.getEndTime().isBefore(MapManagement.getInstance().getEndOfDay()) || round.getTotalDuration()>36000) {
 			throw new FunctionalException("The round finishes after the end of the working day");
 		}
-		System.out.println(round.getEndTime() +" / " + round.getTotalDuration());
 		return round;
 		
 		

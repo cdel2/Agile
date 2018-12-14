@@ -1,7 +1,7 @@
 class Round{
     constructor(){
         this.paths = new Object();
-        this.userPaths;
+        this.userPaths = new Object();
         this.colors = ["green", "red", "purple", "blue", "lime", "aqua", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
         this.firstPath = -1;
         this.stop=null;
@@ -29,6 +29,8 @@ class Round{
                 apiUrl+="redo";
                 break;
         }
+        
+        Ctrl.state = new CalculatingState();
         
         let object = this;
         $("#loaderEl").show();
@@ -89,7 +91,6 @@ class Round{
             delete Ctrl.View.Deliveries.delNodes[-1];
             initSlider(endTimes);
             Ctrl.View.update();
-            $("#loadRounds").html("Calculer itinéraires").addClass("btn-warning").removeClass("btn-danger");
             Ctrl.state = new CalcState();
         }).fail(function(textStatus){
             let status = textStatus.status;
@@ -143,7 +144,7 @@ class Round{
             ctx.strokeStyle = color;
             ctx.lineWidth = Ctrl.View.Canvas.ratio*thickness*(Ctrl.View.zoomLevel +1);
             for(var j in path){
-                if(compareTime(path[j].passageTime, time) >= 0) present = false;
+                if(compareTime(path[j].passageTime, time) > 0) present = false;
                 if(present){
                     ctx.globalAlpha = 1; 
                     ctx.setLineDash([]);
@@ -172,7 +173,7 @@ class Round{
     createPathHtml(color, startTime, endTime, id){
         var temp =  "<div class='pathLine' id='pl"+id+"'>";
         temp += "<div id='colorSample' style='background-color:"+color+";'></div>";
-        temp += "<p id='roundDes'>Depart : "+timeToString(startTime)+"<br>Arrivée : "+timeToString(endTime)+"</p>";
+        temp += "<p id='roundDes'>Départ : "+timeToString(startTime)+"<br>Arrivée : "+timeToString(endTime)+"</p>";
         temp += "<div class='delLineButtons'>";
         temp += "<button class='btn btn-warning viewButton' data-toggle='collapse' href='#cl"+id+"'><i class='fas fa-info-circle'></i></button>";
         temp += "<button class='btn btn-warning viewButton' onclick='Ctrl.pathToForeground("+id+");'><i class='fas fa-arrow-up'></i></button>";

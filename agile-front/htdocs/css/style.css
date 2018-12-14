@@ -12,7 +12,6 @@
 
 #map{
     background-color: beige;
-    cursor: pointer;
 }
 
 #loaderEl{
@@ -114,14 +113,15 @@
     margin-bottom: auto;
 }
 
-#delDuration{
-    display: inline-flex;
-    position: absolute;
-    width:20%;
-    left: 50%;
-    transform: translate(-50%, 0);
+#delCollapse{
+    margin-top: 2%;
+
 }
 
 .collapse{
     margin-bottom: 12px;
+}
+
+.selectable{
+    cursor: pointer;
 }

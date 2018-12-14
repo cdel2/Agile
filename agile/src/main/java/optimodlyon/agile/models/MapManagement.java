@@ -3,9 +3,12 @@ package optimodlyon.agile.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Random;
+import java.util.Stack;
 import optimodlyon.agile.util.Pair;
 import optimodlyon.agile.util.StatePair;
 import optimodlyon.agile.util.Time;
@@ -16,9 +19,11 @@ public class MapManagement{
     private CityMap map = new CityMap();
     private List<Delivery> listDelivery = new ArrayList<Delivery>();
     private Map<Long,Deliverer> listDeliverer = new HashMap<Long,Deliverer>();
-    private List<Pair<List<Delivery>, Map<Long,Deliverer>>> history = new ArrayList<Pair<List<Delivery>, Map<Long,Deliverer>>>() ;
     private Warehouse warehouse;
     private Time endOfDay = new Time(18,0,1);
+    private volatile boolean isRunning = true;    
+    public Stack<Map<Long, Deliverer>> undoList = new Stack<Map<Long, Deliverer>>();
+    public Stack<Map<Long, Deliverer>> redoList = new Stack<Map<Long, Deliverer>>();
 
     private static MapManagement instance = null;
 
@@ -72,6 +77,15 @@ public class MapManagement{
     public void setEndOfDay (Time t) {
     	this.endOfDay = t;
     }
+    
+    public void setIsRunning(boolean b) {
+		isRunning = b;
+
+	}
+    
+    public boolean getIsRunning() {
+		return isRunning;
+	}
 
     /**
      * Gives each deliverer a round
@@ -154,8 +168,8 @@ public class MapManagement{
                 } else {
                 	System.out.println("Round couldn't be added to deliverer " + deliv.getId());
                 	System.out.println("Details of the round :" + roundToAdd.toString());
-                }
             }
+        }
         }
         return res;
     }
@@ -191,40 +205,54 @@ public class MapManagement{
         return false;
     }
     
-    public void pushToHistory() {
-    	//create pair from new lists so that each pair in history is different
-    	List<Delivery> newListDelivery = new ArrayList<Delivery>(listDelivery);
-    	
-    	Map<Long, Deliverer> newListDeliverer = new HashMap<Long, Deliverer>();
-		Deliverer newDeliverer;
-		List<Round> newListRound;	
-		
-		for (Map.Entry<Long, Deliverer> entry : listDeliverer.entrySet())
-		{
-			//create new deliverer with the id of current deliverer
-			newDeliverer = new Deliverer(entry.getKey());
-			
-			//create new list round with current deliverer's round list
-			newListRound = new ArrayList<Round>(entry.getValue().getListRound());
-			
-			//assign round list to new deliverer
-			newDeliverer.setListRound(newListRound);
-			
-			newListDeliverer.put(entry.getKey(), newDeliverer);
-		}
-	
-        Pair<List<Delivery>, Map<Long,Deliverer>> p = new StatePair(newListDelivery, newListDeliverer);
-    	history.add(p);
-
-
-    }
-
-    public List<Pair<List<Delivery>, Map<Long,Deliverer>>> getHistory() {
-    	return history;
+    
+    public void addMapToHistory() {
+        System.out.println("J'ajoute un évennement à l'historique !");
+        Map<Long, Deliverer> copyMap = new HashMap<>();
+        System.out.println("coucou");
+        Deliverer d;
+        Long id;
+        System.out.println("coucou");
+        for (Map.Entry<Long, Deliverer> entry : listDeliverer.entrySet())
+        {
+            //System.out.println(entry.getValue());
+            d = new Deliverer(entry.getValue());
+            //System.out.println(d);
+            id = entry.getKey();
+            copyMap.put(id, d);
+        }
+        
+        System.out.println("Size map : "+copyMap.size());
+        undoList.push(copyMap);
+        redoList.clear();
     }
     
-    public void setHistory(List<Pair<List<Delivery>, Map<Long,Deliverer>>> history) {
-    	this.history = history;
+    public void undo() {
+            System.out.println("Size undolist : "+undoList.size());
+            if(undoList.isEmpty()){
+                System.out.println("RIEN A UNDO");
+                return;
+            }
+            redoList.push(listDeliverer);
+            Map<Long, Deliverer> map = undoList.pop();
+            System.out.println("Size map : "+map.size());
+            setListDeliverer(map);
     }
+        
+    public void redo() {
+            if(redoList.isEmpty()){
+                System.out.println("RIEN A REDO");
+                return;
+            }
+            undoList.push(listDeliverer);
+            Map<Long, Deliverer> map = redoList.pop();
+            setListDeliverer(map);
+    }
+    
+    public void clearHistory() {
+        undoList.clear();
+        redoList.clear();
+    }
+
 }
 

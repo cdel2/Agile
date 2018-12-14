@@ -60,7 +60,6 @@ public class CityMap {
                 return segment;
             }
         }
-        System.out.println("pas de segment trouvé");
         return null;
     }
 
