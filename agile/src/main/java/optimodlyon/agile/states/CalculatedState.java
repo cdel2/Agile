@@ -136,7 +136,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 	}
 	
 	public void removeDelivery(Long idDelivery, boolean calc) throws Exception {
-                MapManagement.getInstance().addMapToHistory();
+		MapManagement.getInstance().addMapToHistory();
 		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
         if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
 	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
@@ -170,9 +170,10 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            }
 	            //it.remove(); // avoids a ConcurrentModificationException
 	        }
-            MapManagement.getInstance().getListDelivery().remove(toRemove);
-            
-            }
+            List<Delivery> lDeliveries = new ArrayList<Delivery>(MapManagement.getInstance().getListDelivery());
+            lDeliveries.remove(toRemove);
+            MapManagement.getInstance().setListDelivery(lDeliveries);
+        }
 	}
 	
 	public Round calculateRoundForOneNode(Long idIntersection, CityMap map, Time startTime ) throws Exception {
@@ -230,8 +231,9 @@ public class CalculatedState extends LoadedDeliveriesState{
 			}
 			else newListPath.add(path);
 		}
-		previousRound.setListPath(newListPath);
-		return previousRound;
+		Round newRound = new Round(previousRound);
+		newRound.setListPath(newListPath);
+		return newRound;
 	}
 	
 	
