@@ -79,10 +79,10 @@ public class CalculatedStateTest {
 
 		Time t1 = new Time(16,0,0);
 		Time t2 = new Time(18,0,0);
-		Round r1 = new Round(i0 );
+		Round r1 = new Round(i0,t );
 		r1.setStartTime(t);
 		r1.setEndTime(t1);
-		Round r2 = new Round(i0);
+		Round r2 = new Round(i0,t);
 		r2.setStartTime(t1);
 		r2.setEndTime(t2);
 		List<Round> l1 = new ArrayList<Round>();
@@ -103,13 +103,9 @@ public class CalculatedStateTest {
 		
 		cs.addDelivery((long)5, 120);
 		assertEquals(MapManagement.getInstance().getListDeliverer().get((long)2).getListRound().size(),1,0);
-<<<<<<< HEAD
 		cs.addDelivery((long)4);
-		Round r3 = new Round(i0 );
-=======
+		Round r3 = new Round(i0,t );
 		cs.addDelivery((long)4, 100);
-		Round r3 = new Round(i0, t );
->>>>>>> branch 'master' of https://github.com/cdel2/Agile
 		r3.setStartTime(t);
 		r3.setEndTime(t1);
 		l1.add(r3);

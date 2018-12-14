@@ -58,6 +58,7 @@ public class Round {
 			path.setDepartureTime(currentTime);
 			path.setSegmentsPassageTimes();
 			currentTime.addTime(path.getDuration());
+			currentTime.addTime(path.getArrival().getDuration());
 			path.getArrival().setTimeArrival(currentTime);
 		}
     	endTime=currentTime;
@@ -124,12 +125,10 @@ public class Round {
 
     public float getTotalDuration() {
         float duration = 0;
-        
         for(int i = 0; i < listPath.size(); i++)
         {
             duration = listPath.get(i).getDuration() + duration;
         }
-
         return duration;
     }
 
