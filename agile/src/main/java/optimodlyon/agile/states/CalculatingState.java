@@ -13,8 +13,6 @@ import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Warehouse;
 import optimodlyon.agile.states.State;
-import optimodlyon.agile.util.Pair;
-import optimodlyon.agile.util.StatePair;
 import optimodlyon.agile.util.Time;
 import optimodlyon.agile.xml.DeserializerXML;
 

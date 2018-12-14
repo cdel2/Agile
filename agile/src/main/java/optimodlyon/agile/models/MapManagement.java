@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Stack;
-import optimodlyon.agile.util.Pair;
-import optimodlyon.agile.util.StatePair;
 import optimodlyon.agile.util.Time;
 
 

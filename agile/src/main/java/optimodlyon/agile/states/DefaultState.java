@@ -6,7 +6,6 @@ import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Segment;
-import optimodlyon.agile.util.Pair;
 import optimodlyon.agile.xml.DeserializerXML;
 
 public class DefaultState implements State {

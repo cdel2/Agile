@@ -23,8 +23,6 @@ import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Path;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Segment;
-import optimodlyon.agile.util.Pair;
-import optimodlyon.agile.util.StatePair;
 import optimodlyon.agile.util.Time;
 
 public class CalculatedState extends LoadedDeliveriesState{
