@@ -1,4 +1,8 @@
 package optimodlyon.agile.controller;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.states.CalculatedState;
 import optimodlyon.agile.states.CalculatingState;
 import optimodlyon.agile.states.DefaultState;
@@ -7,12 +11,11 @@ import optimodlyon.agile.states.LoadedDeliveriesState;
 import optimodlyon.agile.states.State;
 
 public class Controller {
-    public State currentState;
-    public static int counter;
+    private State currentState;
     
     public Controller() {
-        currentState = new DefaultState();
-        counter = 0;
+        currentState = new DefaultState();       
+        
     }
 
     public void initializeGraph(String file) {
@@ -32,8 +35,8 @@ public class Controller {
     public void doAlgorithm(int nb) throws Exception {
 		currentState = new CalculatingState();	
 		currentState.startCalculation(nb);
-		counter=0;
 		currentState = new CalculatedState();
+                currentState.clearHistory();
     }
 
     /**
@@ -43,8 +46,7 @@ public class Controller {
      */
     public void newDelivery(Long idDelivery, int duration) throws Exception {
         try {
-			currentState.addDelivery(idDelivery, duration, counter);
-			counter = 0;
+			currentState.addDelivery(idDelivery, duration);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -66,24 +68,21 @@ public class Controller {
     }
     
     public void undo() {
-    	try {
-	    	counter++;
-	    	System.out.println("counter : " + counter);
-			currentState.undo(counter);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try {
+            System.out.println("uju");
+            currentState.undo();
+        }
+        catch(Exception e) {
+            
+        }
     }
     
     public void redo() {
-    	try {
-	    	counter--;
-	    	System.out.println("counter : " + counter);
-			currentState.redo(counter);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try {
+            currentState.redo();
+        }
+        catch(Exception e) {
+            
+        }
     }
 }

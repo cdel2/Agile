@@ -115,7 +115,10 @@ public class EndPoints {
     
     @GetMapping("/undo")
     public Map<Long,Deliverer> undo() {
+        System.out.println("kjk");
+              
             controller.undo();
+            
             return MapManagement.getInstance().getListDeliverer() ;
     }
     

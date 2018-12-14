@@ -29,16 +29,16 @@ public class DefaultState implements State {
 	}
 
 	@Override
-	public void addDelivery(Long idDelivery, int duration, int counter) throws Exception {
+	public void addDelivery(Long idDelivery, int duration) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	public void undo(int counter) throws Exception {
+	public void undo() throws Exception {
 		throw new Exception("Impossible de undo");
 	}
 	
-	public void redo(int counter) throws Exception {
+	public void redo() throws Exception {
 		throw new Exception("Impossible de redo");
 	}
 
@@ -49,4 +49,6 @@ public class DefaultState implements State {
     public boolean stopCalculation() throws Exception {
         throw new Exception("Impossible d'arrêter le calcul");
     }
+    
+    public void clearHistory(){}
 }

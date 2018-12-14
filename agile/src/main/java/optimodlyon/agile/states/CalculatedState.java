@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,7 +29,8 @@ import optimodlyon.agile.util.Time;
 
 public class CalculatedState extends LoadedDeliveriesState{
 	@Override
-	public void addDelivery(Long idDelivery, int duration, int counter) throws Exception{
+	public void addDelivery(Long idDelivery, int duration) throws Exception{
+                MapManagement.getInstance().addMapToHistory();
 		/*
 		 * Create a new round between the warehouse and the new point to deliver
 		 * The startTime of the round is 00:00.00 hence its EndTime is the duration
@@ -130,12 +132,11 @@ public class CalculatedState extends LoadedDeliveriesState{
 			throw new FunctionalException("The added round exceed the end of working day time");
 		}
 		
-        MapManagement.getInstance().clearHistory(counter);
-        MapManagement.getInstance().pushToHistory();
     	MapManagement.getInstance().setIsRunning(true);
 	}
 	
 	public void removeDelivery(Long idDelivery, boolean calc) throws Exception {
+                MapManagement.getInstance().addMapToHistory();
 		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
         if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
 	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
@@ -171,8 +172,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 	        }
             MapManagement.getInstance().getListDelivery().remove(toRemove);
             
-            MapManagement.getInstance().pushToHistory();
-        }
+            }
 	}
 	
 	public Round calculateRoundForOneNode(Long idIntersection, CityMap map, Time startTime ) throws Exception {
@@ -265,29 +265,13 @@ public class CalculatedState extends LoadedDeliveriesState{
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
 	}
 
-	public void undo(int counter) {
-		List<Pair<List<Delivery>, Map<Long,Deliverer>>>  history = MapManagement.getInstance().getHistory();
-		System.out.println("<<<<<<<<<<<<<< history size "+history.size());
-		int j = history.size()-1-counter;
-		System.out.println("index <<<<<<<<<<<< " + j);
-		Pair<List<Delivery>, Map<Long,Deliverer>> pair = history.get(history.size()-1-counter);
-		
-		System.out.println("history : ");
-		for (int k = 0; k < history.size(); k++) {
-			System.out.println(k);
-			for (int i = 0; i < history.get(k).getKey().size(); i++) {
-				System.out.println(history.get(k).getKey().get(i));
-			}
-		}
-
-		System.out.println("pair : ");
-		for (int i = 0; i < pair.getKey().size(); i++) {
-			System.out.println(pair.getKey().get(i));
-		}
-		
-		MapManagement.getInstance().setListDelivery(pair.getKey());
-		MapManagement.getInstance().setListDeliverer(pair.getValue());
-		
+	public void undo() {
+            System.out.println("yooooooooo");
+            MapManagement.getInstance().undo();
+	}
+        
+        public void redo() {
+            MapManagement.getInstance().redo();
 	}
     
     @Override
@@ -300,5 +284,9 @@ public class CalculatedState extends LoadedDeliveriesState{
     	}
     	MapManagement.getInstance().setIsRunning(true);
         return true;
+    }
+    
+    public void clearHistory() {
+        MapManagement.getInstance().clearHistory();
     }
 }

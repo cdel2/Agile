@@ -80,4 +80,10 @@ public class Deliverer {
     public String toString() {
     	return listRound.toString();
     }
+    
+    public Deliverer(Deliverer d) {
+        this.id = d.id;
+        this.listRound = new ArrayList<>();
+        this.listRound.addAll(d.listRound);
+    }
 }

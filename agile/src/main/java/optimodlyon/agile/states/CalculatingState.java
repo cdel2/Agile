@@ -20,6 +20,7 @@ import optimodlyon.agile.xml.DeserializerXML;
 
 public class CalculatingState extends DefaultState {
 
+    
     @Override
     public void loadDeliveries(String file) {
         List<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
@@ -55,9 +56,7 @@ public class CalculatingState extends DefaultState {
 
         MapManagement.getInstance().assignRounds(finalRound); 
         	
-        MapManagement.getInstance().getHistory().clear();
-        MapManagement.getInstance().pushToHistory();
-        System.out.println("after push");
+        //System.out.println("after push");
     	MapManagement.getInstance().setIsRunning(true);
     }
     
