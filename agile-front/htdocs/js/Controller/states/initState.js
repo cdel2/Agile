@@ -2,8 +2,9 @@
  * Primary state, nothing loaded
  * @extends State
  */
-class InitState{
+class InitState extends State{
     constructor(){
+        super();
         disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#rmvDel", "#delSelector"]); 
         console.log("Etat init"); 
         $("#pathMenu").hide();
@@ -12,7 +13,6 @@ class InitState{
     }
     
     handleScroll(evt){
-        console.log("kl");
     };
     
     handleMouseDown(evt){
@@ -25,6 +25,5 @@ class InitState{
     }
 
     handleWindowResize(evt){
-
     }
 }

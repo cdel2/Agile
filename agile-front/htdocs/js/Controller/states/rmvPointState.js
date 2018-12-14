@@ -11,6 +11,10 @@ class RmvPointState extends State{
         $("#delCollapse").collapse('hide');
     }
     
+    /**
+     * Handle the user scrolling
+     * @param {event} evt Event to handle.
+     */
     handleScroll(evt){
         super.scroll(evt);
     };
