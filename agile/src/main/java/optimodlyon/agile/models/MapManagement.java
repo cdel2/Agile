@@ -19,8 +19,8 @@ public class MapManagement{
     private Warehouse warehouse;
     private Time endOfDay = new Time(18,0,1);
     private volatile boolean isRunning = true;    
-    public Stack<Map<Long, Deliverer>> undoList = new Stack<>();
-    public Stack<Map<Long, Deliverer>> redoList = new Stack<>();
+    private Stack<Map<Long, Deliverer>> undoList = new Stack<>();
+    private Stack<Map<Long, Deliverer>> redoList = new Stack<>();
 
     private static MapManagement instance = null;
 
@@ -181,10 +181,8 @@ public class MapManagement{
 
     public boolean addDeliveryToListDelivery(Delivery newDelivery) {
             boolean res = false;
-            System.out.println("addDeliveryToListDelivery appelé ");
             
             if(!this.listDelivery.contains(newDelivery)) {
-            		System.out.println("j'ajoute une delivery car celle-ci n'hexiste pas déjà");
                     this.listDelivery.add(newDelivery);
                     res=true;
             }
@@ -192,10 +190,8 @@ public class MapManagement{
     }
 
     public boolean removeDelivery(Long deliveryId) {
-        System.out.println("removeDelivery appelé ");
         Delivery toRemove = this.getDeliveryById(deliveryId);            
         if(this.listDelivery.contains(toRemove)) {
-        		System.out.println("La delivery n'existe pas ???");
                 this.listDelivery.remove(toRemove);
                 return true;
         }
@@ -204,22 +200,17 @@ public class MapManagement{
     
     
     public void addMapToHistory() {
-        System.out.println("J'ajoute un évennement à l'historique !");
         Map<Long, Deliverer> copyMap = new HashMap<>();
-        System.out.println("coucou");
+        
         Deliverer d;
         Long id;
-        System.out.println("coucou");
         for (Map.Entry<Long, Deliverer> entry : listDeliverer.entrySet())
         {
-            //System.out.println(entry.getValue());
             d = new Deliverer(entry.getValue());
-            //System.out.println(d);
             id = entry.getKey();
             copyMap.put(id, d);
         }
         
-        System.out.println("Size map : "+copyMap.size());
         undoList.push(copyMap);
         redoList.clear();
     }
@@ -252,5 +243,8 @@ public class MapManagement{
         redoList.clear();
     }
 
+    public void removeLastMapInHistory() {
+        undoList.pop();
+    }
 }
 

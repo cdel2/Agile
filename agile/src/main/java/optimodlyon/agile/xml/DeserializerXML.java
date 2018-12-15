@@ -10,23 +10,51 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.w3c.dom.Element;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import optimodlyon.agile.util.Time;
 import optimodlyon.agile.models.Intersection;
 import optimodlyon.agile.models.Segment;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXParseException;
 
 public class DeserializerXML {
+    
 	public static boolean validateSchema(File  fXmlFile, File fXsdFile) {
 	        try {
 	            SchemaFactory factory = 
 	                    SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 	            Schema schema = factory.newSchema(fXsdFile);
 	            Validator validator = schema.newValidator();
+                    
+                    final List<SAXParseException> exceptions = new LinkedList<>();
+                    validator.setErrorHandler(new ErrorHandler()
+                    {
+                      @Override
+                      public void warning(SAXParseException exception) throws SAXException
+                      {
+                        exceptions.add(exception);
+                      }
+
+                      @Override
+                      public void fatalError(SAXParseException exception) throws SAXException
+                      {
+                        exceptions.add(exception);
+                      }
+
+                      @Override
+                      public void error(SAXParseException exception) throws SAXException
+                      {
+                        exceptions.add(exception);
+                      }
+                    });
 	            validator.validate(new StreamSource(fXmlFile));
+                    
 	        } catch (IOException | SAXException e) {
 	            System.out.println("Exception: "+e.getMessage());
 	            return false;
@@ -50,7 +78,7 @@ public class DeserializerXML {
         if(validateSchema(fXmlFile, fXsdFile)) {
 		    NodeList nList = doc.getElementsByTagName("noeud"); 
 		    
-		    HashMap<Long, Intersection> intersections = new HashMap<Long, Intersection>(); 
+		    HashMap<Long, Intersection> intersections = new HashMap<>(); 
 		    Long id;
 		    float latitude;
 		    float longitude;
@@ -72,7 +100,7 @@ public class DeserializerXML {
 		    Long idDestination;
 		    float duration;
 		    
-		    Map<Long, List<Segment>> graph = new HashMap<Long, List<Segment>>();
+		    Map<Long, List<Segment>> graph = new HashMap<>();
 		    
 		    for (int i = 0; i<nList.getLength(); i++) {
 		    	final Element node = (Element) nList.item(i);
@@ -90,7 +118,7 @@ public class DeserializerXML {
 		        		graph.get(originInter.getId()).add(seg);
 		        	}
 		        	else {
-		        		ArrayList <Segment> segments = new ArrayList<Segment>();
+		        		ArrayList <Segment> segments = new ArrayList<>();
 		        		segments.add(seg);
 		        		graph.put(originInter.getId(), segments);
 		        	}
@@ -100,16 +128,17 @@ public class DeserializerXML {
 		    }  
 		    return graph;      
         }
-        return null;
+        else {
+            
+        }
 	    
-    } catch (Exception e) {
-        e.printStackTrace();
-        System.out.println("XML file for CityMap is wrong");
+    } catch (FileNotFoundException e) {
         throw e;
     }
+            return null;
 }
   
-  public static ArrayList<Delivery> deserializeDeliveries(String file) {
+  public static ArrayList<Delivery> deserializeDeliveries(String file) throws Exception {
 		try {
 
 	        File fXmlFile = new File("src/main/java/optimodlyon/agile/files/"+file+".xml");
@@ -124,7 +153,7 @@ public class DeserializerXML {
 	        
 	        if(validateSchema(fXmlFile, fXsdFile)) {
 		        
-		        ArrayList<Delivery> listDelivery = new ArrayList<Delivery>();
+		        ArrayList<Delivery> listDelivery = new ArrayList<>();
 		        Long id;
 		        float duration; 
 		        Delivery delivery;
@@ -135,29 +164,27 @@ public class DeserializerXML {
 		            id = Long.parseLong(nodeD.getAttribute("adresse"));
 		            duration = Float.valueOf(nodeD.getAttribute("duree"));
 		            delivery = new Delivery(id, duration);
+                            
+                            //we check if current delivery's latitude and longitude exist in graph
 		            if(delivery.findLatitudeLongitude(MapManagement.getInstance().getMap().getGraph()))
 		            {
 		  	            listDelivery.add(delivery);
-		            } else {
-		            	throw new Exception();
-		            }
+		            } 
 		        }
 		        
 		        return listDelivery;
 	        }
 	        
 	        return null; 
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            System.out.println("XML file for deliveries is wrong");
-	            return null;
+	        } catch (FileNotFoundException e) {
+                    throw e;
 	        }
 		
 		
 	}
 
   	
-  	public static Warehouse deserializeWarehouse(String file) {
+  	public static Warehouse deserializeWarehouse(String file) throws Exception {
   		try {
 
   	        File fXmlFile = new File("src/main/java/optimodlyon/agile/files/"+file+".xml");
@@ -185,13 +212,11 @@ public class DeserializerXML {
 	  	        return warehouse;
 	  	    }
 	  	    
-  	        return null;
   	        
-  	        } catch (Exception e) {
-  	            e.printStackTrace();
-  	            System.out.println("XML file for warehouse is wrong");
-  	            return null;
+  	        } catch (FileNotFoundException e) {
+  	            throw e;
   	        }
+  	        return null;
   		
   		
   	}

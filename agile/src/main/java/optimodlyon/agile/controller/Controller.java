@@ -16,16 +16,8 @@ public class Controller {
     }
 
     public void initializeGraph(String file) throws Exception {
-        try {
             currentState.loadMap(file);
-            currentState = new LoadedMapState();
-        } 
-        catch (SAXException e) {
-        	throw e;
-        }
-        catch(Exception e) {
-            System.out.println("Error in InitializeGraph : " + e);
-        }				
+            currentState = new LoadedMapState();		
     }
 
     public void getDeliveries(String file) throws Exception{
@@ -46,11 +38,7 @@ public class Controller {
      * @param idNewNode
      */
     public void newDelivery(Long idDelivery, int duration) throws Exception {
-        try {
-			currentState.addDelivery(idDelivery, duration);
-		} catch (Exception e) {
-			throw e;
-		}
+        currentState.addDelivery(idDelivery, duration);
     }
     
     /**

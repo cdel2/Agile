@@ -75,7 +75,6 @@ public class Delivery extends Intersection{
 
     public boolean findLatitudeLongitude(Map<Long, List<Segment>> graph) {
         List<Segment> segmentID = graph.get(this.id);
-    	System.out.println(segmentID);
         if(segmentID != null)
         {
         Segment segment = segmentID.get(0);

@@ -164,7 +164,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            	i++;
 	            }
 	        }
-            List<Delivery> lDeliveries = new ArrayList<Delivery>(MapManagement.getInstance().getListDelivery());
+            List<Delivery> lDeliveries = new ArrayList<>(MapManagement.getInstance().getListDelivery());
             lDeliveries.remove(toRemove);
             MapManagement.getInstance().setListDelivery(lDeliveries);
         }

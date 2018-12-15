@@ -1,5 +1,6 @@
 package optimodlyon.agile.endpoints;
 
+import java.io.FileNotFoundException;
 import optimodlyon.agile.controller.Controller;
 import optimodlyon.agile.exceptions.DijkstraException;
 import optimodlyon.agile.exceptions.FunctionalException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.xml.sax.SAXParseException;
 
 
 @CrossOrigin
@@ -25,47 +27,57 @@ public class EndPoints {
 	
     @GetMapping("/map/{file}")
     public CityMap  getMap(@PathVariable String file) throws Exception {
-        controller.initializeGraph(file);
+        try {
+            controller.initializeGraph(file);		
+    	} catch (FileNotFoundException | SAXParseException e)
+    	{
+            throw e;
+    	} 
         return MapManagement.getInstance().getMap();
     }
     
     @GetMapping("/deliveries/{file}")
-    public List<Delivery> getDeliveries(@PathVariable String file) {
+    public List<Delivery> getDeliveries(@PathVariable String file) throws Exception {
     	try {
             controller.getDeliveries(file);    		
-    	} catch (Exception e)
+    	} catch (FileNotFoundException | SAXParseException e)
     	{
+            throw e;
+    	} catch (Exception e) {
             throw new UnprocessableEntityException("Le fichier du plan de la ville n'a pas été chargé.");
-    	}
+        }
         return MapManagement.getInstance().getListDelivery();
     }
 
     @GetMapping("/warehouse")
     public Warehouse getWarehouse() {
-        return MapManagement.getInstance().getWarehouse();
+        if(MapManagement.getInstance().getWarehouse()!= null) {
+            return MapManagement.getInstance().getWarehouse();
+    	} else {
+            throw new UnprocessableEntityException("Le fichier du plan de la ville n'a pas été chargé.");
+    	}
     }
     
         
     @GetMapping("/calculation/start/{nb}")
     public Map<Long,Deliverer> get(@PathVariable int nb) throws Exception {
         try {
-			controller.doAlgorithm(nb);
-		} catch (FunctionalException e) {
-			throw e;
-		} catch (Exception e) {
-			 throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
-		}
+                controller.doAlgorithm(nb);
+        } catch (FunctionalException e) {
+                throw e;
+        } catch (Exception e) {
+                 throw new UnprocessableEntityException("Le fichier du plan de la ville et/ou les livraisons n'ont pas été chargés.");
+        }
         return MapManagement.getInstance().getListDeliverer();
     } 
     
     @GetMapping("/calculation/stop")
-    public boolean stopCalculation() {
+    public boolean stopCalculation() throws Exception {
             try {
-				return controller.stopCalculation();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return false;
+                    return controller.stopCalculation();
+            } catch (Exception e) {
+                    throw e;
+            }
     } 
     
     @GetMapping("/delivery/add/{idDelivery}/{duration}")

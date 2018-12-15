@@ -41,7 +41,7 @@ public class LoadedDeliveriesState extends DefaultState{
 	
 	
 	@Override
-	public void loadDeliveries(String file) {
+	public void loadDeliveries(String file) throws Exception {
 		List<Delivery> listDelivery = DeserializerXML.deserializeDeliveries(file);
 		Warehouse whs = DeserializerXML.deserializeWarehouse(file);
 		MapManagement.getInstance().setListDelivery(listDelivery);
