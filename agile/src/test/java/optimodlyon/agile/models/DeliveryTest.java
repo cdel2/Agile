@@ -103,7 +103,6 @@ public class DeliveryTest {
 	public void testFindLatitudeLongitude() {
 		Map<Long, List<Segment>>completeMap = new HashMap<Long, List<Segment>>();
         Intersection i0 = new Intersection((long)0,(float)5.0,(float)3.0);
-        Intersection i1 = new Intersection((long)1,(float)3.0,(float)3.0);
         Intersection i2 = new Intersection((long)2,(float)4.0,(float)3.0);
         Intersection i3 = new Intersection((long)3,(float)1.0,(float)3.0);
         Intersection i4 = new Intersection((long)4,(float)1.0,(float)3.0);

@@ -1,10 +1,7 @@
 package optimodlyon.agile.models;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 
 public class Intersection {
     protected Long id;
@@ -90,7 +87,6 @@ public class Intersection {
 
     public List<Intersection> findSuccessorSegments()
     {
-        Map<Long, List<Segment>> myhmap = MapManagement.getInstance().getMap().getGraph();
         List<Segment> seg = MapManagement.getInstance().getMap().getGraph().get(id);
         List <Intersection> endIntersection = new ArrayList<Intersection>();
         

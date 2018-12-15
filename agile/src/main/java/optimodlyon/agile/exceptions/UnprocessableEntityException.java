@@ -5,7 +5,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY, reason = "Some files must be loaded first.")
 public class UnprocessableEntityException extends RuntimeException {
-    public UnprocessableEntityException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public UnprocessableEntityException() {
         super();
     }
 

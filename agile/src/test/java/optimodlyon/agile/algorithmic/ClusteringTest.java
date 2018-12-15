@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import optimodlyon.agile.models.CityMap;
-
 public class ClusteringTest {
 
 	@Test

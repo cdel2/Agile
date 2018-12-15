@@ -1,23 +1,19 @@
 package optimodlyon.agile.algorithmic;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import optimodlyon.agile.models.*;
 
 
 public class Clustering {
-    List<Delivery> sortCluster (){
-        //Values initialization
-        CityMap M = MapManagement.getInstance().getMap();
-        
+    List<Delivery> sortCluster (){        
         //Initialization of number of deliveries, warehouse and number of deliverers
         List<Delivery> listDel = MapManagement.getInstance().getListDelivery();
-        int nbDeliverers = MapManagement.getInstance().getListDeliverer().size();
         int nbDeliveries = listDel.size(); 
         float xWareHouse = MapManagement.getInstance().getWarehouse().getLongitude();
         float yWareHouse = MapManagement.getInstance().getWarehouse().getLatitude();
@@ -131,15 +127,6 @@ public class Clustering {
         
         return listTri; 
     }
-
-    public List<List<Delivery>> pushFrontDelivery(List<List<Delivery>> goalDeliveries,List<List<Delivery>> sortedDeliveries){
-        List<Delivery> currentCluster = new ArrayList<Delivery>();
-        currentCluster= goalDeliveries.get(goalDeliveries.size()-1);
-
-        return sortedDeliveries;
-    }
-
-
     
     public List<Delivery> changeStartingPoint(List<Delivery> sortedDeliveries, int deliverers){
     	int nbDel=sortedDeliveries.size();
@@ -226,11 +213,11 @@ public class Clustering {
 
     public Map<Long, List<Segment>> reform(HashMap<Long, ArrayList<Segment>> map){
         Map<Long, ArrayList<Segment>> newMap = new HashMap<Long, ArrayList<Segment>>(map);
-        Iterator it = newMap.entrySet().iterator();
+        Iterator<Entry<Long, ArrayList<Segment>>> it = newMap.entrySet().iterator();
         Map<Long, List<Segment>> finalMap = new HashMap<Long, List<Segment>>();
         
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
+            Map.Entry<Long, ArrayList<Segment>> pair = it.next();
             finalMap.put((long)pair.getKey(), (List<Segment>) pair.getValue());
         }
         

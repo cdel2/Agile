@@ -8,24 +8,21 @@ import optimodlyon.agile.models.MapManagement;
 public abstract class  TSPTemplate implements TSPInterface {
 	private List<Long> bestSolution;
 	private float bestDuration;
-	private boolean timeReached;
-	
 	
 	public void startTSP(int timeLimit, int nbIntersections, Map<Long, TreeMap<Long, Float>> graph)
 	{
-		timeReached = false;
 		setBestDuration(Float.MAX_VALUE);
 		setBestSolution(new ArrayList<Long>());
 		List<Long> notVisited = new ArrayList<Long>();
 		List<Long> listDeliveries = new ArrayList<Long>();
-		Iterator it = graph.entrySet().iterator(); 
+		Iterator<Entry<Long, TreeMap<Long, Float>>> it = graph.entrySet().iterator(); 
 		long key;
 		listDeliveries.add(MapManagement.getInstance().getWarehouse().getId());
 		outerloop:
 		while(it.hasNext())
 		{
 			if(!MapManagement.getInstance().getIsRunning()) break outerloop;
-			key = (long) (((Entry) it.next()).getKey());
+			key = (long) ( it.next().getKey());
 			notVisited.add(key);
 			if(!listDeliveries.contains(key))
 			{
@@ -43,10 +40,7 @@ public abstract class  TSPTemplate implements TSPInterface {
 
 
 	void branchAndBound(Long id, List<Long >notVisited,  List<Long> visited, float currentDuration, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph, long timeStart, int timeLimit) {
-		
-		long key;
 		if (System.currentTimeMillis() - timeStart > timeLimit){
-			 timeReached = true;
 			 return;
 		 }
 	    if (notVisited.size() == 0){ 
@@ -57,7 +51,7 @@ public abstract class  TSPTemplate implements TSPInterface {
 	    		setBestDuration(currentDuration);
 	    	}
 	    } else if (currentDuration + bound(id, notVisited, visited, listDeliveries, graph) < getBestDuration()){
-	        Iterator it = iterator(id, notVisited, listDeliveries, graph );
+	        Iterator<Long> it = iterator(id, notVisited, listDeliveries, graph );
 	        outerloop:
 	        while (it.hasNext()){
 	        	if(!MapManagement.getInstance().getIsRunning()) break outerloop;

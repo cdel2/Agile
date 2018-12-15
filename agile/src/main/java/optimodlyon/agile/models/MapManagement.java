@@ -2,13 +2,12 @@ package optimodlyon.agile.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Random;
 import java.util.Stack;
+
+import optimodlyon.agile.exceptions.UndoRedoException;
 import optimodlyon.agile.util.Time;
 
 
@@ -225,16 +224,19 @@ public class MapManagement{
         redoList.clear();
     }
     
-    public void undo() {
+    public void undo() throws RuntimeException {
             System.out.println("Size undolist : "+undoList.size());
-            if(undoList.isEmpty()){
-                System.out.println("RIEN A UNDO");
-                return;
+            if(!undoList.isEmpty()){
+	            redoList.push(listDeliverer);
+	            Map<Long, Deliverer> map = undoList.pop();
+	            System.out.println("Size map : "+map.size());
+	            setListDeliverer(map);
+                
             }
-            redoList.push(listDeliverer);
-            Map<Long, Deliverer> map = undoList.pop();
-            System.out.println("Size map : "+map.size());
-            setListDeliverer(map);
+            else {
+            	System.out.println("RIEN A UNDO");
+                throw new UndoRedoException();
+            }
     }
         
     public void redo() {

@@ -7,12 +7,10 @@ import java.util.Map;
 import optimodlyon.agile.algorithmic.Clustering;
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
-import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
 import optimodlyon.agile.models.Warehouse;
-import optimodlyon.agile.states.State;
 import optimodlyon.agile.util.Time;
 import optimodlyon.agile.xml.DeserializerXML;
 

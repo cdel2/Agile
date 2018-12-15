@@ -1,11 +1,7 @@
 package optimodlyon.agile.states;
 
 import optimodlyon.agile.models.*;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.Warehouse;

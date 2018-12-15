@@ -4,19 +4,11 @@
 package optimodlyon.agile.algorithmic;
 
 import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import optimodlyon.agile.models.Intersection;
-import optimodlyon.agile.models.Segment;
 
 /**
  * @author etien

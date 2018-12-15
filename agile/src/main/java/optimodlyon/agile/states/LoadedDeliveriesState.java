@@ -1,21 +1,15 @@
 package optimodlyon.agile.states;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import optimodlyon.agile.algorithmic.Clustering;
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
-import optimodlyon.agile.algorithmic.TSPClosestDelivery;
-import optimodlyon.agile.models.CityMap;
-import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Round;
-import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.models.Warehouse;
 import optimodlyon.agile.util.Time;
 import optimodlyon.agile.xml.DeserializerXML;
@@ -30,10 +24,9 @@ public class LoadedDeliveriesState extends DefaultState{
 		MapManagement.getInstance().getMap();
 		MapManagement.getInstance().initializeListDeliverer(nb);
 		List<List<Delivery>> clusters = clustering.dispatchCluster(MapManagement.getInstance().getMap(), nb); 
-		int i =0;
+		
 		List<Round> finalRound = new ArrayList<Round>();
 		for(List<Delivery> cluster : clusters) {
-			i++;
 			List<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
 			MapManagement.getInstance().getWarehouse();
 			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());

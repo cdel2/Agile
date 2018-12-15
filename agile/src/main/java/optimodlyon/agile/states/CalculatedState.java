@@ -8,9 +8,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-
-import org.springframework.web.filter.OncePerRequestFilter;
+import java.util.Map.Entry;
 
 import optimodlyon.agile.algorithmic.Dijkstra;
 import optimodlyon.agile.algorithmic.TSP;
@@ -137,14 +135,13 @@ public class CalculatedState extends LoadedDeliveriesState{
 		MapManagement.getInstance().addMapToHistory();
 		Delivery toRemove = MapManagement.getInstance().getDeliveryById(idDelivery);
         if(MapManagement.getInstance().getListDelivery().contains(toRemove)) {
-	    	Iterator it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
+	    	Iterator<Entry<Long, Deliverer>> it = MapManagement.getInstance().getListDeliverer().entrySet().iterator();
 	        while (it.hasNext()) {
-	            Map.Entry <Long, Deliverer> pair = (Map.Entry) it.next();
+	            Map.Entry <Long, Deliverer> pair = (Entry<Long, Deliverer>) it.next();
 	            List<Round> rounds = pair.getValue().getListRound();
 	            int i=0;
 	            outerloop:
 	            for (Round round : rounds) {
-	            	List<Path> newListPath = new ArrayList();
 	            	for(Path path : round.getListPath()) {
 	            		if((long)path.getArrival().getId()==(long)toRemove.getId()) {
 	            			if(round.getListPath().size()==2) {
@@ -166,7 +163,6 @@ public class CalculatedState extends LoadedDeliveriesState{
 	            	}
 	            	i++;
 	            }
-	            //it.remove(); // avoids a ConcurrentModificationException
 	        }
             List<Delivery> lDeliveries = new ArrayList<Delivery>(MapManagement.getInstance().getListDelivery());
             lDeliveries.remove(toRemove);
@@ -265,7 +261,7 @@ public class CalculatedState extends LoadedDeliveriesState{
 		MapManagement.getInstance().addDeliveryToListDelivery(newDelivery);
 	}
 
-	public void undo() {
+	public void undo() throws Exception {
             System.out.println("yooooooooo");
             MapManagement.getInstance().undo();
 	}

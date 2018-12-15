@@ -1,12 +1,5 @@
 package optimodlyon.agile.controller;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
-import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.states.CalculatedState;
 import optimodlyon.agile.states.CalculatingState;
 import optimodlyon.agile.states.DefaultState;
@@ -75,14 +68,8 @@ public class Controller {
         return result;
     }
     
-    public void undo() {
-        try {
-            System.out.println("uju");
+    public void undo() throws Exception{
             currentState.undo();
-        }
-        catch(Exception e) {
-            
-        }
     }
     
     public void redo() {

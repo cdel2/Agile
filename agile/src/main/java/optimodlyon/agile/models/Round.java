@@ -2,7 +2,6 @@ package optimodlyon.agile.models;
 
 import optimodlyon.agile.util.Time;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Round {
     private Time startTime;

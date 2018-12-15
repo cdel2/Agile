@@ -3,26 +3,19 @@ package optimodlyon.agile.endpoints;
 import optimodlyon.agile.controller.Controller;
 import optimodlyon.agile.exceptions.DijkstraException;
 import optimodlyon.agile.exceptions.FunctionalException;
+import optimodlyon.agile.exceptions.UndoRedoException;
 import optimodlyon.agile.exceptions.UnprocessableEntityException;
 import optimodlyon.agile.models.CityMap;
 import optimodlyon.agile.models.Deliverer;
 import optimodlyon.agile.models.Delivery;
 import optimodlyon.agile.models.MapManagement;
 import optimodlyon.agile.models.Warehouse;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @CrossOrigin
@@ -114,12 +107,16 @@ public class EndPoints {
     
     
     @GetMapping("/undo")
-    public Map<Long,Deliverer> undo() {
-        System.out.println("kjk");
-              
-            controller.undo();
+    public Map<Long,Deliverer> undo() throws Exception {
+        try {
+			controller.undo();
+		} catch (UndoRedoException e) {
+			throw e;
+		} catch (UnprocessableEntityException e) {
+			throw e;
+		}
             
-            return MapManagement.getInstance().getListDeliverer() ;
+        return MapManagement.getInstance().getListDeliverer() ;
     }
     
     @GetMapping("/redo")

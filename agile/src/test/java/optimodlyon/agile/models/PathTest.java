@@ -176,9 +176,9 @@ public class PathTest {
 		}
 
 	@Test
-	public void testAddSegment() {Map<Long, List<Segment>>completeMap = new HashMap<Long, List<Segment>>();
-	myPath.addSegment(s6);
-	assertEquals(myPath.getListSegment().get(2),s6);
+	public void testAddSegment() {
+		myPath.addSegment(s6);
+		assertEquals(myPath.getListSegment().get(2),s6);
 	}
 
 }

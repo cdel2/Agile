@@ -2,20 +2,14 @@ package optimodlyon.agile.controller;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import optimodlyon.agile.models.Segment;
 import optimodlyon.agile.states.CalculatedState;
 import optimodlyon.agile.states.DefaultState;
 import optimodlyon.agile.states.LoadedDeliveriesState;
 import optimodlyon.agile.states.LoadedMapState;
 import optimodlyon.agile.states.State;
-import optimodlyon.agile.xml.DeserializerXML;
 
 public class ControllerTest {
 	@Autowired

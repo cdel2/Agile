@@ -18,7 +18,6 @@ public class TSP {
 	public static void main(String[] args) throws Exception {
 		
 		Controller controller = new Controller();
-		MapManagement instance = MapManagement.getInstance();
 		controller.initializeGraph("grand");
 		controller.getDeliveries("dl-grand-20");
 		Clustering clustering = new Clustering();
@@ -28,10 +27,9 @@ public class TSP {
 		int nb =2;
 		MapManagement.getInstance().initializeListDeliverer(nb);
 		List<List<Delivery>> clusters = clustering.dispatchCluster(MapManagement.getInstance().getMap(), nb); 
-		int i =0;
+		
 		List<Round> finalRound = new ArrayList<Round>();
-		for(List<Delivery> cluster : clusters) {
-			i++;
+		for(List<Delivery> cluster : clusters) {			
 			List<Long> arrayOfIntersectionIds = Clustering.createIdArray(cluster);
 			MapManagement.getInstance().getWarehouse();
 			arrayOfIntersectionIds.add(MapManagement.getInstance().getWarehouse().getId());
@@ -59,11 +57,12 @@ public class TSP {
 	public Map<Long, TreeMap<Long, Float>> mapToTreeMap(Map<Long, Map<Long, Float>> map)
 	{
 		TreeMap<Long,TreeMap<Long, Float>> newGraph = new TreeMap<Long,TreeMap<Long, Float>>();
-		Iterator it = map.entrySet().iterator();
+		Iterator<Entry<Long, Map<Long, Float>>> it = map.entrySet().iterator();
 		long key;
+		
 		while(it.hasNext())
 		{
-			key = (long) (((Entry) it.next()).getKey());
+			key = (long) (it.next().getKey());
 			Map<Long, Float> currentMap = map.get(key);
 			TreeMap<Long, Float> treeMap = new TreeMap<Long, Float>(currentMap);
 			newGraph.put(key, treeMap);
@@ -85,6 +84,7 @@ public class TSP {
 		Path pathFound;
 		List<Long> intersectionIds;
 		Round round = new Round(MapManagement.getInstance().getWarehouse(), startTime);
+		
 		for (int i = 0; i < listPath.size()-1; i++) {
 			intersectionIds = dijkstra.createPathIds(listPath.get(i), listPath.get(i + 1));
 			Long arrivalId = listPath.get(i+1);
@@ -109,6 +109,7 @@ public class TSP {
 		Path pathFound;
 		List<Long> intersectionIds;
 		Round round = new Round(MapManagement.getInstance().getWarehouse(), startTime);
+		
 		for (int i = 0; i < listPath.size()-1; i++) {
 			intersectionIds = dijkstra.createPathIds(listPath.get(i), listPath.get(i + 1));
 			Long arrivalId = listPath.get(i+1);
@@ -133,6 +134,7 @@ public class TSP {
 		Path pathFound;
 		List<Long> intersectionIds;
 		Round round = new Round(MapManagement.getInstance().getWarehouse(), startTime);
+		
 		for (int i = 0; i < listPath.size() - 1; i++) {
 			intersectionIds = dijkstra.createPathIds(listPath.get(i), listPath.get(i + 1));
 			Long arrivalId = listPath.get(i+1);
@@ -141,17 +143,16 @@ public class TSP {
 			pathFound.setSegmentsPassageTimes();
 			round.addPath(pathFound);
 		}
-		Time endOfDay = new Time (18,0,1);
+		
 		if(!round.getEndTime().isBefore(MapManagement.getInstance().getEndOfDay()) || round.getTotalDuration()>36000) {
 			throw new FunctionalException("The round finishes after the end of the working day");
 		}
-		return round;
 		
+		return round;	
 		
 	}
 	
 	public void stopAlgorithm(){
-            System.out.println("stop algo");
             stop.set(true);
         }
 
