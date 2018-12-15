@@ -1,3 +1,7 @@
+/**
+ * Map display state
+ * @extends State
+ */
 class MapState extends State{
     constructor(){
         super();

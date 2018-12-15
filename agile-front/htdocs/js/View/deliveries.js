@@ -17,7 +17,7 @@ class Deliveries{
     }
 
     /**
-     * @desc load the deliveries from the backend
+     * Loads the deliveries from the backend, set the new state depending on the return code.
      * @param string $msg - file to load
      * @return nothing
     */
@@ -66,10 +66,9 @@ class Deliveries{
     }
 
     /**
-     * @desc display the deliveries (nodes + userNodes + wharehouse + pin + update the deliveries description)
-     * @param context $ctx - context of the canvas to write in
-     * @param context $time - current time
-     * @return nothing
+     * Displays the deliveries (nodes + userNodes + wharehouse + pin + update the deliveries description)
+     * @param {context} $ctx - context of the canvas to write in
+     * @param {context} $time - current time
     */
     display(ctx, time){
         let View = Ctrl.View;
@@ -119,9 +118,8 @@ class Deliveries{
     }
 
     /**
-     * @desc updates the path delivery infos in the right panel
-     * @param time $time - current time
-     * @return nothing
+     * Updates the path delivery infos in the right panel
+     * @param {time} $time - current time
     */
     updatePathsInfo(time){
         for(var j in this.delNodes){
@@ -133,10 +131,10 @@ class Deliveries{
     }
 
     /**
-     * @desc Create a description of the path deliveries corresponding to the id according to the time given
-     * @param int $id - id of the path deliveries to describe
-     * @param time $time - current time
-     * @return the description of the path in html
+     * Creates a description of the path deliveries corresponding to the id according to the time given in parameter.
+     * @param {int} $id - id of the path deliveries to describe
+     * @param {time} $time - current time
+     * @return {string} the description of the path in html
     */
     collapseFiller(pathDel, time){
         let past = true;
@@ -166,9 +164,9 @@ class Deliveries{
     }
 
     /**
-     * @desc find the closest delivery node to the coordinates in param
-     * @param int $X - X coordinate
-     * @param int $Y - Y coordinate
+     * Finds the closest delivery node to the coordinates in param
+     * @param {int} $X - X coordinate
+     * @param {int} $Y - Y coordinate
      * @return returns null if no close del node was found, return the node otherwise
     */
     findBestDelivery(X,Y){
@@ -197,9 +195,8 @@ class Deliveries{
     }
 
     /**
-     * @desc toggles the right infos in the right section according to the node in param
-     * @param context $nodeId - nodeId ?delivery to wich we need to display the infos
-     * @return nothing
+     * Toggles the right infos in the right section according to the node in param
+     * @param {context} $nodeId - nodeId ?delivery to wich we need to display the infos
     */
     selectDelivery(nodeId){
         //lets check if it is really a delivery
@@ -243,9 +240,9 @@ class Deliveries{
     }
 
     /**
-     * @desc add a delivery
-     * @param nodeId $node - node' id to remove
-     * @return true if the node was added succesfully, false otherwise
+     * Add a delivery
+     * @param {nodeId} $node - node' id to remove
+     * @return {boolean} true if the node was added succesfully, false otherwise
     */
    addUserDelivery(nodeId, duration){
         let good = true;
@@ -269,9 +266,9 @@ class Deliveries{
     }
 
     /**
-     * @desc remove a delivery 
+     * Remove a delivery 
      * @param nodeId $node - node' id to remove
-     * @return true if the node was removed succesfully, null otherwise
+     * @return {boolean} true if the node was removed succesfully, null otherwise
     */
     rmvUserDelivery(nodeId){
         let good = false;

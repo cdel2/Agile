@@ -1,3 +1,7 @@
+/**
+ * Calculating rounds state
+ * @extends State
+ */
 class CalculatingState extends State{
     constructor(){
         super();
