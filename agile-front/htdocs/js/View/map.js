@@ -49,6 +49,7 @@ class Map{
                 Ctrl.reset();
             }else if(status === 500){
                 alertBox("Le fichier de plan est corrompu.");
+                Ctrl.state = new InitState();
             }else{
                 alertBox("Erreur : Le serveur n'est pas joignable !");
                 Ctrl.state = new DelState();

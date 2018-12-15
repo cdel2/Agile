@@ -5,7 +5,7 @@
 class InitState extends State{
     constructor(){
         super();
-        disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#rmvDel", "#delSelector"]); 
+        disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#rmvDel", "#addDel", "#delSelector"]); 
         console.log("Etat init"); 
         $("#pathMenu").hide();
         $("#timeline").hide();
