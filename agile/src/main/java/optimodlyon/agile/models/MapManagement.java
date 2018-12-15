@@ -246,5 +246,13 @@ public class MapManagement{
     public void removeLastMapInHistory() {
         undoList.pop();
     }
+    
+    public boolean isUndoable() {
+        return(undoList.size() > 0);
+    }
+    
+    public boolean isRedoable() {
+        return(redoList.size() > 0);
+    }
 }
 

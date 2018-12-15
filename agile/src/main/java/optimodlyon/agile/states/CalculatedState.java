@@ -284,4 +284,12 @@ public class CalculatedState extends LoadedDeliveriesState{
     public void clearHistory() {
         MapManagement.getInstance().clearHistory();
     }
+    
+    public boolean undoNext() {
+        return MapManagement.getInstance().isUndoable();
+    }
+    
+    public boolean redoNext() {
+        return MapManagement.getInstance().isRedoable();
+    }
 }

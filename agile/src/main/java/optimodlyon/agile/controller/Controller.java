@@ -63,4 +63,12 @@ public class Controller {
     public void redo() throws Exception{
         currentState.redo();
     }
+    
+    public boolean undoNext() throws Exception{
+        return currentState.undoNext();
+    }
+    
+    public boolean redoNext() throws Exception {
+        return currentState.redoNext();
+    }
 }

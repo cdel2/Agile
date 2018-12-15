@@ -123,4 +123,14 @@ public class EndPoints {
             }
             return MapManagement.getInstance().getListDeliverer() ;
     }
+    
+    @GetMapping("/undo/next")
+    public boolean undoNext() throws Exception {
+        return controller.undoNext();
+    }
+    
+    @GetMapping("/redo/next")
+    public boolean redoNext() throws Exception {
+        return controller.redoNext();
+    }
 }

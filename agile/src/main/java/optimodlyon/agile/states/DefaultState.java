@@ -42,4 +42,12 @@ public class DefaultState implements State {
     }
     
     public void clearHistory(){}
+    
+    public boolean undoNext() throws Exception  {
+        throw new Exception("Impossible de connaître l'état de undo");
+    }
+    
+    public boolean redoNext() throws Exception  {
+        throw new Exception("Impossible de connaître l'état de redo");
+    }
 }

@@ -18,4 +18,9 @@ public interface State {
     public void removeDelivery(Long idDelivery, boolean calc) throws Exception;
     
     public void clearHistory();
+    
+    public boolean undoNext()  throws Exception ;
+    
+    public boolean redoNext() throws Exception ;
+    
 }
