@@ -39,50 +39,13 @@ public class EndPoints {
     	}
         return MapManagement.getInstance().getListDelivery();
     }
-    
-    @GetMapping("/deliveries")
-    public List<Delivery> getLoadedDeliveries() {
-    	try {
-            return MapManagement.getInstance().getListDelivery();
-    	} catch (Exception e)
-    	{
-            throw new UnprocessableEntityException("Le fichier du plan de la ville n'a pas été chargé.");
-    	}
-    }
-    
+
     @GetMapping("/warehouse")
     public Warehouse getWarehouse() {
         return MapManagement.getInstance().getWarehouse();
     }
     
-    @GetMapping("/delivery/add/{idDelivery}/{duration}")
-    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery, @PathVariable int duration) throws Exception {
-    	try {
-            controller.newDelivery(idDelivery, duration);   		
-    	} catch (DijkstraException e)
-    	{
-    		throw e; 
-    	} catch( FunctionalException e)
-    	{
-    		throw e;
-    	} catch( Exception e) 
-    	{
-            throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
-    	}
-    	return MapManagement.getInstance().getListDeliverer();
-    }
-    
-    @GetMapping("/delivery/rmv/{idDelivery}/{calc}")
-    public Map<Long,Deliverer> removeDelivery(@PathVariable Long idDelivery, @PathVariable boolean calc) {
-    	try {
-            controller.removeDelivery(idDelivery, calc);
-    	} catch (Exception e)
-    	{
-            //throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
-    	}
-    	return MapManagement.getInstance().getListDeliverer();
-    }
-    
+        
     @GetMapping("/calculation/start/{nb}")
     public Map<Long,Deliverer> get(@PathVariable int nb) throws Exception {
         try {
@@ -105,23 +68,47 @@ public class EndPoints {
 			return false;
     } 
     
+    @GetMapping("/delivery/add/{idDelivery}/{duration}")
+    public Map<Long,Deliverer> addDelivery(@PathVariable Long idDelivery, @PathVariable int duration) throws Exception {
+    	try {
+            controller.newDelivery(idDelivery, duration);   		
+    	} catch (DijkstraException | FunctionalException | UnprocessableEntityException e)
+    	{
+    		throw e; 
+    	} 
+        
+    	return MapManagement.getInstance().getListDeliverer();
+    }
+    
+    @GetMapping("/delivery/rmv/{idDelivery}/{calc}")
+    public Map<Long,Deliverer> removeDelivery(@PathVariable Long idDelivery, @PathVariable boolean calc) {
+    	try {
+            controller.removeDelivery(idDelivery, calc);
+    	} catch (Exception e)
+    	{
+            throw new UnprocessableEntityException("Certains fichiers n'ont pas été chargés ou le système est en train de calculer un itinéraire.");
+    	}
+    	return MapManagement.getInstance().getListDeliverer();
+    }
     
     @GetMapping("/undo")
     public Map<Long,Deliverer> undo() throws Exception {
         try {
 			controller.undo();
-		} catch (UndoRedoException e) {
+		} catch (UndoRedoException | UnprocessableEntityException e) {
 			throw e;
-		} catch (UnprocessableEntityException e) {
-			throw e;
-		}
+                }
             
         return MapManagement.getInstance().getListDeliverer() ;
     }
     
     @GetMapping("/redo")
     public Map<Long,Deliverer> redo() {
-            controller.redo();
+            try {
+                    controller.redo();
+            } catch (UndoRedoException | UnprocessableEntityException e) {
+                    throw e;
+            }
             return MapManagement.getInstance().getListDeliverer() ;
     }
 }

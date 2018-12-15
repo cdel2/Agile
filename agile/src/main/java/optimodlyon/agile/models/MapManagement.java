@@ -14,13 +14,13 @@ import optimodlyon.agile.util.Time;
 
 public class MapManagement{
     private CityMap map = new CityMap();
-    private List<Delivery> listDelivery = new ArrayList<Delivery>();
-    private Map<Long,Deliverer> listDeliverer = new HashMap<Long,Deliverer>();
+    private List<Delivery> listDelivery = new ArrayList<>();
+    private Map<Long,Deliverer> listDeliverer = new HashMap<>();
     private Warehouse warehouse;
     private Time endOfDay = new Time(18,0,1);
     private volatile boolean isRunning = true;    
-    public Stack<Map<Long, Deliverer>> undoList = new Stack<Map<Long, Deliverer>>();
-    public Stack<Map<Long, Deliverer>> redoList = new Stack<Map<Long, Deliverer>>();
+    public Stack<Map<Long, Deliverer>> undoList = new Stack<>();
+    public Stack<Map<Long, Deliverer>> redoList = new Stack<>();
 
     private static MapManagement instance = null;
 
@@ -225,28 +225,26 @@ public class MapManagement{
     }
     
     public void undo() throws RuntimeException {
-            System.out.println("Size undolist : "+undoList.size());
             if(!undoList.isEmpty()){
 	            redoList.push(listDeliverer);
 	            Map<Long, Deliverer> map = undoList.pop();
-	            System.out.println("Size map : "+map.size());
 	            setListDeliverer(map);
                 
             }
             else {
-            	System.out.println("RIEN A UNDO");
                 throw new UndoRedoException();
             }
     }
         
-    public void redo() {
-            if(redoList.isEmpty()){
-                System.out.println("RIEN A REDO");
-                return;
+    public void redo() throws RuntimeException {
+            if(!redoList.isEmpty()){
+                undoList.push(listDeliverer);
+                Map<Long, Deliverer> map = redoList.pop();
+                setListDeliverer(map);                
             }
-            undoList.push(listDeliverer);
-            Map<Long, Deliverer> map = redoList.pop();
-            setListDeliverer(map);
+            else {
+                throw new UndoRedoException();
+            }
     }
     
     public void clearHistory() {

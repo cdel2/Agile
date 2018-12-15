@@ -262,11 +262,10 @@ public class CalculatedState extends LoadedDeliveriesState{
 	}
 
 	public void undo() throws Exception {
-            System.out.println("yooooooooo");
             MapManagement.getInstance().undo();
 	}
         
-        public void redo() {
+        public void redo() throws Exception{
             MapManagement.getInstance().redo();
 	}
     

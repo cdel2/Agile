@@ -20,15 +20,9 @@ public class DefaultState implements State {
 	public void startCalculation(int nb) throws Exception{
 		throw new Exception("Impossible de commencer le calcul");
 	}
-	
-	public void addDelivery(Long idDelivery)throws Exception {
-		throw new Exception("Impossible d'ajouter une livraison");
-	}
 
-	@Override
 	public void addDelivery(Long idDelivery, int duration) throws Exception {
-		// TODO Auto-generated method stub
-		
+		throw new Exception("Impossible d'ajouter une livraison");		
 	}
 	
 	public void undo() throws Exception {

@@ -72,12 +72,7 @@ public class Controller {
             currentState.undo();
     }
     
-    public void redo() {
-        try {
-            currentState.redo();
-        }
-        catch(Exception e) {
-            
-        }
+    public void redo() throws Exception{
+        currentState.redo();
     }
 }
