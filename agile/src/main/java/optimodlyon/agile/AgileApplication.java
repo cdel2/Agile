@@ -12,8 +12,5 @@ public class AgileApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AgileApplication.class, args);
-		
-		// Creation of MapManagement (shared instance)
-		MapManagement instance = MapManagement.getInstance();
 	}
 }
