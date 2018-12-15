@@ -103,7 +103,7 @@ public class EndPoints {
     }
     
     @GetMapping("/redo")
-    public Map<Long,Deliverer> redo() {
+    public Map<Long,Deliverer> redo() throws Exception {
             try {
                     controller.redo();
             } catch (UndoRedoException | UnprocessableEntityException e) {
