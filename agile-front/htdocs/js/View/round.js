@@ -12,6 +12,7 @@ class Round{
         switch(action){
             case "init":
                 apiUrl+="calculation/start/"+num1;
+                Ctrl.state = new CalculatingState();
                 break;
             case "add":
                 apiUrl+="delivery/add/"+num1+"/"+num2;
@@ -30,7 +31,6 @@ class Round{
                 break;
         }
         
-        Ctrl.state = new CalculatingState();
         
         let object = this;
         $("#loaderEl").show();
@@ -102,6 +102,15 @@ class Round{
                 Ctrl.reset();
             }else if(status === 400){
                 alertBox("Un problème est survenu, vous tentez peut-être de livrer dans une impasse ?");
+            }else if(status === 401){
+                switch(action){
+                    case "undo":
+                        alertBox("Rien à annuler.");
+                        break;
+                    case "redo":
+                        alertBox("Rien à rétablir.");
+                        break;
+                }
             }else if(status === 406){
                 alertBox("La requête oblige les livraisons à finir après 18h, veuillez réduire le nombre de livraisons ou augmenter le nombre de livreurs");
             }else if(status === 410){
