@@ -8,6 +8,15 @@ import java.util.TreeMap;
 
 public class TSPClosestDelivery extends TSPTemplate{
 	
+	/*
+	 * Compute the upper bound for the branch and bound using the "Closest Delivery" heuristic
+	 * @param current the id of the delivery point we are currently visiting
+	 * @param notVisited the list of the delivery points' ids that have not been visited yet
+	 * @param visited the list of the delivery points' ids that have been visited
+	 * @param listDeliveries the list of the delivery points's ids that have to be visited
+	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
+	 * @return the value of the upper bound, the distance of the closest next delivery point
+	 */
 	@Override
 	protected float bound(long current, List<Long> notVisited, List<Long> visited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph)
 	{
@@ -17,8 +26,16 @@ public class TSPClosestDelivery extends TSPTemplate{
 				nextStep=graph.get(current).get(i);
 			}
 		}
-		return nextStep;	}
+		return nextStep;	
+	}
 	
+	/*
+	 * @param current the id of the delivery point we are currently visiting
+	 * @param notVisited the list of the delivery points' ids that have not been visited yet
+	 * @param listDeliveries the list of the delivery points's ids that have to be visited
+	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
+	 * @return the Iterator over Long
+	 */
 	@Override
 	protected  Iterator<Long> iterator(Long current,List<Long> notVisited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph)
 	{

@@ -8,28 +8,58 @@ import java.util.Map.Entry;
 
 public class TSPMatrix extends TSPTemplate{
 	
+	
+	/*
+	 * Compute the upper bound for the branch and bound using the "Matrix" heuristic
+	 * @param current the id of the delivery point we are currently visiting
+	 * @param notVisited the list of the delivery points' ids that have not been visited yet
+	 * @param visited the list of the delivery points' ids that have been visited
+	 * @param listDeliveries the list of the delivery points's ids that have to be visited
+	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
+	 * @return the value of the upper bound
+	 */
 	@Override
 	protected float bound(long current, List<Long> notVisited, List<Long> visited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph)
 	{
+		//We consider a table represented by the updatedGraph where each (row,column) pair
+		//is a path that has not been visited yet
+		//We get this graph
 		Map<Long, Map<Long, Float>> updatedGraph= generateGraph(current, visited, graph);
+		//we computer the list of ri. ri is for the row number i, the minimum distance
 		Map<Long, Float> ri = generateRi(updatedGraph);
+		//we computer the list of ri. ci is for the colum number i, the minimum distance-ri
 		Map<Long, Float> ci = generateCi(updatedGraph, ri);
+		//we compute b, the sum of ri and ci
 		float b = computeB(ri, ci);
 		return b;
 	}
 	
+	/*
+	 * @param current the id of the delivery point we are currently visiting
+	 * @param notVisited the list of the delivery points' ids that have not been visited yet
+	 * @param listDeliveries the list of the delivery points's ids that have to be visited
+	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
+	 * @return the Iterator over Long
+	 */
 	@Override
 	protected  Iterator<Long> iterator(Long current,List<Long> notVisited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph)
 	{
 		return new IteratorSeq(notVisited, current);
 	}
 	
+	/*
+	 * From the list of visited intersections we create a graph representing a table with only the unvisited paths
+	 * @param current the delivery point we are currently visiting
+	 * @param visited the list of the delivery points' ids that have been visited
+	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
+	 */
 	protected Map<Long, Map<Long, Float>> generateGraph(long current, List<Long> visited, Map<Long, TreeMap<Long, Float>> graph)
 	{
 		
 		Map<Long, Map<Long, Float>> currentGraph = new HashMap<Long, Map<Long, Float>>(graph);
 		Map<Long, Map<Long, Float>> newGraph = new HashMap<Long, Map<Long, Float>>();
 
+		//we remove the visited delivery point from the columns of the table
 		for(int i =0; i<visited.size()-1; i++)
 		{
 			newGraph = removeColumn(visited.get(i), currentGraph);
@@ -37,6 +67,7 @@ public class TSPMatrix extends TSPTemplate{
 
 		}
 		
+		//we remove the visited delivery point from the rows of the table
 		for(int i =0; i<visited.size()-1; i++)		{
 			currentGraph.remove(visited.get(i));
 		}
@@ -44,6 +75,12 @@ public class TSPMatrix extends TSPTemplate{
 		return currentGraph;
 	}
 	
+	/*
+	 * @param id the id of the delivery point that has to be removed
+	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
+	 * @return the graph without the id 
+	 * 
+	 */
 	public Map<Long, Map<Long, Float>> removeColumn(long id, Map<Long, Map<Long, Float>> graph)
 	{
 		Iterator<Entry<Long, Map<Long, Float>>> it = graph.entrySet().iterator();
@@ -58,25 +95,7 @@ public class TSPMatrix extends TSPTemplate{
 		}
 		return newGraph;
 	}
-	
-	public Map<Long, TreeMap<Long, Float>> mapToTreeMap(Map<Long, Map<Long, Float>> map)
-	{
-		TreeMap<Long,TreeMap<Long, Float>> newGraph = new TreeMap<Long,TreeMap<Long, Float>>();
-		Iterator<Entry<Long, Map<Long, Float>>> it = map.entrySet().iterator();
-		long key;
-		
-		while(it.hasNext())
-		{
-			key = (long) (it.next().getKey());
-			Map<Long, Float> currentMap = map.get(key);
-			TreeMap<Long, Float> treeMap = new TreeMap<Long, Float>(currentMap);
-			newGraph.put(key, treeMap);
-		}
-		
-		return newGraph;
 
-
-	}
 	
 	public Map<Long,Float> generateRi(Map<Long, Map<Long, Float>> graph)
 	{
@@ -230,36 +249,9 @@ public class TSPMatrix extends TSPTemplate{
 		return b;
 	}
 	
-	public Map<Long, Pair> computePi(Map<Long, Map<Long, Float>> graph)
-	{
-		Iterator<Entry<Long, Map<Long, Float>>> it1 = graph.entrySet().iterator();
-		Iterator<Entry<Long, Float>>  it2;
-		float pi = 0;
-		float current;
-		long key1;
-		long key2;
-		Map<Long, Pair> result = new HashMap<Long,Pair>();
-		while(it1.hasNext())
-		{
-			key1 = (long) (it1.next().getKey());
-			it2 = (graph.get(key1)).entrySet().iterator();
-			while(it2.hasNext())
-			{
-				key2 = (long) (it2.next().getKey());
-				current = computePiij(graph, key1, key2);
-				if(current > pi)
-				{
-					pi = current;
-					Pair pair = new Pair(key2,pi);
-					result.clear();
-					result.put(key1, pair);
-				}
-			}
-		}
-		return result;
-	}
 	
-	public Map<Long, Pair> computeFirstPi(Map<Long, Map<Long, Float>> graph, long start)
+	
+	public Map<Long, Pair> computePi(Map<Long, Map<Long, Float>> graph, long start)
 	{
 		Iterator<Entry<Long, Float>> it;
 		float pi = 0;

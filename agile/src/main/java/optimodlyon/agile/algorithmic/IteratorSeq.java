@@ -7,9 +7,9 @@ public class IteratorSeq implements Iterator<Long>{
 	private int nbElement;
 
 	/**
-	 * Cree un iterateur pour iterer sur l'ensemble des sommets de nonVus
-	 * @param nonVus
-	 * @param sommetCrt
+	 * Creates an iterator to iterate over a collection of Deliveries' ids
+	 * @param noVisited the collection of ids of the delivery that has not been visited yet
+	 * @param current the id of the delivery that is being visited
 	 */
 	public IteratorSeq(Collection<Long> notVisited, long current){
 		this.collection = new Long[notVisited.size()];
@@ -19,11 +19,18 @@ public class IteratorSeq implements Iterator<Long>{
 		}
 	}
 	
+	/*
+	 * @return true if there are still elements to iterate over
+	 */
 	@Override
 	public boolean hasNext() {
 		return nbElement > 0;
 	}
-
+	
+	
+	/**
+	 * @return the id of the next delivery in the collection of ids
+	 */
 	@Override
 	public Long next() {
 		return collection[--nbElement];
@@ -32,14 +39,5 @@ public class IteratorSeq implements Iterator<Long>{
 	@Override
 	public void remove() {}
 	
-	public String toString()
-	{
-		String s ="nb : "+ nbElement + "\n";
-		for(int i=0; i<collection.length; i++)
-		{
-			s = s + " - " + collection[i];
-		}
-		
-		return s;
-	}
+
 }
