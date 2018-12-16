@@ -13,14 +13,36 @@ import optimodlyon.agile.util.Time;
 public class DelivererTest {
 
 	@Test
+	public void testDelivererDeliverer() {
+		Time t = new Time(8,0,0);
+		Time t1 = new Time(12,0,0);
+		Time t2 = new Time(18,0,0);
+		Warehouse wh = new Warehouse((long)0, t);
+		Round r1 = new Round(wh,t );
+		Round r2 = new Round(wh,t1);
+		Round r3 = new Round(wh,t2);
+		Deliverer del = new Deliverer((long)1);
+		List<Round> l1 = new ArrayList<Round>();
+		l1.add(r1);
+		l1.add(r2);
+		del.setListRound(l1);
+		Assertions.assertThat(del.getListRound()).containsAll(l1);
+		
+		Deliverer delTest= new Deliverer(del);
+		assertSame(delTest.getId(),del.getId());
+		Assertions.assertThat(delTest.getListRound()).containsAll(l1);
+	}
+	
+	
+	@Test
 	public void testGetListRound() {
 		Time t = new Time(8,0,0);
 		Time t1 = new Time(12,0,0);
 		Time t2 = new Time(18,0,0);
 		Warehouse wh = new Warehouse((long)0, t);
-		Round r1 = new Round(wh );
-		Round r2 = new Round(wh);
-		Round r3 = new Round(wh);
+		Round r1 = new Round(wh,t );
+		Round r2 = new Round(wh,t1);
+		Round r3 = new Round(wh,t2);
 		/*
 		 * Test: empty Round list
 		 */
@@ -42,9 +64,9 @@ public class DelivererTest {
 		Time t1 = new Time(12,0,0);
 		Time t2 = new Time(18,0,0);
 		Warehouse wh = new Warehouse((long)0, t);
-		Round r1 = new Round(wh);
-		Round r2 = new Round(wh);
-		Round r3 = new Round(wh);
+		Round r1 = new Round(wh,t);
+		Round r2 = new Round(wh,t1);
+		Round r3 = new Round(wh,t2);
 		/*
 		 * Test: empty Round list
 		 */
@@ -89,10 +111,10 @@ public class DelivererTest {
 		Time t1 = new Time(12,0,0);
 		Time t2 = new Time(18,0,0);
 		Warehouse wh = new Warehouse((long)0, t);
-		Round r1 = new Round(wh );
+		Round r1 = new Round(wh,t );
 		r1.setStartTime(t);
 		r1.setEndTime(t1);
-		Round r2 = new Round(wh);
+		Round r2 = new Round(wh,t1);
 		r2.setStartTime(t1);
 		r2.setEndTime(t2);
 		
@@ -134,6 +156,7 @@ public class DelivererTest {
 	@Test
 	public void TestToString() {
 		Deliverer del = new Deliverer((long)1);
+		System.out.println(del);
 		assertEquals("id : 1 rounds : []",del.toString());
 	}
 	
@@ -143,9 +166,9 @@ public class DelivererTest {
 		Time t1 = new Time(12,0,0);
 		Time t2 = new Time(18,0,0);
 		Warehouse wh = new Warehouse((long)0, t);
-		Round r1 = new Round(wh);
-		Round r2 = new Round(wh);
-		Round r3 = new Round(wh);
+		Round r1 = new Round(wh,t);
+		Round r2 = new Round(wh,t1);
+		Round r3 = new Round(wh,t2);
 		
 		Deliverer del = new Deliverer((long)1);
 		Assertions.assertThat(del.getListRound()).isEmpty();

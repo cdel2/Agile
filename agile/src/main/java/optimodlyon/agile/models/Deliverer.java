@@ -14,6 +14,11 @@ public class Deliverer {
         this.id = id;
         this.listRound = new ArrayList<Round>();
     }
+    public Deliverer(Deliverer d) {
+        this.id = d.id;
+        this.listRound = new ArrayList<>();
+        this.listRound.addAll(d.listRound);
+    }
 
     public List<Round> getListRound() {
         return listRound;
@@ -78,12 +83,8 @@ public class Deliverer {
     	return isRemoved;
     }
     public String toString() {
-    	return listRound.toString();
+    	return "id : " + id + " rounds : "+ listRound.toString();
     }
     
-    public Deliverer(Deliverer d) {
-        this.id = d.id;
-        this.listRound = new ArrayList<>();
-        this.listRound.addAll(d.listRound);
-    }
+    
 }

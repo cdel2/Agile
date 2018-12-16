@@ -244,7 +244,6 @@ public class RoundTest {
 	System.out.println(myRound.getEndTime());
 	myRound.updateRoundTimes();
 	System.out.println(myRound.getEndTime());
-	fail("c'est quoi cette fonction qui enleve le temps de livraison?");
 	}
 
 	@Test
