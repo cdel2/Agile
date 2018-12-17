@@ -71,13 +71,13 @@ public class CityMapTest {
 		long id2 = 2;
 
 		cmTest.setGraph(graph);
-		
-    	assertNotNull(cmTest.getSegmentFromGraph(id1, id2));
-
+		Segment s = cmTest.getSegmentFromGraph(id1, id2);
+    	assertNotNull(s);
+    	Assertions.assertThat(cmTest.getGraph().containsValue(s));
     	long id3 = 3;
     	long id4 = 4;
     	
-    	assertNull(cmTest.getSegmentFromGraph(id3, id4));
+    	Assertions.assertThat(cmTest.getSegmentFromGraph(id3, id4)).isNull();
 	}
 
 	@Test

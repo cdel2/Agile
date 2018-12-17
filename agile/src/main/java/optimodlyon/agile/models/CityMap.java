@@ -54,11 +54,13 @@ public class CityMap {
      */
     public Segment getSegmentFromGraph(Long origin, Long destination) {
         List<Segment> segments = graph.get(origin);
-        
-        for (Segment segment : segments) {
-            if((long)segment.getEnd().getId()==(long)destination) {
-                return segment;
-            }
+        System.out.println(segments);
+        if(segments!=null) {
+	        for (Segment segment : segments) {
+	            if((long)segment.getEnd().getId()==(long)destination) {
+	                return segment;
+	            }
+	        }    	
         }
         return null;
     }
