@@ -149,14 +149,52 @@ public class DelivererTest {
 	}
 	
 	@Test
+	public void testChangeRounds() {
+		Time t = new Time(8,30,0);
+		Time t1 = new Time(12,0,0);
+		Time t2 = new Time(18,0,0);
+		Warehouse wh = new Warehouse((long)0, t);
+		Round r1 = new Round(wh,t );
+		Round r2 = new Round(wh,t1);
+		Round r3 = new Round(wh,t2);
+		r1.setEndTime(t.addTime(30));
+		Deliverer del = new Deliverer((long)1);
+		List<Round> l1 = new ArrayList<Round>();
+		l1.add(r1);
+		l1.add(r2);
+		del.setListRound(l1);
+		Assertions.assertThat(del.getListRound()).containsAll(l1);
+		del.changeRound(1, r3);
+		Assertions.assertThat(del.getListRound()).contains(r3);
+		Assertions.assertThat(del.getListRound()).doesNotContain(r2);
+	}
+	
+	@Test
 	public void testUpdateRounds() {
-		fail("Not Implemented yet");
+		Time t = new Time(8,30,0);
+		Time t1 = new Time(12,0,0);
+		Time t2 = new Time(18,0,0);
+		Warehouse wh = new Warehouse((long)0, t);
+		Round r1 = new Round(wh,t );
+		Round r2 = new Round(wh,t1);
+		Round r3 = new Round(wh,t2);
+		r1.setEndTime(t.addTime(30));
+		Deliverer del = new Deliverer((long)1);
+		List<Round> l1 = new ArrayList<Round>();
+		l1.add(r1);
+		l1.add(r2);
+		l1.add(r3);
+		del.setListRound(l1);
+		Assertions.assertThat(del.getListRound()).containsAll(l1);
+		del.updateRounds(0);
+		assertEquals(del.getListRound().get(0).getStartTime().toString(),new Time("8:00:00").toString());
+		del.updateRounds(1);
+		assertEquals(del.getListRound().get(1).getStartTime().toString(),new Time("8:00:00").toString());
 	}
 	
 	@Test
 	public void TestToString() {
 		Deliverer del = new Deliverer((long)1);
-		System.out.println(del);
 		assertEquals("id : 1 rounds : []",del.toString());
 	}
 	
