@@ -43,7 +43,10 @@ public class Round {
     }
     
     public Round() {
-		// TODO Auto-generated constructor stub
+		startTime=new Time(8,0,0);
+		endTime=new Time(8,0,0);
+		listPath=new ArrayList<Path>();
+		start=null;
 	}
 
 	public void remove(Path path) {
