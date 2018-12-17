@@ -14,6 +14,7 @@ public class Deliverer {
         this.id = id;
         this.listRound = new ArrayList<Round>();
     }
+    
     public Deliverer(Deliverer d) {
         this.id = d.id;
         this.listRound = new ArrayList<>();
@@ -32,12 +33,15 @@ public class Deliverer {
     	if(i==0) {
     		listRound.get(0).setStartTime(new Time("8:00:00"));
     		listRound.get(0).updateRoundTimes();
+
+    		System.out.println(listRound.get(i).getEndTime());
     		i++;
-    	}
+    	}else {
     	while(i<listRound.size()) {
     		listRound.get(i).setStartTime(listRound.get(i-1).getEndTime());
     		listRound.get(i).updateRoundTimes();
             i++;
+    	}
     	}
     }
     
