@@ -237,21 +237,15 @@ public class Dijkstra {
             }
     	}	
     	
-    	try {
-            /*
-             * We get the distance from source of the two nodes
-             */
-            currentDistToCurrent = dijkstraGraph.get(currentNode).getDistFromSource();
-            currentDistToGoal = dijkstraGraph.get(goalNode).getDistFromSource();
-            
-            if(currentDistToCurrent + distFromCurrentToGoal < currentDistToGoal) {
-                newDist = currentDistToCurrent + distFromCurrentToGoal;
-            }
-        } catch (Exception e) {
-            System.out.println("Couldn't get the current and/or goal Distances from dijkstraGraph");
-            e.printStackTrace();
-        }
-    	
+	    /*
+	     * We get the distance from source of the two nodes
+	     */
+	    currentDistToCurrent = dijkstraGraph.get(currentNode).getDistFromSource();
+	    currentDistToGoal = dijkstraGraph.get(goalNode).getDistFromSource();
+	    
+	    if(currentDistToCurrent + distFromCurrentToGoal < currentDistToGoal) {
+	        newDist = currentDistToCurrent + distFromCurrentToGoal;
+	    }
     	return newDist;
     }
     
