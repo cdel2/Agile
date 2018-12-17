@@ -3,8 +3,8 @@
  * @extends State
  */
 class AddPointState extends State{
-    constructor(){
-        super();
+    constructor(geometryService){
+        super(geometryService);
         $("#addDel").html("<i class='fas fa-ban'></i>").addClass("btn-danger").removeClass("btn-warning");
         disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#rmvDel", "#mapSelector", "#delSelector"]);
         console.log("Etat addPointState");

@@ -9,6 +9,9 @@ class Controller{
         this.lastX; this.lastY;
         this.dragged = false;
         this.clicked = false;
+
+        //Geometry service
+        this.geometry = new Geometry();
     }
 
     loadDeliveries(){
@@ -64,7 +67,7 @@ class Controller{
         if(this.View != undefined){
             delete this.View;
         }
-        this.View = new Viewer();
+        this.View = new Viewer(this.geometry);
         this.View.setupCanvas();
         this.View.loadMap(this.selectedMap);
         switch(this.selectedMap){
@@ -85,20 +88,20 @@ class Controller{
 
     addPoint(){
         if(this.state.constructor.name === "AddPointState"){
-            this.state = new CalcState();
+            this.state = new CalcState(this.geometry);
             this.View.update();
         }else if(this.state.constructor.name === "CalcState"){
-            this.state= new AddPointState();
+            this.state= new AddPointState(this.geometry);
             this.View.update();
         }
     }
 
     rmvPoint(){
         if(this.state.constructor.name === "RmvPointState"){
-            this.state = new CalcState();
+            this.state = new CalcState(this.geometry);
             this.View.update();
         }else if(this.state.constructor.name === "CalcState"){
-            this.state= new RmvPointState();
+            this.state= new RmvPointState(this.geometry);
             this.View.update();
         }
     }
@@ -126,9 +129,7 @@ class Controller{
             this.View.update();
         }else{
             let list = $(".activeLine");
-            console.log(list);
             for(var i=0; i<list.length; i++){
-                console.log($(list[i]).parent());
                 $(list[i]).removeClass("activeLine");
             }
             el.addClass("activeLine");
@@ -149,10 +150,14 @@ class Controller{
         this.View.update();
     }
 
+    update(){
+        this.View.update();
+    }
+
     reset(){
         delete this.View.Map;
         this.View.update();
-        this.state = new InitState();
+        this.state = new InitState(this.geometry);
     }
 
     undo(){

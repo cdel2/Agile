@@ -1,6 +1,6 @@
 class CalcState extends State{
-    constructor(){
-        super();
+    constructor(geometryService){
+        super(geometryService);
 
         enableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#rmvDel", "#mapSelector", "#delSelector", "#addDel", "#addDel"]);
         disableButtons([""]);
@@ -31,12 +31,10 @@ class CalcState extends State{
     }
     
     handleMouseUp(evt){
-        let View = Ctrl.View;
         if(!Ctrl.dragged && evt.srcElement.tagName==="CANVAS"){
-            let ratio = View.Canvas.ratio;
-            let deliveryId = View.Deliveries.findBestDelivery(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
-            View.Deliveries.selectDelivery(deliveryId);
-            //View.update();
+            let ratio = this.geometry.Canvas.ratio;
+            let deliveryId = Ctrl.View.Deliveries.findBestDelivery(ratio*(evt.offsetX-this.geometry.Canvas.html.offsetTop), ratio*(evt.offsetY-this.geometry.Canvas.html.offsetLeft));
+            Ctrl.View.Deliveries.selectDelivery(deliveryId);
         }
         super.MouseUp(evt);
     }

@@ -3,12 +3,16 @@
  * It load, diaplay and toggle the interface
  */
 class Deliveries{
-    constructor(){
+    constructor(geometryService){
         this.userNodeDisp = {radius: 4, color: "green"};
         this.warehouse = null;
         this.delNodes = new Object();
         this.userDelNodes = new Object();
         this.selectedDel = null;
+
+        //dependancy injection
+        this.geometry = geometryService;
+
 
         this.imgPin = new Image();
         this.imgPin.src = 'img/pin.png';
@@ -41,12 +45,12 @@ class Deliveries{
                 type:"GET"
             }).done(function( del ) {
                 object.warehouse = {id:del.id, duration:null, color:"red"};
-                Ctrl.state = new DelState();
+                Ctrl.state = new DelState(object.geometry);
                 Ctrl.View.update();
             }).fail(function(){
                 alertBox("Warehouse data not loaded !");
                 Ctrl.View.update();
-                Ctrl.state = new MapState();
+                Ctrl.state = new MapState(object.geometry);
             }).always(function(){    
                 $("#loaderEl").hide();
             });
@@ -58,7 +62,7 @@ class Deliveries{
             }else{
                 alertBox("Erreur : Le serveur n'est pas joignable !");
                 Ctrl.View.update();
-                Ctrl.state = new MapState();
+                Ctrl.state = new MapState(object.geometry);
             }
         }).always(function(){    
             $("#loaderEl").hide();
@@ -70,51 +74,43 @@ class Deliveries{
      * @param {context} $ctx - context of the canvas to write in
      * @param {context} $time - current time
     */
-    display(ctx, time){
-        let View = Ctrl.View;
+    display(time){
         let coord = Ctrl.View.Map.coord;
 
         for(var del in this.delNodes){
             let pathNodes = this.delNodes[del];
             for(var i = 0; i < pathNodes.length-1; i++){
+                this.geometry.initShape(pathNodes[i].color, 0.7);
                 let node = coord[pathNodes[i].id];
-                drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 4, pathNodes[i].color, ctx);
+                this.geometry.circle(node.longitude, node.latitude, 4);
+                this.geometry.drawShape();
             }
         }
 
         for(var del in this.userDelNodes){
             let pathNodes = this.userDelNodes[del];
-            for(var i = 0; i < pathNodes.length-1; i++){
+            for(var i = 0; i < pathNodes.length-1; i++){  
+                this.geometry.initShape(pathNodes[i].color, 0.7);
                 let node = coord[pathNodes[i].id];
-                drawSquare(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, pathNodes[i].color, ctx);
+                this.geometry.square(node.longitude, node.latitude, 8);
+                this.geometry.drawShape();
             }
         }
 
         //affichage warehouse
         let node = coord[this.warehouse.id];
-        ctx.globalAlpha = 1;
-        let ratio = Ctrl.View.Canvas.ratio*0.8;
-        //drawCircle(View.norm(node.longitude, true), View.norm(node.latitude, false), 8, "red", ctx);      
-        let imgH = ratio*this.imgHome.height;
-        let imgW = ratio*this.imgHome.width;  
-        ctx.drawImage(this.imgHome, View.norm(node.longitude, true)-imgW/2,View.norm(node.latitude, false)-imgH/2, imgW, imgH);
-        ctx.beginPath(); 
+        this.geometry.imageDirect(this.imgHome, node.longitude, node.latitude, 0.8, 1);
 
         //afficha pin
         if(this.selectedDel!=null){
             let node = coord[this.selectedDel.id];
-            let ratio = Ctrl.View.Canvas.ratio*0.7;
-            let imgH = ratio*this.imgPin.height;
-            let imgW = ratio*this.imgPin.width;
-            ctx.globalAlpha = 0.8;
-            ctx.drawImage(this.imgPin, View.norm(node.longitude, true)-imgW/2,View.norm(node.latitude, false)-imgH, imgW, imgH);
-            ctx.beginPath();         
-
+            this.geometry.imageDirect(this.imgPin, node.longitude, node.latitude, 0.8, 0.8);
         }
 
         if(this.delNodes[-1] === undefined){
             this.updatePathsInfo(time);
         }
+        
     }
 
     /**
@@ -179,7 +175,7 @@ class Deliveries{
             }
             for(var j in path){
                 let node = Ctrl.View.Map.coord[path[j].id];
-                let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
+                let temp = distance(X,Y, this.geometry.norm(node.longitude, true), this.geometry.norm(node.latitude, false));
                 if(node.id != this.warehouse.id && temp<bestDistance){
                     bestDistance = temp;
                     bestDelId = node.id;

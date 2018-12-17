@@ -3,8 +3,8 @@
  * @extends State
  */
 class RmvPointState extends State{
-    constructor(){
-        super();
+    constructor(geometryService){
+        super(geometryService);
         $("#rmvDel").html("<i class='fas fa-ban'></i>").addClass("btn-danger").removeClass("btn-warning");
         disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#loadMap", "#addDel", "#mapSelector", "#delSelector"]);
         console.log("Etat rmvPointState");

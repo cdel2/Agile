@@ -3,8 +3,8 @@
  * @extends State
  */
 class DelState extends State{
-    constructor(){
-        super();
+    constructor(geometryService){
+        super(geometryService);
 
         enableButtons(["#loadDel", "#loadRounds", "#loadMap", "#mapSelector", "#delSelector"]);
         disableButtons(["#undo", "#redo", "#addDel", "#rmvDel"]);

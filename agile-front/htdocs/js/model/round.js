@@ -1,10 +1,13 @@
 class Round{
-    constructor(){
+    constructor(geometryService){
         this.paths = new Object();
         this.userPaths = new Object();
         this.colors = ["green", "red", "purple", "blue", "lime", "aqua", "olive", "teal", "maroon", "#E74C3C", "#9B59B6", "#2980B9", "#3498DB", "#1ABC9C", "#27AE60", "#2ECC71", "#F1C4OF", "#F39C12"];
         this.firstPath = -1;
         this.stop=null;
+
+        //dependancy injection
+        this.geometry = geometryService;
     }
 
     load(action, num1, num2){
@@ -12,7 +15,7 @@ class Round{
         switch(action){
             case "init":
                 apiUrl+="calculation/start/"+num1;
-                Ctrl.state = new CalculatingState();
+                Ctrl.state = new CalculatingState(this.geometry);
                 break;
             case "add":
                 apiUrl+="delivery/add/"+num1+"/"+num2;
@@ -94,7 +97,7 @@ class Round{
             delete Ctrl.View.Deliveries.delNodes[-1];
             initSlider(endTimes);
             Ctrl.View.update();
-            Ctrl.state = new CalcState();
+            Ctrl.state = new CalcState(object.geometry);
         }).fail(function(textStatus){
             let status = textStatus.status;
             if(status === 422){
@@ -119,33 +122,32 @@ class Round{
                 alertBox("Nothing to redo");
             }else{
                 alertBox("Erreur : Le serveur n'est pas joignable !");
-                Ctrl.state = new DelState();
+                Ctrl.state = new DelState(object.geometry);
             }
         }).always(function(){
             $("#loaderEl").hide();
         });
     }
     
-    display(ctx, coord, time){
-        ctx.globalAlpha = 1;
+    display(coord, time){
         for(var i in this.paths){
             if(this.paths[i].display && (this.firstPath===-1 || (i!=this.firstPath))){
                 let totalPath = this.paths[i].data;
-                this.drawSegment(totalPath, coord, ctx, this.paths[i].color, 1.5, time);
+                this.drawSegment(totalPath, coord, this.paths[i].color, 1.5, time);
             }
         }
 
         for(var i in this.userPaths){
             if(this.userPaths[i].display && (this.firstPath===-1 || (i!=this.firstPath))){
                 let totalPath = this.userPaths[i].data;
-                this.drawSegment(totalPath, coord, ctx, this.userPaths[i].color, 1.5, time);
+                this.drawSegment(totalPath, coord, this.userPaths[i].color, 1.5, time);
             }
         }
         
         let path = this.paths[this.firstPath];
         if(this.firstPath!=-1 && path.display){
             let totalPath = path.data;
-            this.drawSegment(totalPath, coord, ctx, path.color, 2, time);
+            this.drawSegment(totalPath, coord, path.color, 2, time);
             if(this.userPaths != undefined && this.userPaths[this.firstPath] != undefined){
                 let totalPath2 = this.userPaths[this.firstPath].data;
                 this.drawSegment(totalPath2, coord, ctx, path.color, 2, time);
@@ -153,27 +155,21 @@ class Round{
         }
     }
     //[10,5]
-    drawSegment(totalPath, coord, ctx, color, thickness, time){
+    drawSegment(totalPath, coord, color, thickness, time){
         let present = true; //true if we are before time
         for(var j in totalPath){
             let path = totalPath[j];
-            ctx.strokeStyle = color;
-            ctx.lineWidth = Ctrl.View.Canvas.ratio*thickness*(Ctrl.View.zoomLevel +1);
             for(var j in path){
                 if(compareTime(path[j].passageTime, time) > 0) present = false;
                 if(present){
-                    ctx.globalAlpha = 1; 
-                    ctx.setLineDash([]);
+                    this.geometry.initLine(color, 1, thickness, []);
                 }else{ 
-                    ctx.globalAlpha = 0.4;
-                    ctx.setLineDash([10,5]);
+                    this.geometry.initLine(color, 0.4, thickness, [10,5]);
                 }
-                ctx.beginPath();
                 let start = coord[path[j].start];
                 let end = coord[path[j].end];
-                ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
-                ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
-                ctx.stroke();
+                this.geometry.line(start.longitude, start.latitude, end.longitude, end.latitude);
+                this.geometry.drawLine();
             }
         }
     }

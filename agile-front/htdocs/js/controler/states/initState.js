@@ -3,8 +3,8 @@
  * @extends State
  */
 class InitState extends State{
-    constructor(){
-        super();
+    constructor(geometryService){
+        super(geometryService);
         disableButtons(["#undo", "#redo", "#loadDel", "#loadRounds", "#rmvDel", "#addDel", "#delSelector"]); 
         console.log("Etat init"); 
         $("#pathMenu").hide();

@@ -3,8 +3,8 @@
  * @extends State
  */
 class CalculatingState extends State{
-    constructor(){
-        super();
+    constructor(geometryService){
+        super(geometryService);
         $("#loadRounds").html("Annuler").addClass("btn-danger").removeClass("btn-warning");
     }
     

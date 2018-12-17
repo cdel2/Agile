@@ -3,8 +3,8 @@
  * @extends State
  */
 class MapState extends State{
-    constructor(){
-        super();
+    constructor(geometryService){
+        super(geometryService);
         enableButtons(["#loadDel", "#loadMap", "#mapSelector", "#delSelector", "#addDel"]);
         disableButtons(["#addDel", "#rmvDel", "#loadRounds", "#undo", "#redo"]);
         $("#snoInfoBox").hide();

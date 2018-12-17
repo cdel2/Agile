@@ -12,12 +12,12 @@
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>d3.select(self.frameElement).style("height", "140px")</script>
   <script src="js/util/userBoxes.js"></script>
-  <script src="js/util/geometry.js"></script>
   <script src="js/util/time.js"></script>
   <script src="js/model/map.js"></script>
   <script src="js/model/deliveries.js"></script>
   <script src="js/model/round.js"></script>
-  <script src="js/model/view.js"></script>
+  <script src="js/display/view.js"></script>
+  <script src="js/display/geometry.js"></script>
   <script src="js/controler/controller.js"></script>
   <script src="js/controler/states/state.js"></script>
   <script src="js/controler/states/initState.js"></script>
@@ -70,9 +70,9 @@
           <input type="text" id="sliderInit" data-slider-id="timelineIn" data-slider-min="80" data-slider-tooltip="always" data-slider-max="180" data-slider-step="1" data-slider-value="120"/>
         </div>
         <div id="mapCtrl">
-          <button type="button" class="btn btn-dark" id="resetZoom" onclick="Ctrl.View.reset();"><i class="fas fa-compress"></i></button>
-          <button type="button" class="btn btn-dark" id="zoom+" onclick="Ctrl.View.zoom(0.2);"><i class="fas fa-search-plus"></i></button>
-          <button type="button" class="btn btn-dark" id="zoom-" onclick="Ctrl.View.zoom(-0.2);"><i class="fas fa-search-minus"></i></button>
+          <button type="button" class="btn btn-dark" id="resetZoom" onclick="Ctrl.resetView();"><i class="fas fa-compress"></i></button>
+          <button type="button" class="btn btn-dark" id="zoom+" onclick="Ctrl.zoomView(0.2);"><i class="fas fa-search-plus"></i></button>
+          <button type="button" class="btn btn-dark" id="zoom-" onclick="Ctrl.zoomView(-0.2);"><i class="fas fa-search-minus"></i></button>
         </div>
         <canvas id="map" class="selectable"></canvas>
       </div>

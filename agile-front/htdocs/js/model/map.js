@@ -1,9 +1,12 @@
 class Map{
-    constructor() {
+    constructor(geometryService) {
         this.coord = new Object();
         this.graph = null;
         this.latRange = 0;
         this.longRange = 0;
+        
+        //dependancy injection
+        this.geometry = geometryService;
     }
     
     load(mapFile){
@@ -37,11 +40,11 @@ class Map{
                 if(longRange[1]<long) longRange[1] =long;
             }
 
-            object.latRange = latRange;
-            object.longRange = longRange;
+            object.geometry.latRange = latRange;
+            object.geometry.longRange = longRange;
 
             Ctrl.View.update();
-            Ctrl.state = new MapState();
+            Ctrl.state = new MapState(object.geometry);
         }).fail(function(textStatus){
             let status = textStatus.status;
             if(status === 422){
@@ -49,31 +52,27 @@ class Map{
                 Ctrl.reset();
             }else if(status === 500){
                 alertBox("Le fichier de plan est corrompu.");
-                Ctrl.state = new InitState();
+                Ctrl.state = new InitState(object.geometry);
             }else{
                 alertBox("Erreur : Le serveur n'est pas joignable !");
-                Ctrl.state = new DelState();
+                Ctrl.state = new DelState(object.geometry);
             }
         }).always(function(){  
             $("#loaderEl").hide();
         });
     }
 
-    display(ctx){
-        ctx.beginPath();
-        ctx.strokeStyle = "gray";
-        ctx.lineWidth = Ctrl.View.Canvas.ratio*(Ctrl.View.zoomLevel/2 +1);
-        ctx.setLineDash([]);
+    display(){
+        this.geometry.initLine("gray", 1, 1);
         for(var segListId in this.graph){
             let segList = this.graph[segListId];
             for(var seg in segList){
                 let start = segList[seg].start;
                 let end = segList[seg].end;
-                ctx.moveTo(Ctrl.View.norm(start.longitude, true),Ctrl.View.norm(start.latitude, false));
-                ctx.lineTo(Ctrl.View.norm(end.longitude, true),Ctrl.View.norm(end.latitude, false));
+                this.geometry.line(start.longitude, start.latitude, end.longitude, end.latitude);
             }
         }
-        ctx.stroke();
+        this.geometry.drawLine();
     }
 
     highlightNode(nodeId, ctx){
