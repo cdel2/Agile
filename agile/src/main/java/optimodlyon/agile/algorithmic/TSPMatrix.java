@@ -19,12 +19,12 @@ public class TSPMatrix extends TSPTemplate{
 	 * @return the value of the upper bound
 	 */
 	@Override
-	protected float bound(long current, List<Long> notVisited, List<Long> visited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph)
+	public float bound(long current, List<Long> notVisited, List<Long> visited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph)
 	{
 		//We consider a table represented by the updatedGraph where each (row,column) pair
 		//is a path that has not been visited yet
 		//We get this graph
-		Map<Long, Map<Long, Float>> updatedGraph= generateGraph(current, visited, graph);
+		Map<Long, Map<Long, Float>> updatedGraph= generateGraph(visited, graph);
 		//we computer the list of ri. ri is for the row number i, the minimum distance
 		Map<Long, Float> ri = generateRi(updatedGraph);
 		//we computer the list of ri. ci is for the colum number i, the minimum distance-ri
@@ -37,12 +37,10 @@ public class TSPMatrix extends TSPTemplate{
 	/*
 	 * @param current the id of the delivery point we are currently visiting
 	 * @param notVisited the list of the delivery points' ids that have not been visited yet
-	 * @param listDeliveries the list of the delivery points's ids that have to be visited
-	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
 	 * @return the Iterator over Long
 	 */
 	@Override
-	protected  Iterator<Long> iterator(Long current,List<Long> notVisited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph)
+	protected  Iterator<Long> iterator(Long current,List<Long> notVisited)
 	{
 		return new IteratorSeq(notVisited, current);
 	}
@@ -53,7 +51,7 @@ public class TSPMatrix extends TSPTemplate{
 	 * @param visited the list of the delivery points' ids that have been visited
 	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
 	 */
-	protected Map<Long, Map<Long, Float>> generateGraph(long current, List<Long> visited, Map<Long, TreeMap<Long, Float>> graph)
+	public Map<Long, Map<Long, Float>> generateGraph(List<Long> visited, Map<Long, TreeMap<Long, Float>> graph)
 	{
 		
 		Map<Long, Map<Long, Float>> currentGraph = new HashMap<Long, Map<Long, Float>>(graph);
@@ -193,41 +191,7 @@ public class TSPMatrix extends TSPTemplate{
 		}
 		return min;
 	}
-	
-	public Map<Long, Map<Long, Float>> generateReducedGraph(Map<Long, Map<Long, Float>> graph,Map<Long,Float> ri, Map<Long,Float> ci)
-	{
-		Map<Long, Map<Long, Float>> newGraph = new HashMap<Long, Map<Long, Float>>();
-		Iterator<Entry<Long, Map<Long, Float>>> it = graph.entrySet().iterator();
-		long key;
-		while (it.hasNext()) {
-			key = (long) (it.next().getKey());
-			Map<Long, Float> currentSuccessors = new HashMap<Long, Float>(graph.get(key));
-			Map<Long, Float> newSuccessors = computeDij(key, currentSuccessors, ri, ci );
-			newGraph.put(key, newSuccessors);
-		}
 		
-		return newGraph;
-	}
-	
-	public Map<Long, Float> computeDij(long keySource, Map<Long, Float> successors, Map<Long,Float> ri, Map<Long,Float> ci)
-	{
-		
-		Iterator<Entry<Long, Float>> it = successors.entrySet().iterator();
-		long key ;
-		float oldD;
-		float newD;
-		Map<Long, Float> newMap = new HashMap<Long,Float>();
-		while(it.hasNext())
-		{
-			key = (long) (it.next().getKey());			
-			oldD = successors.get(key);
-			newD = oldD - ri.get(keySource) - ci.get(key);
-			newMap.put(key, newD);
-			
-		}
-		return newMap;
-	}
-	
 	public float computeB(Map<Long,Float> ri, Map<Long,Float> ci)
 	{
 		Iterator<Entry<Long, Float>> itR = ri.entrySet().iterator();
@@ -251,83 +215,5 @@ public class TSPMatrix extends TSPTemplate{
 	
 	
 	
-	public Map<Long, Pair> computePi(Map<Long, Map<Long, Float>> graph, long start)
-	{
-		Iterator<Entry<Long, Float>> it;
-		float pi = 0;
-		float current;
-		long key1 = start;//MapManagement.getInstance().getWarehouse().getId();
-
-		long key2;
-
-		Map<Long, Pair> result = new HashMap<Long,Pair>();
-
-		it = (graph.get(key1)).entrySet().iterator();
-		while(it.hasNext())
-		{
-			key2 = (long) (it.next().getKey());
-
-			current = computePiij(graph, key1, key2);
-
-			if(current >= pi )
-			{
-				pi = current;
-				Pair pair = new Pair(key2,pi);
-				result.clear();
-				result.put(key1, pair);
-			}
-		}
-		
-		return result;
-	}
-	
-	public float computePiij(Map<Long, Map<Long, Float>> graph, long i, long j)
-	{
-		Iterator<Entry<Long, Map<Long, Float>>> itI = graph.entrySet().iterator();
-		float piij = 0;
-		Map<Long, Float> successors = new HashMap<Long, Float>();
-		float di = 100000;
-		float dj = 100000;
-		float current;
-		long keyJ;
-		successors = graph.get(i);
-		Iterator<Entry<Long, Float>> itJ = successors.entrySet().iterator();
-		while(itJ.hasNext())
-		{
-			keyJ = (long) (itJ.next().getKey());
-			if((keyJ != j))
-			{
-				current = successors.get(keyJ);
-				if(current < di)
-				{
-					di = current;
-				}
-				
-			}
-
-			
-		}
-		long keyI;
-		while(itI.hasNext())
-		{
-			keyI = (long) (itI.next().getKey());
-			if(i != keyI)
-			{
-				successors = graph.get(keyI);
-				if(successors.containsKey(j))
-				{
-					current = successors.get(j);
-					if(current < dj)
-					{
-						dj = current;
-					}
-				}
-			}
-			
-		}
-		piij = di + dj;
-			
-		return piij;
-	}
 
 }

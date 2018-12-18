@@ -75,7 +75,7 @@ public abstract class  TSPTemplate implements TSPInterface {
 	    	}
 	    //if it still worth it to explore the tree of possibilities
 	    } else if (currentDuration + bound(id, notVisited, visited, listDeliveries, graph) < getBestDuration()){
-	        Iterator<Long> it = iterator(id, notVisited, listDeliveries, graph );
+	        Iterator<Long> it = iterator(id, notVisited);
 	        outerloop:
 	        while (it.hasNext()){
 	        	if(!MapManagement.getInstance().getIsRunning()) break outerloop;
@@ -101,16 +101,14 @@ public abstract class  TSPTemplate implements TSPInterface {
 	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
 	 * @return the value of the upper bound
 	 */
-	protected abstract float bound(long current, List<Long> notVisited, List<Long> visited,List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph);
+	public abstract float bound(long current, List<Long> notVisited, List<Long> visited,List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph);
 	
 	/*
 	 * @param current the id of the delivery point we are currently visiting
 	 * @param notVisited the list of the delivery points' ids that have not been visited yet
-	 * @param listDeliveries the list of the delivery points's ids that have to be visited
-	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
 	 * @return the Iterator over Long
 	 */
-	protected abstract Iterator<Long> iterator(Long current,List<Long> notVisited, List<Long> listDeliveries, Map<Long, TreeMap<Long, Float>> graph);
+	protected abstract Iterator<Long> iterator(Long current,List<Long> notVisited);
 
 	/*
 	 * @return bestDuration

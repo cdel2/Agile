@@ -12,10 +12,10 @@ public class IteratorSeq implements Iterator<Long>{
 	 * @param current the id of the delivery that is being visited
 	 */
 	public IteratorSeq(Collection<Long> notVisited, long current){
-		this.collection = new Long[notVisited.size()];
+		this.setCollection(new Long[notVisited.size()]);
 		nbElement = 0;
 		for (Long s : notVisited){
-			collection[nbElement++] = s;
+			getCollection()[nbElement++] = s;
 		}
 	}
 	
@@ -33,11 +33,19 @@ public class IteratorSeq implements Iterator<Long>{
 	 */
 	@Override
 	public Long next() {
-		return collection[--nbElement];
+		return getCollection()[--nbElement];
 	}
 
 	@Override
 	public void remove() {}
+
+	public Long[] getCollection() {
+		return collection;
+	}
+
+	public void setCollection(Long[] collection) {
+		this.collection = collection;
+	}
 	
 
 }
