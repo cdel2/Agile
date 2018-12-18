@@ -175,7 +175,7 @@ class Deliveries{
             }
             for(var j in path){
                 let node = Ctrl.View.Map.coord[path[j].id];
-                let temp = distance(X,Y, this.geometry.norm(node.longitude, true), this.geometry.norm(node.latitude, false));
+                let temp = this.geometry.distance(X,Y, this.geometry.norm(node.longitude, true), this.geometry.norm(node.latitude, false));
                 if(node.id != this.warehouse.id && temp<bestDistance){
                     bestDistance = temp;
                     bestDelId = node.id;

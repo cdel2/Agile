@@ -150,7 +150,7 @@ class Round{
             this.drawSegment(totalPath, coord, path.color, 2, time);
             if(this.userPaths != undefined && this.userPaths[this.firstPath] != undefined){
                 let totalPath2 = this.userPaths[this.firstPath].data;
-                this.drawSegment(totalPath2, coord, ctx, path.color, 2, time);
+                this.drawSegment(totalPath2, coord, path.color, 2, time);
             }
         }
     }
