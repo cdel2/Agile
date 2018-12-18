@@ -63,12 +63,12 @@ class Viewer{
         let scaledHeight = height * ratio;
         this.geometry.Canvas.ratio = ratio;
 
-        d3.select('#map')
+        $('#map')
             .attr('width', scaledWidth)
             .attr('id', "map")
             .attr('height', scaledHeight)
-            .style('width', width + 'px')
-            .style('height', height + 'px');
+            .css('width', width + 'px')
+            .css('height', height + 'px');
     
         var canvas = $("#map").get(0);
         this.geometry.Canvas.ctx = canvas.getContext("2d");
