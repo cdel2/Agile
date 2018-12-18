@@ -31,10 +31,3 @@ function showMessage(bool, text){
         $("#snoInfoBox").hide().html("");
     }
 }
-
-function distance(Xa, Ya, Xb, Yb){
-    let tempLat = Yb-Ya;
-    let tempLong = Xb-Xa;
-    let temp = tempLat*tempLat + tempLong*tempLong;
-    return Math.sqrt(temp);
-}

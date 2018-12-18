@@ -24,9 +24,10 @@ class AddPointState extends State{
         super.MouseMove(evt);       
     
         let View = Ctrl.View;
-        let ratio = View.Canvas.ratio;
-        let nodeId = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
-        View.Map.highlightNode(nodeId, View.Canvas.ctx);
+        let ratio = this.geometry.Canvas.ratio;
+        let nodeId = View.Map.findBestNode(ratio*(evt.offsetX-this.geometry.Canvas.html.offsetTop), ratio*(evt.offsetY-this.geometry.Canvas.html.offsetLeft));
+        Ctrl.update();
+        View.Map.highlightNode(nodeId);
     }
     
     handleMouseUp(evt){
@@ -45,14 +46,14 @@ class AddPointState extends State{
                 $("#delDuration").removeClass("is-invalid");
                 $("#delDuration").addClass("is-valid");
             }
-            let ratio = View.Canvas.ratio;
-            var nodeId = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
+            let ratio = this.geometry.Canvas.ratio;
+            var nodeId = View.Map.findBestNode(ratio*(evt.offsetX-this.geometry.Canvas.html.offsetTop), ratio*(evt.offsetY-this.geometry.Canvas.html.offsetLeft));
             View.Deliveries.addUserDelivery(parseInt(nodeId), value);
-            View.update();
+            Ctrl.update();
             a = true;
         }
         super.MouseUp(evt);
-        if(a) Ctrl.state = new CalcState();
+        if(a) Ctrl.state = new CalcState(this.geometry);
     }
 
     handleKeyPress(evt){

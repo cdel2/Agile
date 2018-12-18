@@ -37,6 +37,13 @@ class Geometry{
         }
     }
 
+    distance(Xa, Ya, Xb, Yb){
+        let tempLat = Yb-Ya;
+        let tempLong = Xb-Xa;
+        let temp = tempLat*tempLat + tempLong*tempLong;
+        return Math.sqrt(temp);
+    }
+
     /**
      * @desc reset the zoom and pan back to their original values
     */
@@ -70,7 +77,7 @@ class Geometry{
 
     initShape(color, opacity){
         this.Canvas.ctx.beginPath();        
-        this.Canvas.ctx.fillStyle = color;
+        this.Canvas.ctx.fillStyle = color || "purple";
         this.Canvas.ctx.globalAlpha = opacity;
     }
 
@@ -80,8 +87,10 @@ class Geometry{
     }
 
     square(X, Y, L){
+        X = this.norm(X, true);
+        Y = this.norm(Y, false);
         let L1 = this.Canvas.ratio*L*(this.zoomLevel/2 +1);
-        ctx.fillRect(X-L1/2,Y-L1/2,L1,L1);
+        this.Canvas.ctx.fillRect(X-L1/2,Y-L1/2,L1,L1);
     }
 
     line(X1, Y1, X2, Y2){

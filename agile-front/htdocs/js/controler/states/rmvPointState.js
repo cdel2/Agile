@@ -28,9 +28,10 @@ class RmvPointState extends State{
         super.MouseMove(evt);       
     
         let View = Ctrl.View;
-        let ratio = View.Canvas.ratio;
-        let nodeId = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
-        View.Map.highlightNode(nodeId, View.Canvas.ctx);
+        let ratio = this.geometry.Canvas.ratio;
+        let nodeId = View.Map.findBestNode(ratio*(evt.offsetX-this.geometry.Canvas.html.offsetTop), ratio*(evt.offsetY-this.geometry.Canvas.html.offsetLeft));
+        Ctrl.update();
+        View.Map.highlightNode(nodeId);
     }
     
     handleMouseUp(evt){
@@ -38,8 +39,8 @@ class RmvPointState extends State{
         let a = false;
         if(!Ctrl.dragged && evt.srcElement.tagName==="CANVAS"){
             console.log("CANVAS");
-            let ratio = View.Canvas.ratio;
-            var nodeId = View.Map.findBestNode(ratio*(evt.offsetX-View.Canvas.html.offsetTop), ratio*(evt.offsetY-View.Canvas.html.offsetLeft));
+            let ratio = this.geometry.Canvas.ratio;
+            var nodeId = View.Map.findBestNode(ratio*(evt.offsetX-this.geometry.Canvas.html.offsetTop), ratio*(evt.offsetY-this.geometry.Canvas.html.offsetLeft));
             View.Deliveries.rmvUserDelivery(parseInt(nodeId));
             View.update();
             a = true;

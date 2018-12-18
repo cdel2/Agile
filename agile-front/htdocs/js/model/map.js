@@ -75,18 +75,19 @@ class Map{
         this.geometry.drawLine();
     }
 
-    highlightNode(nodeId, ctx){
-        Ctrl.View.update();
+    highlightNode(nodeId){
         let node = this.coord[nodeId];
-        drawCircle(Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false), 5, "yellow", ctx);
+        this.geometry.initShape("yellow", 0.7);
+        this.geometry.circle(node.longitude, node.latitude, 5);
+        this.geometry.drawShape();
     }
 
     findBestNode(X,Y){
         let bestNode;
         let bestDistance = Number.MAX_VALUE;
-        for (var prop in Ctrl.View.Map.coord) {
+        for (var prop in this.coord) {
             let node = this.coord[prop];
-            let temp = distance(X,Y, Ctrl.View.norm(node.longitude, true), Ctrl.View.norm(node.latitude, false));
+            let temp = this.geometry.distance(X,Y, this.geometry.norm(node.longitude, true), this.geometry.norm(node.latitude, false));
             if(temp<bestDistance){
                 bestDistance = temp;
                 bestNode = prop;
