@@ -1,4 +1,12 @@
+/**
+ * Coordinates the map data
+ * It can loads and displays map's data
+ */
 class Map{
+    /**
+     * Primary constructor
+     * @param {object} $geometryService - geometry service : dependancy injection
+    */
     constructor(geometryService) {
         this.coord = new Object();
         this.graph = null;
@@ -9,6 +17,10 @@ class Map{
         this.geometry = geometryService;
     }
     
+    /**
+     * Loads the map from the backend, set the new state depending on the return code.
+     * @param {string} $mapFile - map file id to load (petit, moyen, grand, corrompu...)
+    */
     load(mapFile){
         let object = this;
         $("#loaderEl").show();
@@ -62,6 +74,9 @@ class Map{
         });
     }
 
+    /**
+     * Displays the map (roads)
+    */
     display(){
         this.geometry.initLine("gray", 1, 1);
         for(var segListId in this.graph){
@@ -75,6 +90,11 @@ class Map{
         this.geometry.drawLine();
     }
 
+    /**
+     * Draw a yellow circle over the given node
+     * Used in the adding/remove point state
+     * @param {long} $nodeId - nodeId of the node we need to highlight
+    */
     highlightNode(nodeId){
         let node = this.coord[nodeId];
         this.geometry.initShape("yellow", 0.7);
@@ -82,6 +102,13 @@ class Map{
         this.geometry.drawShape();
     }
 
+    /**
+     * Finds the closest node to the coordinates given in param
+     * Used in the adding/remove point state
+     * @param {int} $X - X coordinate
+     * @param {int} $Y - Y coordinate
+     * @return returns null if no close node was found, return the node otherwise
+    */
     findBestNode(X,Y){
         let bestNode;
         let bestDistance = Number.MAX_VALUE;

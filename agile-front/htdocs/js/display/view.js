@@ -45,11 +45,11 @@ class Viewer{
         if(this.Map != null){
             this.Map.display();
             if(this.Round != null){
-                this.Round.display(this.Map.coord, this.time);
+                this.Round.display(this.time);
             }
     
             if(this.Deliveries != null){
-                this.Deliveries.display(this.Map.coord, this.time);
+                this.Deliveries.display(this.time);
             }
         }
     }

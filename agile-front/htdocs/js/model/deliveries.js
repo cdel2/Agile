@@ -1,10 +1,13 @@
 /**
  * Coordinates the delivery data
- * It load, diaplay and toggle the interface
+ * It can loads and displays the delivery's data
  */
 class Deliveries{
+    /**
+     * Primary constructor
+     * @param {object} $geometryService - geometry service : dependancy injection
+    */
     constructor(geometryService){
-        this.userNodeDisp = {radius: 4, color: "green"};
         this.warehouse = null;
         this.delNodes = new Object();
         this.userDelNodes = new Object();
@@ -22,8 +25,8 @@ class Deliveries{
 
     /**
      * Loads the deliveries from the backend, set the new state depending on the return code.
-     * @param string $msg - file to load
-     * @return nothing
+     * Handles error messages
+     * @param {string} $delFile1 - file to load
     */
     load(delFile1){
         let object = this;
@@ -71,8 +74,7 @@ class Deliveries{
 
     /**
      * Displays the deliveries (nodes + userNodes + wharehouse + pin + update the deliveries description)
-     * @param {context} $ctx - context of the canvas to write in
-     * @param {context} $time - current time
+     * @param {object} $time - current time
     */
     display(time){
         let coord = Ctrl.View.Map.coord;
@@ -160,7 +162,8 @@ class Deliveries{
     }
 
     /**
-     * Finds the closest delivery node to the coordinates in param
+     * Finds the closest delivery node to the coordinates given in param
+     * The closest closest delivery must be less than 25 far from the cursor (this should be given as parameter)
      * @param {int} $X - X coordinate
      * @param {int} $Y - Y coordinate
      * @return returns null if no close del node was found, return the node otherwise
@@ -192,7 +195,7 @@ class Deliveries{
 
     /**
      * Toggles the right infos in the right section according to the node in param
-     * @param {context} $nodeId - nodeId ?delivery to wich we need to display the infos
+     * @param {long} $nodeId - nodeId ?delivery to wich we need to display the infos
     */
     selectDelivery(nodeId){
         //lets check if it is really a delivery
