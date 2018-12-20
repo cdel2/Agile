@@ -154,9 +154,19 @@ class Controller{
         this.View.update();
     }
 
+    resetView(){
+        this.geometry.reset();
+        this.update();
+    }
+
+    zoomView(rate){
+        this.geometry.zoom(rate);
+        this.update();
+    }
+
     reset(){
         delete this.View.Map;
-        this.View.update();
+        this.update();
         this.state = new InitState(this.geometry);
     }
 
