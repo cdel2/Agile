@@ -20,10 +20,10 @@ public class MapManagementTest {
 		Time t1 = new Time(12,0,0);
 		Time t2 = new Time(18,0,0);
 		Warehouse wh = new Warehouse((long)0, t);
-		Round r1 = new Round(wh );
+		Round r1 = new Round(wh,t);
 		r1.setStartTime(t);
 		r1.setEndTime(t1);
-		Round r2 = new Round(wh);
+		Round r2 = new Round(wh,t);
 		r2.setStartTime(t1);
 		r2.setEndTime(t2);
 		List<Round> l1 = new ArrayList<Round>();
@@ -64,10 +64,10 @@ public class MapManagementTest {
 		Time t2 = new Time(18,0,0);
 		Time t4 = new Time(20,0,0);
 		Warehouse wh = new Warehouse((long)0, t);
-		Round r1 = new Round(wh );
+		Round r1 = new Round(wh,t);
 		r1.setStartTime(t);
 		r1.setEndTime(t1);
-		Round r2 = new Round(wh);
+		Round r2 = new Round(wh,t);
 		r2.setStartTime(t1);
 		r2.setEndTime(t2);
 		List<Round> l1 = new ArrayList<Round>();
@@ -86,7 +86,7 @@ public class MapManagementTest {
 		/*
 		 * Test: add a round to a deliverer of the list
 		 */
-		Round r3 = new Round(wh );
+		Round r3 = new Round(wh,t );
 		r3.setStartTime(t1);
 		r3.setEndTime(t2);
 		boolean b1 = MapManagement.getInstance().addRoundToADeliverer(del1, r3);
