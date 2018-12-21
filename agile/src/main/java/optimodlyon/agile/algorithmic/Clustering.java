@@ -176,7 +176,7 @@ public class Clustering {
     	return sortedDeliveries;
     }
     
-	public List<List<Delivery>> dispatchCluster(CityMap map, int deliverers){
+	public List<List<Delivery>> dispatchCluster(int deliverers){
 		List<Delivery> sortedDeliveries = sortCluster();
 		sortedDeliveries = changeStartingPoint(sortedDeliveries, deliverers);
 		List<List<Delivery>> clusters = new ArrayList<List<Delivery>>();
@@ -202,25 +202,10 @@ public class Clustering {
     //Creates an Array of IDs for Dijkstra arguments
     public static List<Long> createIdArray(List<Delivery> deliveryArray){
         List<Long> ids = new ArrayList<Long>();
-        
         for(Delivery delivery : deliveryArray) {
             ids.add(delivery.getId());
         }
         
         return ids;
-    } 
-
-
-    public Map<Long, List<Segment>> reform(HashMap<Long, ArrayList<Segment>> map){
-        Map<Long, ArrayList<Segment>> newMap = new HashMap<Long, ArrayList<Segment>>(map);
-        Iterator<Entry<Long, ArrayList<Segment>>> it = newMap.entrySet().iterator();
-        Map<Long, List<Segment>> finalMap = new HashMap<Long, List<Segment>>();
-        
-        while (it.hasNext()) {
-            Map.Entry<Long, ArrayList<Segment>> pair = it.next();
-            finalMap.put((long)pair.getKey(), (List<Segment>) pair.getValue());
-        }
-        
-        return finalMap;
     }
 }

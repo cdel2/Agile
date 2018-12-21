@@ -33,7 +33,7 @@ public class CalculatingState extends DefaultState {
 
         MapManagement.getInstance().getMap();
         MapManagement.getInstance().initializeListDeliverer(nb);
-        List<List<Delivery>> clusters = clustering.dispatchCluster(MapManagement.getInstance().getMap(), nb); 
+        List<List<Delivery>> clusters = clustering.dispatchCluster(nb); 
 
         List<Round> finalRound = new ArrayList<Round>();
         for(List<Delivery> cluster : clusters) {
