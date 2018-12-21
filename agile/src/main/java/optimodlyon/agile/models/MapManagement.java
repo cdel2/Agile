@@ -157,11 +157,14 @@ public class MapManagement{
                 res = this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
                 if(res) {
                 	System.out.println("Round added to deliverer " + deliv.getId());
-                } else {
+                } 
+                /*
+                 else {
+                 
                 	System.out.println("Round couldn't be added to deliverer " + deliv.getId());
                 	System.out.println("Details of the round :" + roundToAdd.toString());
+           		}*/
             }
-        }
         }
         return res;
     }

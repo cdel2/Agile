@@ -24,8 +24,6 @@ public class MapManagementTest {
 	Delivery d1, d2;
 	List<Delivery> listDelivery;
 	Map<Long, Deliverer> ldel;
-	//Stack<Map<Long, Deliverer>> undoList;
-	//Stack<Map<Long, Deliverer>> redoList;
 	
 	@Before 
 	public void setUp() {
@@ -46,8 +44,6 @@ public class MapManagementTest {
 		del1 = new Deliverer((long)0);
 		del2 = new Deliverer((long)1);
 		del3 = new Deliverer((long)2);
-		//del1.setListRound(l1);
-		//del2.setListRound(l1);
 		
 		ldel = new HashMap<Long, Deliverer>();
 		ldel.put(del1.getId(), del1);
@@ -244,25 +240,65 @@ public class MapManagementTest {
 	}
 	
 	@Test
-	public void undoTest() {
+	public void testUndo() {
+		/*
+		  try {
+				MapManagement.getInstance().undo();
+			    //fail("Should throw exception");
+			  }catch(RuntimeException rExp){
+			    assert(rExp.getMessage().contains("You cannot redo or undo."));
+			  }
+		*/
+		
+		MapManagement.getInstance().addMapToHistory();
+		
+		MapManagement.getInstance().undo();
 		
 	}
 	
 	@Test
-	public void redoTest() {
+	public void testRedo() {
+		MapManagement.getInstance().addMapToHistory();
 		
+		MapManagement.getInstance().undo();
+		MapManagement.getInstance().redo();
 	}
 	
 	@Test
 	public void isUndoableTest() {
+		MapManagement.getInstance().clearHistory();
 		
+		boolean b = MapManagement.getInstance().isUndoable();
+		assertEquals(b, false);
+		
+		MapManagement.getInstance().addMapToHistory();
+		b = MapManagement.getInstance().isUndoable();
+		assertEquals(b, true);
 	}
 	
 	@Test
 	public void isRedoableTest() {
+		MapManagement.getInstance().clearHistory();
 		
+		MapManagement.getInstance().addMapToHistory();
+		
+		boolean b = MapManagement.getInstance().isRedoable();
+		assertEquals(b, false);
+
+		MapManagement.getInstance().undo();
+		
+		b = MapManagement.getInstance().isRedoable();
+		assertEquals(b, true);
 	}
 
-
+	@Test
+	public void testRemoveLastMapInHistory() {
+		MapManagement.getInstance().clearHistory();
+		
+		MapManagement.getInstance().addMapToHistory();
+		
+		MapManagement.getInstance().removeLastMapInHistory();
+		Assertions.assertThat(MapManagement.getInstance().getUndoList().isEmpty());
+	}
 
 }
