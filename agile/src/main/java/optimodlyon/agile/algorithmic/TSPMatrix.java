@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
-
+/*
+ * To implement this TSP, we used certain element of thesis we found online
+ * link : https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=12&cad=rja&uact=8&ved=2ahUKEwjon5eE-q7fAhUDxoUKHQHiAMQQFjALegQIAhAC&url=https%3A%2F%2Fhrcak.srce.hr%2Ffile%2F236378&usg=AOvVaw3H65VkEVp7BKfJwvkDXgzx
+ */
 public class TSPMatrix extends TSPTemplate{
 	
 	
@@ -94,7 +97,11 @@ public class TSPMatrix extends TSPTemplate{
 		return newGraph;
 	}
 
-	
+	/*
+	 * For each row, compute the corresponding ri
+	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
+	 * @return a Map with the id of the delivery as the key and the value of ri as the value
+	 */
 	public Map<Long,Float> generateRi(Map<Long, Map<Long, Float>> graph)
 	{
 		Map<Long,Float> ri = new HashMap<Long,Float>();
@@ -110,6 +117,12 @@ public class TSPMatrix extends TSPTemplate{
 		return ri;
 	}
 	
+	/*
+	 * For each row, compute the corresponding ci
+	 * @param graph the data structure that contains the deliveries, their successors and the distance between them
+	 * @param ri, the Map containing for each delivery (corresponding row) the value of ri
+	 * @return a Map with the id of the delivery as the key and the value of ci as the value
+	 */
 	public Map<Long,Float> generateCi(Map<Long, Map<Long, Float>> graph,Map<Long,Float> ri )
 	{
 		Map<Long,Float> ci = new HashMap<Long,Float>();
@@ -127,6 +140,7 @@ public class TSPMatrix extends TSPTemplate{
 			key = (long) (it.next().getKey());
 			Map<Long, Float> currentSuccessors = graph.get(key);
 			itCol = currentSuccessors.entrySet().iterator();
+			//For each column we create a data structure containing the existing row and the value 
 			while(itCol.hasNext())
 			{
 				keyCol = (long) (itCol.next().getKey());
@@ -155,7 +169,10 @@ public class TSPMatrix extends TSPTemplate{
 
 	}
 	
-	
+	/*
+	 * @param successors, for each column (key), the value corresponding to the row for which we compute ri
+	 * @return the value of ri
+	 */
 	public float computeRi(Map<Long, Float> successors)
 	{
 		Iterator<Entry<Long, Float>> it = successors.entrySet().iterator();
@@ -174,6 +191,10 @@ public class TSPMatrix extends TSPTemplate{
 		return min;
 	}
 	
+	/*
+	 * @param successors, for each row (key), the value corresponding to the column for which we compute ri
+	 * @return the value of ci
+	 */
 	public float computeCi(Map<Long, Float> successors, Map<Long,Float> ri)
 	{
 		Iterator<Entry<Long, Float>> it = successors.entrySet().iterator();
@@ -191,7 +212,12 @@ public class TSPMatrix extends TSPTemplate{
 		}
 		return min;
 	}
-		
+	
+	/*
+	 * @param ri, the map containing for each row (key) the value of the corresponding ri (value)
+	 * @param ci, the map containing for each column (key) the value of the corresponding ci (value)
+	 * @return the value of b
+	 */
 	public float computeB(Map<Long,Float> ri, Map<Long,Float> ci)
 	{
 		Iterator<Entry<Long, Float>> itR = ri.entrySet().iterator();

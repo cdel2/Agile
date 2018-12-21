@@ -14,6 +14,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import optimodlyon.agile.models.MapManagement;
+import optimodlyon.agile.models.Warehouse;
+
 public class TSPMatrixTest {
 	Map<Long, Map<Long, Float>> myGraph;
 	Map<Long, TreeMap<Long, Float>> myTreeGraph;
@@ -23,7 +26,7 @@ public class TSPMatrixTest {
 	List<Long> myListDeliveries;
 
 	Map<Long, Map<Long, Float>> myGeneratedGraph;
-	
+	List<Long> myBestSolution;
 
 
 
@@ -123,7 +126,13 @@ public class TSPMatrixTest {
 		myListDeliveries.add((long)3);
 		myListDeliveries.add((long)4);
 
+		myBestSolution = new ArrayList<Long>();
+		myBestSolution.add((long)1);
+		myBestSolution.add((long)4);
+		myBestSolution.add((long)3);
+		myBestSolution.add((long)2);
 
+		MapManagement.getInstance().setWarehouse(new Warehouse((long)1,null));
 
 	}
 
@@ -212,5 +221,13 @@ public class TSPMatrixTest {
 		System.out.println(myTreeGraph);
 		float expectedValue = 20;
 		assertEquals(expectedValue,value,0);
+	}
+	
+	@Test
+	public final void testStartTSP() throws Exception {
+		TSPMatrix tspMatrix = new TSPMatrix();
+		tspMatrix.startTSP(1000, myListDeliveries.size(), myTreeGraph);
+		assertEquals(myBestSolution, tspMatrix.getBestSolution());
+		
 	}
 }

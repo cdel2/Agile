@@ -51,7 +51,6 @@ class Geometry{
         this.zoomLevel = 1;
         this.deltaX = 0;
         this.deltaY = 0;
-        this.update();
     }
 
     zoom(rate){

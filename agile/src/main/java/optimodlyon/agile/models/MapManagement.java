@@ -127,25 +127,20 @@ public class MapManagement{
      * Retrieves an delivery by its id
      */
     public Delivery getDeliveryById(Long id) {
-        List<Delivery> listDelivery = MapManagement.getInstance().getListDelivery();
         for(Delivery delivery : listDelivery) {
             if((long)delivery.getId()==(long)id){
                 return delivery;
             }
         }
         
-        return MapManagement.getInstance().getWarehouse();
+        return warehouse;
     }
 
     /*
      * Retrieves an intersection by its id
      */
     public Intersection getIntersectionById(Long id) {
-        /*
-         * Super annoying : we get the graph of CityMap, then we get all the segments that start from the intersection we want to retrieve, 
-         *and then we get the start point of this segment which is the Intersection we want.
-         */
-        return MapManagement.getInstance().getMap().getGraph().get(id).get(0).getStart();
+        return map.getGraph().get(id).get(0).getStart();
     }
 
     /**
@@ -162,11 +157,14 @@ public class MapManagement{
                 res = this.listDeliverer.get(deliv.getId()).addRoundToList(roundToAdd);
                 if(res) {
                 	System.out.println("Round added to deliverer " + deliv.getId());
-                } else {
+                } 
+                /*
+                 else {
+                 
                 	System.out.println("Round couldn't be added to deliverer " + deliv.getId());
                 	System.out.println("Details of the round :" + roundToAdd.toString());
+           		}*/
             }
-        }
         }
         return res;
     }
@@ -253,6 +251,14 @@ public class MapManagement{
     
     public boolean isRedoable() {
         return(redoList.size() > 0);
+    }
+    
+    public Stack<Map<Long, Deliverer>> getUndoList() {
+    	return undoList;
+    }
+    
+    public Stack<Map<Long, Deliverer>> getRedoList() {
+    	return redoList;
     }
 }
 

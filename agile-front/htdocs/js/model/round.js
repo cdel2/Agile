@@ -1,4 +1,12 @@
+/**
+ * Coordinates the rounds data
+ * It can loads and displays the round's data
+ */
 class Round{
+    /**
+     * Primary constructor
+     * @param {object} $geometryService - geometry service : dependancy injection
+    */
     constructor(geometryService){
         this.paths = new Object();
         this.userPaths = new Object();
@@ -10,6 +18,13 @@ class Round{
         this.geometry = geometryService;
     }
 
+    /**
+     * Loads the rounds from the backend, set the new state depending on the return code.
+     * Handles error messages
+     * @param {string} $action - actions -> url (init, add, undo, redo..)
+     * @param {string} $num1 - usage depends on the action
+     * @param {string} $num2 - usage depends on the action
+    */
     load(action, num1, num2){
         let apiUrl = "http://localhost:8080/";
         switch(action){
@@ -128,34 +143,49 @@ class Round{
             $("#loaderEl").hide();
         });
     }
-    
-    display(coord, time){
+
+    /**
+     * Displays the rounds (only the paths)
+     * @param {object} $time - current time
+    */  
+    display(time){
+        //PRIMARY PATHS
         for(var i in this.paths){
             if(this.paths[i].display && (this.firstPath===-1 || (i!=this.firstPath))){
                 let totalPath = this.paths[i].data;
-                this.drawSegment(totalPath, coord, this.paths[i].color, 1.5, time);
+                this.drawSegment(totalPath, this.paths[i].color, 1.5, time);
             }
         }
 
+        //USER PATHS
         for(var i in this.userPaths){
             if(this.userPaths[i].display && (this.firstPath===-1 || (i!=this.firstPath))){
                 let totalPath = this.userPaths[i].data;
-                this.drawSegment(totalPath, coord, this.userPaths[i].color, 1.5, time);
+                this.drawSegment(totalPath, this.userPaths[i].color, 1.5, time);
             }
         }
         
+        //PATH IN FOREGROUND
         let path = this.paths[this.firstPath];
         if(this.firstPath!=-1 && path.display){
             let totalPath = path.data;
-            this.drawSegment(totalPath, coord, path.color, 2, time);
+            this.drawSegment(totalPath, path.color, 2.5, time);
             if(this.userPaths != undefined && this.userPaths[this.firstPath] != undefined){
                 let totalPath2 = this.userPaths[this.firstPath].data;
-                this.drawSegment(totalPath2, coord, path.color, 2, time);
+                this.drawSegment(totalPath2, path.color, 2.5, time);
             }
         }
     }
-    //[10,5]
-    drawSegment(totalPath, coord, color, thickness, time){
+
+    /**
+     * Draw a path from one delivery to the other
+     * @param {object} $totalPath - id of the path to toggle
+     * @param {string} $color - color of the path
+     * @param {number} $thickness - thickness of the path
+     * @param {object} $time - current time
+    */
+    drawSegment(totalPath, color, thickness, time){
+        let coord = Ctrl.View.Map.coord;
         let present = true; //true if we are before time
         for(var j in totalPath){
             let path = totalPath[j];
@@ -174,6 +204,11 @@ class Round{
         }
     }
 
+    /**
+     * Sets the path (from id) to visible (state=true) or hidden (state=false)
+     * @param {int} $id - id of the path to toggle
+     * @param {bool} $state - how to toggle (true - set visible, false - set hidden)
+    */
     switchPathDisplay(id, state){
         this.paths[id].display = state;
         if(this.userPaths[id] != undefined){
@@ -195,6 +230,10 @@ class Round{
         return temp;
     }
 
+    /**
+     * Sets the path (from id) to draw in Foreground
+     * @param {int} $id - id of the path to send to the front of the display
+    */
     pathToForeground(id){
         this.firstPath = id;
     }
